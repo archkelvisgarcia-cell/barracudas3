@@ -733,6 +733,8 @@ a { color: inherit; text-decoration: none; }
   font-weight: 700;
   box-shadow: 0 4px 16px rgba(255,210,42,0.35), 0 0 0 1px rgba(0,0,0,0.15) inset;
 }
+.player-face.player-front .captain-badge { display: inline-flex; }
+.player-face.player-back .captain-badge { display: none !important; }
 .player.is-captain .player-back {
   background:
     radial-gradient(120% 80% at 0% 0%, rgba(255,210,42,0.15), transparent 60%),
