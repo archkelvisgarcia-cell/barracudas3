@@ -456,8 +456,12 @@ a { color: inherit; text-decoration: none; }
   display: flex; justify-content: space-between; align-items: end;
   gap: 24px; flex-wrap: wrap;
   margin-top: 24px;
-  padding-top: 24px;
+  padding: 20px;
+  border-radius: 8px;
   border-top: 1px solid var(--line);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 .hero-tagline p {
   max-width: 460px;
@@ -536,6 +540,18 @@ a { color: inherit; text-decoration: none; }
     padding: 12px 14px;
     text-align: center;
     justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-bg::after {
+    background: linear-gradient(
+      to bottom,
+      rgba(0,0,0,0.2) 0%,
+      rgba(0,0,0,0.7) 35%,
+      rgba(0,0,0,0.9) 60%,
+      rgba(0,0,0,1) 85%
+    );
   }
 }
 
