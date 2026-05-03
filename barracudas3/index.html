@@ -1,323 +1,348 @@
-Barracudas Barracudas
-Home Schedule Results News Roster
- Join the Club →  
- Barracudas Barracudas  
-Home01 Schedule02 Results03 News04 Roster05
-Zürich · CH Est. 1986
-Barracudas batter at the plate
-Live · Season 2026 NL Champions 2024
-ZÜRICH · SWITZERLAND
-47.3769° N / 8.5417° E
-Est. 1986 · 40 Years
-Bite
-Harder.2026
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Zurich Barracudas — Baseball Club</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="results.css" />
+</head>
+<body>
 
-Zurich's premier baseball club. Defending NL champions, 40 years of grinding through Swiss summers, dirt under the nails, ball in the glove.
+<!-- ============== NAV ============== -->
+<header class="nav">
+  <a href="index.html" class="nav-logo">
+    <img src="assets/logo.png" alt="Barracudas" style="height: 40px; width: auto;" />
+    <span>Barracudas</span>
+  </a>
+  <nav class="nav-links">
+    <a href="index.html" class="active">Home</a>
+    <a href="schedule.html">Schedule</a>
+    <a href="results.html">Results</a>
+    <a href="news.html">News</a>
+    <a href="#roster">Roster</a>
+  </nav>
+  <div class="nav-tools">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <a href="#join" class="nav-cta">Join the Club →</a>
+    <button class="icon-btn menu-btn" id="menu-open" aria-label="Open menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</header>
 
-Next Game →
-Meet the Squad
-Record 20263-3
-LeagueNL
-HomeHeerenschürli
-NextMay 30 · vs Frogs
-May 2 · Game 1 · DHL
-BAR3 vs EAG9 : 23
-May 2 · Game 2 · DHL
-BAR3 vs EAG9 : 10
-NL Champions 2024 ● Zürich Barracudas ● Defend the Title ● Swiss Baseball ● Est. 1986 ● Bite Harder ● NL Champions 2024 ● Zürich Barracudas ● Defend the Title ● Swiss Baseball ● Est. 1986 ● Bite Harder ●
-— Next Up
-First
-Pitch.
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobile-menu">
+  <div class="mobile-menu-head">
+    <a href="index.html" class="nav-logo">
+      <img src="assets/logo.png" alt="Barracudas" style="height: 36px; width: auto;" />
+      <span>Barracudas</span>
+    </a>
+    <button class="icon-btn" id="menu-close" aria-label="Close menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <nav>
+    <a href="index.html"><span>Home</span><span class="num">01</span></a>
+    <a href="schedule.html"><span>Schedule</span><span class="num">02</span></a>
+    <a href="results.html"><span>Results</span><span class="num">03</span></a>
+    <a href="news.html"><span>News</span><span class="num">04</span></a>
+    <a href="#roster"><span>Roster</span><span class="num">05</span></a>
+  </nav>
+  <div class="mobile-menu-foot">
+    <span>Zürich · CH</span>
+    <span>Est. 1986</span>
+  </div>
+</div>
 
-Back home at Heerenschürli for a Saturday doubleheader against the Sissach Frogs. Time to reset and bite back. Game 1 at 11:00, Game 2 at 14:00.
+<!-- ============== HERO ============== -->
+<section class="hero">
+  <div class="hero-bg">
+    <img src="assets/photo-batter.jpg" alt="Barracudas batter at the plate" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" />
+  </div>
+  <div class="hero-content">
+    <div class="hero-top">
+      <div class="hero-meta">
+        <span class="tag live">Live · Season 2026</span>
+        <span class="tag" style="background:color-mix(in oklab,var(--ink) 12%,transparent);color:var(--ink);">NL Champions 2024</span>
+      </div>
+      <div class="hero-stamp">
+        <strong>ZÜRICH · SWITZERLAND</strong><br />
+        47.3769° N / 8.5417° E<br />
+        Est. 1986 · 40 Years
+      </div>
+    </div>
 
-Full Schedule →
-Sat · 30 May 2026 Home Doubleheader
+    <div class="hero-headline">
+      <h1>
+        <span>Bite</span><br />
+        <span class="y">Harder.</span><span class="out">2026</span>
+      </h1>
+      <div class="hero-tagline">
+        <p>Zurich's premier baseball club. Defending NL champions, 40 years of grinding through Swiss summers, dirt under the nails, ball in the glove.</p>
+        <div style="display:flex;gap:12px;">
+          <a href="schedule.html" class="btn btn-primary">Next Game →</a>
+          <a href="#roster" class="btn btn-ghost">Meet the Squad</a>
+        </div>
+      </div>
 
-Barracudas 3
-Home
-VS
-Frogs
-Sissach Frogs
-Away · Sissach
-First Pitch
-11:00
-Venue
-Heerenschürli
-Game 2
-14:00
-Recent
-Results.
+      <div class="hero-strip">
+        <div><span class="k">Record 2026</span><span class="v"><span class="y">3</span>-3</span></div>
+        <div><span class="k">League</span><span class="v">NL</span></div>
+        <div><span class="k">Home</span><span class="v">Heerenschürli</span></div>
+        <div><span class="k">Next</span><span class="v">May 30 · vs Frogs</span></div>
+      </div>
 
-All Boxscores →
-Loss
-May 2, 2026 · Game 1 · Heerenschürli
+      <div class="latest-strip">
+        <a href="results.html" class="game">
+          <div class="top"><span>May 2 · Game 1 · DH</span><span class="res l">L</span></div>
+          <div class="matchup"><span>BAR3 vs EAG</span><span class="sc">9 : 23</span></div>
+        </a>
+        <a href="results.html" class="game">
+          <div class="top"><span>May 2 · Game 2 · DH</span><span class="res l">L</span></div>
+          <div class="matchup"><span>BAR3 vs EAG</span><span class="sc">9 : 10</span></div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
 
-Barracudas 3
-9
-Eagles
-Luzern Eagles
-23
-9 InningsHR · K.Garcia
-Loss
-May 2, 2026 · Game 2 · Heerenschürli
+<!-- ============== MARQUEE ============== -->
+<div class="marquee">
+  <div class="marquee-track">
+    <span>NL Champions 2024 <span class="dot">●</span> Zürich Barracudas <span class="dot">●</span> Defend the Title <span class="dot">●</span> Swiss Baseball <span class="dot">●</span> Est. 1986 <span class="dot">●</span> Bite Harder <span class="dot">●</span></span>
+    <span>NL Champions 2024 <span class="dot">●</span> Zürich Barracudas <span class="dot">●</span> Defend the Title <span class="dot">●</span> Swiss Baseball <span class="dot">●</span> Est. 1986 <span class="dot">●</span> Bite Harder <span class="dot">●</span></span>
+  </div>
+</div>
 
-Barracudas 3
-9
-Eagles
-Luzern Eagles
-10
-7 Innings2B · J.Rosa Lima · 2 RBI
-Next
-May 30, 2026 · DH · Heerenschürli
+<!-- ============== NEXT MATCH ============== -->
+<section class="next-match">
+  <div class="left reveal">
+    <div class="eyebrow" style="margin-bottom:16px;">— Next Up</div>
+    <h2><span class="out">First</span><br />Pitch.</h2>
+    <p>Back home at Heerenschürli for a Saturday doubleheader against the Sissach Frogs. Time to reset and bite back. Game 1 at 11:00, Game 2 at 14:00.</p>
+    <a href="schedule.html" class="btn btn-primary">Full Schedule →</a>
+  </div>
+  <div class="match-card reveal" data-delay="1">
+    <div class="head">
+      <span class="tag">Sat · 30 May 2026</span>
+      <span class="eyebrow">Home Doubleheader</span>
+    </div>
+    <div class="vs">
+      <div class="team us">
+        <div class="crest"><img src="assets/logo.png" alt="" style="height:48px;width:auto;" /></div>
+        <div class="name">Barracudas 3</div>
+        <div class="sub">Home</div>
+      </div>
+      <div class="center">VS</div>
+      <div class="team them">
+        <div class="crest"><img src="assets/teams/frogs.png" alt="Frogs" style="height:48px;width:auto;" /></div>
+        <div class="name">Sissach Frogs</div>
+        <div class="sub">Away · Sissach</div>
+      </div>
+    </div>
+    <div class="info-row">
+      <div><div class="k">First Pitch</div><div class="v">11:00</div></div>
+      <div><div class="k">Venue</div><div class="v">Heerenschürli</div></div>
+      <div><div class="k">Game 2</div><div class="v">14:00</div></div>
+    </div>
+  </div>
+</section>
 
-Barracudas 3
-—
-Frogs
-Sissach Frogs
-—
-First Pitch · 11:00Game 2 · 14:00
-NL Champions 2024
-— Active Roster
-The Squad.
+<!-- ============== RESULTS ============== -->
+<section class="section" style="padding-top:0;">
+  <div class="section-head">
+    <h2 class="section-title reveal"><span class="out">Recent</span><br /><span class="y">Results.</span></h2>
+    <a href="results.html" class="btn btn-ghost reveal" data-delay="1">All Boxscores →</a>
+  </div>
+  <div class="results-grid">
+    <div class="score-card reveal">
+      <span class="badge l">Loss</span>
+      <div class="meta">May 2, 2026 · Game 1 · Heerenschürli</div>
+      <div class="row">
+        <div class="team us"><div class="crest"><img src="assets/logo.png" alt="" style="height:24px;width:auto;" /></div>Barracudas 3</div>
+        <div class="score loss">9</div>
+      </div>
+      <div class="row">
+        <div class="team"><div class="crest"><img src="assets/teams/eagles.png" alt="Eagles" style="height:28px;width:auto;" /></div>Luzern Eagles</div>
+        <div class="score win">23</div>
+      </div>
+      <div class="foot"><span>9 Innings</span><span>HR · K.Garcia</span></div>
+    </div>
 
-Pasa el cursor sobre cualquier card para voltearla y ver los números reales de la temporada 2026.
+    <div class="score-card reveal" data-delay="1">
+      <span class="badge l">Loss</span>
+      <div class="meta">May 2, 2026 · Game 2 · Heerenschürli</div>
+      <div class="row">
+        <div class="team us"><div class="crest"><img src="assets/logo.png" alt="" style="height:24px;width:auto;" /></div>Barracudas 3</div>
+        <div class="score loss">9</div>
+      </div>
+      <div class="row">
+        <div class="team"><div class="crest"><img src="assets/teams/eagles.png" alt="Eagles" style="height:28px;width:auto;" /></div>Luzern Eagles</div>
+        <div class="score win">10</div>
+      </div>
+      <div class="foot"><span>7 Innings</span><span>2B · J.Rosa Lima · 2 RBI</span></div>
+    </div>
 
-#1
-🇩🇴
-Juan
-Malchans
+    <div class="score-card reveal" data-delay="2">
+      <span class="badge w" style="background:color-mix(in oklab,var(--accent) 25%,transparent);color:var(--accent);">Next</span>
+      <div class="meta">May 30, 2026 · DH · Heerenschürli</div>
+      <div class="row">
+        <div class="team us"><div class="crest"><img src="assets/logo.png" alt="" style="height:24px;width:auto;" /></div>Barracudas 3</div>
+        <div class="score">—</div>
+      </div>
+      <div class="row">
+        <div class="team"><div class="crest"><img src="assets/teams/frogs.png" alt="Frogs" style="height:28px;width:auto;" /></div>Sissach Frogs</div>
+        <div class="score">—</div>
+      </div>
+      <div class="foot"><span>First Pitch · 11:00</span><span>Game 2 · 14:00</span></div>
+    </div>
+  </div>
+</section>
 
-IF · DOM
-AVG
-.192
-RBI
-10
-OBP
-.344
-OPS
-.613
-Barracudas · 2026 ↺ flip
-#27
-🇩🇴
-Elvis
-Del Valle
+<!-- ============== CHAMPS BANNER ============== -->
+<section class="section" style="padding:0;">
+  <div style="position:relative;width:100%;aspect-ratio:3/2;max-height:80vh;overflow:hidden;">
+    <img src="assets/champs-2024.png" alt="NL Champions 2024" style="width:100%;height:100%;object-fit:cover;" />
+  </div>
+</section>
 
-OF · SS · DOM
-AVG
-.346
-RBI
-4
-SB
-4
-OPS
-1.023
-Barracudas · 2026 ↺ flip
-★ Captain
-#15
-🇩🇴 ★ Captain
-Jose
-Medina
+<!-- ============== ROSTER (FLIP CARDS) ============== -->
+<section class="roster" id="roster">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow reveal" style="margin-bottom:12px;">— Active Roster</div>
+      <h2 class="section-title reveal" data-delay="1">The <span class="y">Squad.</span></h2>
+    </div>
+    <p class="reveal" data-delay="2" style="max-width:380px;color:var(--ink-mute);line-height:1.5;font-size:15px;">Pasa el cursor sobre cualquier card para voltearla y ver los números reales de la temporada 2026.</p>
+  </div>
+  <div class="roster-grid"></div>
 
-C · DOM
-AVG
-.444
-RBI
-11
-OBP
-.621
-OPS
-1.398
-Barracudas · 2026 ↺ flip
-#34
-🇩🇴
-Jhomar
-Lima
+  <!-- ══════════════════════════════════════════════════════
+       ROSTER DATA — easyscoreId maps each player to EasyScore
+       Pitchers: stats show ERA, K, W-L, WHIP
+       Batters:  stats show AVG, HR, RBI, OBP  (fallback until API loads)
+  ══════════════════════════════════════════════════════ -->
+  <script id="roster-data" type="application/json">
+  [
+    {"first":"Juan","last":"Malchans","num":"1","pos":"IF","country":"DOM","flag":"🇩🇴",
+     "img":"assets/players/jm1.png","easyscoreId":42266,"type":"batter",
+     "stats":[{"k":"AVG","v":".192"},{"k":"RBI","v":"10"},{"k":"OBP","v":".344"},{"k":"OPS","v":".613"}]},
 
-3B · DOM
-AVG
-.520
-HR
-3
-RBI
-17
-OPS
-1.541
-Barracudas · 2026 ↺ flip
-#20
-🇩🇴
-Kelvis
-Garcia
+    {"first":"Elvis","last":"Del Valle","num":"27","pos":"OF · SS","country":"DOM","flag":"🇩🇴",
+     "img":"assets/players/ev27.png","easyscoreId":26400,"type":"batter",
+     "stats":[{"k":"AVG","v":".346"},{"k":"RBI","v":"4"},{"k":"SB","v":"4"},{"k":"OPS","v":"1.023"}]},
 
-2B · RP · DOM
-AVG
-.375
-RBI
-10
-ERA
-0.00
-OPS
-1.131
-Barracudas · 2026 ↺ flip
-#77
-🇨🇺
-Jhon
-Arregoitia
+    {"first":"Jose","last":"Medina","num":"15","pos":"C","country":"DOM","flag":"🇩🇴",
+     "img":"assets/players/jm15-portrait.png","captain":true,"easyscoreId":37907,"type":"batter",
+     "stats":[{"k":"AVG","v":".444"},{"k":"RBI","v":"11"},{"k":"OBP","v":".621"},{"k":"OPS","v":"1.398"}]},
 
-1B · CUB
-AVG
-.120
-RBI
-6
-OBP
-.290
-OPS
-.450
-Barracudas · 2026 ↺ flip
-#23
-🇨🇭
-Sascha
-Litscher
+    {"first":"Jhomar","last":"Lima","num":"34","pos":"3B","country":"DOM","flag":"🇩🇴",
+     "img":"assets/players/jhl34.png","easyscoreId":34551,"type":"batter",
+     "stats":[{"k":"AVG","v":".520"},{"k":"HR","v":"3"},{"k":"RBI","v":"17"},{"k":"OPS","v":"1.541"}]},
 
-1B · SUI
-AVG
-.500
-RBI
-0
-SB
-1
-OPS
-1.000
-Barracudas · 2026 ↺ flip
-#30
-🇻🇪
-Carlos
-Moreno
+    {"first":"Kelvis","last":"Garcia","num":"20","pos":"2B · RP","country":"DOM","flag":"🇩🇴",
+     "img":"assets/players/kg20.png","easyscoreId":19648,"type":"both",
+     "stats":[{"k":"AVG","v":".375"},{"k":"RBI","v":"10"},{"k":"ERA","v":"0.00"},{"k":"OPS","v":"1.131"}]},
 
-CF · VEN
-AVG
-.231
-RBI
-6
-SB
-8
-OPS
-.603
-Barracudas · 2026 ↺ flip
-#36
-🇩🇴
-Wilkin
-Peguero
+    {"first":"Jhon","last":"Arregoitia","num":"77","pos":"1B","country":"CUB","flag":"🇨🇺",
+     "img":"assets/players/ja77.png","easyscoreId":34542,"type":"batter",
+     "stats":[{"k":"AVG","v":".120"},{"k":"RBI","v":"6"},{"k":"OBP","v":".290"},{"k":"OPS","v":".450"}]},
 
-SP · OF · DOM
-ERA
-7.64
-K
-10
-W-L
-1-1
-WHIP
-2.05
-Barracudas · 2026 ↺ flip
-#28
-🇨🇺
-Francisco Robles
-Noa
+    {"first":"Sascha","last":"Litscher","num":"23","pos":"1B","country":"SUI","flag":"🇨🇭",
+     "img":"assets/players/sl23.png","easyscoreId":3825,"type":"batter",
+     "stats":[{"k":"AVG","v":".500"},{"k":"RBI","v":"0"},{"k":"SB","v":"1"},{"k":"OPS","v":"1.000"}]},
 
-IF · CUB
-AVG
-.111
-RBI
-0
-OBP
-.385
-OPS
-.496
-Barracudas · 2026 ↺ flip
-#11
-🇨🇭
-Clemens
-Lombriser
+    {"first":"Carlos","last":"Moreno","num":"30","pos":"CF","country":"VEN","flag":"🇻🇪",
+     "img":"assets/players/cm30.png","easyscoreId":35528,"type":"batter",
+     "stats":[{"k":"AVG","v":".231"},{"k":"RBI","v":"6"},{"k":"SB","v":"8"},{"k":"OPS","v":".603"}]},
 
-OF · SUI
-AVG
-.133
-RBI
-5
-OBP
-.350
-OPS
-.483
-Barracudas · 2026 ↺ flip
-#22
-🇩🇴
-Michael
-Vasquez
+    {"first":"Wilkin","last":"Peguero","num":"36","pos":"SP · OF","country":"DOM","flag":"🇩🇴",
+     "img":"assets/players/wp36.png","easyscoreId":38086,"type":"pitcher",
+     "stats":[{"k":"ERA","v":"7.64"},{"k":"K","v":"10"},{"k":"W-L","v":"1-1"},{"k":"WHIP","v":"2.05"}]},
 
-SP · DOM
-ERA
-4.67
-K
-3
-W-L
-0-1
-WHIP
-1.89
-Barracudas · 2026 ↺ flip
-#13
-🇩🇴
-Angel
-Elias
+    {"first":"Francisco Robles","last":"Noa","num":"28","pos":"IF","country":"CUB","flag":"🇨🇺",
+     "img":"assets/players/frn28.png","easyscoreId":9083,"type":"batter",
+     "stats":[{"k":"AVG","v":".111"},{"k":"RBI","v":"0"},{"k":"OBP","v":".385"},{"k":"OPS","v":".496"}]},
 
-SP · RP · DOM
-ERA
-5.25
-K
-11
-W-L
-1-0
-WHIP
-1.50
-Barracudas · 2026 ↺ flip
-#8
-🇩🇴
-Rodriguez Martin
-Hansel
+    {"first":"Clemens","last":"Lombriser","num":"11","pos":"OF","country":"SUI","flag":"🇨🇭",
+     "img":"assets/players/cl11.png","easyscoreId":3831,"type":"batter",
+     "stats":[{"k":"AVG","v":".133"},{"k":"RBI","v":"5"},{"k":"OBP","v":".350"},{"k":"OPS","v":".483"}]},
 
-OF · RP · SP · DOM
-AVG
-.571
-HR
-1
-ERA
-9.13
-WHIP
-2.61
-Barracudas · 2026 ↺ flip
-Swing
-For The Fence.
+    {"first":"Michael","last":"Vasquez","num":"22","pos":"SP","country":"DOM","flag":"🇩🇴",
+     "img":"assets/players/mv22.png","easyscoreId":37221,"type":"pitcher",
+     "stats":[{"k":"ERA","v":"4.67"},{"k":"K","v":"3"},{"k":"W-L","v":"0-1"},{"k":"WHIP","v":"1.89"}]},
 
-New players welcome at every level. Tryouts run March through April. Bring a glove, leave with a uniform. We train Tuesdays & Thursdays at Heerenschürli.
+    {"first":"Angel","last":"Elias","num":"13","pos":"SP · RP","country":"DOM","flag":"🇩🇴",
+     "img":"assets/players/ae13.png","easyscoreId":47363,"type":"pitcher",
+     "stats":[{"k":"ERA","v":"5.25"},{"k":"K","v":"11"},{"k":"W-L","v":"1-0"},{"k":"WHIP","v":"1.50"}]},
 
-Get In Touch →
- Barracudas
-Zürich Barracudas Baseball Club. Founded 1986. Home of the 2024 NL Champions.
+    {"first":"Rodriguez Martin","last":"Hansel","num":"8","pos":"OF · RP · SP","country":"DOM","flag":"🇩🇴",
+     "img":"assets/players/rmh8.png","easyscoreId":45832,"type":"both",
+     "stats":[{"k":"AVG","v":".571"},{"k":"HR","v":"1"},{"k":"ERA","v":"9.13"},{"k":"WHIP","v":"2.61"}]}
+  ]
+  </script>
+</section>
 
-Club
+<!-- ============== JOIN CTA ============== -->
+<section class="join" id="join">
+  <h2><span class="out">Swing</span><br />For The Fence.</h2>
+  <div class="row">
+    <p>New players welcome at every level. Tryouts run March through April. Bring a glove, leave with a uniform. We train Tuesdays & Thursdays at Heerenschürli.</p>
+    <a href="/cdn-cgi/l/email-protection#fa93949c95ba989b88889b998f9e9b89d49992" class="btn btn-primary">Get In Touch →</a>
+  </div>
+</section>
 
-Schedule
-News
-Roster
-Join Us
-Visit
+<!-- ============== FOOTER ============== -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div>
+      <div class="nav-logo" style="margin-bottom:20px;">
+        <img src="assets/logo.png" alt="" style="height:40px;width:auto;" />
+        <span>Barracudas</span>
+      </div>
+      <p style="color:var(--ink-mute);max-width:340px;line-height:1.5;font-size:14px;">
+        Zürich Barracudas Baseball Club. Founded 1986. Home of the 2024 NL Champions.
+      </p>
+    </div>
+    <div>
+      <h4>Club</h4>
+      <ul>
+        <li><a href="schedule.html">Schedule</a></li>
+        <li><a href="news.html">News</a></li>
+        <li><a href="#roster">Roster</a></li>
+        <li><a href="#join">Join Us</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Visit</h4>
+      <ul>
+        <li><a href="#">Heerenschürli</a></li>
+        <li><a href="#">Zürich, CH</a></li>
+        <li><a href="#">Directions</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Facebook</a></li>
+        <li><a href="/cdn-cgi/l/email-protection#96fff8f0f9d6f4f7e4e4f7f5e3f2f7e5b8f5fe"><span class="__cf_email__" data-cfemail="9ff6f1f9f0dffdfeededfefceafbfeecb1fcf7">[email&#160;protected]</span></a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-big">BARRACUDAS</div>
+  <div class="footer-meta">
+    <span>© 2026 Zürich Barracudas Baseball Club</span>
+    <span>Bite Harder · Est. 1986</span>
+  </div>
+</footer>
 
-Heerenschürli
-Zürich, CH
-Directions
-Connect
-
-Instagram
-Facebook
-[email protected]
-BARRACUDAS
-© 2026 Zürich Barracudas Baseball Club Bite Harder · Est. 1986
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="app.js"></script>
+</body>
+</html>
