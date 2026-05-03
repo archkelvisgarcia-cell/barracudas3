@@ -51,6 +51,7 @@
       <div class="player-inner">
         <div class="player-face player-front" style="background-image:url('${p.img}');">
           ${p.captain ? '<span class="captain-badge">★ Captain</span>' : ''}
+          <span class="player-tap-hint">Tap to flip</span>
         </div>
         <div class="player-face player-back">
           <span class="num-back">#${p.num}</span>
@@ -71,6 +72,7 @@
             <span class="back-team">Barracudas · 2026</span>
             <span class="back-flip">↺ flip</span>
           </div>
+          <span class="player-tap-hint">Tap to flip back</span>
         </div>
       </div>
     </div>
