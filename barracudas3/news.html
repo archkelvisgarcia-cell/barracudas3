@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>News — Zurich Barracudas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<header class="nav">
+  <a href="index.html" class="nav-logo">
+    <img src="assets/logo.png" alt="Barracudas" style="height: 40px; width: auto;" />
+    <span>Barracudas</span>
+  </a>
+  <nav class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="schedule.html">Schedule</a>
+    <a href="results.html">Results</a>
+    <a href="news.html" class="active">News</a>
+    <a href="index.html#roster">Roster</a>
+  </nav>
+  <div class="nav-tools">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <a href="index.html#join" class="nav-cta">Join the Club →</a>
+    <button class="icon-btn menu-btn" id="menu-open" aria-label="Open menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu">
+  <div class="mobile-menu-head">
+    <a href="index.html" class="nav-logo">
+      <img src="assets/logo.png" alt="Barracudas" style="height: 36px; width: auto;" />
+      <span>Barracudas</span>
+    </a>
+    <button class="icon-btn" id="menu-close" aria-label="Close menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <nav>
+    <a href="index.html"><span>Home</span><span class="num">01</span></a>
+    <a href="schedule.html"><span>Schedule</span><span class="num">02</span></a>
+    <a href="results.html"><span>Results</span><span class="num">03</span></a>
+    <a href="news.html"><span>News</span><span class="num">04</span></a>
+    <a href="index.html#roster"><span>Roster</span><span class="num">05</span></a>
+  </nav>
+  <div class="mobile-menu-foot">
+    <span>Zürich · CH</span>
+    <span>Est. 1986</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="news-hero">
+  <div class="reveal">
+    <div class="eyebrow" style="margin-bottom:16px;">— Dispatches from the dugout</div>
+    <h1>News<span class="y">.</span></h1>
+    <p class="lede">Game recaps, roster updates, club stories. Filed straight from Heerenschürli.</p>
+  </div>
+</section>
+
+<!-- FEATURE -->
+<article class="news-feature">
+  <div class="img">
+    <img src="assets/champs-2024.png" alt="NL Champions 2024" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" />
+  </div>
+  <div class="body reveal">
+    <span class="byline">Featured · Sep 28, 2024 · By M. Keller</span>
+    <h2>NL Champions.<br/>Again.</h2>
+    <p>The Barracudas closed out a dominant 12–4 final over the Embrach Mustangs to lift the NL title for the third time in club history. Wilkin Peguero went 7 strong, Kelvis Garcia drove in five, and the dugout flooded the infield before the last out had even settled into Manuel Rivera's mitt.</p>
+    <a href="#" class="btn btn-ghost" style="align-self:start;">Read the recap →</a>
+  </div>
+</article>
+
+<!-- GRID -->
+<section class="news-grid">
+
+  <article class="news-card reveal">
+    <div class="news-card-img">
+      <img src="assets/photo-batter.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" />
+    </div>
+    <span class="cat">Game Recap</span>
+    <h3>Late rally sinks Cardinals in Bern</h3>
+    <div class="meta"><span>Sep 21, 2024</span><span>4 min read</span></div>
+  </article>
+
+  <article class="news-card reveal" data-delay="1">
+    <div class="news-card-img">
+      <img src="assets/photo-bw-77.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(0.2);" />
+    </div>
+    <span class="cat">Player Profile</span>
+    <h3>Inside #77's monster summer at the plate</h3>
+    <div class="meta"><span>Sep 12, 2024</span><span>6 min read</span></div>
+  </article>
+
+  <article class="news-card reveal" data-delay="2">
+    <div class="news-card-img">
+      <img src="assets/card-kelvis.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" />
+    </div>
+    <span class="cat">Roster Move</span>
+    <h3>Garcia signs on for 2026 season</h3>
+    <div class="meta"><span>Aug 30, 2024</span><span>2 min read</span></div>
+  </article>
+
+  <article class="news-card reveal">
+    <div class="news-card-img">
+      <img src="assets/card-wilkin.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" />
+    </div>
+    <span class="cat">Pitching</span>
+    <h3>Peguero's complete game shuts the door</h3>
+    <div class="meta"><span>Aug 24, 2024</span><span>3 min read</span></div>
+  </article>
+
+  <article class="news-card reveal" data-delay="1">
+    <div class="news-card-img">
+      <img src="assets/photo-team.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" />
+    </div>
+    <span class="cat">Club</span>
+    <h3>Open tryouts: how to join the Barracudas</h3>
+    <div class="meta"><span>Aug 12, 2024</span><span>5 min read</span></div>
+  </article>
+
+  <article class="news-card reveal" data-delay="2">
+    <div class="news-card-img">
+      <img src="assets/photo-portrait.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" />
+    </div>
+    <span class="cat">Captain's Corner</span>
+    <h3>Rivera on leadership, language, the long season</h3>
+    <div class="meta"><span>Jul 28, 2024</span><span>7 min read</span></div>
+  </article>
+
+</section>
+
+<!-- GALLERY -->
+<section class="gallery">
+  <div class="section-head">
+    <h2 class="section-title reveal"><span class="out">From the</span><br /><span class="y">Field.</span></h2>
+    <span class="eyebrow reveal" data-delay="1">Click to expand</span>
+  </div>
+  <div class="gallery-grid">
+    <div class="gallery-item big" data-lightbox="assets/champs-2024.png">
+      <img src="assets/champs-2024.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" />
+    </div>
+    <div class="gallery-item tall" data-lightbox="assets/photo-portrait.jpg">
+      <img src="assets/photo-portrait.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" />
+    </div>
+    <div class="gallery-item wide" data-lightbox="assets/photo-team.jpg">
+      <img src="assets/photo-team.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" />
+    </div>
+    <div class="gallery-item" data-lightbox="assets/photo-batter.jpg">
+      <img src="assets/photo-batter.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" />
+    </div>
+    <div class="gallery-item" data-lightbox="assets/photo-bw-77.jpg">
+      <img src="assets/photo-bw-77.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" />
+    </div>
+    <div class="gallery-item tall" data-lightbox="assets/card-kelvis.png">
+      <img src="assets/card-kelvis.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" />
+    </div>
+    <div class="gallery-item wide" data-lightbox="assets/card-wilkin.png">
+      <img src="assets/card-wilkin.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" />
+    </div>
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" aria-label="Close">×</button>
+  <button class="lightbox-nav prev" aria-label="Previous">‹</button>
+  <button class="lightbox-nav next" aria-label="Next">›</button>
+  <div class="lightbox-content">
+    <img class="lightbox-img" src="" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;border-radius:var(--r-lg);" />
+  </div>
+  <div class="lightbox-counter">01 / 07</div>
+</div>
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div>
+      <div class="nav-logo" style="margin-bottom:20px;">
+        <img src="assets/logo.png" alt="" style="height:40px;width:auto;" />
+        <span>Barracudas</span>
+      </div>
+      <p style="color:var(--ink-mute);max-width:340px;line-height:1.5;font-size:14px;">Zürich Barracudas Baseball Club. Founded 1986. Home of the 2024 NL Champions.</p>
+    </div>
+    <div><h4>Club</h4><ul><li><a href="schedule.html">Schedule</a></li><li><a href="news.html">News</a></li><li><a href="index.html#roster">Roster</a></li><li><a href="index.html#join">Join Us</a></li></ul></div>
+    <div><h4>Visit</h4><ul><li><a href="#">Heerenschürli</a></li><li><a href="#">Zürich, CH</a></li><li><a href="#">Directions</a></li></ul></div>
+    <div><h4>Connect</h4><ul><li><a href="#">Instagram</a></li><li><a href="#">Facebook</a></li><li><a href="mailto:info@barracudas.ch">info@barracudas.ch</a></li></ul></div>
+  </div>
+  <div class="footer-big">BARRACUDAS</div>
+  <div class="footer-meta"><span>© 2026 Zürich Barracudas Baseball Club</span><span>Bite Harder · Est. 1986</span></div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
