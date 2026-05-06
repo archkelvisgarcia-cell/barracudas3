@@ -728,6 +728,42 @@ a { color: inherit; text-decoration: none; }
   perspective: 1200px;
   cursor: pointer;
 }
+/* ── CARD BLOB BORDER EFFECT ── */
+.card-blob {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  filter: blur(18px);
+  pointer-events: none;
+  z-index: 0;
+  animation: blob-bounce 4s linear infinite;
+}
+
+.card-blob-1 {
+  background: #F0B429;
+  animation-delay: 0s;
+}
+
+.card-blob-2 {
+  background: #0d2e1a;
+  filter: blur(18px) brightness(4);
+  animation-delay: 2s;
+}
+
+.card-blob-3 {
+  background: rgba(255, 255, 255, 0.3);
+  animation-delay: 1s;
+}
+
+@keyframes blob-bounce {
+  0%   { top: 0;                 left: 0;                 }
+  25%  { top: 0;                 left: calc(100% - 25px); }
+  50%  { top: calc(100% - 25px); left: calc(100% - 25px); }
+  75%  { top: calc(100% - 25px); left: 0;                 }
+  100% { top: 0;                 left: 0;                 }
+}
+
 .player-inner {
   position: absolute; inset: 0;
   transform-style: preserve-3d;
