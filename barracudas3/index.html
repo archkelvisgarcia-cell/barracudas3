@@ -71,10 +71,14 @@
 </div>
 
 <!-- ============== HERO ============== -->
-<section class="hero">
-  <div class="hero-bg">
-    <img src="assets/jersey-hero.jpg" alt="Barracudas jersey" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center center;" />
-  </div>
+<section class="hero" id="hero">
+
+  <!-- DYNAMIC BACKGROUND SLIDES -->
+  <div class="hero-slides" id="heroSlides"></div>
+
+  <!-- dark overlay -->
+  <div class="hero-overlay"></div>
+
   <div class="hero-content">
     <div class="hero-top">
       <div class="hero-meta">
@@ -101,6 +105,8 @@
         </div>
       </div>
 
+      <div class="hero-news-cta" id="heroNewsCta"></div>
+
       <div class="hero-strip">
         <div><span class="k" data-i18n="strip_record">Record 2026</span><span class="v">0-7</span></div>
         <div><span class="k" data-i18n="strip_league">League</span><span class="v">Gruppe A</span></div>
@@ -121,21 +127,9 @@
     </div>
   </div>
 
-  <!-- NEWS TICKER / CAROUSEL -->
-  <div class="hero-news" id="heroNews">
-    <div class="hero-news-label">
-      <span class="hero-news-dot"></span>
-      LATEST NEWS
-    </div>
-    <div class="hero-news-track" id="heroNewsTrack">
-      <!-- JS renders slides here -->
-    </div>
-    <div class="hero-news-controls">
-      <button class="hero-news-btn" id="heroNewsPrev" aria-label="Previous">&#8249;</button>
-      <div class="hero-news-dots" id="heroNewsDots"></div>
-      <button class="hero-news-btn" id="heroNewsNext" aria-label="Next">&#8250;</button>
-    </div>
-  </div>
+  <!-- SLIDE INDICATORS -->
+  <div class="hero-slide-indicators" id="heroSlideIndicators"></div>
+
 </section>
 
 <!-- ============== MARQUEE ============== -->

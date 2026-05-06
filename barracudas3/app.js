@@ -210,67 +210,66 @@ function copyLink(btn) {
   tick(); setInterval(tick, 1000);
 })();
 
-// ── HERO NEWS CAROUSEL ──────────────────────────────────────
-function initHeroNewsCarousel() {
-  const track = document.getElementById('heroNewsTrack');
-  const dotsContainer = document.getElementById('heroNewsDots');
-  const prevBtn = document.getElementById('heroNewsPrev');
-  const nextBtn = document.getElementById('heroNewsNext');
-  const heroNews = document.getElementById('heroNews');
+// ── HERO DYNAMIC NEWS BACKGROUND ────────────────────────────
+function initHeroNews() {
+  const slidesContainer = document.getElementById('heroSlides');
+  const ctaContainer = document.getElementById('heroNewsCta');
+  const indicatorsContainer = document.getElementById('heroSlideIndicators');
 
-  if (!track || !NEWS_ARTICLES.length) {
-    if (heroNews) heroNews.style.display = 'none';
-    return;
-  }
+  if (!slidesContainer || !NEWS_ARTICLES.length) return;
 
   let current = 0;
   let autoTimer;
 
-  track.innerHTML = NEWS_ARTICLES.map((article, i) => `
-    <a class="hero-news-slide${i === 0 ? ' active' : ''}" href="${article.href}" target="_self">
-      <img class="hero-news-thumb" src="${article.image}" alt="${article.headline}" onerror="this.style.display='none'" />
-      <div class="hero-news-text">
-        <span class="hero-news-tag" style="color:${article.tagColor || 'var(--accent)'};">${article.tag}</span>
-        <span class="hero-news-headline">${article.headline}</span>
-        <span class="hero-news-meta">${article.date} &nbsp;·&nbsp; Read more →</span>
-      </div>
-    </a>
-  `).join('');
+  slidesContainer.innerHTML = NEWS_ARTICLES.map((article, i) =>
+    `<div class="hero-slide${i === 0 ? ' active' : ''}" style="background-image: url('${article.image}')"></div>`
+  ).join('');
 
-  dotsContainer.innerHTML = NEWS_ARTICLES.map((_, i) => `
-    <button class="hero-news-dot-btn${i === 0 ? ' active' : ''}" aria-label="Go to article ${i+1}"></button>
-  `).join('');
+  if (NEWS_ARTICLES.length > 1) {
+    indicatorsContainer.innerHTML = NEWS_ARTICLES.map((_, i) =>
+      `<button class="hero-slide-dot${i === 0 ? ' active' : ''}" aria-label="Article ${i + 1}"></button>`
+    ).join('');
+  }
 
-  const slides = track.querySelectorAll('.hero-news-slide');
-  const dots = dotsContainer.querySelectorAll('.hero-news-dot-btn');
+  const slides = slidesContainer.querySelectorAll('.hero-slide');
+  const dots = indicatorsContainer ? indicatorsContainer.querySelectorAll('.hero-slide-dot') : [];
+
+  function renderCta(index) {
+    const article = NEWS_ARTICLES[index];
+    ctaContainer.innerHTML = `
+      <a class="hero-news-cta-inner" href="${article.href}">
+        <span class="hero-news-cta-tag" style="color:${article.tagColor || 'var(--accent)'};">
+          <span class="hero-news-cta-dot"></span>
+          ${article.tag} &nbsp;·&nbsp; ${article.date}
+        </span>
+        <span class="hero-news-cta-headline">${article.headline}</span>
+        <span class="hero-news-cta-read">Read Full Article →</span>
+      </a>
+    `;
+  }
 
   function goTo(index) {
     slides[current].classList.remove('active');
-    dots[current].classList.remove('active');
+    if (dots[current]) dots[current].classList.remove('active');
     current = (index + NEWS_ARTICLES.length) % NEWS_ARTICLES.length;
     slides[current].classList.add('active');
-    dots[current].classList.add('active');
+    if (dots[current]) dots[current].classList.add('active');
+    renderCta(current);
   }
 
-  function startAuto() {
-    autoTimer = setInterval(() => goTo(current + 1), 5000);
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => {
+      clearInterval(autoTimer);
+      goTo(i);
+      autoTimer = setInterval(() => goTo(current + 1), 6000);
+    });
+  });
+
+  renderCta(0);
+
+  if (NEWS_ARTICLES.length > 1) {
+    autoTimer = setInterval(() => goTo(current + 1), 6000);
   }
-
-  function resetAuto() {
-    clearInterval(autoTimer);
-    startAuto();
-  }
-
-  prevBtn.addEventListener('click', () => { goTo(current - 1); resetAuto(); });
-  nextBtn.addEventListener('click', () => { goTo(current + 1); resetAuto(); });
-  dots.forEach((dot, i) => dot.addEventListener('click', () => { goTo(i); resetAuto(); }));
-
-  if (NEWS_ARTICLES.length === 1) {
-    document.getElementById('heroNewsNext').style.display = 'none';
-    document.getElementById('heroNewsPrev').style.display = 'none';
-  }
-
-  startAuto();
 }
 
-document.addEventListener('DOMContentLoaded', initHeroNewsCarousel);
+document.addEventListener('DOMContentLoaded', initHeroNews);
