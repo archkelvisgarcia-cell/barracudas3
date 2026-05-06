@@ -6,13 +6,13 @@
 const GAMES = [
   {
     date: '2026-04-19', time: '14:00', label: 'APR 19 · 2026',
-    opponent: 'Zürich Flyers', opponentLogo: 'assets/logo-flyers.png',
+    opponent: 'Zürich Flyers', opponentLogo: 'assets/teams/flyers.png',
     location: 'Away · Zürich', league: 'Gruppe A',
     result: 'L', score: { us: 4, them: 14 }, innings: 7, notes: '',
   },
   {
     date: '2026-04-26', time: '14:00', label: 'APR 26 · 2026',
-    opponent: 'Therwil Indians', opponentLogo: 'assets/logo-indians.png',
+    opponent: 'Therwil Indians', opponentLogo: 'assets/teams/indians.png',
     location: 'Away · Therwil', league: 'Gruppe A',
     result: 'L', score: { us: 3, them: 15 }, innings: 7, notes: '',
   },
@@ -37,13 +37,13 @@ const GAMES = [
   },
   {
     date: '2026-05-30', time: '11:00', label: 'MAY 30 · 2026 · G1',
-    opponent: 'Sissach Frogs', opponentLogo: 'assets/logo-frogs.png',
+    opponent: 'Sissach Frogs', opponentLogo: 'assets/teams/frogs.png',
     location: 'Home · Heerenschürli', league: 'Gruppe A',
     result: null, score: null, innings: null, notes: '',
   },
   {
     date: '2026-05-30', time: '14:00', label: 'MAY 30 · 2026 · G2',
-    opponent: 'Sissach Frogs', opponentLogo: 'assets/logo-frogs.png',
+    opponent: 'Sissach Frogs', opponentLogo: 'assets/teams/frogs.png',
     location: 'Home · Heerenschürli', league: 'Gruppe A',
     result: null, score: null, innings: null, notes: '',
   },
@@ -55,13 +55,13 @@ const GAMES = [
   },
   {
     date: '2026-06-07', time: '11:00', label: 'JUN 7 · 2026 · G1',
-    opponent: 'Challengers 2', opponentLogo: 'assets/logo-challengers.png',
+    opponent: 'Challengers 2', opponentLogo: 'assets/teams/challengers.png',
     location: 'Home · Heerenschürli', league: 'Gruppe A',
     result: null, score: null, innings: null, notes: '',
   },
   {
     date: '2026-06-07', time: '14:00', label: 'JUN 7 · 2026 · G2',
-    opponent: 'Challengers 2', opponentLogo: 'assets/logo-challengers.png',
+    opponent: 'Challengers 2', opponentLogo: 'assets/teams/challengers.png',
     location: 'Home · Heerenschürli', league: 'Gruppe A',
     result: null, score: null, innings: null, notes: '',
   },
