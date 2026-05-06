@@ -144,9 +144,6 @@ function copyLink(btn) {
     <div class="player reveal${p.captain ? ' is-captain' : ''}" data-delay="${i % 4}">
       <div class="player-inner">
         <div class="player-face player-front" style="background-image:url('${p.img}');">
-          <div class="card-blob card-blob-1"></div>
-          <div class="card-blob card-blob-2"></div>
-          <div class="card-blob card-blob-3"></div>
           ${p.captain ? '<span class="captain-badge">★ Captain</span>' : ''}
           <span class="player-tap-hint">Tap to flip</span>
         </div>
