@@ -119,6 +119,33 @@
   });
 })();
 
+// PINK GAME GALLERY LIGHTBOX
+(function () {
+  const items = document.querySelectorAll('[data-pg-lightbox]');
+  const lb = document.getElementById('lightbox-pg');
+  if (!lb || !items.length) return;
+  const imgEl   = lb.querySelector('.lightbox-img');
+  const counter = lb.querySelector('.lightbox-counter');
+  let idx = 0;
+  const srcs = Array.from(items).map(i => i.getAttribute('data-pg-lightbox'));
+  function show(i) {
+    idx = (i + srcs.length) % srcs.length;
+    if (imgEl)   imgEl.src = srcs[idx];
+    if (counter) counter.textContent = `${String(idx+1).padStart(2,'0')} / ${String(srcs.length).padStart(2,'0')}`;
+  }
+  items.forEach((it, i) => it.addEventListener('click', () => { show(i); lb.classList.add('open'); }));
+  lb.querySelector('.lightbox-close').addEventListener('click', () => lb.classList.remove('open'));
+  lb.querySelector('.lightbox-nav.prev').addEventListener('click', () => show(idx - 1));
+  lb.querySelector('.lightbox-nav.next').addEventListener('click', () => show(idx + 1));
+  lb.addEventListener('click', (e) => { if (e.target === lb) lb.classList.remove('open'); });
+  document.addEventListener('keydown', (e) => {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape')     lb.classList.remove('open');
+    if (e.key === 'ArrowLeft')  show(idx - 1);
+    if (e.key === 'ArrowRight') show(idx + 1);
+  });
+})();
+
 // CALENDAR FILTER
 (function () {
   const chips = document.querySelectorAll('[data-filter]');

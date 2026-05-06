@@ -1221,6 +1221,78 @@ a { color: inherit; text-decoration: none; }
 .gallery-item.big { grid-column: span 2; grid-row: span 2; }
 
 /* ============================================================
+   PINK GAME PHOTO ALBUM
+============================================================ */
+.pink-album {
+  padding: clamp(40px, 6vw, 80px) var(--pad);
+  background: color-mix(in oklab, #FF69B4 4%, var(--bg));
+  border-top: 1px solid rgba(255,105,180,0.2);
+  border-bottom: 1px solid rgba(255,105,180,0.2);
+}
+.pink-album-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.pink-album-title {
+  font-family: var(--display);
+  font-size: clamp(22px, 4vw, 36px);
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.pink-album-main {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  margin-bottom: 10px;
+  cursor: pointer;
+  border: 2px solid rgba(255,105,180,0.35);
+  transition: box-shadow 0.3s;
+}
+.pink-album-main:hover {
+  box-shadow: 0 0 32px rgba(255,105,180,0.35);
+}
+.pink-album-main img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s var(--ease);
+}
+.pink-album-main:hover img { transform: scale(1.02); }
+.pink-album-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.pink-thumb {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid rgba(255,105,180,0.18);
+  transition: transform 0.2s var(--ease), box-shadow 0.2s, border-color 0.2s;
+}
+.pink-thumb img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+.pink-thumb:hover {
+  transform: scale(0.97);
+  box-shadow: 0 0 18px rgba(255,105,180,0.5);
+  border-color: #FF69B4;
+}
+@media (max-width: 600px) {
+  .pink-album-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ============================================================
    VIDEO GALLERY
 ============================================================ */
 .video-section {
