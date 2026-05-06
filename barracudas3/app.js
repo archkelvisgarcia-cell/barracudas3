@@ -316,7 +316,7 @@ function initHeroNews() {
   let autoTimer;
 
   slidesContainer.innerHTML = NEWS_ARTICLES.map((article, i) =>
-    `<div class="hero-slide${i === 0 ? ' active' : ''}" style="background-image: url('${article.image}')"></div>`
+    `<div class="hero-slide${i === 0 ? ' active' : ''}" style="background-image: url('${article.image}'); background-position: center top;"></div>`
   ).join('');
 
   if (NEWS_ARTICLES.length > 1) {
