@@ -2,6 +2,19 @@
    BARRACUDAS — App scripts
 ============================================================ */
 
+// SHARE — copy current page URL to clipboard with visual feedback
+function copyLink(btn) {
+  navigator.clipboard.writeText(window.location.href).then(function () {
+    btn.classList.add('copied');
+    var prev = btn.title;
+    btn.title = 'Copied!';
+    setTimeout(function () {
+      btn.classList.remove('copied');
+      btn.title = prev;
+    }, 2000);
+  });
+}
+
 // THEME TOGGLE
 (function () {
   const root = document.documentElement;
