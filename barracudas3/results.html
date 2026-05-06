@@ -18,17 +18,22 @@
     <span>Barracudas</span>
   </a>
   <nav class="nav-links">
-    <a href="index.html">Home</a>
-    <a href="schedule.html">Schedule</a>
-    <a href="results.html" class="active">Results</a>
-    <a href="news.html">News</a>
-    <a href="index.html#roster">Roster</a>
+    <a href="index.html" data-i18n="nav_home">Home</a>
+    <a href="schedule.html" data-i18n="nav_schedule">Schedule</a>
+    <a href="results.html" class="active" data-i18n="nav_results">Results</a>
+    <a href="news.html" data-i18n="nav_news">News</a>
+    <a href="index.html#roster" data-i18n="nav_roster">Roster</a>
   </nav>
   <div class="nav-tools">
     <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
     </button>
-    <a href="index.html#join" class="nav-cta">Join the Club →</a>
+    <div class="lang-switcher">
+      <button class="lang-btn" data-lang="en">ENG</button>
+      <button class="lang-btn" data-lang="es">ESP</button>
+      <button class="lang-btn" data-lang="de">GER</button>
+    </div>
+    <a href="index.html#join" class="nav-cta" data-i18n="nav_join">Join the Club →</a>
     <button class="icon-btn menu-btn" id="menu-open" aria-label="Open menu">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
     </button>
@@ -46,13 +51,20 @@
     </button>
   </div>
   <nav>
-    <a href="index.html"><span>Home</span><span class="num">01</span></a>
-    <a href="schedule.html"><span>Schedule</span><span class="num">02</span></a>
-    <a href="results.html"><span>Results</span><span class="num">03</span></a>
-    <a href="news.html"><span>News</span><span class="num">04</span></a>
-    <a href="index.html#roster"><span>Roster</span><span class="num">05</span></a>
+    <a href="index.html"><span data-i18n="nav_home">Home</span><span class="num">01</span></a>
+    <a href="schedule.html"><span data-i18n="nav_schedule">Schedule</span><span class="num">02</span></a>
+    <a href="results.html"><span data-i18n="nav_results">Results</span><span class="num">03</span></a>
+    <a href="news.html"><span data-i18n="nav_news">News</span><span class="num">04</span></a>
+    <a href="index.html#roster"><span data-i18n="nav_roster">Roster</span><span class="num">05</span></a>
   </nav>
-  <div class="mobile-menu-foot"><span>Zürich · CH</span><span>Est. 1986</span></div>
+  <div class="mobile-menu-foot">
+    <div class="lang-switcher">
+      <button class="lang-btn" data-lang="en">ENG</button>
+      <button class="lang-btn" data-lang="es">ESP</button>
+      <button class="lang-btn" data-lang="de">GER</button>
+    </div>
+    <span>Zürich · CH</span><span>Est. 1986</span>
+  </div>
 </div>
 
 <!-- HERO -->
@@ -309,16 +321,16 @@
         <img src="assets/logo.png" alt="" style="height:40px;width:auto;" />
         <span>Barracudas</span>
       </div>
-      <p style="color:var(--ink-mute);max-width:340px;line-height:1.5;font-size:14px;">Zürich Barracudas Baseball Club. Founded 1986. Home of the 2024 NL Baseball Gruppe A Champions.</p>
+      <p style="color:var(--ink-mute);max-width:340px;line-height:1.5;font-size:14px;" data-i18n="footer_desc">Zürich Barracudas Baseball Club. Founded 1986. Home of the 2024 NL Baseball Gruppe A Champions.</p>
     </div>
-    <div><h4>Club</h4><ul><li><a href="schedule.html">Schedule</a></li><li><a href="results.html">Results</a></li><li><a href="news.html">News</a></li><li><a href="index.html#roster">Roster</a></li></ul></div>
-    <div><h4>Visit</h4><ul><li><a href="#">Heerenschürli</a></li><li><a href="#">Zürich, CH</a></li><li><a href="https://www.swiss-baseball.ch/" target="_blank" rel="noopener">League ↗</a></li></ul></div>
+    <div><h4 data-i18n="footer_h_club">Club</h4><ul><li><a href="schedule.html" data-i18n="footer_schedule">Schedule</a></li><li><a href="results.html" data-i18n="nav_results">Results</a></li><li><a href="news.html" data-i18n="footer_news">News</a></li><li><a href="index.html#roster" data-i18n="footer_roster">Roster</a></li></ul></div>
+    <div><h4 data-i18n="footer_h_visit">Visit</h4><ul><li><a href="#">Heerenschürli</a></li><li><a href="#">Zürich, CH</a></li><li><a href="https://www.swiss-baseball.ch/" target="_blank" rel="noopener">League ↗</a></li></ul></div>
     <div><h4>Connect</h4><ul><li><a href="#">Instagram</a></li><li><a href="#">Facebook</a></li><li><a href="/cdn-cgi/l/email-protection#60090e060f20020112120103150401134e0308"><span class="__cf_email__" data-cfemail="0d64636b624d6f6c7f7f6c6e78696c7e236e65">[email&#160;protected]</span></a></li></ul></div>
   </div>
   <div class="footer-big">BARRACUDAS</div>
-  <div class="footer-meta"><span>© 2026 Zürich Barracudas Baseball Club</span><span>Bite Harder · Est. 1986</span></div>
+  <div class="footer-meta"><span data-i18n="footer_copy">© 2026 Zürich Barracudas Baseball Club</span><span data-i18n="footer_tagline">Bite Harder · Est. 1986</span></div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="app.js"></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="app.js"></script><script src="lang.js"></script>
 </body>
 </html>
