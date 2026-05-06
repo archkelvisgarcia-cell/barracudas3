@@ -77,151 +77,151 @@
   <div class="next reveal" data-delay="1">
     <div class="head">
       <span class="tag live">Next Game</span>
-      <span class="eyebrow">Tue · 5 May</span>
+      <span class="eyebrow" id="nextGameEyebrow">—</span>
     </div>
     <div style="display:flex;justify-content:space-between;align-items:center;gap:24px;">
       <div>
-        <div style="font-family:var(--display);font-size:28px;text-transform:uppercase;line-height:0.95;">Barracudas 3<br/><span style="color:var(--accent);">vs Barracudas NLA</span></div>
-        <div style="font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-mute);margin-top:8px;">Zürich · 18:30</div>
+        <div id="nextGameTitle" style="font-family:var(--display);font-size:28px;text-transform:uppercase;line-height:0.95;">Barracudas 3<br/><span style="color:var(--accent);" id="nextGameOpponent">—</span></div>
+        <div id="nextGameMeta" style="font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-mute);margin-top:8px;">Zürich · —</div>
       </div>
       <img src="assets/logo.png" alt="" style="height:64px;width:auto;opacity:0.9;" />
     </div>
-    <div class="countdown" id="countdown" data-target="2026-05-05T18:30:00">
-      <div><div class="v" data-cd="d">04</div><div class="k">Days</div></div>
-      <div><div class="v" data-cd="h">12</div><div class="k">Hrs</div></div>
-      <div><div class="v" data-cd="m">35</div><div class="k">Min</div></div>
-      <div><div class="v" data-cd="s">22</div><div class="k">Sec</div></div>
+    <div class="countdown" id="countdown">
+      <div><div class="v" data-cd="d">00</div><div class="k">Days</div></div>
+      <div><div class="v" data-cd="h">00</div><div class="k">Hrs</div></div>
+      <div><div class="v" data-cd="m">00</div><div class="k">Min</div></div>
+      <div><div class="v" data-cd="s">00</div><div class="k">Sec</div></div>
     </div>
   </div>
 </section>
 
 <!-- FILTERS -->
-<div class="cal-filters">
-  <span class="label">Filter</span>
-  <button class="chip active" data-filter="all">All Games</button>
-  <button class="chip" data-filter="home">Home</button>
-  <button class="chip" data-filter="away">Away</button>
-  <button class="chip" data-filter="past">Past</button>
-  <button class="chip" data-filter="upcoming">Upcoming</button>
+<div class="schedule-filters" id="scheduleFilters">
+  <button class="sched-filter-btn active" data-filter="upcoming" id="filterUpcoming">UPCOMING</button>
+  <button class="sched-filter-btn" data-filter="past" id="filterPast">PAST GAMES</button>
+  <button class="sched-filter-btn" data-filter="all" id="filterAll">ALL</button>
+  <button class="sched-filter-btn" data-filter="home" id="filterHome">HOME</button>
+  <button class="sched-filter-btn" data-filter="away" id="filterAway">AWAY</button>
+  <span class="sched-filter-count" id="schedFilterCount"></span>
 </div>
 
 <!-- LIST -->
 <div class="cal-list">
 
-  <div class="cal-row" data-team="away">
+  <div class="cal-row schedule-game" data-team="away" data-location="away" data-date="2026-04-19" data-time="11:00" data-opponent="Zürich Flyers 2">
     <div class="cal-date"><span class="day">19</span><span class="month">Apr 2026</span></div>
     <div class="cal-match">
-      <div class="vs">Flyers 2 <span class="y">vs</span> Barracudas 3</div>
+      <div class="vs game-opponent">Flyers 2 <span class="y">vs</span> Barracudas 3</div>
       <div class="info">Sunday · Game 1 · Away · Therwil</div>
     </div>
     <div class="cal-time">11:00</div>
     <div class="cal-arrow">→</div>
   </div>
 
-  <div class="cal-row" data-team="away">
+  <div class="cal-row schedule-game" data-team="away" data-location="away" data-date="2026-04-19" data-time="14:00" data-opponent="Zürich Flyers 2">
     <div class="cal-date"><span class="day">19</span><span class="month">Apr 2026</span></div>
     <div class="cal-match">
-      <div class="vs">Flyers 2 <span class="y">vs</span> Barracudas 3</div>
+      <div class="vs game-opponent">Flyers 2 <span class="y">vs</span> Barracudas 3</div>
       <div class="info">Sunday · Game 2 · Away · Therwil</div>
     </div>
     <div class="cal-time">14:00</div>
     <div class="cal-arrow">→</div>
   </div>
 
-  <div class="cal-row" data-team="away">
+  <div class="cal-row schedule-game" data-team="away" data-location="away" data-date="2026-04-26" data-time="11:00" data-opponent="Therwil Indians">
     <div class="cal-date"><span class="day">26</span><span class="month">Apr 2026</span></div>
     <div class="cal-match">
-      <div class="vs">Indians <span class="y">vs</span> Barracudas 3</div>
+      <div class="vs game-opponent">Indians <span class="y">vs</span> Barracudas 3</div>
       <div class="info">Sunday · Game 1 · Away · Lausanne</div>
     </div>
     <div class="cal-time">11:00</div>
     <div class="cal-arrow">→</div>
   </div>
 
-  <div class="cal-row" data-team="away">
+  <div class="cal-row schedule-game" data-team="away" data-location="away" data-date="2026-04-26" data-time="14:00" data-opponent="Therwil Indians">
     <div class="cal-date"><span class="day">26</span><span class="month">Apr 2026</span></div>
     <div class="cal-match">
-      <div class="vs">Indians <span class="y">vs</span> Barracudas 3</div>
+      <div class="vs game-opponent">Indians <span class="y">vs</span> Barracudas 3</div>
       <div class="info">Sunday · Game 2 · Away · Lausanne</div>
     </div>
     <div class="cal-time">14:00</div>
     <div class="cal-arrow">→</div>
   </div>
 
-  <div class="cal-row" data-team="home">
+  <div class="cal-row schedule-game" data-team="home" data-location="home" data-date="2026-05-02" data-time="11:00" data-opponent="Luzern Eagles">
     <div class="cal-date"><span class="day">02</span><span class="month">May 2026</span></div>
     <div class="cal-match">
-      <div class="vs">Barracudas 3 <span class="y">vs</span> Eagles</div>
+      <div class="vs game-opponent">Barracudas 3 <span class="y">vs</span> Eagles</div>
       <div class="info">Saturday · Game 1 · Home · Zürich</div>
     </div>
     <div class="cal-time">11:00</div>
     <div class="cal-arrow">→</div>
   </div>
 
-  <div class="cal-row" data-team="home">
+  <div class="cal-row schedule-game" data-team="home" data-location="home" data-date="2026-05-02" data-time="14:00" data-opponent="Luzern Eagles">
     <div class="cal-date"><span class="day">02</span><span class="month">May 2026</span></div>
     <div class="cal-match">
-      <div class="vs">Barracudas 3 <span class="y">vs</span> Eagles</div>
+      <div class="vs game-opponent">Barracudas 3 <span class="y">vs</span> Eagles</div>
       <div class="info">Saturday · Game 2 · Home · Zürich</div>
     </div>
     <div class="cal-time">14:00</div>
     <div class="cal-arrow">→</div>
   </div>
 
-  <div class="cal-row" data-team="home">
+  <div class="cal-row schedule-game" data-team="home" data-location="home" data-date="2026-05-05" data-time="18:30" data-opponent="Barracudas NLA">
     <div class="cal-date"><span class="day">05</span><span class="month">May 2026</span></div>
     <div class="cal-match">
-      <div class="vs">Barracudas 3 <span class="y">vs</span> Barracudas</div>
-      <div class="info">Tuesday · Inter-club · Home · Zürich</div>
+      <div class="vs game-opponent">Barracudas 3 <span class="y">vs</span> Barracudas NLA 🩷</div>
+      <div class="info">Tuesday · Pink Game · Home · Zürich</div>
     </div>
     <div class="cal-time">18:30</div>
     <div class="cal-arrow">→</div>
   </div>
 
-  <div class="cal-row" data-team="home">
+  <div class="cal-row schedule-game" data-team="home" data-location="home" data-date="2026-05-12" data-time="18:30" data-opponent="Barracudas NLA">
     <div class="cal-date"><span class="day">12</span><span class="month">May 2026</span></div>
     <div class="cal-match">
-      <div class="vs">Barracudas 3 <span class="y">vs</span> Barracudas</div>
+      <div class="vs game-opponent">Barracudas 3 <span class="y">vs</span> Barracudas NLA</div>
       <div class="info">Tuesday · Inter-club · Home · Zürich</div>
     </div>
     <div class="cal-time">18:30</div>
     <div class="cal-arrow">→</div>
   </div>
 
-  <div class="cal-row" data-team="home">
+  <div class="cal-row schedule-game" data-team="home" data-location="home" data-date="2026-05-30" data-time="11:00" data-opponent="Sissach Frogs">
     <div class="cal-date"><span class="day">30</span><span class="month">May 2026</span></div>
     <div class="cal-match">
-      <div class="vs">Barracudas 3 <span class="y">vs</span> Frogs</div>
+      <div class="vs game-opponent">Barracudas 3 <span class="y">vs</span> Frogs</div>
       <div class="info">Saturday · Game 1 · Home · Zürich</div>
     </div>
     <div class="cal-time">11:00</div>
     <div class="cal-arrow">→</div>
   </div>
 
-  <div class="cal-row" data-team="home">
+  <div class="cal-row schedule-game" data-team="home" data-location="home" data-date="2026-05-30" data-time="14:00" data-opponent="Sissach Frogs">
     <div class="cal-date"><span class="day">30</span><span class="month">May 2026</span></div>
     <div class="cal-match">
-      <div class="vs">Barracudas 3 <span class="y">vs</span> Frogs</div>
+      <div class="vs game-opponent">Barracudas 3 <span class="y">vs</span> Frogs</div>
       <div class="info">Saturday · Game 2 · Home · Zürich</div>
     </div>
     <div class="cal-time">14:00</div>
     <div class="cal-arrow">→</div>
   </div>
 
-  <div class="cal-row" data-team="home">
+  <div class="cal-row schedule-game" data-team="home" data-location="home" data-date="2026-06-07" data-time="11:00" data-opponent="Challengers 2">
     <div class="cal-date"><span class="day">07</span><span class="month">Jun 2026</span></div>
     <div class="cal-match">
-      <div class="vs">Barracudas 3 <span class="y">vs</span> Challengers 2</div>
+      <div class="vs game-opponent">Barracudas 3 <span class="y">vs</span> Challengers 2</div>
       <div class="info">Sunday · Game 1 · Home · Zürich</div>
     </div>
     <div class="cal-time">11:00</div>
     <div class="cal-arrow">→</div>
   </div>
 
-  <div class="cal-row" data-team="home">
+  <div class="cal-row schedule-game" data-team="home" data-location="home" data-date="2026-06-07" data-time="14:00" data-opponent="Challengers 2">
     <div class="cal-date"><span class="day">07</span><span class="month">Jun 2026</span></div>
     <div class="cal-match">
-      <div class="vs">Barracudas 3 <span class="y">vs</span> Challengers 2</div>
+      <div class="vs game-opponent">Barracudas 3 <span class="y">vs</span> Challengers 2</div>
       <div class="info">Sunday · Game 2 · Home · Zürich</div>
     </div>
     <div class="cal-time">14:00</div>

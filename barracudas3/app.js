@@ -175,40 +175,134 @@ function copyLink(btn) {
   });
 })();
 
-// CALENDAR FILTER
-(function () {
-  const chips = document.querySelectorAll('[data-filter]');
-  const rows  = document.querySelectorAll('[data-team]');
-  if (!chips.length) return;
-  chips.forEach(c => c.addEventListener('click', () => {
-    chips.forEach(x => x.classList.remove('active'));
-    c.classList.add('active');
-    const f = c.getAttribute('data-filter');
-    rows.forEach(r => {
-      r.style.display = (f === 'all' || r.getAttribute('data-team') === f) ? '' : 'none';
-    });
-  }));
-})();
+// ── DYNAMIC NEXT GAME COUNTDOWN ─────────────────────────────
+function initNextGameCountdown() {
+  const games = Array.from(document.querySelectorAll('.schedule-game[data-date]'));
+  if (!games.length) return;
 
-// COUNTDOWN
-(function () {
-  const wrap = document.getElementById('countdown');
-  if (!wrap) return;
-  const target = new Date(wrap.getAttribute('data-target')).getTime();
-  function tick() {
-    const diff = Math.max(0, target - Date.now());
-    const map = {
-      d: Math.floor(diff / 86400000),
-      h: Math.floor((diff % 86400000) / 3600000),
-      m: Math.floor((diff % 3600000) / 60000),
-      s: Math.floor((diff % 60000) / 1000)
+  let countdownTimer = null;
+
+  function getNextGame() {
+    const now = new Date();
+    return games
+      .map(el => ({
+        el,
+        dt: new Date(`${el.dataset.date}T${el.dataset.time || '18:00'}:00`)
+      }))
+      .filter(g => g.dt > now)
+      .sort((a, b) => a.dt - b.dt)[0] || null;
+  }
+
+  function updateCountdownDisplay(distance) {
+    const vals = {
+      d: Math.floor(distance / 86400000),
+      h: Math.floor((distance % 86400000) / 3600000),
+      m: Math.floor((distance % 3600000) / 60000),
+      s: Math.floor((distance % 60000) / 1000)
     };
-    wrap.querySelectorAll('[data-cd]').forEach(el => {
-      el.textContent = String(map[el.getAttribute('data-cd')]).padStart(2, '0');
+    document.querySelectorAll('[data-cd]').forEach(el => {
+      el.textContent = String(vals[el.dataset.cd]).padStart(2, '0');
     });
   }
-  tick(); setInterval(tick, 1000);
-})();
+
+  function startCountdown() {
+    if (countdownTimer) clearInterval(countdownTimer);
+
+    games.forEach(el => {
+      el.classList.remove('next-game');
+      const b = el.querySelector('.next-game-badge');
+      if (b) b.remove();
+    });
+
+    const next = getNextGame();
+
+    if (!next) {
+      const wrap = document.getElementById('countdown');
+      if (wrap) wrap.innerHTML = '<p style="font-family:var(--mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);">Season Complete · See You in 2027 🦈</p>';
+      return;
+    }
+
+    next.el.classList.add('next-game');
+    const badge = document.createElement('div');
+    badge.className = 'next-game-badge';
+    badge.textContent = 'Next Game';
+    next.el.prepend(badge);
+
+    const opponentEl = document.getElementById('nextGameOpponent');
+    const metaEl     = document.getElementById('nextGameMeta');
+    const eyebrowEl  = document.getElementById('nextGameEyebrow');
+    if (opponentEl) opponentEl.textContent = 'vs ' + (next.el.dataset.opponent || '—');
+    if (metaEl)     metaEl.textContent = 'Zürich · ' + (next.el.dataset.time || '—');
+    if (eyebrowEl)  eyebrowEl.textContent = next.dt.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short' }).toUpperCase();
+
+    countdownTimer = setInterval(() => {
+      const distance = next.dt - new Date();
+      if (distance <= 0) {
+        clearInterval(countdownTimer);
+        setTimeout(startCountdown, 3000);
+        return;
+      }
+      updateCountdownDisplay(distance);
+    }, 1000);
+
+    updateCountdownDisplay(Math.max(0, next.dt - new Date()));
+  }
+
+  startCountdown();
+}
+
+document.addEventListener('DOMContentLoaded', initNextGameCountdown);
+
+// ── SCHEDULE FILTERS ─────────────────────────────────────────
+function initScheduleFilters() {
+  const games = Array.from(document.querySelectorAll('.schedule-game'));
+  if (!games.length) return;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  games.forEach(game => {
+    game.classList.remove('past', 'upcoming');
+    const dateStr = game.dataset.date;
+    if (!dateStr) return;
+    const d = new Date(dateStr);
+    d.setHours(0, 0, 0, 0);
+    game.classList.add(d < today ? 'past' : 'upcoming');
+  });
+
+  function applyFilter(filter) {
+    let visible = 0;
+    games.forEach(game => {
+      const show =
+        filter === 'all'      ? true :
+        filter === 'upcoming' ? game.classList.contains('upcoming') :
+        filter === 'past'     ? game.classList.contains('past') :
+        filter === 'home'     ? game.dataset.location === 'home' :
+        filter === 'away'     ? game.dataset.location === 'away' : true;
+      game.classList.toggle('hidden', !show);
+      if (show) visible++;
+    });
+    const countEl = document.getElementById('schedFilterCount');
+    if (countEl) countEl.textContent = `${visible} game${visible !== 1 ? 's' : ''}`;
+  }
+
+  document.querySelectorAll('.sched-filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.sched-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      applyFilter(btn.dataset.filter);
+    });
+  });
+
+  const upcomingBtn = document.querySelector('.sched-filter-btn[data-filter="upcoming"]');
+  if (upcomingBtn) {
+    document.querySelectorAll('.sched-filter-btn').forEach(b => b.classList.remove('active'));
+    upcomingBtn.classList.add('active');
+  }
+  applyFilter('upcoming');
+}
+
+document.addEventListener('DOMContentLoaded', initScheduleFilters);
 
 // ── HERO DYNAMIC NEWS BACKGROUND ────────────────────────────
 function initHeroNews() {
