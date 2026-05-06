@@ -1838,3 +1838,104 @@ a { color: inherit; text-decoration: none; }
 .schedule-game.hidden {
   display: none;
 }
+
+/* ── RESULT CARDS (home page recent results) ── */
+.result-card {
+  background: var(--bg-elev);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 6px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.result-card--pink {
+  border-color: rgba(255,62,165,0.3);
+}
+
+.result-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.result-card-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+}
+
+.result-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 0.2rem 0.6rem;
+  border-radius: 2px;
+}
+
+.result-badge--win  { background: rgba(0,200,100,0.15); color: #00c864; }
+.result-badge--loss { background: rgba(255,60,60,0.12); color: #ff5555; }
+
+.result-card-matchup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.result-team {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.result-logo {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.result-team-name {
+  font-family: 'Anton', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.03em;
+  flex: 1;
+}
+
+.result-score {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.6rem;
+  color: rgba(255,255,255,0.35);
+}
+
+.result-score--win  { color: var(--accent); }
+.result-score--loss { color: #ff5555; }
+
+.result-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding-top: 0.75rem;
+}
+
+.result-innings {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 0.08em;
+}
+
+.result-recap-link {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.result-recap-link:hover { text-decoration: underline; }

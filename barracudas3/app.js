@@ -2,6 +2,71 @@
    BARRACUDAS — App scripts
 ============================================================ */
 
+// ── GAMES — single source of truth ──────────────────────────
+const GAMES = [
+  {
+    date: '2026-04-19', time: '14:00', label: 'APR 19 · 2026',
+    opponent: 'Zürich Flyers', opponentLogo: 'assets/logo-flyers.png',
+    location: 'Away · Zürich', league: 'Gruppe A',
+    result: 'L', score: { us: 4, them: 14 }, innings: 7, notes: '',
+  },
+  {
+    date: '2026-04-26', time: '14:00', label: 'APR 26 · 2026',
+    opponent: 'Therwil Indians', opponentLogo: 'assets/logo-indians.png',
+    location: 'Away · Therwil', league: 'Gruppe A',
+    result: 'L', score: { us: 3, them: 15 }, innings: 7, notes: '',
+  },
+  {
+    date: '2026-05-02', time: '12:00', label: 'MAY 2 · 2026 · G1',
+    opponent: 'Luzern Eagles', opponentLogo: 'assets/teams/eagles.png',
+    location: 'Home · Heerenschürli', league: 'Gruppe A',
+    result: 'L', score: { us: 9, them: 23 }, innings: 9, notes: 'HR · K.Garcia',
+  },
+  {
+    date: '2026-05-02', time: '15:00', label: 'MAY 2 · 2026 · G2',
+    opponent: 'Luzern Eagles', opponentLogo: 'assets/teams/eagles.png',
+    location: 'Home · Heerenschürli', league: 'Gruppe A',
+    result: 'L', score: { us: 9, them: 10 }, innings: 9, notes: '2B · J.Rosa Lima · 2 RBI',
+  },
+  {
+    date: '2026-05-05', time: '18:30', label: 'MAY 5 · 2026',
+    opponent: 'Barracudas NLA', opponentLogo: 'assets/teams/BARLOGO.png',
+    location: 'Home · Heerenschürli', league: 'NL vs NLA · Pink Game',
+    result: 'L', score: { us: 5, them: 17 }, innings: 7,
+    notes: '🩷 Pink Game', recapUrl: 'pink-game-recap.html',
+  },
+  {
+    date: '2026-05-30', time: '11:00', label: 'MAY 30 · 2026 · G1',
+    opponent: 'Sissach Frogs', opponentLogo: 'assets/logo-frogs.png',
+    location: 'Home · Heerenschürli', league: 'Gruppe A',
+    result: null, score: null, innings: null, notes: '',
+  },
+  {
+    date: '2026-05-30', time: '14:00', label: 'MAY 30 · 2026 · G2',
+    opponent: 'Sissach Frogs', opponentLogo: 'assets/logo-frogs.png',
+    location: 'Home · Heerenschürli', league: 'Gruppe A',
+    result: null, score: null, innings: null, notes: '',
+  },
+  {
+    date: '2026-06-02', time: '18:30', label: 'JUN 2 · 2026',
+    opponent: 'Barracudas NLA', opponentLogo: 'assets/teams/BARLOGO.png',
+    location: 'Home · Heerenschürli', league: 'NL vs NLA',
+    result: null, score: null, innings: null, notes: '',
+  },
+  {
+    date: '2026-06-07', time: '11:00', label: 'JUN 7 · 2026 · G1',
+    opponent: 'Challengers 2', opponentLogo: 'assets/logo-challengers.png',
+    location: 'Home · Heerenschürli', league: 'Gruppe A',
+    result: null, score: null, innings: null, notes: '',
+  },
+  {
+    date: '2026-06-07', time: '14:00', label: 'JUN 7 · 2026 · G2',
+    opponent: 'Challengers 2', opponentLogo: 'assets/logo-challengers.png',
+    location: 'Home · Heerenschürli', league: 'Gruppe A',
+    result: null, score: null, innings: null, notes: '',
+  },
+];
+
 // ── NEWS ARTICLES — single source of truth ──────────────────
 const NEWS_ARTICLES = [
   {
@@ -367,3 +432,108 @@ function initHeroNews() {
 }
 
 document.addEventListener('DOMContentLoaded', initHeroNews);
+
+// ── FIRST PITCH — next upcoming game card ────────────────────
+function initFirstPitch() {
+  const container = document.getElementById('firstPitchCard');
+  if (!container) return;
+
+  const now = new Date();
+  const next = GAMES.find(g => new Date(`${g.date}T${g.time}:00`) > now);
+
+  if (!next) {
+    container.innerHTML = `<p style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:0.8rem;letter-spacing:0.1em;">SEASON COMPLETE 🦈</p>`;
+    return;
+  }
+
+  const dt = new Date(`${next.date}T${next.time}:00`);
+  const dayStr = dt.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase();
+  const timeStr = `${String(dt.getHours()).padStart(2,'0')}:${String(dt.getMinutes()).padStart(2,'0')}`;
+
+  const nextIdx = GAMES.indexOf(next);
+  const after = GAMES[nextIdx + 1];
+  const afterStr = after
+    ? `${new Date(after.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).toUpperCase()} · ${after.opponent.split(' ').pop().toUpperCase()}`
+    : '—';
+
+  container.className = 'match-card reveal in';
+  container.innerHTML = `
+    <div class="head">
+      <span class="tag">${dayStr} · ${timeStr}</span>
+      <span class="eyebrow">${next.league}</span>
+    </div>
+    <div class="vs">
+      <div class="team us">
+        <div class="crest"><img src="assets/logo.png" alt="" style="height:48px;width:auto;" /></div>
+        <div class="name">Barracudas 3</div>
+        <div class="sub">Gruppe A</div>
+      </div>
+      <div class="center">VS</div>
+      <div class="team them">
+        <div class="crest"><img src="${next.opponentLogo}" alt="${next.opponent}" style="height:48px;width:auto;" onerror="this.style.display='none'" /></div>
+        <div class="name">${next.opponent}</div>
+        <div class="sub">${next.location}</div>
+      </div>
+    </div>
+    <div class="info-row">
+      <div><div class="k">Date</div><div class="v">${new Date(next.date).toLocaleDateString('en-US',{month:'short',day:'numeric'}).toUpperCase()}</div></div>
+      <div><div class="k">Next</div><div class="v">${afterStr}</div></div>
+      <div><div class="k">League</div><div class="v">${next.league.split(' ·')[0]}</div></div>
+    </div>
+  `;
+}
+
+document.addEventListener('DOMContentLoaded', initFirstPitch);
+
+// ── RECENT RESULTS — last 3 played games ────────────────────
+function initRecentResults() {
+  const container = document.getElementById('recentResultsList');
+  if (!container) return;
+
+  const now = new Date();
+  const played = GAMES.filter(g => {
+    const dt = new Date(`${g.date}T${g.time || '23:59'}:00`);
+    return g.result !== null && dt < now;
+  }).reverse();
+
+  const recent = played.slice(0, 3);
+
+  if (!recent.length) {
+    container.innerHTML = `<p style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--ink-mute);">No games played yet.</p>`;
+    return;
+  }
+
+  container.innerHTML = recent.map(g => {
+    const isWin = g.result === 'W';
+    const isPink = g.notes && g.notes.includes('Pink Game');
+    const recapLink = g.recapUrl
+      ? `<a href="${g.recapUrl}" class="result-recap-link">READ RECAP →</a>`
+      : '';
+    return `
+      <div class="result-card${isPink ? ' result-card--pink' : ''}">
+        <div class="result-card-header">
+          <span class="result-card-date">${g.label} · ${g.location}</span>
+          <span class="result-badge result-badge--${isWin ? 'win' : 'loss'}">${g.result}</span>
+        </div>
+        <div class="result-card-matchup">
+          <div class="result-team">
+            <img src="assets/logo.png" alt="B3" class="result-logo" onerror="this.style.display='none'" />
+            <span class="result-team-name">BARRACUDAS 3</span>
+            <span class="result-score${!isWin ? ' result-score--loss' : ''}">${g.score.us}</span>
+          </div>
+          <div class="result-team">
+            <img src="${g.opponentLogo}" alt="${g.opponent}" class="result-logo" onerror="this.style.display='none'" />
+            <span class="result-team-name">${g.opponent.toUpperCase()}</span>
+            <span class="result-score${isWin ? ' result-score--loss' : ' result-score--win'}">${g.score.them}</span>
+          </div>
+        </div>
+        <div class="result-card-footer">
+          <span class="result-innings">${g.innings} INNINGS${g.notes ? ' · ' + g.notes : ''}</span>
+          ${recapLink}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+document.addEventListener('DOMContentLoaded', initRecentResults);
