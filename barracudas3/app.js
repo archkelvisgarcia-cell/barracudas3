@@ -67,6 +67,18 @@ const GAMES = [
   },
 ];
 
+// ── HERO BACKGROUND CAROUSEL — Pink Game photos ─────────────
+const HERO_BG_IMAGES = [
+  'assets/pink-game-team.jpg',
+  'assets/news-pink-game-02.jpg',
+  'assets/news-pink-game-04.jpg',
+  'assets/news-pink-game-10.jpg',
+  'assets/news-pink-game-01.jpg',
+  'assets/news-pink-game-12.jpg',
+  'assets/news-pink-game-05.jpg',
+  'assets/pink-game-22.jpg',
+];
+
 // ── NEWS ARTICLES — single source of truth ──────────────────
 const NEWS_ARTICLES = [
   {
@@ -369,32 +381,35 @@ function initScheduleFilters() {
 
 document.addEventListener('DOMContentLoaded', initScheduleFilters);
 
-// ── HERO DYNAMIC NEWS BACKGROUND ────────────────────────────
+// ── HERO BACKGROUND CAROUSEL + NEWS CTA ─────────────────────
 function initHeroNews() {
-  const slidesContainer = document.getElementById('heroSlides');
-  const ctaContainer = document.getElementById('heroNewsCta');
+  const slidesContainer     = document.getElementById('heroSlides');
+  const ctaContainer        = document.getElementById('heroNewsCta');
   const indicatorsContainer = document.getElementById('heroSlideIndicators');
 
-  if (!slidesContainer || !NEWS_ARTICLES.length) return;
+  // Hide dot indicators — background is decorative, no user controls needed
+  if (indicatorsContainer) indicatorsContainer.style.display = 'none';
 
-  let current = 0;
-  let autoTimer;
-
-  slidesContainer.innerHTML = NEWS_ARTICLES.map((article, i) =>
-    `<div class="hero-slide${i === 0 ? ' active' : ''}" style="background-image: url('${article.image}'); background-position: center top;"></div>`
-  ).join('');
-
-  if (NEWS_ARTICLES.length > 1) {
-    indicatorsContainer.innerHTML = NEWS_ARTICLES.map((_, i) =>
-      `<button class="hero-slide-dot${i === 0 ? ' active' : ''}" aria-label="Article ${i + 1}"></button>`
+  // ── Background carousel (Pink Game photos) ──
+  if (slidesContainer && HERO_BG_IMAGES.length) {
+    slidesContainer.innerHTML = HERO_BG_IMAGES.map((src, i) =>
+      `<div class="hero-slide${i === 0 ? ' active' : ''}" style="background-image: url('${src}');"></div>`
     ).join('');
+
+    const slides = slidesContainer.querySelectorAll('.hero-slide');
+    if (slides.length > 1) {
+      let current = 0;
+      setInterval(() => {
+        slides[current].classList.remove('active');
+        current = (current + 1) % slides.length;
+        slides[current].classList.add('active');
+      }, 4500);
+    }
   }
 
-  const slides = slidesContainer.querySelectorAll('.hero-slide');
-  const dots = indicatorsContainer ? indicatorsContainer.querySelectorAll('.hero-slide-dot') : [];
-
-  function renderCta(index) {
-    const article = NEWS_ARTICLES[index];
+  // ── CTA card (latest news article, static) ──
+  if (ctaContainer && NEWS_ARTICLES.length) {
+    const article = NEWS_ARTICLES[0];
     ctaContainer.innerHTML = `
       <a class="hero-news-cta-inner" href="${article.href}">
         <span class="hero-news-cta-tag" style="color:${article.tagColor || 'var(--accent)'};">
@@ -405,29 +420,6 @@ function initHeroNews() {
         <span class="hero-news-cta-read">Read Full Article →</span>
       </a>
     `;
-  }
-
-  function goTo(index) {
-    slides[current].classList.remove('active');
-    if (dots[current]) dots[current].classList.remove('active');
-    current = (index + NEWS_ARTICLES.length) % NEWS_ARTICLES.length;
-    slides[current].classList.add('active');
-    if (dots[current]) dots[current].classList.add('active');
-    renderCta(current);
-  }
-
-  dots.forEach((dot, i) => {
-    dot.addEventListener('click', () => {
-      clearInterval(autoTimer);
-      goTo(i);
-      autoTimer = setInterval(() => goTo(current + 1), 6000);
-    });
-  });
-
-  renderCta(0);
-
-  if (NEWS_ARTICLES.length > 1) {
-    autoTimer = setInterval(() => goTo(current + 1), 6000);
   }
 }
 
