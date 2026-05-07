@@ -537,31 +537,13 @@ a { color: inherit; text-decoration: none; }
   text-transform: uppercase;
 }
 .hero-strip .v .y { color: var(--accent); }
+/* Botones mobile — ocultos en desktop, visibles solo en móvil */
+.hero-btns-mobile { display: none; }
+
 @media (max-width: 800px) {
   .hero-strip { grid-template-columns: repeat(2, 1fr); }
   .hero { min-height: 100svh; }
   .hero-stamp { display: none; }
-
-  .hero-headline h1 {
-    font-size: clamp(44px, 13vw, 72px);
-  }
-
-  .hero-tagline {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .hero-btns {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-
-  .hero-btns .btn {
-    flex: 1;
-    padding: 12px 14px;
-    text-align: center;
-    justify-content: center;
-  }
 
   /* Overlay más fuerte en móvil para legibilidad */
   .hero-slide::after {
@@ -578,11 +560,32 @@ a { color: inherit; text-decoration: none; }
     background: linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, transparent 25%);
   }
 
-  /* CTA card: fluye debajo de los botones en móvil */
+  /* CTA card: fluye en el documento en móvil */
   .hero-news-cta {
     position: static;
     margin: 1.25rem 0 0;
     z-index: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  /* 1. Ocultar "BITE HARDER 2026" en móvil */
+  .hero-headline h1 { display: none; }
+
+  /* 2. Ocultar tarjeta oscura de descripción en móvil */
+  .hero-tagline { display: none; }
+
+  /* 3. Mostrar botones mobile debajo del CTA del Pink Game */
+  .hero-btns-mobile {
+    display: flex;
+    gap: 10px;
+    margin-top: 1rem;
+  }
+  .hero-btns-mobile .btn {
+    flex: 1;
+    text-align: center;
+    justify-content: center;
+    padding: 12px 14px;
   }
 }
 
