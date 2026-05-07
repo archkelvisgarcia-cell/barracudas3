@@ -563,11 +563,17 @@ a { color: inherit; text-decoration: none; }
     background: linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, transparent 25%);
   }
 
-  /* CTA card: fluye en el documento en móvil */
+  /* CTA card: fluye en el documento en móvil, ancho completo */
   .hero-news-cta {
     position: static;
     margin: 1.25rem 0 0;
     z-index: auto;
+    width: 100%;
+  }
+  .hero-news-cta-inner {
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
   }
 }
 
@@ -1661,8 +1667,8 @@ a { color: inherit; text-decoration: none; }
 /* ── NEWS CTA BUTTON ── */
 .hero-news-cta {
   position: absolute;
-  top: 3rem;           /* relativo a .hero-content (que empieza 32px dentro de .hero) */
-  left: clamp(1.5rem, 4vw, 3.5rem);
+  top: 3rem;
+  left: 0;        /* alineado con el borde izquierdo de .hero-content */
   z-index: 20;
   margin: 0;
 }
@@ -1678,7 +1684,7 @@ a { color: inherit; text-decoration: none; }
   -webkit-backdrop-filter: blur(10px);
   border-radius: 4px;
   padding: 0.85rem 1.25rem;
-  max-width: 380px;
+  max-width: 420px;
   transition: background 0.25s ease, border-color 0.25s ease;
 }
 
