@@ -70,13 +70,13 @@
 <!-- HERO -->
 <section class="cal-hero">
   <div class="reveal">
-    <div class="eyebrow" style="margin-bottom:16px;">— Season 2026</div>
+    <div class="eyebrow" style="margin-bottom:16px;" data-i18n="sched_eyebrow">— Season 2026</div>
     <h1>Sched<span class="y">ule.</span></h1>
     <p style="margin-top:16px;color:var(--ink-mute);max-width:460px;line-height:1.6;font-size:15px;" data-i18n="sched_lede">24 regular season games, plus playoffs. Home games at Heerenschürli, Zürich. Tap any game for details, results, and lineups.</p>
   </div>
   <div class="next reveal" data-delay="1">
     <div class="head">
-      <span class="tag live">Next Game</span>
+      <span class="tag live" data-i18n="sched_next_tag">Next Game</span>
       <span class="eyebrow" id="nextGameEyebrow">—</span>
     </div>
     <div style="display:flex;justify-content:space-between;align-items:center;gap:24px;">
@@ -87,21 +87,21 @@
       <img src="assets/logo.png" alt="" style="height:64px;width:auto;opacity:0.9;" />
     </div>
     <div class="countdown" id="countdown">
-      <div><div class="v" data-cd="d">00</div><div class="k">Days</div></div>
-      <div><div class="v" data-cd="h">00</div><div class="k">Hrs</div></div>
-      <div><div class="v" data-cd="m">00</div><div class="k">Min</div></div>
-      <div><div class="v" data-cd="s">00</div><div class="k">Sec</div></div>
+      <div><div class="v" data-cd="d">00</div><div class="k" data-i18n="cd_days">Days</div></div>
+      <div><div class="v" data-cd="h">00</div><div class="k" data-i18n="cd_hrs">Hrs</div></div>
+      <div><div class="v" data-cd="m">00</div><div class="k" data-i18n="cd_min">Min</div></div>
+      <div><div class="v" data-cd="s">00</div><div class="k" data-i18n="cd_sec">Sec</div></div>
     </div>
   </div>
 </section>
 
 <!-- FILTERS -->
 <div class="schedule-filters" id="scheduleFilters">
-  <button class="sched-filter-btn active" data-filter="upcoming" id="filterUpcoming">UPCOMING</button>
-  <button class="sched-filter-btn" data-filter="past" id="filterPast">PAST GAMES</button>
-  <button class="sched-filter-btn" data-filter="all" id="filterAll">ALL</button>
-  <button class="sched-filter-btn" data-filter="home" id="filterHome">HOME</button>
-  <button class="sched-filter-btn" data-filter="away" id="filterAway">AWAY</button>
+  <button class="sched-filter-btn active" data-filter="upcoming" id="filterUpcoming" data-i18n="filter_upcoming">UPCOMING</button>
+  <button class="sched-filter-btn" data-filter="past" id="filterPast" data-i18n="filter_past">PAST GAMES</button>
+  <button class="sched-filter-btn" data-filter="all" id="filterAll" data-i18n="filter_all">ALL</button>
+  <button class="sched-filter-btn" data-filter="home" id="filterHome" data-i18n="filter_home">HOME</button>
+  <button class="sched-filter-btn" data-filter="away" id="filterAway" data-i18n="filter_away">AWAY</button>
   <span class="sched-filter-count" id="schedFilterCount"></span>
 </div>
 

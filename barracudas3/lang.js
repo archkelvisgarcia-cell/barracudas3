@@ -14,11 +14,18 @@
       strip_home: 'Home', strip_next: 'Next',
 
       next_eyebrow: '— Next Up',
+      next_h1: 'First', next_h2: 'Pitch.',
       next_body: 'Tuesday matchup against the NLA Barracudas — the big dogs of Swiss baseball. A chance to test ourselves against the best in the country. Bite harder.',
       btn_full_schedule: 'Full Schedule →',
-      btn_all_boxscores: 'All Boxscores →',
-      btn_easyscore: 'Full Stats on EasyScore ↗',
 
+      results_h1: 'Recent', results_h2: 'Results.',
+      btn_all_boxscores: 'All Boxscores →',
+
+      roster_eyebrow: '— Active Roster',
+      roster_h1: 'The', roster_h2: 'Squad.',
+      roster_sub: 'Hover over any card to flip it and see real 2026 season stats.',
+
+      join_h1: 'Swing', join_h2: 'For The Fence.',
       join_eyebrow: '— Open Tryouts',
       join_body: 'New players welcome at every level. Tryouts run March through April. Bring a glove, leave with a uniform. We train Tuesdays & Fridays at Heerenschürli.',
       btn_contact: 'Get In Touch →',
@@ -30,10 +37,24 @@
       footer_copy: '© 2026 Zürich Barracudas Baseball Club',
       footer_tagline: 'Bite Harder · Est. 1986',
 
+      sched_eyebrow: '— Season 2026',
       sched_lede: '24 regular season games, plus playoffs. Home games at Heerenschürli, Zürich. Tap any game for details, results, and lineups.',
-      res_lede: 'Every game, every inning, every MVP. Barracudas 3 — official boxscores, recap notes, and player highlights pulled straight from EasyScore.',
-      btn_standings: 'League Standings ↗',
+      sched_next_tag: 'Next Game',
+      cd_days: 'Days', cd_hrs: 'Hrs', cd_min: 'Min', cd_sec: 'Sec',
+      filter_upcoming: 'UPCOMING', filter_past: 'PAST GAMES', filter_all: 'ALL',
+      filter_home: 'HOME', filter_away: 'AWAY',
+
+      news_eyebrow: '— Dispatches from the dugout',
       news_lede: 'Game recaps, roster updates, club stories. Filed straight from Heerenschürli.',
+
+      res_eyebrow: '— Box scores · Season 2026',
+      res_lede: 'Every game, every inning, every MVP. Barracudas 3 — official boxscores, recap notes, and player highlights pulled straight from EasyScore.',
+      res_potg: '— Player of the Game',
+      res_pitching: '— Pitching',
+      btn_recap: 'Recap →',
+      btn_full_boxscore: 'Full Boxscore ↗',
+      btn_standings: 'League Standings ↗',
+      btn_easyscore: 'Full Stats on EasyScore ↗',
     },
 
     es: {
@@ -48,11 +69,18 @@
       strip_home: 'Local', strip_next: 'Próximo',
 
       next_eyebrow: '— Próximo Partido',
+      next_h1: 'Primer', next_h2: 'Turno.',
       next_body: 'Partido del martes contra los Barracudas NLA — los grandes del béisbol suizo. Una oportunidad de medirnos contra los mejores del país. ¡Morder más fuerte!',
       btn_full_schedule: 'Ver Calendario →',
-      btn_all_boxscores: 'Todos los Boxscores →',
-      btn_easyscore: 'Estadísticas en EasyScore ↗',
 
+      results_h1: 'Recientes', results_h2: 'Resultados.',
+      btn_all_boxscores: 'Todos los Boxscores →',
+
+      roster_eyebrow: '— Plantilla Activa',
+      roster_h1: 'El', roster_h2: 'Equipo.',
+      roster_sub: 'Pasa el cursor sobre cualquier card para voltearla y ver los números reales de la temporada 2026.',
+
+      join_h1: 'Juega', join_h2: 'Hasta el Fondo.',
       join_eyebrow: '— Pruebas Abiertas',
       join_body: 'Jugadores nuevos bienvenidos a todos los niveles. Las pruebas van de marzo a abril. Trae un guante, sal con un uniforme. Entrenamos martes y viernes en Heerenschürli.',
       btn_contact: 'Contáctanos →',
@@ -64,10 +92,24 @@
       footer_copy: '© 2026 Club de Béisbol Zürich Barracudas',
       footer_tagline: 'Morder Más Fuerte · Est. 1986',
 
+      sched_eyebrow: '— Temporada 2026',
       sched_lede: '24 partidos de temporada regular, más playoffs. Partidos en casa en Heerenschürli, Zúrich. Toca cualquier partido para ver detalles, resultados y alineaciones.',
-      res_lede: 'Cada partido, cada entrada, cada MVP. Barracudas 3 — boxscores oficiales y notas de resumen directamente de EasyScore.',
-      btn_standings: 'Tabla de Posiciones ↗',
+      sched_next_tag: 'Próximo Juego',
+      cd_days: 'Días', cd_hrs: 'Hrs', cd_min: 'Min', cd_sec: 'Seg',
+      filter_upcoming: 'PRÓXIMOS', filter_past: 'PASADOS', filter_all: 'TODOS',
+      filter_home: 'LOCAL', filter_away: 'VISITANTE',
+
+      news_eyebrow: '— Desde el dugout',
       news_lede: 'Resúmenes de partidos, actualizaciones de plantilla, historias del club. Directo desde Heerenschürli.',
+
+      res_eyebrow: '— Boxscores · Temporada 2026',
+      res_lede: 'Cada partido, cada entrada, cada MVP. Barracudas 3 — boxscores oficiales y notas de resumen directamente de EasyScore.',
+      res_potg: '— Jugador del Partido',
+      res_pitching: '— Pitcheo',
+      btn_recap: 'Resumen →',
+      btn_full_boxscore: 'Boxscore completo ↗',
+      btn_standings: 'Tabla de Posiciones ↗',
+      btn_easyscore: 'Estadísticas en EasyScore ↗',
     },
 
     de: {
@@ -82,11 +124,18 @@
       strip_home: 'Heimfeld', strip_next: 'Nächstes',
 
       next_eyebrow: '— Nächstes Spiel',
+      next_h1: 'Nächster', next_h2: 'Aufschlag.',
       next_body: 'Dienstagsspiel gegen die NLA Barracudas — die Spitze des Schweizer Baseballs. Eine Chance, uns mit den Besten im Land zu messen. Härter zubeißen!',
       btn_full_schedule: 'Zum Spielplan →',
-      btn_all_boxscores: 'Alle Boxscores →',
-      btn_easyscore: 'Alle Stats auf EasyScore ↗',
 
+      results_h1: 'Aktuelle', results_h2: 'Ergebnisse.',
+      btn_all_boxscores: 'Alle Boxscores →',
+
+      roster_eyebrow: '— Aktiver Kader',
+      roster_h1: 'Das', roster_h2: 'Team.',
+      roster_sub: 'Fahre über eine Karte, um sie umzudrehen und die echten Saison-2026-Statistiken zu sehen.',
+
+      join_h1: 'Spiel', join_h2: 'Über den Zaun.',
       join_eyebrow: '— Offene Probespiele',
       join_body: 'Neue Spieler aller Niveaus willkommen. Probespiele März bis April. Bring einen Handschuh, geh mit einem Trikot. Wir trainieren dienstags und freitags in Heerenschürli.',
       btn_contact: 'Kontakt aufnehmen →',
@@ -98,10 +147,24 @@
       footer_copy: '© 2026 Zürich Barracudas Baseball Club',
       footer_tagline: 'Härter zubeißen · Gegr. 1986',
 
+      sched_eyebrow: '— Saison 2026',
       sched_lede: '24 reguläre Saisonspiele plus Playoffs. Heimspiele in Heerenschürli, Zürich. Tippe auf ein Spiel für Details, Ergebnisse und Aufstellungen.',
-      res_lede: 'Jedes Spiel, jedes Inning, jeder MVP. Barracudas 3 — offizielle Boxscores und Spielberichte direkt aus EasyScore.',
-      btn_standings: 'Liga-Tabelle ↗',
+      sched_next_tag: 'Nächstes Spiel',
+      cd_days: 'Tage', cd_hrs: 'Std', cd_min: 'Min', cd_sec: 'Sek',
+      filter_upcoming: 'BEVORSTEHEND', filter_past: 'VERGANGENE', filter_all: 'ALLE',
+      filter_home: 'HEIM', filter_away: 'AUSWÄRTS',
+
+      news_eyebrow: '— Aus dem Dugout',
       news_lede: 'Spielberichte, Kaderupdates, Klubgeschichten. Direkt aus Heerenschürli.',
+
+      res_eyebrow: '— Boxscores · Saison 2026',
+      res_lede: 'Jedes Spiel, jedes Inning, jeder MVP. Barracudas 3 — offizielle Boxscores und Spielberichte direkt aus EasyScore.',
+      res_potg: '— Spieler des Spiels',
+      res_pitching: '— Pitching',
+      btn_recap: 'Bericht →',
+      btn_full_boxscore: 'Vollständiger Boxscore ↗',
+      btn_standings: 'Liga-Tabelle ↗',
+      btn_easyscore: 'Alle Stats auf EasyScore ↗',
     },
   };
 
