@@ -539,22 +539,7 @@ a { color: inherit; text-decoration: none; }
 .hero-strip .v .y { color: var(--accent); }
 @media (max-width: 800px) {
   .hero-strip { grid-template-columns: repeat(2, 1fr); }
-
-  /* --- Hero mobile --- */
   .hero { min-height: 100svh; }
-
-  .hero-bg::after {
-    background: linear-gradient(
-      to bottom,
-      rgba(0,0,0,0.3) 0%,
-      rgba(0,0,0,0.5) 40%,
-      rgba(0,0,0,0.85) 65%,
-      var(--bg) 100%
-    );
-  }
-
-  .hero-bg img { object-position: center top !important; }
-
   .hero-stamp { display: none; }
 
   .hero-headline h1 {
@@ -577,17 +562,27 @@ a { color: inherit; text-decoration: none; }
     text-align: center;
     justify-content: center;
   }
-}
 
-@media (max-width: 768px) {
-  .hero-bg::after {
+  /* Overlay más fuerte en móvil para legibilidad */
+  .hero-slide::after {
     background: linear-gradient(
       to bottom,
-      rgba(0,0,0,0.2) 0%,
-      rgba(0,0,0,0.7) 35%,
-      rgba(0,0,0,0.9) 60%,
-      rgba(0,0,0,1) 85%
+      rgba(13,46,26,0.60) 0%,
+      rgba(13,46,26,0.45) 30%,
+      rgba(13,46,26,0.90) 70%,
+      rgba(13,46,26,0.98) 100%
     );
+  }
+
+  .hero-overlay {
+    background: linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, transparent 25%);
+  }
+
+  /* CTA card: fluye debajo de los botones en móvil */
+  .hero-news-cta {
+    position: static;
+    margin: 1.25rem 0 0;
+    z-index: auto;
   }
 }
 
@@ -1651,7 +1646,7 @@ a { color: inherit; text-decoration: none; }
 /* ── NEWS CTA BUTTON ── */
 .hero-news-cta {
   position: absolute;
-  top: 5rem;
+  top: 3rem;           /* relativo a .hero-content (que empieza 32px dentro de .hero) */
   left: clamp(1.5rem, 4vw, 3.5rem);
   z-index: 20;
   margin: 0;
