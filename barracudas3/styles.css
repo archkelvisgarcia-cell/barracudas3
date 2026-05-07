@@ -587,6 +587,16 @@ a { color: inherit; text-decoration: none; }
     justify-content: center;
     padding: 12px 14px;
   }
+
+  /* 4. Reordenar elementos en móvil via flexbox order */
+  .hero-headline {
+    display: flex;
+    flex-direction: column;
+  }
+  .hero-headline .latest-strip { order: 1; margin-top: 0;   }
+  .hero-headline .hero-news-cta { order: 2; margin-top: 1rem; }
+  .hero-headline .hero-btns-mobile { order: 3; }
+  .hero-headline .hero-strip    { order: 4; margin-top: 1.25rem; }
 }
 
 /* ============================================================
