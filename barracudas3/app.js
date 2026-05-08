@@ -573,18 +573,22 @@ function initPlayerStats() {
   }
 
   function card(label, player, stat) {
-    if (!player) return `<div class="ps-card"><span class="ps-label">${label}</span><span class="ps-name">—</span></div>`;
+    if (!player) return `<div class="ps-card"><div class="ps-info"><span class="ps-label">${label}</span><span class="ps-name">—</span></div></div>`;
     const img = player.img || '';
-    const bgStyle = img ? `style="background-image:url('${img}')"` : '';
+    const photoContent = img
+      ? `<img src="${img}" alt="${shortName(player)}" onerror="this.parentNode.textContent='${initials(player)}'" />`
+      : initials(player);
     return `
-      <div class="ps-card" ${bgStyle}>
-        <div class="ps-fallback">${initials(player)}</div>
-        <span class="ps-label">${label}</span>
-        <div class="ps-player-row">
-          <span class="ps-num">#${player.num}</span>
-          <span class="ps-name">${shortName(player)}</span>
+      <div class="ps-card">
+        <div class="ps-photo">${photoContent}</div>
+        <div class="ps-info">
+          <span class="ps-label">${label}</span>
+          <div class="ps-player-row">
+            <span class="ps-num">#${player.num}</span>
+            <span class="ps-name">${shortName(player)}</span>
+          </div>
+          <span class="ps-stat">${stat}</span>
         </div>
-        <span class="ps-stat">${stat}</span>
       </div>
     `;
   }

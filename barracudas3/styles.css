@@ -520,55 +520,41 @@ a { color: inherit; text-decoration: none; }
   border-top: 1px solid var(--line);
 }
 
-/* ── Individual player card with photo background ── */
+/* ── Individual player card — MVP circle style ── */
 .ps-card {
-  position: relative;
-  background-color: var(--bg-deep);
-  background-size: cover;
-  background-position: center top;
-  min-height: 220px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 18px 20px;
+  background: var(--bg-elev);
+}
+
+.ps-photo {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--bg-deep);
+  border: 2px solid var(--accent);
+  flex-shrink: 0;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  font-family: var(--display);
+  font-size: 22px;
+  color: var(--accent);
+}
+
+.ps-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ps-info {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  gap: 4px;
-  padding: 20px;
-  overflow: hidden;
-  text-decoration: none;
-}
-
-/* Dark gradient overlay so text is always readable */
-.ps-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(13,46,26,0.97) 0%,
-    rgba(13,46,26,0.70) 45%,
-    rgba(13,46,26,0.20) 100%
-  );
-  z-index: 0;
-}
-
-/* Fallback initials — visible when photo doesn't load */
-.ps-fallback {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--display);
-  font-size: clamp(56px, 8vw, 88px);
-  color: rgba(255,255,255,0.06);
-  pointer-events: none;
-  z-index: 0;
-  letter-spacing: -0.02em;
-}
-
-/* All text children sit above the overlay */
-.ps-card > *:not(.ps-fallback) {
-  position: relative;
-  z-index: 1;
+  gap: 3px;
+  min-width: 0;
 }
 
 .ps-label {
@@ -576,43 +562,40 @@ a { color: inherit; text-decoration: none; }
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  color: rgba(255,255,255,0.45);
-  margin-bottom: 4px;
+  color: var(--accent);
+  margin-bottom: 2px;
 }
 
 .ps-player-row {
   display: flex;
   align-items: baseline;
-  gap: 10px;
+  gap: 8px;
 }
 
 .ps-num {
   font-family: var(--display);
-  font-size: clamp(13px, 1.6vw, 16px);
-  color: var(--accent);
+  font-size: 14px;
+  color: var(--ink-mute);
   letter-spacing: 0.04em;
 }
 
 .ps-name {
   font-family: var(--display);
-  font-size: clamp(20px, 2.4vw, 28px);
-  letter-spacing: 0;
+  font-size: clamp(18px, 2vw, 22px);
   text-transform: uppercase;
-  line-height: 1;
-  color: #fff;
+  line-height: 0.95;
+  color: var(--ink);
 }
 
 .ps-stat {
   font-family: var(--mono);
   font-size: 11px;
-  color: var(--accent);
-  letter-spacing: 0.08em;
-  margin-top: 4px;
+  color: var(--ink-mute);
+  margin-top: 2px;
 }
 
 @media (max-width: 800px) {
   .player-strip { grid-template-columns: 1fr; }
-  .ps-card { min-height: 160px; }
 }
 
 .hero-strip {
