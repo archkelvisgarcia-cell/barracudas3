@@ -152,6 +152,43 @@ function copyLink(btn) {
 // ── PLAYER REGISTRY — global lookup for modal ───────────────
 const PLAYER_REGISTRY = new Map();
 
+// ── EXTENDED STATS — keyed by player num ─────────────────────
+const PLAYER_EXTENDED_DATA = {
+  '20': { // Kelvis Garcia
+    fullName: 'Garcia Rondon Kelvis Carmelo',
+    age: 38, bats: 'R', throws: 'R',
+    batting: {
+      season: { G:7, PA:30, AB:27, R:12, H:10, '2B':2, '3B':0, HR:2, RBI:11, BB:3, SO:4, SB:1, CS:0, HBP:0, SF:0, AVG:'.370', OBP:'.433', SLG:'.667', OPS:'1.100' },
+      log: [
+        { date:'05/05', opp:'Barracudas NLA',  spot:5, pos:'2B',       AB:3, R:0, H:1, '2B':0, HR:0, RBI:1, BB:1, SO:2, SB:0, AVG:'.370' },
+        { date:'05/02', opp:'Luzern Eagles',   spot:5, pos:'2B',       AB:4, R:2, H:1, '2B':0, HR:0, RBI:0, BB:0, SO:1, SB:0, AVG:'.375' },
+        { date:'05/02', opp:'Luzern Eagles',   spot:5, pos:'2B/3B',    AB:5, R:3, H:3, '2B':2, HR:1, RBI:3, BB:0, SO:0, SB:0, AVG:'.400' },
+        { date:'04/26', opp:'Lausanne Indians', spot:5, pos:'2B/RF',   AB:4, R:2, H:2, '2B':0, HR:1, RBI:1, BB:0, SO:0, SB:0, AVG:'.333' },
+        { date:'04/26', opp:'Lausanne Indians', spot:5, pos:'SS/2B/P', AB:6, R:3, H:3, '2B':0, HR:0, RBI:6, BB:0, SO:0, SB:1, AVG:'.273' },
+        { date:'04/19', opp:'Therwil Flyers 2', spot:5, pos:'PH/P',   AB:1, R:0, H:0, '2B':0, HR:0, RBI:0, BB:0, SO:0, SB:0, AVG:'.000' },
+      ],
+    },
+    pitching: {
+      season: { G:2, GS:0, IP:'3.1', H:2, R:0, ER:0, BB:1, SO:7, HR:0, HBP:1, WP:1, BF:14, WL:'0-0', SV:0, OppAVG:'.167', WHIP:'0.90', ERA:'0.00' },
+      log: [
+        { date:'04/26', opp:'Lausanne Indians',  IP:'2.1', H:2, R:0, ER:0, BB:0, SO:5, HBP:0, WP:1, BF:9,  ERA:'0.00' },
+        { date:'04/19', opp:'Therwil Flyers 2', IP:'1.0', H:0, R:0, ER:0, BB:1, SO:2, HBP:1, WP:0, BF:5,  ERA:'0.00' },
+      ],
+    },
+    fielding: {
+      season: { G:7, 'IP':'47.0', PO:13, A:9, E:2, DP:0, PB:0, RF:'4.21', FPct:'.917' },
+      log: [
+        { date:'05/05', opp:'Barracudas NLA',   pos:'2B',       IP:'7.0', PO:2, A:3, E:0, FPct:'1.000' },
+        { date:'05/02', opp:'Luzern Eagles',    pos:'2B',       IP:'7.0', PO:2, A:1, E:0, FPct:'1.000' },
+        { date:'05/02', opp:'Luzern Eagles',    pos:'2B/3B',    IP:'9.0', PO:3, A:1, E:2, FPct:'.667'  },
+        { date:'04/26', opp:'Lausanne Indians', pos:'2B/RF',    IP:'8.0', PO:3, A:2, E:0, FPct:'1.000' },
+        { date:'04/26', opp:'Lausanne Indians', pos:'2B/P/SS',  IP:'7.0', PO:2, A:2, E:0, FPct:'1.000' },
+        { date:'04/19', opp:'Therwil Flyers 2', pos:'P/PH',    IP:'1.0', PO:0, A:0, E:0, FPct:'—'     },
+      ],
+    },
+  },
+};
+
 // ROSTER — render flip cards directly from JSON stats
 (function () {
   const grid = document.querySelector('.roster-grid');
@@ -643,16 +680,94 @@ function initPlayerStats() {
 document.addEventListener('DOMContentLoaded', initPlayerStats);
 
 // ── PLAYER PROFILE MODAL ──────────────────────────────────────
+// ── Modal helpers ─────────────────────────────────────────────
+function pmSummary(cells) {
+  const HL = ['AVG','OBP','SLG','OPS','ERA','FPct','WHIP'];
+  return `<div class="pm-summary">${cells.map(([k,v]) =>
+    `<div class="pm-summary-cell">
+      <span class="pm-summary-k">${k}</span>
+      <span class="pm-summary-v${HL.includes(k) ? ' hl' : ''}">${v ?? '—'}</span>
+    </div>`
+  ).join('')}</div>`;
+}
+
+function pmTable(headers, rows, hlCols = [], minWidth = 560) {
+  const head = headers.map(h => `<th>${h}</th>`).join('');
+  const body = rows.map(row =>
+    `<tr>${row.map((c, i) => `<td class="${hlCols.includes(i) ? 'hl' : ''}">${c ?? '—'}</td>`).join('')}</tr>`
+  ).join('');
+  return `<div class="pm-table-wrap"><table class="pm-table" style="min-width:${minWidth}px">
+    <thead><tr>${head}</tr></thead><tbody>${body}</tbody>
+  </table></div>`;
+}
+
+function pmBattingPane(ext, basicStats) {
+  if (ext?.batting) {
+    const s = ext.batting.season;
+    const summary = pmSummary([['AVG',s.AVG],['HR',s.HR],['RBI',s.RBI],['OBP',s.OBP],['SLG',s.SLG],['OPS',s.OPS]]);
+    const seasonHeaders = ['','G','PA','AB','R','H','2B','3B','HR','RBI','BB','SO','SB','AVG','OBP','SLG','OPS'];
+    const seasonRow = ['2026',s.G,s.PA,s.AB,s.R,s.H,s['2B'],s['3B'],s.HR,s.RBI,s.BB,s.SO,s.SB,s.AVG,s.OBP,s.SLG,s.OPS];
+    const seasonTable = pmTable(seasonHeaders, [seasonRow], [13,14,15,16], 700);
+    let logHTML = '';
+    if (ext.batting.log?.length) {
+      const lh = ['Fecha','Rival','#','Pos','AB','R','H','2B','HR','RBI','BB','SO','SB','AVG'];
+      const lr = ext.batting.log.map(g => [g.date,g.opp,g.spot,g.pos,g.AB,g.R,g.H,g['2B'],g.HR,g.RBI,g.BB,g.SO,g.SB,g.AVG]);
+      logHTML = `<div class="pm-log-label">Game Log</div>${pmTable(lh, lr, [13], 580)}`;
+    }
+    return summary + seasonTable + logHTML;
+  }
+  // Fallback: basic stats from roster array
+  const batStats = basicStats.filter(s => ['AVG','HR','RBI','OBP','SLG','OPS','SB'].includes(s.k));
+  if (!batStats.length) return `<p class="pm-no-data">Sin datos de bateo disponibles.</p>`;
+  return pmSummary(batStats.map(s => [s.k, s.v])) + `<p class="pm-no-data">Game log no disponible.</p>`;
+}
+
+function pmPitchingPane(ext, basicStats) {
+  if (ext?.pitching) {
+    const s = ext.pitching.season;
+    const summary = pmSummary([['ERA',s.ERA],['W-L',s.WL],['IP',s.IP],['SO',s.SO],['WHIP',s.WHIP],['OppAVG',s.OppAVG]]);
+    const sh = ['','G','GS','IP','H','R','ER','BB','SO','HR','HBP','WP','BF','OppAVG','WHIP','ERA'];
+    const sr = ['2026',s.G,s.GS,s.IP,s.H,s.R,s.ER,s.BB,s.SO,s.HR,s.HBP,s.WP,s.BF,s.OppAVG,s.WHIP,s.ERA];
+    const seasonTable = pmTable(sh, [sr], [13,14,15], 620);
+    let logHTML = '';
+    if (ext.pitching.log?.length) {
+      const lh = ['Fecha','Rival','IP','H','R','ER','BB','SO','HBP','WP','BF','ERA'];
+      const lr = ext.pitching.log.map(g => [g.date,g.opp,g.IP,g.H,g.R,g.ER,g.BB,g.SO,g.HBP,g.WP,g.BF,g.ERA]);
+      logHTML = `<div class="pm-log-label">Game Log</div>${pmTable(lh, lr, [11], 500)}`;
+    }
+    return summary + seasonTable + logHTML;
+  }
+  const pitStats = basicStats.filter(s => ['ERA','K','W-L','WHIP'].includes(s.k));
+  if (!pitStats.length) return `<p class="pm-no-data">Sin datos de pitcheo disponibles.</p>`;
+  return pmSummary(pitStats.map(s => [s.k === 'W-L' ? 'W-L' : s.k, s.v])) + `<p class="pm-no-data">Game log no disponible.</p>`;
+}
+
+function pmFieldingPane(ext) {
+  if (!ext?.fielding) return `<p class="pm-no-data">Sin datos de fielding disponibles.</p>`;
+  const s = ext.fielding.season;
+  const summary = pmSummary([['G',s.G],['IP',s.IP],['PO',s.PO],['A',s.A],['E',s.E],['FPct',s.FPct]]);
+  const sh = ['','G','IP','PO','A','E','DP','PB','RF','FPct'];
+  const sr = ['2026',s.G,s.IP,s.PO,s.A,s.E,s.DP,s.PB,s.RF,s.FPct];
+  const seasonTable = pmTable(sh, [sr], [9], 420);
+  let logHTML = '';
+  if (ext.fielding.log?.length) {
+    const lh = ['Fecha','Rival','Pos','IP','PO','A','E','FPct'];
+    const lr = ext.fielding.log.map(g => [g.date,g.opp,g.pos,g.IP,g.PO,g.A,g.E,g.FPct]);
+    logHTML = `<div class="pm-log-label">Game Log</div>${pmTable(lh, lr, [7], 380)}`;
+  }
+  return summary + seasonTable + logHTML;
+}
+
 function openPlayerModal(player) {
-  const modal      = document.getElementById('playerModal');
-  const photoEl    = document.getElementById('pmPhoto');
-  const badgeEl    = document.getElementById('pmBadge');
-  const nameEl     = document.getElementById('pmName');
-  const posEl      = document.getElementById('pmPos');
-  const typeLabel  = document.getElementById('pmTypeLabel');
-  const statsGrid  = document.getElementById('pmStatsGrid');
-  const extraEl    = document.getElementById('pmExtra');
-  const linksEl    = document.getElementById('pmLinks');
+  const modal   = document.getElementById('playerModal');
+  const photoEl = document.getElementById('pmPhoto');
+  const badgeEl = document.getElementById('pmBadge');
+  const nameEl  = document.getElementById('pmName');
+  const posEl   = document.getElementById('pmPos');
+  const tabsEl  = document.getElementById('pmTabs');
+  const contentEl = document.getElementById('pmTabContent');
+  const extraEl = document.getElementById('pmExtra');
+  const linksEl = document.getElementById('pmLinks');
   if (!modal) return;
 
   // Photo
@@ -661,30 +776,50 @@ function openPlayerModal(player) {
     const img = document.createElement('img');
     img.src = player.img;
     img.alt = `${player.first} ${player.last}`;
-    img.onerror = () => { photoEl.innerHTML = `${player.first[0]}${player.last[0]}`.toUpperCase(); };
+    img.onerror = () => { photoEl.textContent = `${player.first[0]}${player.last[0]}`.toUpperCase(); };
     photoEl.appendChild(img);
   } else {
     photoEl.textContent = `${player.first[0]}${player.last[0]}`.toUpperCase();
   }
 
   // Identity
-  badgeEl.textContent = `#${player.num} · ${player.type === 'pitcher' ? 'Pitcher' : player.type === 'both' ? 'Two-Way' : 'Batter'}`;
-  nameEl.textContent  = `${player.first} ${player.last}`;
-  posEl.textContent   = `${player.pos} · ${player.flag} ${player.country}`;
+  const ext = PLAYER_EXTENDED_DATA[player.num] || null;
+  const typeLabel = { batter:'Batter', pitcher:'Pitcher', both:'Two-Way' }[player.type] || 'Player';
+  badgeEl.textContent = `#${player.num} · ${typeLabel}${ext?.age ? ' · ' + ext.age + ' años' : ''}`;
+  nameEl.textContent  = ext?.fullName || `${player.first} ${player.last}`;
+  const meta = [player.pos, player.flag + ' ' + player.country];
+  if (ext?.bats)   meta.push(`Batea: ${ext.bats}`);
+  if (ext?.throws) meta.push(`Lanza: ${ext.throws}`);
+  posEl.textContent = meta.join(' · ');
 
-  // Stats section label
-  const labelMap = { batter: 'Batting Stats 2026', pitcher: 'Pitching Stats 2026', both: 'Season Stats 2026' };
-  typeLabel.textContent = labelMap[player.type] || 'Stats 2026';
+  // Build tabs
+  const tabs = [];
+  if (player.type !== 'pitcher') tabs.push({ id:'batting',  label:'Batting'  });
+  if (player.type !== 'batter')  tabs.push({ id:'pitching', label:'Pitching' });
+  if (ext?.fielding)             tabs.push({ id:'fielding', label:'Fielding' });
 
-  // Stats grid from player.stats array
-  statsGrid.innerHTML = (player.stats || []).map(s => `
-    <div class="pm-stat-cell">
-      <span class="pm-stat-k">${s.k}</span>
-      <span class="pm-stat-v">${s.v}</span>
-    </div>
-  `).join('');
+  tabsEl.innerHTML = tabs.map((t, i) =>
+    `<button class="pm-tab-btn${i === 0 ? ' active' : ''}" data-tab="${t.id}">${t.label}</button>`
+  ).join('');
 
-  // Extra chips
+  contentEl.innerHTML = tabs.map((t, i) => {
+    let pane = '';
+    if (t.id === 'batting')  pane = pmBattingPane(ext, player.stats);
+    if (t.id === 'pitching') pane = pmPitchingPane(ext, player.stats);
+    if (t.id === 'fielding') pane = pmFieldingPane(ext);
+    return `<div class="pm-pane${i === 0 ? ' active' : ''}" data-pane="${t.id}">${pane}</div>`;
+  }).join('');
+
+  tabsEl.querySelectorAll('.pm-tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabsEl.querySelectorAll('.pm-tab-btn').forEach(b => b.classList.remove('active'));
+      contentEl.querySelectorAll('.pm-pane').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      contentEl.querySelector(`[data-pane="${btn.dataset.tab}"]`)?.classList.add('active');
+    });
+  });
+
+  // Chips
   const chips = [];
   if (player.captain)    chips.push('★ Captain');
   if (player.streak > 0) chips.push(`${player.streak}-game hit streak`);
@@ -696,7 +831,6 @@ function openPlayerModal(player) {
     ? `<a class="pm-easyscore-link" href="https://www.easyscore.com/players/${player.easyscoreId}" target="_blank" rel="noopener">Ver stats completos en EasyScore ↗</a>`
     : '';
 
-  // Show modal
   modal.classList.add('open');
   modal.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
