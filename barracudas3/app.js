@@ -69,13 +69,19 @@ const GAMES = [
 
 // ── HERO BACKGROUND CAROUSEL — Pink Game photos ─────────────
 const HERO_BG_IMAGES = [
+  'assets/nightgame-1.jpg',
+  'assets/nightgame-3.jpg',
+  'assets/nightgame-7.jpg',
+  'assets/nightgame-9.jpg',
+  'assets/nightgame-14.jpg',
+  'assets/nightgame-16.jpg',
+  'assets/nightgame-20.jpg',
+  'assets/nightgame-22.jpg',
+  'assets/nightgame-24.jpg',
+  'assets/nightgame-26.jpg',
   'assets/pink-game-team.jpg',
   'assets/news-pink-game-02.jpg',
-  'assets/news-pink-game-04.jpg',
   'assets/news-pink-game-10.jpg',
-  'assets/news-pink-game-01.jpg',
-  'assets/news-pink-game-12.jpg',
-  'assets/news-pink-game-05.jpg',
   'assets/pink-game-22.jpg',
 ];
 
