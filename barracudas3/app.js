@@ -89,16 +89,84 @@ const HERO_BG_IMAGES = [
 const NEWS_ARTICLES = [
   {
     id: 'pink-game-may5',
-    date: 'May 5, 2026',
-    tag: '🩷 Pink Game',
-    tagColor: '#FF3EA5',
+    date: 'May 5, 2026', tag: '🩷 Pink Game', tagColor: '#FF3EA5',
     headline: 'Barracudas 3 Fall 17–5 in Pink Game as NLA Squad Proves Too Strong',
-    summary: 'Under the lights of Heerenschürli, the Barracudas 3 donned their pink uniforms for breast cancer awareness — but the NLA squad had other plans, running away with a 17–5 victory.',
+    summary: 'Under the lights of Heerenschürli, the Barracudas 3 donned their pink uniforms for breast cancer awareness — but the NLA squad had other plans.',
     image: 'assets/news-pink-game-02.jpg',
-    href: 'pink-game-recap.html',
-    featured: true,
+    href: 'pink-game-recap.html', featured: true,
+    score: { us: 5, them: 17 }, opponent: 'Barracudas NLA', location: 'Home · Heerenschürli',
   },
-  // ← Future articles go here, newest first
+  {
+    id: 'eagles-game1-may2',
+    date: 'May 2, 2026', tag: 'Game Recap', tagColor: '#F0B429',
+    headline: 'Eagles explode for 23 in Game 1 shellacking',
+    summary: 'The Barracudas dropped Game 1 of the home doubleheader 23–9 at Heerenschürli. Kelvis Garcia was the lone bright spot — 3-for-5 with a home run, 2 doubles and 3 RBI.',
+    body: 'The Barracudas dropped Game 1 of the home doubleheader 23–9 at Heerenschürli. Kelvis Garcia was the lone bright spot — 3-for-5 with a home run, 2 doubles and 3 RBI. Hansel Rodriguez added 3 hits off the bench. Wilkin Peguero took the loss, lasting 3.1 innings and allowing 8 earned runs. The Cudas went 6-for-19 with RISP and stranded 8.',
+    image: 'assets/news-game1-batter.jpg',
+    href: 'article.html?id=eagles-game1-may2',
+    score: { us: 9, them: 23 }, opponent: 'Luzern Eagles', location: 'Home · Heerenschürli',
+    notes: 'HR · K.Garcia · 9 innings',
+  },
+  {
+    id: 'eagles-game2-may2',
+    date: 'May 2, 2026', tag: 'Game Recap', tagColor: '#F0B429',
+    headline: 'Barracudas fall in heartbreaker, 10–9 in seven',
+    summary: 'In a much tighter Game 2, the Cudas fought back repeatedly but fell 10–9 in seven innings. Zürich led 7–3 after four before the Eagles answered with 6 runs over the final three frames.',
+    body: 'In a much tighter Game 2, the Cudas fought back repeatedly but fell 10–9 in seven innings. Zürich led 7–3 after four before the Eagles answered with 6 runs over the final three frames. Jhomar Rosa Lima led the offense (2-for-4, 2 RBI). Elvis Del Valle scored three times and swiped a bag. Vasquez started, gave way to Elias and Rodriguez — the bullpen couldn\'t seal it.',
+    image: 'assets/news-game1-slide.jpg',
+    href: 'article.html?id=eagles-game2-may2',
+    score: { us: 9, them: 10 }, opponent: 'Luzern Eagles', location: 'Home · Heerenschürli',
+    notes: '2B · J.Rosa Lima · 2 RBI · 7 innings',
+  },
+  {
+    id: 'cardinals-bern',
+    date: 'Sep 21, 2024', tag: 'Game Recap', tagColor: '#F0B429',
+    headline: 'Late rally sinks Cardinals in Bern',
+    summary: 'A clutch late-inning rally on the road sealed the win for the Barracudas against Bern Cardinals.',
+    image: 'assets/news-vs-eagles-2023.jpg',
+    href: 'article.html?id=cardinals-bern',
+  },
+  {
+    id: 'arregoitia-profile',
+    date: 'Sep 12, 2024', tag: 'Player Profile', tagColor: '#F0B429',
+    headline: 'Inside #77\'s monster summer at the plate',
+    summary: 'Jhon Arregoitia put together an impressive stretch in the second half of the 2024 season, anchoring the lineup at first base.',
+    image: 'assets/news-two-players.jpg',
+    href: 'article.html?id=arregoitia-profile',
+  },
+  {
+    id: 'garcia-signing',
+    date: 'Aug 30, 2024', tag: 'Roster Move', tagColor: '#F0B429',
+    headline: 'Garcia signs on for 2026 season',
+    summary: 'Kelvis Garcia officially re-signs with the Barracudas 3 ahead of the 2026 season, set to bring his two-way skill set back to Heerenschürli.',
+    image: 'assets/news-batter-action.jpg',
+    href: 'article.html?id=garcia-signing',
+  },
+  {
+    id: 'peguero-cg',
+    date: 'Aug 24, 2024', tag: 'Pitching', tagColor: '#F0B429',
+    headline: 'Peguero\'s complete game shuts the door',
+    summary: 'Wilkin Peguero delivered a dominant complete-game performance, shutting out the opposition and giving the Barracudas a statement win.',
+    image: 'assets/news-pitcher.jpg',
+    href: 'article.html?id=peguero-cg',
+  },
+  {
+    id: 'open-tryouts',
+    date: 'Aug 12, 2024', tag: 'Club', tagColor: '#F0B429',
+    headline: 'Open tryouts: how to join the Barracudas',
+    summary: 'Everything you need to know about joining Zürich\'s premier baseball club — from tryout dates to what to bring and what to expect.',
+    image: 'assets/news-game1-dugout.jpg',
+    href: 'article.html?id=open-tryouts',
+  },
+  {
+    id: 'rivera-leadership',
+    date: 'Jul 28, 2024', tag: 'Captain\'s Corner', tagColor: '#F0B429',
+    headline: 'Rivera on leadership, language, the long season',
+    summary: 'An inside look at how the Barracudas captain navigates a multilingual locker room, the grind of a full Swiss season, and what it means to lead.',
+    image: 'assets/news-player-field.jpg',
+    href: 'article.html?id=rivera-leadership',
+  },
+  // ← New articles go here, newest first
 ];
 
 // SHARE — copy current page URL to clipboard with visual feedback
@@ -482,6 +550,17 @@ function initHeroNews() {
 }
 
 document.addEventListener('DOMContentLoaded', initHeroNews);
+
+// ── NEWS CARD CLICK — navigate ignoring share bar ─────────────
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.news-card[data-article-href]').forEach(card => {
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', e => {
+      if (e.target.closest('.share-bar')) return;
+      window.location.href = card.dataset.articleHref;
+    });
+  });
+});
 
 // ── FIRST PITCH — next upcoming game card ────────────────────
 function initFirstPitch() {

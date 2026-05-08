@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Article — Zürich Barracudas 3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<header class="nav">
+  <a href="index.html" class="nav-logo">
+    <img src="assets/logo.png" alt="Barracudas" style="height:40px;width:auto;" />
+    <span>Barracudas</span>
+  </a>
+  <nav class="nav-links">
+    <a href="index.html" data-i18n="nav_home">Home</a>
+    <a href="schedule.html" data-i18n="nav_schedule">Schedule</a>
+    <a href="results.html" data-i18n="nav_results">Results</a>
+    <a href="news.html" class="active" data-i18n="nav_news">News</a>
+    <a href="index.html#roster" data-i18n="nav_roster">Roster</a>
+  </nav>
+  <div class="nav-tools">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <div class="lang-switcher">
+      <button class="lang-btn" data-lang="en">ENG</button>
+      <button class="lang-btn" data-lang="es">ESP</button>
+      <button class="lang-btn" data-lang="de">GER</button>
+    </div>
+    <a href="index.html#join" class="nav-cta" data-i18n="nav_join">Join the Club →</a>
+    <button class="icon-btn menu-btn" id="menu-open" aria-label="Open menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu">
+  <div class="mobile-menu-head">
+    <a href="index.html" class="nav-logo">
+      <img src="assets/logo.png" alt="Barracudas" style="height:36px;width:auto;" />
+      <span>Barracudas</span>
+    </a>
+    <button class="icon-btn" id="menu-close" aria-label="Close menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <nav>
+    <a href="index.html"><span data-i18n="nav_home">Home</span><span class="num">01</span></a>
+    <a href="schedule.html"><span data-i18n="nav_schedule">Schedule</span><span class="num">02</span></a>
+    <a href="results.html"><span data-i18n="nav_results">Results</span><span class="num">03</span></a>
+    <a href="news.html"><span data-i18n="nav_news">News</span><span class="num">04</span></a>
+    <a href="index.html#roster"><span data-i18n="nav_roster">Roster</span><span class="num">05</span></a>
+  </nav>
+  <div class="mobile-menu-foot">
+    <div class="lang-switcher">
+      <button class="lang-btn" data-lang="en">ENG</button>
+      <button class="lang-btn" data-lang="es">ESP</button>
+      <button class="lang-btn" data-lang="de">GER</button>
+    </div>
+    <span>Zürich · CH</span>
+    <span>Est. 1986</span>
+  </div>
+</div>
+
+<!-- ARTICLE CONTENT — populated by JS -->
+<div id="articleRoot"></div>
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div>
+      <div class="nav-logo" style="margin-bottom:20px;">
+        <img src="assets/logo.png" alt="" style="height:40px;width:auto;" />
+        <span>Barracudas</span>
+      </div>
+      <p style="color:var(--ink-mute);max-width:340px;line-height:1.5;font-size:14px;" data-i18n="footer_desc">Zürich Barracudas Baseball Club. Founded 1986. Home of the 2024 NL Baseball Gruppe A Champions.</p>
+    </div>
+    <div><h4 data-i18n="footer_h_club">Club</h4><ul><li><a href="schedule.html" data-i18n="footer_schedule">Schedule</a></li><li><a href="news.html" data-i18n="footer_news">News</a></li><li><a href="index.html#roster" data-i18n="footer_roster">Roster</a></li><li><a href="index.html#join" data-i18n="footer_join">Join Us</a></li></ul></div>
+    <div><h4 data-i18n="footer_h_visit">Visit</h4><ul><li><a href="#">Heerenschürli</a></li><li><a href="#">Zürich, CH</a></li><li><a href="#" data-i18n="footer_directions">Directions</a></li></ul></div>
+    <div><h4 data-i18n="footer_h_connect">Connect</h4><ul><li><a href="#">Instagram</a></li><li><a href="#">Facebook</a></li></ul></div>
+  </div>
+  <div class="footer-big">BARRACUDAS</div>
+  <div class="footer-meta"><span data-i18n="footer_copy">© 2026 Zürich Barracudas Baseball Club</span><span data-i18n="footer_tagline">Bite Harder · Est. 1986</span></div>
+</footer>
+
+<script src="app.js"></script>
+<script src="lang.js"></script>
+<script>
+(function () {
+  const id = new URLSearchParams(location.search).get('id');
+  const root = document.getElementById('articleRoot');
+
+  if (!id || !root) { root.innerHTML = '<div style="padding:80px var(--pad);text-align:center;font-family:var(--mono);color:var(--ink-mute);">Article not found. <a href="news.html" style="color:var(--accent);">← Back to News</a></div>'; return; }
+
+  // NEWS_ARTICLES is defined in app.js (loaded above)
+  const article = (typeof NEWS_ARTICLES !== 'undefined') ? NEWS_ARTICLES.find(a => a.id === id) : null;
+
+  if (!article) {
+    root.innerHTML = `<div style="padding:80px var(--pad);text-align:center;">
+      <p style="font-family:var(--mono);color:var(--ink-mute);font-size:13px;letter-spacing:0.1em;">ARTICLE NOT FOUND</p>
+      <a href="news.html" style="color:var(--accent);font-family:var(--mono);font-size:12px;">← Back to News</a>
+    </div>`;
+    return;
+  }
+
+  // Update page title
+  document.title = article.headline + ' — Zürich Barracudas 3';
+
+  const hasBody = article.body && article.body.trim().length > 0;
+  const hasScore = article.score && article.opponent;
+
+  // Scorebox HTML (if game data exists)
+  const scorebox = hasScore ? `
+    <div style="margin:28px 0;border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;">
+      <div style="background:var(--bg-deep);padding:10px 16px;font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-faint);border-bottom:1px solid var(--line);">
+        Final Score · ${article.date}
+      </div>
+      <div style="display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);">
+        <span style="font-weight:600;font-size:15px;">Barracudas 3</span>
+        <span style="font-family:var(--mono);color:var(--ink-mute);font-size:11px;">NL</span>
+        <span style="font-family:var(--display);font-size:28px;color:${article.score.us >= article.score.them ? 'var(--accent)' : 'var(--ink-mute)'};">${article.score.us}</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:12px;padding:14px 16px;">
+        <span style="font-weight:600;font-size:15px;">${article.opponent}</span>
+        <span style="font-family:var(--mono);color:var(--ink-mute);font-size:11px;"></span>
+        <span style="font-family:var(--display);font-size:28px;color:${article.score.them > article.score.us ? 'var(--accent)' : 'var(--ink-mute)'};">${article.score.them}</span>
+      </div>
+      ${article.notes ? `<div style="padding:10px 16px;font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:0.06em;border-top:1px solid var(--line);">${article.notes}</div>` : ''}
+    </div>
+  ` : '';
+
+  // Coming-soon stub
+  const comingSoon = `
+    <div style="margin:32px 0;padding:28px;background:var(--bg-elev);border:1px solid var(--line);border-radius:var(--r-md);border-left:3px solid var(--accent);">
+      <p style="font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">Próximamente</p>
+      <p style="color:var(--ink-mute);font-size:15px;line-height:1.6;">Full recap coming soon. Check the boxscore for the full game stats.</p>
+      <a href="results.html" style="display:inline-block;margin-top:14px;font-family:var(--mono);font-size:11px;letter-spacing:0.1em;color:var(--accent);">Ver Boxscore completo →</a>
+    </div>
+  `;
+
+  root.innerHTML = `
+    <article class="news-feature" style="border-left:3px solid var(--accent);">
+      <div class="img" style="background:var(--bg-deep);">
+        ${article.image ? `<img src="${article.image}" alt="${article.headline}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'" />` : ''}
+      </div>
+      <div class="body">
+        <span class="byline" style="color:var(--accent);">${article.tag} · ${article.date} · Heerenschürli</span>
+        <h2>${article.headline.replace(/–/g,'–')}<span class="y">.</span></h2>
+        <p style="font-size:17px;color:var(--ink);font-weight:500;margin-bottom:16px;line-height:1.5;">${article.summary}</p>
+        ${scorebox}
+        ${hasBody ? `<p style="line-height:1.7;color:var(--ink-mute);font-size:16px;">${article.body}</p>` : comingSoon}
+        <p style="margin-top:20px;font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-faint);">— Barracudas Press Desk</p>
+        <div style="display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;">
+          <a href="results.html" class="btn btn-ghost">Ver todos los boxscores →</a>
+          <a href="news.html" class="btn btn-ghost">← Volver a noticias</a>
+        </div>
+      </div>
+    </article>
+  `;
+})();
+</script>
+</body>
+</html>
