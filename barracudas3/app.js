@@ -568,28 +568,41 @@ function initPlayerStats() {
     return `${p.first.split(' ')[0][0]}. ${p.last}`;
   }
 
-  function card(label, name, stat) {
-    return `<div>
-      <span class="ps-label">${label}</span>
-      <span class="ps-name">${name}</span>
-      <span class="ps-stat">${stat}</span>
-    </div>`;
+  function initials(p) {
+    return `${p.first[0]}${p.last[0]}`.toUpperCase();
+  }
+
+  function card(label, player, stat) {
+    if (!player) return `<div class="ps-card"><span class="ps-label">${label}</span><span class="ps-name">—</span></div>`;
+    const img = player.img || '';
+    const bgStyle = img ? `style="background-image:url('${img}')"` : '';
+    return `
+      <div class="ps-card" ${bgStyle}>
+        <div class="ps-fallback">${initials(player)}</div>
+        <span class="ps-label">${label}</span>
+        <div class="ps-player-row">
+          <span class="ps-num">#${player.num}</span>
+          <span class="ps-name">${shortName(player)}</span>
+        </div>
+        <span class="ps-stat">${stat}</span>
+      </div>
+    `;
   }
 
   const avgStat = topBatter
     ? topBatter.stats.find(s => s.k === 'AVG').v + ' AVG · ' + (topBatter.stats.find(s => s.k === 'RBI')?.v || '—') + ' RBI'
     : '—';
   const eraStat = topPitcher
-    ? topPitcher.stats.find(s => s.k === 'ERA').v + ' ERA'
+    ? topPitcher.stats.find(s => s.k === 'ERA').v + ' ERA · ' + (topPitcher.stats.find(s => s.k === 'W-L')?.v || '') + ' W-L'
     : '—';
   const streakStat = streakLeader
-    ? streakLeader.streak + '-game hit streak'
+    ? streakLeader.streak + ' juegos consecutivos con hit'
     : '—';
 
   container.innerHTML = [
-    card('Top Batter 2026',  topBatter  ? shortName(topBatter)  : '—', avgStat),
-    card('Top Pitcher 2026', topPitcher ? shortName(topPitcher) : '—', eraStat),
-    card('Hitting Streak',   streakLeader ? shortName(streakLeader) : '—', streakStat),
+    card('Top Batter 2026',  topBatter,    avgStat),
+    card('Top Pitcher 2026', topPitcher,   eraStat),
+    card('Hitting Streak',   streakLeader, streakStat),
   ].join('');
 }
 

@@ -520,41 +520,99 @@ a { color: inherit; text-decoration: none; }
   border-top: 1px solid var(--line);
 }
 
-.player-strip > div {
-  background: var(--bg-elev);
-  padding: 18px 20px;
+/* ── Individual player card with photo background ── */
+.ps-card {
+  position: relative;
+  background-color: var(--bg-deep);
+  background-size: cover;
+  background-position: center top;
+  min-height: 220px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  justify-content: flex-end;
+  gap: 4px;
+  padding: 20px;
+  overflow: hidden;
+  text-decoration: none;
 }
 
-.player-strip .ps-label {
+/* Dark gradient overlay so text is always readable */
+.ps-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(13,46,26,0.97) 0%,
+    rgba(13,46,26,0.70) 45%,
+    rgba(13,46,26,0.20) 100%
+  );
+  z-index: 0;
+}
+
+/* Fallback initials — visible when photo doesn't load */
+.ps-fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--display);
+  font-size: clamp(56px, 8vw, 88px);
+  color: rgba(255,255,255,0.06);
+  pointer-events: none;
+  z-index: 0;
+  letter-spacing: -0.02em;
+}
+
+/* All text children sit above the overlay */
+.ps-card > *:not(.ps-fallback) {
+  position: relative;
+  z-index: 1;
+}
+
+.ps-label {
   font-family: var(--mono);
   font-size: 10px;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--ink-faint);
+  letter-spacing: 0.16em;
+  color: rgba(255,255,255,0.45);
+  margin-bottom: 4px;
 }
 
-.player-strip .ps-name {
+.ps-player-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.ps-num {
   font-family: var(--display);
-  font-size: clamp(18px, 2.2vw, 24px);
+  font-size: clamp(13px, 1.6vw, 16px);
+  color: var(--accent);
+  letter-spacing: 0.04em;
+}
+
+.ps-name {
+  font-family: var(--display);
+  font-size: clamp(20px, 2.4vw, 28px);
   letter-spacing: 0;
   text-transform: uppercase;
   line-height: 1;
-  color: var(--ink);
+  color: #fff;
 }
 
-.player-strip .ps-stat {
+.ps-stat {
   font-family: var(--mono);
   font-size: 11px;
   color: var(--accent);
-  letter-spacing: 0.06em;
-  margin-top: 2px;
+  letter-spacing: 0.08em;
+  margin-top: 4px;
 }
 
 @media (max-width: 800px) {
   .player-strip { grid-template-columns: 1fr; }
+  .ps-card { min-height: 160px; }
 }
 
 .hero-strip {
