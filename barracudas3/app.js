@@ -911,6 +911,25 @@ function initHeroNews() {
 
 document.addEventListener('DOMContentLoaded', initHeroNews);
 
+// ── NEWS FEATURE CAROUSEL ────────────────────────────────────
+(function () {
+  const wrap = document.getElementById('newsFeatureCarousel');
+  if (!wrap) return;
+  const slides = wrap.querySelectorAll('.news-carousel-slide');
+  const dots   = wrap.querySelectorAll('.ncd');
+  if (!slides.length) return;
+  let cur = 0;
+  function goTo(i) {
+    slides[cur].classList.remove('active');
+    dots[cur] && dots[cur].classList.remove('active');
+    cur = (i + slides.length) % slides.length;
+    slides[cur].classList.add('active');
+    dots[cur] && dots[cur].classList.add('active');
+  }
+  dots.forEach((d, i) => d.addEventListener('click', () => { clearInterval(t); goTo(i); t = setInterval(() => goTo(cur + 1), 4000); }));
+  let t = setInterval(() => goTo(cur + 1), 4000);
+})();
+
 // ── NEWS CARD CLICK — navigate ignoring share bar ─────────────
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.news-card[data-article-href]').forEach(card => {

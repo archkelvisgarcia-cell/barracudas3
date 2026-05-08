@@ -78,8 +78,23 @@
 
 <!-- FEATURE -->
 <article class="news-feature" style="border-left: 4px solid #FF69B4;">
-  <div class="img">
-    <img src="assets/news-pink-game.jpg" alt="Pink Game — Barracudas 3 vs NLA, May 5, 2026" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" onerror="this.style.background='linear-gradient(135deg,#c2185b,#880e4f)';this.removeAttribute('src');" />
+  <div class="img" id="newsFeatureCarousel">
+    <div class="news-carousel-slide active" style="background-image:url('assets/nightgame-1.jpg')"></div>
+    <div class="news-carousel-slide" style="background-image:url('assets/nightgame-7.jpg')"></div>
+    <div class="news-carousel-slide" style="background-image:url('assets/nightgame-14.jpg')"></div>
+    <div class="news-carousel-slide" style="background-image:url('assets/nightgame-20.jpg')"></div>
+    <div class="news-carousel-slide" style="background-image:url('assets/nightgame-22.jpg')"></div>
+    <div class="news-carousel-slide" style="background-image:url('assets/pink-game-team.jpg')"></div>
+    <div class="news-carousel-slide" style="background-image:url('assets/news-pink-game-02.jpg')"></div>
+    <div class="news-carousel-dots">
+      <button class="ncd active"></button>
+      <button class="ncd"></button>
+      <button class="ncd"></button>
+      <button class="ncd"></button>
+      <button class="ncd"></button>
+      <button class="ncd"></button>
+      <button class="ncd"></button>
+    </div>
   </div>
   <div class="body reveal">
     <span class="byline" style="color:#FF69B4;">🩷 Pink Game Special · May 5, 2026 · Heerenschürli</span>
@@ -101,58 +116,55 @@
 </article>
 
 <!-- PINK GAME PHOTO ALBUM -->
-<section class="pink-album">
+<section class="pink-album" id="pinkAlbumSection">
   <div class="pink-album-head">
     <span class="pink-album-title">🩷 Pink Game — Photo Album</span>
     <span class="eyebrow">May 5, 2026 · 39 photos</span>
   </div>
 
-  <!-- Main team photo -->
-  <div class="pink-album-main" data-pg-lightbox="assets/pink-game-team.jpg">
-    <img src="assets/pink-game-team.jpg" alt="Barracudas 3 team — Pink Game May 5, 2026" />
+  <div class="pink-album-grid">
+    <div class="pink-thumb" data-pg-lightbox="assets/pink-game-team.jpg"><img src="assets/pink-game-team.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb" data-pg-lightbox="assets/nightgame-1.jpg"><img src="assets/nightgame-1.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb" data-pg-lightbox="assets/nightgame-7.jpg"><img src="assets/nightgame-7.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb" data-pg-lightbox="assets/nightgame-14.jpg"><img src="assets/nightgame-14.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb" data-pg-lightbox="assets/nightgame-20.jpg"><img src="assets/nightgame-20.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb" data-pg-lightbox="assets/nightgame-22.jpg"><img src="assets/nightgame-22.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb" data-pg-lightbox="assets/news-pink-game-02.jpg"><img src="assets/news-pink-game-02.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb" data-pg-lightbox="assets/news-pink-game-04.jpg"><img src="assets/news-pink-game-04.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb pa-hidden" data-pg-lightbox="assets/news-pink-game-01.jpg"><img src="assets/news-pink-game-01.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb pa-hidden" data-pg-lightbox="assets/news-pink-game-03.jpg"><img src="assets/news-pink-game-03.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb pa-hidden" data-pg-lightbox="assets/news-pink-game-05.jpg"><img src="assets/news-pink-game-05.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb pa-hidden" data-pg-lightbox="assets/news-pink-game-08.jpg"><img src="assets/news-pink-game-08.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb pa-hidden" data-pg-lightbox="assets/news-pink-game-10.jpg"><img src="assets/news-pink-game-10.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb pa-hidden" data-pg-lightbox="assets/news-pink-game-11.jpg"><img src="assets/news-pink-game-11.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb pa-hidden" data-pg-lightbox="assets/news-pink-game-12.jpg"><img src="assets/news-pink-game-12.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb pa-hidden" data-pg-lightbox="assets/news-pink-game-13.jpg"><img src="assets/news-pink-game-13.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb pa-hidden" data-pg-lightbox="assets/pink-game-18.jpg"><img src="assets/pink-game-18.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb pa-hidden" data-pg-lightbox="assets/pink-game-19.jpg"><img src="assets/pink-game-19.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb pa-hidden" data-pg-lightbox="assets/pink-game-20.jpg"><img src="assets/pink-game-20.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb pa-hidden" data-pg-lightbox="assets/pink-game-21.jpg"><img src="assets/pink-game-21.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb pa-hidden" data-pg-lightbox="assets/pink-game-22.jpg"><img src="assets/pink-game-22.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb pa-hidden" data-pg-lightbox="assets/pink-game-23.jpg"><img src="assets/pink-game-23.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb pa-hidden" data-pg-lightbox="assets/pink-game-24.jpg"><img src="assets/pink-game-24.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb pa-hidden" data-pg-lightbox="assets/pink-game-25.jpg"><img src="assets/pink-game-25.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb pa-hidden" data-pg-lightbox="assets/nightgame-2.jpg"><img src="assets/nightgame-2.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb pa-hidden" data-pg-lightbox="assets/nightgame-3.jpg"><img src="assets/nightgame-3.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb pa-hidden" data-pg-lightbox="assets/nightgame-4.jpg"><img src="assets/nightgame-4.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb pa-hidden" data-pg-lightbox="assets/nightgame-6.jpg"><img src="assets/nightgame-6.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb pa-hidden" data-pg-lightbox="assets/nightgame-9.jpg"><img src="assets/nightgame-9.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb pa-hidden" data-pg-lightbox="assets/nightgame-10.jpg"><img src="assets/nightgame-10.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb pa-hidden" data-pg-lightbox="assets/nightgame-11.jpg"><img src="assets/nightgame-11.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb pa-hidden" data-pg-lightbox="assets/nightgame-15.jpg"><img src="assets/nightgame-15.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb pa-hidden" data-pg-lightbox="assets/nightgame-16.jpg"><img src="assets/nightgame-16.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb pa-hidden" data-pg-lightbox="assets/nightgame-18.jpg"><img src="assets/nightgame-18.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb pa-hidden" data-pg-lightbox="assets/nightgame-19.jpg"><img src="assets/nightgame-19.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb pa-hidden" data-pg-lightbox="assets/nightgame-21.jpg"><img src="assets/nightgame-21.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb pa-hidden" data-pg-lightbox="assets/nightgame-23.jpg"><img src="assets/nightgame-23.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb pa-hidden" data-pg-lightbox="assets/nightgame-24.jpg"><img src="assets/nightgame-24.jpg" alt="" loading="lazy" /></div>
+    <div class="pink-thumb pa-hidden" data-pg-lightbox="assets/nightgame-26.jpg"><img src="assets/nightgame-26.jpg" alt="" loading="lazy" /></div>
   </div>
 
-  <!-- Thumbnail grid — 18 photos -->
-  <div class="pink-album-grid">
-    <div class="pink-thumb" data-pg-lightbox="assets/news-pink-game-01.jpg"><img src="assets/news-pink-game-01.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/news-pink-game-02.jpg"><img src="assets/news-pink-game-02.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/news-pink-game-03.jpg"><img src="assets/news-pink-game-03.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/news-pink-game-04.jpg"><img src="assets/news-pink-game-04.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/news-pink-game-05.jpg"><img src="assets/news-pink-game-05.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/news-pink-game-08.jpg"><img src="assets/news-pink-game-08.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/news-pink-game-10.jpg"><img src="assets/news-pink-game-10.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/news-pink-game-11.jpg"><img src="assets/news-pink-game-11.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/news-pink-game-12.jpg"><img src="assets/news-pink-game-12.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/news-pink-game-13.jpg"><img src="assets/news-pink-game-13.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/pink-game-18.jpg"><img src="assets/pink-game-18.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/pink-game-19.jpg"><img src="assets/pink-game-19.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/pink-game-20.jpg"><img src="assets/pink-game-20.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/pink-game-21.jpg"><img src="assets/pink-game-21.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/pink-game-22.jpg"><img src="assets/pink-game-22.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/pink-game-23.jpg"><img src="assets/pink-game-23.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/pink-game-24.jpg"><img src="assets/pink-game-24.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/pink-game-25.jpg"><img src="assets/pink-game-25.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/nightgame-1.jpg"><img src="assets/nightgame-1.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/nightgame-2.jpg"><img src="assets/nightgame-2.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/nightgame-3.jpg"><img src="assets/nightgame-3.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/nightgame-4.jpg"><img src="assets/nightgame-4.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/nightgame-6.jpg"><img src="assets/nightgame-6.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/nightgame-7.jpg"><img src="assets/nightgame-7.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/nightgame-9.jpg"><img src="assets/nightgame-9.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/nightgame-10.jpg"><img src="assets/nightgame-10.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/nightgame-11.jpg"><img src="assets/nightgame-11.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/nightgame-14.jpg"><img src="assets/nightgame-14.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/nightgame-15.jpg"><img src="assets/nightgame-15.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/nightgame-16.jpg"><img src="assets/nightgame-16.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/nightgame-18.jpg"><img src="assets/nightgame-18.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/nightgame-19.jpg"><img src="assets/nightgame-19.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/nightgame-20.jpg"><img src="assets/nightgame-20.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/nightgame-21.jpg"><img src="assets/nightgame-21.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/nightgame-22.jpg"><img src="assets/nightgame-22.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/nightgame-23.jpg"><img src="assets/nightgame-23.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/nightgame-24.jpg"><img src="assets/nightgame-24.jpg" alt="" loading="lazy" /></div>
-    <div class="pink-thumb" data-pg-lightbox="assets/nightgame-26.jpg"><img src="assets/nightgame-26.jpg" alt="" loading="lazy" /></div>
-  </div>
+  <button class="pa-expand-btn" id="paExpandBtn" onclick="(function(){document.getElementById('pinkAlbumSection').classList.toggle('expanded');var b=document.getElementById('paExpandBtn');b.textContent=document.getElementById('pinkAlbumSection').classList.contains('expanded')?'Ver menos ↑':'Ver todas las fotos → (39)'})()">Ver todas las fotos → (39)</button>
 </section>
 
 <!-- Pink Game Lightbox (isolated from the main gallery lightbox) -->

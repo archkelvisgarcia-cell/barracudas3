@@ -1206,9 +1206,44 @@ a { color: inherit; text-decoration: none; }
 }
 @media (max-width: 900px) { .news-feature { grid-template-columns: 1fr; } }
 .news-feature .img {
-  background: var(--bg-elev);
+  background: var(--bg-deep);
   aspect-ratio: 16 / 10;
   position: relative;
+  overflow: hidden;
+  max-height: 400px;
+}
+
+/* ── News feature carousel ── */
+.news-carousel-slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+.news-carousel-slide.active { opacity: 1; }
+
+.news-carousel-dots {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  z-index: 2;
+}
+.ncd {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.35);
+  border: none; cursor: pointer; padding: 0;
+  transition: background 0.2s, transform 0.2s;
+}
+.ncd.active { background: #fff; transform: scale(1.4); }
+
+@media (max-width: 768px) {
+  .news-feature .img { max-height: 250px; aspect-ratio: unset; height: 250px; }
 }
 .news-feature .img .ph {
   position: absolute; inset: 0; border-radius: 0; border: 0;
@@ -1368,7 +1403,7 @@ a { color: inherit; text-decoration: none; }
    PINK GAME PHOTO ALBUM
 ============================================================ */
 .pink-album {
-  padding: clamp(40px, 6vw, 80px) var(--pad);
+  padding: 24px var(--pad) 32px;
   background: color-mix(in oklab, #FF69B4 4%, var(--bg));
   border-top: 1px solid rgba(255,105,180,0.2);
   border-bottom: 1px solid rgba(255,105,180,0.2);
@@ -1379,44 +1414,24 @@ a { color: inherit; text-decoration: none; }
   align-items: center;
   flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 .pink-album-title {
   font-family: var(--display);
-  font-size: clamp(22px, 4vw, 36px);
+  font-size: clamp(18px, 3vw, 28px);
   text-transform: uppercase;
   letter-spacing: -0.01em;
   color: var(--ink);
 }
-.pink-album-main {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border-radius: var(--r-lg);
-  overflow: hidden;
-  margin-bottom: 10px;
-  cursor: pointer;
-  border: 2px solid rgba(255,105,180,0.35);
-  transition: box-shadow 0.3s;
-}
-.pink-album-main:hover {
-  box-shadow: 0 0 32px rgba(255,105,180,0.35);
-}
-.pink-album-main img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  transition: transform 0.4s var(--ease);
-}
-.pink-album-main:hover img { transform: scale(1.02); }
 .pink-album-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
 }
 .pink-thumb {
   position: relative;
   aspect-ratio: 1 / 1;
-  border-radius: var(--r-md);
+  border-radius: var(--r-sm);
   overflow: hidden;
   cursor: pointer;
   border: 1px solid rgba(255,105,180,0.18);
@@ -1429,10 +1444,33 @@ a { color: inherit; text-decoration: none; }
 }
 .pink-thumb:hover {
   transform: scale(0.97);
-  box-shadow: 0 0 18px rgba(255,105,180,0.5);
+  box-shadow: 0 0 12px rgba(255,105,180,0.5);
   border-color: #FF69B4;
 }
-@media (max-width: 600px) {
+.pink-thumb.pa-hidden { display: none; }
+.pink-album.expanded .pa-hidden { display: block; }
+
+.pa-expand-btn {
+  display: block;
+  margin: 14px auto 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #FF69B4;
+  background: none;
+  border: 1px solid rgba(255,105,180,0.35);
+  border-radius: var(--r-pill);
+  padding: 6px 18px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+.pa-expand-btn:hover { background: rgba(255,105,180,0.08); border-color: #FF69B4; }
+
+@media (max-width: 900px) {
+  .pink-album-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 540px) {
   .pink-album-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
