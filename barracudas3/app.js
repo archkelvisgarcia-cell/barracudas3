@@ -143,6 +143,9 @@ function copyLink(btn) {
   els.forEach(e => io.observe(e));
 })();
 
+// ── PLAYER REGISTRY — global lookup for modal ───────────────
+const PLAYER_REGISTRY = new Map();
+
 // ROSTER — render flip cards directly from JSON stats
 (function () {
   const grid = document.querySelector('.roster-grid');
@@ -151,6 +154,9 @@ function copyLink(btn) {
 
   let roster;
   try { roster = JSON.parse(data.textContent); } catch (e) { return; }
+
+  // Register all players globally
+  roster.forEach(p => PLAYER_REGISTRY.set(p.num, p));
 
   grid.innerHTML = roster.map((p, i) => `
     <div class="player reveal${p.captain ? ' is-captain' : ''}" data-delay="${i % 4}">
@@ -175,7 +181,7 @@ function copyLink(btn) {
             `).join('')}
           </div>
           <div class="back-foot">
-            <span class="back-team">Barracudas · 2026</span>
+            <button class="btn-view-profile" data-num="${p.num}">Ver Perfil →</button>
             <span class="back-flip">↺ flip</span>
           </div>
           <span class="player-tap-hint">Tap to flip back</span>
@@ -193,8 +199,17 @@ function copyLink(btn) {
     grid.querySelectorAll('.reveal').forEach(e => e.classList.add('in'));
   }
 
-  grid.querySelectorAll('.player').forEach(p => {
-    p.addEventListener('click', () => p.classList.toggle('flipped'));
+  grid.querySelectorAll('.player').forEach(card => {
+    card.addEventListener('click', () => card.classList.toggle('flipped'));
+  });
+
+  // "Ver Perfil" buttons — stop propagation so card doesn't flip
+  grid.querySelectorAll('.btn-view-profile').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const player = PLAYER_REGISTRY.get(btn.dataset.num);
+      if (player) openPlayerModal(player);
+    });
   });
 })();
 
@@ -579,7 +594,7 @@ function initPlayerStats() {
       ? `<img src="${img}" alt="${shortName(player)}" onerror="this.parentNode.textContent='${initials(player)}'" />`
       : initials(player);
     return `
-      <div class="ps-card">
+      <div class="ps-card" data-num="${player.num}" title="Ver perfil completo">
         <div class="ps-photo">${photoContent}</div>
         <div class="ps-info">
           <span class="ps-label">${label}</span>
@@ -608,6 +623,89 @@ function initPlayerStats() {
     card('Top Pitcher 2026', topPitcher,   eraStat),
     card('Hitting Streak',   streakLeader, streakStat),
   ].join('');
+
+  // Click on any player stat card opens the modal
+  container.querySelectorAll('.ps-card[data-num]').forEach(el => {
+    el.style.cursor = 'pointer';
+    el.addEventListener('click', () => {
+      const player = PLAYER_REGISTRY.get(el.dataset.num);
+      if (player) openPlayerModal(player);
+    });
+  });
 }
 
 document.addEventListener('DOMContentLoaded', initPlayerStats);
+
+// ── PLAYER PROFILE MODAL ──────────────────────────────────────
+function openPlayerModal(player) {
+  const modal      = document.getElementById('playerModal');
+  const photoEl    = document.getElementById('pmPhoto');
+  const badgeEl    = document.getElementById('pmBadge');
+  const nameEl     = document.getElementById('pmName');
+  const posEl      = document.getElementById('pmPos');
+  const typeLabel  = document.getElementById('pmTypeLabel');
+  const statsGrid  = document.getElementById('pmStatsGrid');
+  const extraEl    = document.getElementById('pmExtra');
+  const linksEl    = document.getElementById('pmLinks');
+  if (!modal) return;
+
+  // Photo
+  photoEl.innerHTML = '';
+  if (player.img) {
+    const img = document.createElement('img');
+    img.src = player.img;
+    img.alt = `${player.first} ${player.last}`;
+    img.onerror = () => { photoEl.innerHTML = `${player.first[0]}${player.last[0]}`.toUpperCase(); };
+    photoEl.appendChild(img);
+  } else {
+    photoEl.textContent = `${player.first[0]}${player.last[0]}`.toUpperCase();
+  }
+
+  // Identity
+  badgeEl.textContent = `#${player.num} · ${player.type === 'pitcher' ? 'Pitcher' : player.type === 'both' ? 'Two-Way' : 'Batter'}`;
+  nameEl.textContent  = `${player.first} ${player.last}`;
+  posEl.textContent   = `${player.pos} · ${player.flag} ${player.country}`;
+
+  // Stats section label
+  const labelMap = { batter: 'Batting Stats 2026', pitcher: 'Pitching Stats 2026', both: 'Season Stats 2026' };
+  typeLabel.textContent = labelMap[player.type] || 'Stats 2026';
+
+  // Stats grid from player.stats array
+  statsGrid.innerHTML = (player.stats || []).map(s => `
+    <div class="pm-stat-cell">
+      <span class="pm-stat-k">${s.k}</span>
+      <span class="pm-stat-v">${s.v}</span>
+    </div>
+  `).join('');
+
+  // Extra chips
+  const chips = [];
+  if (player.captain)    chips.push('★ Captain');
+  if (player.streak > 0) chips.push(`${player.streak}-game hit streak`);
+  extraEl.innerHTML = chips.map(c => `<span class="pm-chip">${c}</span>`).join('');
+  extraEl.style.display = chips.length ? '' : 'none';
+
+  // EasyScore link
+  linksEl.innerHTML = player.easyscoreId
+    ? `<a class="pm-easyscore-link" href="https://www.easyscore.com/players/${player.easyscoreId}" target="_blank" rel="noopener">Ver stats completos en EasyScore ↗</a>`
+    : '';
+
+  // Show modal
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePlayerModal() {
+  const modal = document.getElementById('playerModal');
+  if (!modal) return;
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('pmClose')?.addEventListener('click', closePlayerModal);
+  document.getElementById('pmOverlay')?.addEventListener('click', closePlayerModal);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closePlayerModal(); });
+});
