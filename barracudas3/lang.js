@@ -55,6 +55,14 @@
       btn_full_boxscore: 'Full Boxscore ↗',
       btn_standings: 'League Standings ↗',
       btn_easyscore: 'Full Stats on EasyScore ↗',
+
+      art_press_desk: '— Barracudas Press Desk',
+      art_coming_soon_label: 'Coming Soon',
+      art_coming_soon_body: 'Full recap coming soon. Check the boxscore for the full game stats.',
+      art_btn_boxscore: 'See Full Boxscores →',
+      art_btn_back: '← Back to News',
+      art_final_score: 'Final Score',
+      art_read_full: 'Read Full Article →',
     },
 
     es: {
@@ -110,6 +118,14 @@
       btn_full_boxscore: 'Boxscore completo ↗',
       btn_standings: 'Tabla de Posiciones ↗',
       btn_easyscore: 'Estadísticas en EasyScore ↗',
+
+      art_press_desk: '— Mesa de Prensa Barracudas',
+      art_coming_soon_label: 'Próximamente',
+      art_coming_soon_body: 'Resumen completo próximamente. Consulta el boxscore para las estadísticas del juego.',
+      art_btn_boxscore: 'Ver boxscores →',
+      art_btn_back: '← Volver a noticias',
+      art_final_score: 'Marcador Final',
+      art_read_full: 'Leer artículo completo →',
     },
 
     de: {
@@ -165,6 +181,14 @@
       btn_full_boxscore: 'Vollständiger Boxscore ↗',
       btn_standings: 'Liga-Tabelle ↗',
       btn_easyscore: 'Alle Stats auf EasyScore ↗',
+
+      art_press_desk: '— Barracudas Pressestelle',
+      art_coming_soon_label: 'Demnächst',
+      art_coming_soon_body: 'Vollständiger Bericht kommt bald. Schau dir den Boxscore für die Spielstatistiken an.',
+      art_btn_boxscore: 'Boxscores ansehen →',
+      art_btn_back: '← Zurück zu Neuigkeiten',
+      art_final_score: 'Endergebnis',
+      art_read_full: 'Vollständigen Artikel lesen →',
     },
   };
 
@@ -180,6 +204,7 @@
     );
     localStorage.setItem('bar3-lang', lang);
     document.documentElement.lang = lang;
+    if (typeof window._onLangChange === 'function') window._onLangChange(lang);
   }
 
   function init() {
@@ -193,4 +218,7 @@
   document.readyState === 'loading'
     ? document.addEventListener('DOMContentLoaded', init)
     : init();
+
+  // Expose globally so article.html can read current lang + translations
+  window._barLang = { get: () => localStorage.getItem('bar3-lang') || 'en', T };
 })();

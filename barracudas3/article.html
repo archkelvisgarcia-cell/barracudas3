@@ -91,12 +91,14 @@
 <script src="lang.js"></script>
 <script>
 (function () {
-  const id = new URLSearchParams(location.search).get('id');
+  const id   = new URLSearchParams(location.search).get('id');
   const root = document.getElementById('articleRoot');
 
-  if (!id || !root) { root.innerHTML = '<div style="padding:80px var(--pad);text-align:center;font-family:var(--mono);color:var(--ink-mute);">Article not found. <a href="news.html" style="color:var(--accent);">← Back to News</a></div>'; return; }
+  if (!id || !root) {
+    root.innerHTML = '<div style="padding:80px var(--pad);text-align:center;font-family:var(--mono);color:var(--ink-mute);">Article not found. <a href="news.html" style="color:var(--accent);">← Back to News</a></div>';
+    return;
+  }
 
-  // NEWS_ARTICLES is defined in app.js (loaded above)
   const article = (typeof NEWS_ARTICLES !== 'undefined') ? NEWS_ARTICLES.find(a => a.id === id) : null;
 
   if (!article) {
@@ -107,60 +109,88 @@
     return;
   }
 
-  // Update page title
-  document.title = article.headline + ' — Zürich Barracudas 3';
+  // ── Helpers ──────────────────────────────────────────────────
+  function getLang() {
+    return (window._barLang && window._barLang.get()) || localStorage.getItem('bar3-lang') || 'en';
+  }
 
-  const hasBody = article.body && article.body.trim().length > 0;
-  const hasScore = article.score && article.opponent;
+  function t(key) {
+    const lang = getLang();
+    const T = window._barLang && window._barLang.T;
+    if (!T) return key;
+    return (T[lang] && T[lang][key]) || (T.en && T.en[key]) || key;
+  }
 
-  // Scorebox HTML (if game data exists)
-  const scorebox = hasScore ? `
-    <div style="margin:28px 0;border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;">
-      <div style="background:var(--bg-deep);padding:10px 16px;font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-faint);border-bottom:1px solid var(--line);">
-        Final Score · ${article.date}
-      </div>
-      <div style="display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);">
-        <span style="font-weight:600;font-size:15px;">Barracudas 3</span>
-        <span style="font-family:var(--mono);color:var(--ink-mute);font-size:11px;">NL</span>
-        <span style="font-family:var(--display);font-size:28px;color:${article.score.us >= article.score.them ? 'var(--accent)' : 'var(--ink-mute)'};">${article.score.us}</span>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:12px;padding:14px 16px;">
-        <span style="font-weight:600;font-size:15px;">${article.opponent}</span>
-        <span style="font-family:var(--mono);color:var(--ink-mute);font-size:11px;"></span>
-        <span style="font-family:var(--display);font-size:28px;color:${article.score.them > article.score.us ? 'var(--accent)' : 'var(--ink-mute)'};">${article.score.them}</span>
-      </div>
-      ${article.notes ? `<div style="padding:10px 16px;font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:0.06em;border-top:1px solid var(--line);">${article.notes}</div>` : ''}
-    </div>
-  ` : '';
+  // Get article field in current lang, fallback to EN
+  function loc(field) {
+    const lang = getLang();
+    if (lang !== 'en' && article.i18n && article.i18n[lang] && article.i18n[lang][field]) {
+      return article.i18n[lang][field];
+    }
+    return article[field] || '';
+  }
 
-  // Coming-soon stub
-  const comingSoon = `
-    <div style="margin:32px 0;padding:28px;background:var(--bg-elev);border:1px solid var(--line);border-radius:var(--r-md);border-left:3px solid var(--accent);">
-      <p style="font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">Próximamente</p>
-      <p style="color:var(--ink-mute);font-size:15px;line-height:1.6;">Full recap coming soon. Check the boxscore for the full game stats.</p>
-      <a href="results.html" style="display:inline-block;margin-top:14px;font-family:var(--mono);font-size:11px;letter-spacing:0.1em;color:var(--accent);">Ver Boxscore completo →</a>
-    </div>
-  `;
+  // ── Render ───────────────────────────────────────────────────
+  function render() {
+    const headline = loc('headline') || article.headline;
+    const summary  = loc('summary')  || article.summary;
+    const body     = loc('body')     || article.body || '';
+    const tag      = loc('tag')      || article.tag;
 
-  root.innerHTML = `
-    <article class="news-feature" style="border-left:3px solid var(--accent);">
-      <div class="img" style="background:var(--bg-deep);">
-        ${article.image ? `<img src="${article.image}" alt="${article.headline}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'" />` : ''}
-      </div>
-      <div class="body">
-        <span class="byline" style="color:var(--accent);">${article.tag} · ${article.date} · Heerenschürli</span>
-        <h2>${article.headline.replace(/–/g,'–')}<span class="y">.</span></h2>
-        <p style="font-size:17px;color:var(--ink);font-weight:500;margin-bottom:16px;line-height:1.5;">${article.summary}</p>
-        ${scorebox}
-        ${hasBody ? `<p style="line-height:1.7;color:var(--ink-mute);font-size:16px;">${article.body}</p>` : comingSoon}
-        <p style="margin-top:20px;font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-faint);">— Barracudas Press Desk</p>
-        <div style="display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;">
-          <a href="results.html" class="btn btn-ghost">Ver todos los boxscores →</a>
-          <a href="news.html" class="btn btn-ghost">← Volver a noticias</a>
+    document.title = headline + ' — Zürich Barracudas 3';
+
+    const hasBody  = body.trim().length > 0;
+    const hasScore = article.score && article.opponent;
+
+    const scorebox = hasScore ? `
+      <div style="margin:28px 0;border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;">
+        <div style="background:var(--bg-deep);padding:10px 16px;font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-faint);border-bottom:1px solid var(--line);">
+          ${t('art_final_score')} · ${article.date}
         </div>
-      </div>
-    </article>
-  `;
+        <div style="display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);">
+          <span style="font-weight:600;font-size:15px;">Barracudas 3</span>
+          <span style="font-family:var(--mono);color:var(--ink-mute);font-size:11px;">NL</span>
+          <span style="font-family:var(--display);font-size:28px;color:${article.score.us >= article.score.them ? 'var(--accent)' : 'var(--ink-mute)'};">${article.score.us}</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:12px;padding:14px 16px;">
+          <span style="font-weight:600;font-size:15px;">${article.opponent}</span>
+          <span></span>
+          <span style="font-family:var(--display);font-size:28px;color:${article.score.them > article.score.us ? 'var(--accent)' : 'var(--ink-mute)'};">${article.score.them}</span>
+        </div>
+        ${article.notes ? `<div style="padding:10px 16px;font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:0.06em;border-top:1px solid var(--line);">${article.notes}</div>` : ''}
+      </div>` : '';
+
+    const comingSoon = `
+      <div style="margin:32px 0;padding:28px;background:var(--bg-elev);border:1px solid var(--line);border-radius:var(--r-md);border-left:3px solid var(--accent);">
+        <p style="font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">${t('art_coming_soon_label')}</p>
+        <p style="color:var(--ink-mute);font-size:15px;line-height:1.6;">${t('art_coming_soon_body')}</p>
+        <a href="results.html" style="display:inline-block;margin-top:14px;font-family:var(--mono);font-size:11px;letter-spacing:0.1em;color:var(--accent);">${t('art_btn_boxscore')}</a>
+      </div>`;
+
+    root.innerHTML = `
+      <article class="news-feature" style="border-left:3px solid var(--accent);">
+        <div class="img" style="background:var(--bg-deep);">
+          ${article.image ? `<img src="${article.image}" alt="${headline}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'" />` : ''}
+        </div>
+        <div class="body">
+          <span class="byline" style="color:var(--accent);">${tag} · ${article.date} · Heerenschürli</span>
+          <h2>${headline}<span class="y">.</span></h2>
+          <p style="font-size:17px;color:var(--ink);font-weight:500;margin-bottom:16px;line-height:1.5;">${summary}</p>
+          ${scorebox}
+          ${hasBody ? `<p style="line-height:1.7;color:var(--ink-mute);font-size:16px;">${body}</p>` : comingSoon}
+          <p style="margin-top:20px;font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-faint);">${t('art_press_desk')}</p>
+          <div style="display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;">
+            <a href="results.html" class="btn btn-ghost">${t('art_btn_boxscore')}</a>
+            <a href="news.html" class="btn btn-ghost">${t('art_btn_back')}</a>
+          </div>
+        </div>
+      </article>`;
+  }
+
+  render();
+
+  // Re-render when user switches language (lang.js fires this hook)
+  window._onLangChange = render;
 })();
 </script>
 </body>

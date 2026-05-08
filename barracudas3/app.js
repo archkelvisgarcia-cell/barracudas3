@@ -95,6 +95,20 @@ const NEWS_ARTICLES = [
     image: 'assets/news-pink-game-02.jpg',
     href: 'pink-game-recap.html', featured: true,
     score: { us: 5, them: 17 }, opponent: 'Barracudas NLA', location: 'Home · Heerenschürli',
+    i18n: {
+      es: {
+        tag: '🩷 Pink Game',
+        headline: 'Barracudas 3 caen 17-5 en el Pink Game ante el equipo NLA',
+        summary: 'Bajo las luces de Heerenschürli, los Barracudas 3 vistieron sus uniformes rosas por una causa especial — concientizar sobre el cáncer de mama — pero el equipo NLA tenía otros planes.',
+        body: 'Bajo las luces de Heerenschürli, los Barracudas 3 vistieron sus uniformes rosas por una causa especial — concientizar sobre el cáncer de mama — pero el equipo NLA tenía otros planes. Los Zürich Barracudas NLA se impusieron 17-5 en el duelo entre clubes, impulsados por una actuación dominante de Nicholas Michael Miceli, quien lanzó 3.0 entradas perfectas con 7 ponches en solo 30 lanzamientos. Los Barracudas 3 mostraron pelea temprana, igualando 3-3 hasta el segundo inning, pero todo se derrumbó en el sexto cuando el NLA anotó ocho carreras. Peguero tomó la derrota tras solo 0.2 entradas. En el lado positivo: Malchans fue 2-de-4 con 2 carreras impulsadas, Medina continuó su racha caliente con 2 hits, Rosa Lima agregó 2 hits y una impulsada, y García aportó una impulsada clave. El Pink Game recaudó fondos para la investigación del cáncer de mama. Próximo partido: 30 de mayo vs Sissach Frogs.',
+      },
+      de: {
+        tag: '🩷 Pink Game',
+        headline: 'Barracudas 3 verlieren 17-5 im Pink Game gegen NLA-Team',
+        summary: 'Unter den Lichtern des Heerenschürli traten die Barracudas 3 in ihren pinken Trikots für Brustkrebsvorsorge an — doch das NLA-Team hatte andere Pläne.',
+        body: 'Unter den Lichtern des Heerenschürli traten die Barracudas 3 in ihren pinken Trikots für Brustkrebsvorsorge an — doch das NLA-Team hatte andere Pläne. Die Zürich Barracudas NLA gewannen klar mit 17-5, angetrieben von einer dominanten Pitching-Leistung von Nicholas Michael Miceli, der perfekte 3.0 Innings mit 7 Strikeouts in nur 30 Würfen warf. Die Barracudas 3 zeigten frühen Kampfgeist und hielten bis zum zweiten Inning mit 3-3 mit, aber im sechsten Inning brach alles zusammen, als das NLA-Team acht Läufe erzielte. Peguero kassierte die Niederlage nach nur 0.2 Innings. Auf der positiven Seite: Malchans ging 2-für-4 mit 2 RBI, Medina setzte seine heiße Serie fort, Rosa Lima fügte 2 Hits und ein RBI hinzu, und Garcia steuerte ein entscheidendes RBI bei. Das Pink Game sammelte Spenden für die Brustkrebsforschung. Nächstes Spiel: 30. Mai gegen Sissach Frogs.',
+      },
+    },
   },
   {
     id: 'eagles-game1-may2',
@@ -106,6 +120,20 @@ const NEWS_ARTICLES = [
     href: 'article.html?id=eagles-game1-may2',
     score: { us: 9, them: 23 }, opponent: 'Luzern Eagles', location: 'Home · Heerenschürli',
     notes: 'HR · K.Garcia · 9 innings',
+    i18n: {
+      es: {
+        tag: 'Resumen de Partido',
+        headline: 'Las Águilas explotan con 23 carreras en la paliza del Juego 1',
+        summary: 'Los Barracudas cayeron en el primer juego del doubleheader en casa, 23-9 en Heerenschürli. Kelvis Garcia fue el único punto brillante — 3-de-5 con un jonrón, 2 dobles y 3 carreras impulsadas.',
+        body: 'Los Barracudas cayeron en el primer juego del doubleheader en casa, 23-9 en Heerenschürli. Kelvis Garcia fue el único punto brillante — 3-de-5 con un jonrón, 2 dobles y 3 carreras impulsadas. Hansel Rodriguez agregó 3 hits desde el banco. Wilkin Peguero tomó la derrota, lanzando 3.1 entradas y permitiendo 8 carreras limpias. Los Cudas fueron 6-de-19 con corredores en posición anotadora y dejaron 8 en base.',
+      },
+      de: {
+        tag: 'Spielbericht',
+        headline: 'Eagles erzielen 23 Läufe in dominantem Spiel 1',
+        summary: 'Die Barracudas verloren Spiel 1 des Heim-Doubleheaders 23-9 im Heerenschürli. Kelvis Garcia war der einzige Lichtblick — 3-für-5 mit einem Home Run, 2 Doubles und 3 RBI.',
+        body: 'Die Barracudas verloren Spiel 1 des Heim-Doubleheaders 23-9 im Heerenschürli. Kelvis Garcia war der einzige Lichtblick — 3-für-5 mit einem Home Run, 2 Doubles und 3 RBI. Hansel Rodriguez steuerte 3 Hits als Ersatzspieler bei. Wilkin Peguero kassierte die Niederlage und warf 3,1 Innings mit 8 zugelassenen Runs. Die Cudas waren 6-für-19 mit Läufern in Scoring Position und ließen 8 auf den Bases.',
+      },
+    },
   },
   {
     id: 'eagles-game2-may2',
@@ -117,6 +145,20 @@ const NEWS_ARTICLES = [
     href: 'article.html?id=eagles-game2-may2',
     score: { us: 9, them: 10 }, opponent: 'Luzern Eagles', location: 'Home · Heerenschürli',
     notes: '2B · J.Rosa Lima · 2 RBI · 7 innings',
+    i18n: {
+      es: {
+        tag: 'Resumen de Partido',
+        headline: 'Los Barracudas caen en una batalla cerrada, 10-9 en siete entradas',
+        summary: 'En un Juego 2 mucho más disputado, los Cudas respondieron repetidamente pero cayeron 10-9 en siete entradas. Zürich lideró 7-3 al cuarto inning antes de que las Águilas respondieran con 6 carreras.',
+        body: 'En un Juego 2 mucho más disputado, los Cudas respondieron repetidamente pero cayeron 10-9 en siete entradas. Zürich lideró 7-3 al cuarto inning antes de que las Águilas respondieran con 6 carreras en los últimos tres innings. Jhomar Rosa Lima lideró la ofensiva (2-de-4, 2 RBI). Elvis Del Valle anotó tres veces y robó una base. Vasquez abrió, cedió a Elias y Rodriguez — el bullpen no pudo cerrar.',
+      },
+      de: {
+        tag: 'Spielbericht',
+        headline: 'Barracudas verlieren knappes Spiel, 10-9 nach sieben Innings',
+        summary: 'Im viel ausgeglicheneren Spiel 2 kämpften sich die Cudas immer wieder zurück, verloren aber 10-9 nach sieben Innings. Zürich führte 7-3 nach vier Innings, bevor die Eagles 6 Läufe erzielten.',
+        body: 'Im viel ausgeglicheneren Spiel 2 kämpften sich die Cudas immer wieder zurück, verloren aber 10-9 nach sieben Innings. Zürich führte 7-3 nach vier Innings, bevor die Eagles in den letzten drei Innings 6 Läufe erzielten. Jhomar Rosa Lima führte die Offensive an (2-für-4, 2 RBI). Elvis Del Valle punktete dreimal und stahl eine Base. Vasquez startete, machte Platz für Elias und Rodriguez — das Bullpen konnte das Spiel nicht sichern.',
+      },
+    },
   },
   {
     id: 'cardinals-bern',
@@ -125,6 +167,18 @@ const NEWS_ARTICLES = [
     summary: 'A clutch late-inning rally on the road sealed the win for the Barracudas against Bern Cardinals.',
     image: 'assets/news-vs-eagles-2023.jpg',
     href: 'article.html?id=cardinals-bern',
+    i18n: {
+      es: {
+        tag: 'Resumen de Partido',
+        headline: 'Un rally tardío hunde a los Cardenales en Berna',
+        summary: 'Un oportuno rally en las últimas entradas fuera de casa selló la victoria de los Barracudas contra los Bern Cardinals.',
+      },
+      de: {
+        tag: 'Spielbericht',
+        headline: 'Späte Aufholjagd versenkt Cardinals in Bern',
+        summary: 'Eine entscheidende Aufholjagd in den späten Innings auf fremdem Feld sicherte den Sieg der Barracudas gegen die Bern Cardinals.',
+      },
+    },
   },
   {
     id: 'arregoitia-profile',
@@ -133,6 +187,18 @@ const NEWS_ARTICLES = [
     summary: 'Jhon Arregoitia put together an impressive stretch in the second half of the 2024 season, anchoring the lineup at first base.',
     image: 'assets/news-two-players.jpg',
     href: 'article.html?id=arregoitia-profile',
+    i18n: {
+      es: {
+        tag: 'Perfil de Jugador',
+        headline: 'El descomunal verano de #77 en el plato',
+        summary: 'Jhon Arregoitia protagonizó una racha impresionante en la segunda mitad de la temporada 2024, siendo el pilar de la alineación en primera base.',
+      },
+      de: {
+        tag: 'Spielerprofil',
+        headline: 'Ein Blick in Arregoitias starken Sommer am Schläger',
+        summary: 'Jhon Arregoitia zeigte eine beeindruckende Leistung in der zweiten Hälfte der Saison 2024 und verankerte die Aufstellung an der ersten Base.',
+      },
+    },
   },
   {
     id: 'garcia-signing',
@@ -141,6 +207,18 @@ const NEWS_ARTICLES = [
     summary: 'Kelvis Garcia officially re-signs with the Barracudas 3 ahead of the 2026 season, set to bring his two-way skill set back to Heerenschürli.',
     image: 'assets/news-batter-action.jpg',
     href: 'article.html?id=garcia-signing',
+    i18n: {
+      es: {
+        tag: 'Movimiento de Plantilla',
+        headline: 'García firma para la temporada 2026',
+        summary: 'Kelvis García renueva oficialmente con los Barracudas 3 de cara a la temporada 2026, listo para traer su habilidad como two-way player de vuelta a Heerenschürli.',
+      },
+      de: {
+        tag: 'Kaderveränderung',
+        headline: 'Garcia verlängert für die Saison 2026',
+        summary: 'Kelvis Garcia verlängert offiziell seinen Vertrag mit den Barracudas 3 vor der Saison 2026 und bringt seine Fähigkeiten als Two-Way-Spieler zurück nach Heerenschürli.',
+      },
+    },
   },
   {
     id: 'peguero-cg',
@@ -149,6 +227,18 @@ const NEWS_ARTICLES = [
     summary: 'Wilkin Peguero delivered a dominant complete-game performance, shutting out the opposition and giving the Barracudas a statement win.',
     image: 'assets/news-pitcher.jpg',
     href: 'article.html?id=peguero-cg',
+    i18n: {
+      es: {
+        tag: 'Pitcheo',
+        headline: 'El juego completo de Peguero cierra la puerta',
+        summary: 'Wilkin Peguero entregó una actuación dominante de juego completo, dejando en cero a la oposición y dando a los Barracudas una victoria contundente.',
+      },
+      de: {
+        tag: 'Pitching',
+        headline: 'Pegueros Complete Game sichert den Sieg',
+        summary: 'Wilkin Peguero lieferte eine dominante Complete-Game-Leistung, hielt den Gegner blank und bescherte den Barracudas einen überzeugenden Sieg.',
+      },
+    },
   },
   {
     id: 'open-tryouts',
@@ -157,6 +247,18 @@ const NEWS_ARTICLES = [
     summary: 'Everything you need to know about joining Zürich\'s premier baseball club — from tryout dates to what to bring and what to expect.',
     image: 'assets/news-game1-dugout.jpg',
     href: 'article.html?id=open-tryouts',
+    i18n: {
+      es: {
+        tag: 'Club',
+        headline: 'Pruebas abiertas: cómo unirte a los Barracudas',
+        summary: 'Todo lo que necesitas saber para unirte al club de béisbol más destacado de Zúrich — desde fechas de pruebas hasta qué traer y qué esperar.',
+      },
+      de: {
+        tag: 'Klub',
+        headline: 'Offene Probespiele: Wie du den Barracudas beitritts',
+        summary: 'Alles, was du wissen musst, um Zürichs führendem Baseballklub beizutreten — von Probespielterminen bis hin zu dem, was du mitbringen solltest.',
+      },
+    },
   },
   {
     id: 'rivera-leadership',
@@ -165,6 +267,18 @@ const NEWS_ARTICLES = [
     summary: 'An inside look at how the Barracudas captain navigates a multilingual locker room, the grind of a full Swiss season, and what it means to lead.',
     image: 'assets/news-player-field.jpg',
     href: 'article.html?id=rivera-leadership',
+    i18n: {
+      es: {
+        tag: 'Rincón del Capitán',
+        headline: 'Rivera sobre liderazgo, idioma y la larga temporada',
+        summary: 'Una mirada interna sobre cómo el capitán de los Barracudas navega un vestuario multilingüe, el desgaste de una temporada completa suiza y lo que significa liderar.',
+      },
+      de: {
+        tag: 'Kapitäns-Ecke',
+        headline: 'Rivera über Führung, Sprache und die lange Saison',
+        summary: 'Ein Einblick, wie der Barracudas-Kapitän einen mehrsprachigen Umkleideraum navigiert, den Kampf durch eine volle Schweizer Saison und was es bedeutet, zu führen.',
+      },
+    },
   },
   // ← New articles go here, newest first
 ];
