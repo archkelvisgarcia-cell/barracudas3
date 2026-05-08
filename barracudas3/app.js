@@ -529,3 +529,68 @@ function initRecentResults() {
 }
 
 document.addEventListener('DOMContentLoaded', initRecentResults);
+
+// ── PLAYER STATS STRIP ────────────────────────────────────────
+function initPlayerStats() {
+  const container = document.getElementById('playerStrip');
+  const dataEl    = document.getElementById('roster-data');
+  if (!container || !dataEl) return;
+
+  let roster;
+  try { roster = JSON.parse(dataEl.textContent); } catch (e) { return; }
+
+  // Top Batter — highest AVG among batters/both
+  const batters = roster.filter(p => {
+    const avg = p.stats.find(s => s.k === 'AVG');
+    return avg && (p.type === 'batter' || p.type === 'both');
+  });
+  const topBatter = batters.reduce((best, p) => {
+    const avg = parseFloat(p.stats.find(s => s.k === 'AVG').v);
+    const bestAvg = parseFloat(best.stats.find(s => s.k === 'AVG').v);
+    return avg > bestAvg ? p : best;
+  }, batters[0]);
+
+  // Top Pitcher — lowest ERA among players who have ERA stat
+  const pitchers = roster.filter(p => p.stats.find(s => s.k === 'ERA'));
+  const topPitcher = pitchers.reduce((best, p) => {
+    const era = parseFloat(p.stats.find(s => s.k === 'ERA').v);
+    const bestEra = parseFloat(best.stats.find(s => s.k === 'ERA').v);
+    return era < bestEra ? p : best;
+  }, pitchers[0]);
+
+  // Hitting Streak — highest streak among non-pitchers
+  const streakers = roster.filter(p => p.type !== 'pitcher' && (p.streak || 0) > 0);
+  const streakLeader = streakers.length
+    ? streakers.reduce((best, p) => (p.streak || 0) > (best.streak || 0) ? p : best, streakers[0])
+    : null;
+
+  function shortName(p) {
+    return `${p.first.split(' ')[0][0]}. ${p.last}`;
+  }
+
+  function card(label, name, stat) {
+    return `<div>
+      <span class="ps-label">${label}</span>
+      <span class="ps-name">${name}</span>
+      <span class="ps-stat">${stat}</span>
+    </div>`;
+  }
+
+  const avgStat = topBatter
+    ? topBatter.stats.find(s => s.k === 'AVG').v + ' AVG · ' + (topBatter.stats.find(s => s.k === 'RBI')?.v || '—') + ' RBI'
+    : '—';
+  const eraStat = topPitcher
+    ? topPitcher.stats.find(s => s.k === 'ERA').v + ' ERA'
+    : '—';
+  const streakStat = streakLeader
+    ? streakLeader.streak + '-game hit streak'
+    : '—';
+
+  container.innerHTML = [
+    card('Top Batter 2026',  topBatter  ? shortName(topBatter)  : '—', avgStat),
+    card('Top Pitcher 2026', topPitcher ? shortName(topPitcher) : '—', eraStat),
+    card('Hitting Streak',   streakLeader ? shortName(streakLeader) : '—', streakStat),
+  ].join('');
+}
+
+document.addEventListener('DOMContentLoaded', initPlayerStats);

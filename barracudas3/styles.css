@@ -511,6 +511,52 @@ a { color: inherit; text-decoration: none; }
   background: var(--bg-deep);
 }
 
+/* ── PLAYER STATS STRIP ── */
+.player-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border-top: 1px solid var(--line);
+}
+
+.player-strip > div {
+  background: var(--bg-elev);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.player-strip .ps-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-faint);
+}
+
+.player-strip .ps-name {
+  font-family: var(--display);
+  font-size: clamp(18px, 2.2vw, 24px);
+  letter-spacing: 0;
+  text-transform: uppercase;
+  line-height: 1;
+  color: var(--ink);
+}
+
+.player-strip .ps-stat {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 0.06em;
+  margin-top: 2px;
+}
+
+@media (max-width: 800px) {
+  .player-strip { grid-template-columns: 1fr; }
+}
+
 .hero-strip {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
