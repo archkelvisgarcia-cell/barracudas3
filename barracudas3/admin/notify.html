@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Notifications Admin — Barracudas</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  body { padding: 40px var(--pad); max-width: 520px; margin: 0 auto; }
+  .admin-card { background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 32px; }
+  .admin-title { font-family: var(--display); font-size: 28px; text-transform: uppercase; margin-bottom: 24px; }
+  .field { margin-bottom: 16px; }
+  .field label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); display: block; margin-bottom: 6px; }
+  .field input, .field select, .field textarea {
+    width: 100%; padding: 10px 14px;
+    background: var(--bg-deep); border: 1px solid var(--line);
+    border-radius: var(--r-sm); color: var(--ink);
+    font-family: var(--mono); font-size: 13px;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus { outline: 2px solid var(--accent); border-color: var(--accent); }
+  .field textarea { min-height: 80px; resize: vertical; }
+  .status { font-family: var(--mono); font-size: 12px; margin-top: 12px; min-height: 18px; }
+  #loginWrap { text-align: center; padding: 60px 0; }
+</style>
+</head>
+<body>
+<div class="admin-card">
+  <div id="loginWrap">
+    <div class="admin-title">🔐 Admin</div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="pwInput" placeholder="Enter password" />
+    </div>
+    <button class="btn btn-primary" style="width:100%;margin-top:8px;" onclick="checkPw()">Enter</button>
+    <p id="pwErr" style="color:#ff5555;font-family:var(--mono);font-size:11px;margin-top:8px;"></p>
+  </div>
+
+  <div id="notifPanel" style="display:none">
+    <div class="admin-title">🔔 Send Notification</div>
+    <div class="field">
+      <label>Type</label>
+      <select id="notifType">
+        <option value="result">🏆 New Result</option>
+        <option value="article">📰 New Article</option>
+        <option value="live">🔴 Match Starting</option>
+        <option value="custom">✏️ Custom</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Title</label>
+      <input type="text" id="notifTitle" placeholder="Barracudas 3 — Match Result" />
+    </div>
+    <div class="field">
+      <label>Message</label>
+      <textarea id="notifMsg" placeholder="BAR3 won 9-5 against Sissach Frogs!"></textarea>
+    </div>
+    <div class="field">
+      <label>URL (optional)</label>
+      <input type="url" id="notifUrl" placeholder="https://barracudas3.netlify.app/results.html" />
+    </div>
+    <button class="btn btn-primary" style="width:100%" onclick="sendNotif()">Send to All Subscribers</button>
+    <div class="status" id="status"></div>
+    <hr style="border-color:var(--line);margin:20px 0;" />
+    <p style="font-family:var(--mono);font-size:10px;color:var(--ink-faint);line-height:1.6;">
+      Requires <strong>ONESIGNAL_APP_ID</strong> and <strong>ONESIGNAL_API_KEY</strong> in Netlify env vars.<br />
+      Get these from <a href="https://onesignal.com" target="_blank" style="color:var(--accent)">onesignal.com</a> after creating your app.
+    </p>
+  </div>
+</div>
+
+<script>
+const PW = 'barracudas2026'; // same as score.html
+
+function checkPw() {
+  if (document.getElementById('pwInput').value === PW) {
+    document.getElementById('loginWrap').style.display = 'none';
+    document.getElementById('notifPanel').style.display = 'block';
+  } else {
+    document.getElementById('pwErr').textContent = 'Incorrect password.';
+  }
+}
+
+// Auto-fill title based on type
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('notifType')?.addEventListener('change', function() {
+    const map = {
+      result:  'Barracudas 3 — New Result',
+      article: 'Barracudas 3 — New Article',
+      live:    '🔴 Game Starting Now!',
+      custom:  '',
+    };
+    document.getElementById('notifTitle').value = map[this.value] || '';
+  });
+  document.getElementById('pwInput').addEventListener('keydown', e => { if (e.key === 'Enter') checkPw(); });
+});
+
+async function sendNotif() {
+  const title   = document.getElementById('notifTitle').value.trim();
+  const msg     = document.getElementById('notifMsg').value.trim();
+  const url     = document.getElementById('notifUrl').value.trim();
+  const statusEl = document.getElementById('status');
+
+  if (!title || !msg) { statusEl.style.color = '#ff5555'; statusEl.textContent = 'Title and message are required.'; return; }
+
+  statusEl.style.color = 'var(--ink-mute)';
+  statusEl.textContent = 'Sending…';
+
+  try {
+    const res = await fetch('/.netlify/functions/notify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title, message: msg, url }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Failed');
+    statusEl.style.color = 'var(--accent)';
+    statusEl.textContent = `✓ Sent to ${data.recipients ?? '?'} subscribers.`;
+  } catch (e) {
+    statusEl.style.color = '#ff5555';
+    statusEl.textContent = '✗ ' + e.message + ' — check ONESIGNAL env vars in Netlify.';
+  }
+}
+</script>
+</body>
+</html>

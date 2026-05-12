@@ -1494,6 +1494,206 @@ function initAwards() {
 
 document.addEventListener('DOMContentLoaded', initAwards);
 
+// ── ADD TO CALENDAR ───────────────────────────────────────────
+function _calDateStr(date, time) {
+  return date.replace(/-/g, '') + 'T' + time.replace(':', '') + '00';
+}
+function _calEndStr(date, time) {
+  const [h, m] = time.split(':');
+  const endH = String(parseInt(h) + 3).padStart(2, '0');
+  return date.replace(/-/g, '') + 'T' + endH + m + '00';
+}
+
+function openGoogleCal(date, time, opponent, location) {
+  const title = encodeURIComponent(`Barracudas 3 vs ${opponent}`);
+  const det   = encodeURIComponent('NL Baseball Gruppe A 2026 — Zürich Barracudas');
+  const loc   = encodeURIComponent(location);
+  const url   = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${_calDateStr(date,time)}/${_calEndStr(date,time)}&details=${det}&location=${loc}`;
+  window.open(url, '_blank', 'noopener');
+}
+
+function downloadIcs(date, time, opponent, location) {
+  const start = _calDateStr(date, time);
+  const end   = _calEndStr(date, time);
+  const uid   = `barracudas-${date}-${time.replace(':','')}@barracudas3.netlify.app`;
+  const ics   = [
+    'BEGIN:VCALENDAR', 'VERSION:2.0',
+    'PRODID:-//Zürich Barracudas//EN', 'CALSCALE:GREGORIAN',
+    'BEGIN:VEVENT',
+    `DTSTART:${start}`, `DTEND:${end}`,
+    `SUMMARY:Barracudas 3 vs ${opponent}`,
+    'DESCRIPTION:NL Baseball Gruppe A 2026 — Zürich Barracudas',
+    `LOCATION:${location}`,
+    `UID:${uid}`,
+    'END:VEVENT', 'END:VCALENDAR',
+  ].join('\r\n');
+  const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+  const a = Object.assign(document.createElement('a'), {
+    href: URL.createObjectURL(blob),
+    download: `barracudas-vs-${opponent.replace(/\s+/g,'-').toLowerCase()}.ics`,
+  });
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function initCalendarButtons() {
+  document.querySelectorAll('.schedule-game[data-date]').forEach(game => {
+    const date     = game.dataset.date;
+    const time     = game.dataset.time || '12:00';
+    const opponent = game.dataset.opponent || 'Opponent';
+    const isHome   = game.dataset.location === 'home';
+    const location = isHome ? 'Heerenschürli\\, Zürich\\, Switzerland' : `${opponent} Field`;
+    const arrow    = game.querySelector('.cal-arrow');
+    if (!arrow) return;
+
+    const wrap = document.createElement('div');
+    wrap.className = 'cal-add-wrap';
+    wrap.innerHTML = `
+      <button class="cal-add-btn" aria-label="Add to Calendar" title="Add to Calendar">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
+          <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+      </button>
+      <div class="cal-dropdown" hidden>
+        <button class="cal-dd-item" data-cal="google">🗓 Google Calendar</button>
+        <button class="cal-dd-item" data-cal="ics">🍎 Apple / iCal</button>
+      </div>`;
+
+    arrow.before(wrap);
+
+    wrap.querySelector('.cal-add-btn').addEventListener('click', e => {
+      e.stopPropagation();
+      const dd = wrap.querySelector('.cal-dropdown');
+      document.querySelectorAll('.cal-dropdown:not([hidden])').forEach(d => { if (d !== dd) d.hidden = true; });
+      dd.hidden = !dd.hidden;
+    });
+
+    wrap.querySelectorAll('.cal-dd-item').forEach(item => {
+      item.addEventListener('click', e => {
+        e.stopPropagation();
+        wrap.querySelector('.cal-dropdown').hidden = true;
+        if (item.dataset.cal === 'google') openGoogleCal(date, time, opponent, location);
+        else downloadIcs(date, time, opponent, location);
+      });
+    });
+  });
+
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.cal-dropdown:not([hidden])').forEach(d => { d.hidden = true; });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', initCalendarButtons);
+
+// ── ONESIGNAL NOTIFICATION BELL ───────────────────────────────
+(function () {
+  // Inject bell into every page's nav-tools
+  document.addEventListener('DOMContentLoaded', () => {
+    const tools = document.querySelector('.nav-tools');
+    if (!tools) return;
+    const bell = document.createElement('button');
+    bell.id = 'notifBell';
+    bell.className = 'icon-btn notif-bell';
+    bell.setAttribute('aria-label', 'Notifications');
+    bell.title = 'Notifications';
+    bell.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+      <path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>`;
+    const themeBtn = tools.querySelector('#theme-toggle');
+    if (themeBtn) tools.insertBefore(bell, themeBtn); else tools.prepend(bell);
+
+    const refresh = async () => {
+      try {
+        if (window.OneSignal) {
+          const sub = await OneSignal.User.PushSubscription.optedIn;
+          bell.classList.toggle('notif-bell--on', !!sub);
+        }
+      } catch (e) {}
+    };
+
+    bell.addEventListener('click', async () => {
+      try {
+        if (!window.OneSignal) {
+          window.OneSignalDeferred?.push?.(os => os.Slidedown?.promptPush?.());
+          return;
+        }
+        const sub = await OneSignal.User.PushSubscription.optedIn;
+        if (sub) await OneSignal.User.PushSubscription.optOut();
+        else     await OneSignal.User.PushSubscription.optIn();
+        refresh();
+      } catch (e) {
+        window.OneSignalDeferred?.push?.(os => os.Slidedown?.promptPush?.());
+      }
+    });
+
+    window.addEventListener('load', refresh);
+  });
+})();
+
+// ── LIVE SCORE ────────────────────────────────────────────────
+function initLiveScore() {
+  const banner = document.getElementById('liveScoreBanner');
+  if (!banner || typeof GAMES === 'undefined') return;
+
+  const now     = new Date();
+  const todayISO = now.toISOString().split('T')[0];
+
+  const active = GAMES.find(g => {
+    if (!g.date || g.date !== todayISO) return false;
+    const start = new Date(`${g.date}T${g.time || '12:00'}:00`);
+    const end   = new Date(start.getTime() + 4 * 3600 * 1000);
+    return now >= start && now <= end;
+  });
+
+  if (!active) return;
+
+  function renderLive() {
+    const s = JSON.parse(localStorage.getItem('bar3-live') || '{}');
+    const us    = s.us    ?? '—';
+    const them  = s.them  ?? '—';
+    const inn   = s.inning ? ` · ${s.inning}` : '';
+    banner.style.display = 'flex';
+    banner.innerHTML = `
+      <span class="live-pill">🔴 LIVE</span>
+      <span class="live-score">BAR3 <b>${us}</b> — <b>${them}</b> ${active.opponent}${inn}</span>
+      <a href="results.html" class="live-link">→</a>`;
+  }
+
+  renderLive();
+  setInterval(renderLive, 60000);
+}
+
+document.addEventListener('DOMContentLoaded', initLiveScore);
+
+// ── INSTAGRAM FEED ────────────────────────────────────────────
+async function initInstagramFeed() {
+  const grid = document.getElementById('igGrid');
+  if (!grid) return;
+
+  try {
+    const res = await fetch('/.netlify/functions/instagram');
+    if (!res.ok) throw new Error('no data');
+    const { data } = await res.json();
+    if (!data?.length) throw new Error('empty');
+
+    grid.innerHTML = data.slice(0, 6).map(post => {
+      const img = post.media_type === 'VIDEO' ? post.thumbnail_url : post.media_url;
+      const cap = (post.caption || '').slice(0, 80) + (post.caption?.length > 80 ? '…' : '');
+      return `<a class="ig-item" href="${post.permalink}" target="_blank" rel="noopener">
+        <img src="${img}" alt="Instagram post" loading="lazy" />
+        <div class="ig-overlay"><p>${cap}</p></div>
+      </a>`;
+    }).join('');
+  } catch (e) {
+    // Silently hide section if feed unavailable
+    const section = document.getElementById('igSection');
+    if (section) section.style.display = 'none';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', initInstagramFeed);
+
 // ── PLAYER PROFILE MODAL ──────────────────────────────────────
 // ── Modal helpers ─────────────────────────────────────────────
 function pmSummary(cells) {

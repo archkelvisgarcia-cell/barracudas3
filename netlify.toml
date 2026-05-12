@@ -1,0 +1,15 @@
+[build]
+  publish   = "barracudas3"
+  functions = "netlify/functions"
+
+# Redirect /api/* → Netlify functions
+[[redirects]]
+  from   = "/.netlify/functions/*"
+  to     = "/.netlify/functions/:splat"
+  status = 200
+
+# Redirect /admin pages (no trailing slash issue)
+[[redirects]]
+  from   = "/admin"
+  to     = "/admin/notify.html"
+  status = 302

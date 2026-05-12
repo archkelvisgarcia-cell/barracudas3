@@ -2446,6 +2446,109 @@ a { color: inherit; text-decoration: none; }
   margin-top: 3px;
 }
 
+/* ── Calendar button ── */
+.cal-add-wrap { position: relative; flex-shrink: 0; }
+.cal-add-btn {
+  display: grid; place-items: center;
+  width: 30px; height: 30px;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--ink-mute);
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.cal-add-btn:hover { border-color: var(--accent); color: var(--accent); }
+.cal-dropdown {
+  position: absolute;
+  right: 0; top: 36px;
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  z-index: 50;
+  min-width: 180px;
+  overflow: hidden;
+}
+.cal-dd-item {
+  display: block; width: 100%;
+  padding: 10px 14px;
+  text-align: left;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--ink-mute);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.cal-dd-item:hover { background: rgba(255,255,255,0.06); color: var(--accent); }
+.cal-dd-item + .cal-dd-item { border-top: 1px solid var(--line); }
+
+/* ── Notification bell ── */
+.notif-bell { transition: border-color 0.2s, color 0.2s; }
+.notif-bell--on { border-color: var(--accent) !important; color: var(--accent) !important; }
+
+/* ── Live score banner ── */
+#liveScoreBanner {
+  display: none;
+  align-items: center;
+  gap: 12px;
+  padding: 10px var(--pad);
+  background: rgba(220,30,30,0.12);
+  border-bottom: 1px solid rgba(220,30,30,0.3);
+  font-family: var(--mono);
+  font-size: 13px;
+}
+.live-pill {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #ff4444;
+  animation: blink-live 1.4s ease-in-out infinite;
+}
+@keyframes blink-live {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+.live-score { color: var(--ink); flex: 1; }
+.live-score b { color: var(--accent); font-size: 15px; }
+.live-link { color: var(--accent); text-decoration: none; }
+
+/* ── Instagram feed ── */
+.ig-section { padding: clamp(64px, 10vw, 120px) var(--pad); background: var(--bg-deep); }
+.ig-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  margin-top: 32px;
+}
+@media (max-width: 900px) { .ig-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 540px) { .ig-grid { grid-template-columns: repeat(3, 1fr); } }
+
+.ig-item {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: var(--r-sm);
+  display: block;
+  background: var(--bg-elev);
+}
+.ig-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s var(--ease); }
+.ig-item:hover img { transform: scale(1.05); }
+.ig-overlay {
+  position: absolute; inset: 0;
+  background: rgba(13,31,15,0.8);
+  display: flex; align-items: center; justify-content: center;
+  padding: 8px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.ig-item:hover .ig-overlay { opacity: 1; }
+.ig-overlay p { font-size: 11px; color: rgba(255,255,255,0.85); line-height: 1.4; text-align: center; }
+
 /* ── Clickable player blocks ── */
 .award-clickable {
   cursor: pointer;
