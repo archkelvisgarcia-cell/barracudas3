@@ -1,0 +1,19 @@
+{
+  "name": "barracudas3",
+  "version": "1.0.0",
+  "description": "Zürich Barracudas Baseball Club website",
+  "type": "commonjs",
+  "scripts": {
+    "generate-icons": "node generate-icons.js",
+    "generate-og":    "node generate-og-image.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/archkelvisgarcia-cell/barracudas3.git"
+  },
+  "author": "Kelvis Garcia",
+  "license": "ISC",
+  "devDependencies": {
+    "sharp": "^0.34.5"
+  }
+}
