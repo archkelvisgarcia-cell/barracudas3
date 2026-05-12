@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin — Zürich Barracudas</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  body { max-width: 860px; margin: 0 auto; padding: 40px var(--pad); }
+  .adm-card { background:var(--bg-elev); border:1px solid var(--line); border-radius:var(--r-lg); padding:28px; margin-bottom:20px; }
+  .adm-title { font-family:var(--display); font-size:clamp(18px,3vw,26px); text-transform:uppercase; margin-bottom:16px; }
+  .adm-label { font-family:var(--mono); font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-faint); display:block; margin-bottom:5px; }
+  .adm-row { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; align-items:center; }
+  .adm-status { font-family:var(--mono); font-size:11px; letter-spacing:0.08em; }
+  .adm-status--ok   { color:#00c864; }
+  .adm-status--warn { color:var(--accent); }
+  .adm-status--err  { color:#ff5555; }
+  .adm-section { margin-bottom:24px; }
+  .adm-section h3 { font-family:var(--mono); font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:12px; }
+  .game-row { display:flex; align-items:center; gap:12px; padding:10px 14px; background:var(--bg-deep); border-radius:var(--r-sm); margin-bottom:6px; }
+  .game-date { font-family:var(--mono); font-size:10px; color:var(--ink-faint); white-space:nowrap; }
+  .game-score { font-family:var(--display); font-size:16px; flex:1; }
+  .game-score.w { color:var(--accent); }
+  .game-score.l { color:var(--ink-mute); }
+  .draft-card { padding:16px; background:var(--bg-deep); border:1px solid var(--line); border-radius:var(--r-md); margin-bottom:12px; }
+  .draft-meta { font-family:var(--mono); font-size:10px; color:var(--ink-faint); margin-bottom:8px; letter-spacing:0.08em; }
+  .draft-title { font-family:var(--display); font-size:18px; text-transform:uppercase; margin-bottom:6px; }
+  .draft-body  { font-size:13px; color:var(--ink-mute); line-height:1.5; max-height:100px; overflow:hidden; }
+  .draft-body.expanded { max-height:none; }
+  .tab-bar { display:flex; gap:4px; margin-bottom:16px; }
+  .tab-btn { font-family:var(--mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; padding:6px 14px; border:1px solid var(--line); border-radius:var(--r-sm); background:none; color:var(--ink-mute); cursor:pointer; }
+  .tab-btn.active { background:var(--accent); color:#000; border-color:var(--accent); }
+  .tab-pane { display:none; }
+  .tab-pane.active { display:block; }
+  #loginGate { text-align:center; padding:80px 20px; }
+  #loginGate input { width:260px; text-align:center; padding:10px 14px; background:var(--bg-elev); border:1px solid var(--line); border-radius:var(--r-sm); color:var(--ink); font-family:var(--mono); font-size:14px; }
+  .spinner { display:inline-block; width:12px; height:12px; border:2px solid rgba(255,255,255,0.3); border-top-color:var(--accent); border-radius:50%; animation:spin .7s linear infinite; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  .badge-draft { font-family:var(--mono); font-size:9px; letter-spacing:0.1em; background:rgba(240,180,41,0.15); color:var(--accent); border:1px solid rgba(240,180,41,0.3); border-radius:2px; padding:2px 6px; }
+</style>
+</head>
+<body>
+
+<div id="loginGate">
+  <h1 style="font-family:var(--display);font-size:32px;text-transform:uppercase;margin-bottom:24px;">🏟 Admin</h1>
+  <div style="margin-bottom:12px;">
+    <label class="adm-label">Password</label>
+    <input type="password" id="pwInput" placeholder="Enter password" autocomplete="current-password" />
+  </div>
+  <button class="btn btn-primary" style="width:260px;margin-top:8px;" onclick="checkPw()">Enter</button>
+  <p id="pwErr" style="color:#ff5555;font-family:var(--mono);font-size:11px;margin-top:8px;"></p>
+</div>
+
+<div id="adminPanel" style="display:none">
+
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;flex-wrap:wrap;gap:12px;">
+    <h1 style="font-family:var(--display);font-size:clamp(24px,5vw,40px);text-transform:uppercase;">🏟 Barracudas Admin</h1>
+    <div style="display:flex;gap:8px;">
+      <a href="score.html"  class="btn btn-ghost" style="font-size:12px;">🔴 Live Score</a>
+      <a href="notify.html" class="btn btn-ghost" style="font-size:12px;">🔔 Notify</a>
+    </div>
+  </div>
+
+  <!-- Status strip -->
+  <div class="adm-card">
+    <div class="adm-row">
+      <span class="adm-label" style="margin:0">EasyScore API</span>
+      <span class="adm-status" id="apiStatus">…</span>
+      <span class="adm-label" style="margin:0;margin-left:16px;">Last sync</span>
+      <span class="adm-status" id="lastSync">—</span>
+      <button class="btn btn-primary" style="margin-left:auto;font-size:12px;padding:8px 16px;" onclick="syncNow()">
+        <span id="syncBtnLabel">↻ Sync Now</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('results')">Results</button>
+    <button class="tab-btn" onclick="switchTab('stats')">Stats</button>
+    <button class="tab-btn" onclick="switchTab('drafts')">
+      Article Drafts <span id="draftCount"></span>
+    </button>
+  </div>
+
+  <!-- Results tab -->
+  <div class="tab-pane active" id="tab-results">
+    <div class="adm-card">
+      <div class="adm-title">Recent Results</div>
+      <div id="resultsList"><div class="adm-status">Loading…</div></div>
+    </div>
+
+    <div class="adm-card">
+      <div class="adm-title">Generate Article Recap</div>
+      <p style="font-family:var(--mono);font-size:11px;color:var(--ink-mute);margin-bottom:16px;">
+        Select a finished game and generate a trilingual recap with Claude AI.
+      </p>
+      <div class="adm-row">
+        <div style="flex:1">
+          <label class="adm-label">Game ID</label>
+          <input type="number" id="recapGameId" placeholder="e.g. 19255" style="width:100%;padding:8px 12px;background:var(--bg-deep);border:1px solid var(--line);border-radius:var(--r-sm);color:var(--ink);font-family:var(--mono);font-size:13px;" />
+        </div>
+        <button class="btn btn-primary" style="margin-top:20px;white-space:nowrap;" onclick="generateRecap()">
+          ✦ Generate with Claude
+        </button>
+      </div>
+      <div class="adm-status" id="recapStatus" style="margin-top:8px;"></div>
+    </div>
+  </div>
+
+  <!-- Stats tab -->
+  <div class="tab-pane" id="tab-stats">
+    <div class="adm-card">
+      <div class="adm-title">Team Record & Fielding Stats</div>
+      <p style="font-family:var(--mono);font-size:11px;color:rgba(240,180,41,0.8);line-height:1.6;margin-bottom:16px;">
+        ⚠ EasyScore API limitation: /stats endpoint returns error 500 with this API key.<br>
+        Available: fielding stats (G, IP, PO, A, E, FPct) from StatDef field.<br>
+        Batting / Pitching stats are loaded from the hardcoded PLAYER_EXTENDED_DATA.
+      </p>
+      <div id="statsTable"><div class="adm-status">Loading…</div></div>
+    </div>
+  </div>
+
+  <!-- Drafts tab -->
+  <div class="tab-pane" id="tab-drafts">
+    <div class="adm-card">
+      <div class="adm-title">Article Drafts <span class="badge-draft">AUTO-GENERATED · PENDING REVIEW</span></div>
+      <div id="draftsList">
+        <p style="font-family:var(--mono);font-size:11px;color:var(--ink-faint);">No drafts yet. Generate one from the Results tab.</p>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /adminPanel -->
+
+<script>
+const PW_KEY  = 'bar3-admin-authed';
+const DRAFTS_KEY = 'bar3-article-drafts';
+const SYNC_KEY   = 'bar3-sync-cache';
+
+// ── Auth ──────────────────────────────────────────────────────
+function checkPw() {
+  const val = document.getElementById('pwInput').value;
+  // Simple client-side check — real security via ADMIN_PASSWORD env var in production functions
+  const stored = sessionStorage.getItem(PW_KEY);
+  if (val === 'barracudas2026' || stored === 'ok') {
+    sessionStorage.setItem(PW_KEY, 'ok');
+    document.getElementById('loginGate').style.display = 'none';
+    document.getElementById('adminPanel').style.display = 'block';
+    loadAll();
+  } else {
+    document.getElementById('pwErr').textContent = 'Incorrect password.';
+  }
+}
+
+if (sessionStorage.getItem(PW_KEY) === 'ok') {
+  document.getElementById('loginGate').style.display = 'none';
+  document.getElementById('adminPanel').style.display = 'block';
+  loadAll();
+}
+
+document.getElementById('pwInput')?.addEventListener('keydown', e => { if (e.key === 'Enter') checkPw(); });
+
+// ── Tabs ──────────────────────────────────────────────────────
+function switchTab(id) {
+  document.querySelectorAll('.tab-btn').forEach((b, i) => {
+    b.classList.toggle('active', b.textContent.toLowerCase().includes(id) || (id === 'results' && i === 0));
+  });
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + id)?.classList.add('active');
+}
+
+// ── Sync ──────────────────────────────────────────────────────
+async function loadAll() {
+  renderDrafts();
+  await syncNow(true);
+}
+
+async function syncNow(silent = false) {
+  const lbl = document.getElementById('syncBtnLabel');
+  const statusEl = document.getElementById('apiStatus');
+  const syncEl   = document.getElementById('lastSync');
+
+  if (!silent) { lbl.innerHTML = '<span class="spinner"></span> Syncing…'; }
+
+  try {
+    const r = await fetch('/.netlify/functions/sync-stats');
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const data = await r.json();
+
+    localStorage.setItem(SYNC_KEY, JSON.stringify({ ...data, fetchedAt: Date.now() }));
+    statusEl.innerHTML = '<span class="adm-status--ok">✓ Connected</span>';
+    syncEl.textContent = new Date().toLocaleTimeString();
+
+    renderResults(data);
+    renderStats(data);
+  } catch (e) {
+    statusEl.innerHTML = `<span class="adm-status--err">✗ ${e.message}</span>`;
+    // Try cache
+    const c = localStorage.getItem(SYNC_KEY);
+    if (c) {
+      const data = JSON.parse(c);
+      syncEl.textContent = 'Cached · ' + new Date(data.fetchedAt).toLocaleString();
+      renderResults(data);
+      renderStats(data);
+    }
+  } finally {
+    if (!silent) lbl.textContent = '↻ Sync Now';
+  }
+}
+
+// ── Render results ────────────────────────────────────────────
+function renderResults(data) {
+  const el = document.getElementById('resultsList');
+  const games = data.recentGames || [];
+  if (!games.length) { el.innerHTML = '<p class="adm-status">No results found.</p>'; return; }
+
+  el.innerHTML = games.map(g => `
+    <div class="game-row">
+      <span class="game-date">${g.date}</span>
+      <span class="game-score ${g.won ? 'w' : 'l'}">
+        BAR3 ${g.bar3Score} — ${g.oppScore} ${g.oppShort || g.opponent?.split(' ').pop()}
+      </span>
+      <span class="adm-status ${g.won ? 'adm-status--ok' : 'adm-status--err'}">${g.won ? 'WIN' : 'LOSS'}</span>
+      <button onclick="document.getElementById('recapGameId').value='${g.id}';switchTab('results');"
+        style="font-family:var(--mono);font-size:9px;letter-spacing:0.1em;background:none;border:1px solid rgba(255,255,255,0.1);color:var(--ink-mute);padding:3px 8px;border-radius:2px;cursor:pointer;">
+        Generate recap
+      </button>
+    </div>`).join('');
+
+  const rec = data.record;
+  if (rec) {
+    const recEl = document.createElement('div');
+    recEl.innerHTML = `<div style="font-family:var(--mono);font-size:12px;color:var(--ink-mute);margin-top:10px;padding-top:10px;border-top:1px solid var(--line);">
+      Season record: <strong style="color:var(--accent)">${rec.label}</strong>
+    </div>`;
+    el.appendChild(recEl);
+  }
+}
+
+// ── Render stats ──────────────────────────────────────────────
+function renderStats(data) {
+  const el = document.getElementById('statsTable');
+  const players = data.players || [];
+  if (!players.length) { el.innerHTML = '<p class="adm-status">No player data.</p>'; return; }
+
+  el.innerHTML = `<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-family:var(--mono);font-size:11px;">
+    <thead><tr style="border-bottom:1px solid var(--line);">
+      <th style="text-align:left;padding:6px 10px;color:var(--ink-faint);">#</th>
+      <th style="text-align:left;padding:6px 10px;color:var(--ink-faint);">Player</th>
+      <th style="padding:6px 10px;color:var(--ink-faint);">G</th>
+      <th style="padding:6px 10px;color:var(--ink-faint);">IP</th>
+      <th style="padding:6px 10px;color:var(--ink-faint);">PO</th>
+      <th style="padding:6px 10px;color:var(--ink-faint);">A</th>
+      <th style="padding:6px 10px;color:var(--ink-faint);">E</th>
+      <th style="padding:6px 10px;color:var(--ink-faint);">FPct</th>
+    </tr></thead>
+    <tbody>
+      ${players.sort((a,b) => (a.lastName||'').localeCompare(b.lastName||'')).map(p => {
+        const f = p.fielding;
+        return `<tr style="border-bottom:1px solid rgba(255,255,255,0.04)">
+          <td style="padding:6px 10px;color:var(--ink-mute)">${p.uniformNr||'—'}</td>
+          <td style="padding:6px 10px;color:var(--ink)">${p.lastName||p.name}</td>
+          <td style="padding:6px 10px;text-align:center;color:var(--ink-mute)">${f?.G??'—'}</td>
+          <td style="padding:6px 10px;text-align:center;color:var(--ink-mute)">${f?.IP??'—'}</td>
+          <td style="padding:6px 10px;text-align:center;color:var(--ink-mute)">${f?.PO??'—'}</td>
+          <td style="padding:6px 10px;text-align:center;color:var(--ink-mute)">${f?.A??'—'}</td>
+          <td style="padding:6px 10px;text-align:center;color:var(--ink-mute)">${f?.E??'—'}</td>
+          <td style="padding:6px 10px;text-align:center;color:var(--accent)">${f?.FPct??'—'}</td>
+        </tr>`;}).join('')}
+    </tbody>
+  </table></div>`;
+}
+
+// ── Generate recap ────────────────────────────────────────────
+async function generateRecap() {
+  const gameId = parseInt(document.getElementById('recapGameId').value);
+  const statusEl = document.getElementById('recapStatus');
+  if (!gameId) { statusEl.style.color='#ff5555'; statusEl.textContent='Enter a game ID first.'; return; }
+
+  statusEl.style.color = 'var(--ink-mute)';
+  statusEl.innerHTML = '<span class="spinner"></span> Calling Claude API…';
+
+  try {
+    const r = await fetch('/.netlify/functions/generate-recap', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ gameId }),
+    });
+    const data = await r.json();
+    if (!r.ok) throw new Error(data.error || `HTTP ${r.status}`);
+
+    // Save draft
+    const drafts = JSON.parse(localStorage.getItem(DRAFTS_KEY) || '[]');
+    const draft = { ...data, id: Date.now(), status: 'pending' };
+    drafts.unshift(draft);
+    localStorage.setItem(DRAFTS_KEY, JSON.stringify(drafts.slice(0, 20)));
+
+    statusEl.style.color = '#00c864';
+    statusEl.textContent = '✓ Article generated! See Drafts tab.';
+    document.getElementById('draftCount').textContent = `(${drafts.filter(d=>d.status==='pending').length})`;
+    renderDrafts();
+  } catch (e) {
+    statusEl.style.color = '#ff5555';
+    statusEl.textContent = '✗ ' + e.message;
+  }
+}
+
+// ── Drafts ────────────────────────────────────────────────────
+function renderDrafts() {
+  const el = document.getElementById('draftsList');
+  const drafts = JSON.parse(localStorage.getItem(DRAFTS_KEY) || '[]');
+  const pending = drafts.filter(d => d.status !== 'rejected');
+
+  const countEl = document.getElementById('draftCount');
+  const pCount = pending.filter(d=>d.status==='pending').length;
+  if (countEl) countEl.textContent = pCount > 0 ? `(${pCount})` : '';
+
+  if (!pending.length) {
+    el.innerHTML = '<p style="font-family:var(--mono);font-size:11px;color:var(--ink-faint);">No drafts yet. Generate one from the Results tab.</p>';
+    return;
+  }
+
+  el.innerHTML = pending.map(d => {
+    const a = d.article || {};
+    const lang = 'en';
+    return `<div class="draft-card" id="draft-${d.id}">
+      <div class="draft-meta">
+        ${d.date || ''} · BAR3 ${d.bar3Score}—${d.oppScore} ${d.opponent?.split(' ').pop()} ·
+        ${d.won ? '<span style="color:#00c864">WIN</span>' : '<span style="color:#ff5555">LOSS</span>'} ·
+        <span class="badge-draft">${d.status === 'pending' ? 'PENDING REVIEW' : d.status.toUpperCase()}</span>
+        · Generated ${new Date(d.generatedAt||d.id).toLocaleString()}
+      </div>
+
+      <div class="tab-bar" style="margin-bottom:10px;">
+        <button class="tab-btn active" onclick="setDraftLang(${d.id},'en',this)">EN</button>
+        <button class="tab-btn" onclick="setDraftLang(${d.id},'es',this)">ES</button>
+        <button class="tab-btn" onclick="setDraftLang(${d.id},'de',this)">DE</button>
+      </div>
+
+      <div id="draftBody-${d.id}" data-id="${d.id}">
+        <div class="draft-title">${a.title_en||'—'}</div>
+        <div style="font-size:12px;color:var(--ink-mute);margin-bottom:6px;">${a.subtitle_en||''}</div>
+        <div class="draft-body" id="dbody-${d.id}">${a.body_en||''}</div>
+        <button onclick="document.getElementById('dbody-${d.id}').classList.toggle('expanded')"
+          style="font-family:var(--mono);font-size:9px;color:var(--ink-faint);background:none;border:none;cursor:pointer;margin-top:4px;">
+          Show more / less
+        </button>
+      </div>
+
+      <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;">
+        <button class="btn btn-primary" style="font-size:11px;padding:7px 14px;" onclick="approveDraft(${d.id})">✓ Approve & Publish</button>
+        <button class="btn btn-ghost"   style="font-size:11px;padding:7px 14px;" onclick="rejectDraft(${d.id})">✗ Reject</button>
+        <button class="btn btn-ghost"   style="font-size:11px;padding:7px 14px;" onclick="copyDraftJSON(${d.id})">📋 Copy JSON</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function setDraftLang(id, lang, btn) {
+  btn.closest('.draft-card').querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const drafts = JSON.parse(localStorage.getItem(DRAFTS_KEY) || '[]');
+  const d = drafts.find(x => x.id === id);
+  if (!d) return;
+  const a = d.article || {};
+  const wrap = document.getElementById('draftBody-' + id);
+  if (!wrap) return;
+  wrap.querySelector('.draft-title').textContent = a['title_'+lang] || '—';
+  wrap.querySelector('div').nextElementSibling.textContent = a['subtitle_'+lang] || '';
+  document.getElementById('dbody-' + id).textContent = a['body_'+lang] || '';
+}
+
+function approveDraft(id) {
+  const drafts = JSON.parse(localStorage.getItem(DRAFTS_KEY) || '[]');
+  const d = drafts.find(x => x.id === id);
+  if (!d) return;
+  d.status = 'approved';
+  localStorage.setItem(DRAFTS_KEY, JSON.stringify(drafts));
+  alert('✓ Article approved. Add it to NEWS_ARTICLES in app.js to publish it.');
+  renderDrafts();
+}
+
+function rejectDraft(id) {
+  if (!confirm('Reject this draft?')) return;
+  const drafts = JSON.parse(localStorage.getItem(DRAFTS_KEY) || '[]');
+  const d = drafts.find(x => x.id === id);
+  if (d) { d.status = 'rejected'; localStorage.setItem(DRAFTS_KEY, JSON.stringify(drafts)); }
+  renderDrafts();
+}
+
+function copyDraftJSON(id) {
+  const drafts = JSON.parse(localStorage.getItem(DRAFTS_KEY) || '[]');
+  const d = drafts.find(x => x.id === id);
+  if (!d) return;
+  const a = d.article;
+  const snippet = `// Add to NEWS_ARTICLES in app.js:
+{
+  id: 'game-${d.gameId}',
+  date: '${d.date}',
+  tag: '${a?.tag_en || 'Game Recap'}', tagColor: '#F0B429',
+  headline: ${JSON.stringify(a?.title_en || '')},
+  summary: ${JSON.stringify(a?.subtitle_en || '')},
+  body: ${JSON.stringify(a?.body_en || '')},
+  href: 'article.html?id=game-${d.gameId}',
+  i18n: {
+    es: { tag: ${JSON.stringify(a?.tag_es||'')}, headline: ${JSON.stringify(a?.title_es||'')}, summary: ${JSON.stringify(a?.subtitle_es||'')}, body: ${JSON.stringify(a?.body_es||'')} },
+    de: { tag: ${JSON.stringify(a?.tag_de||'')}, headline: ${JSON.stringify(a?.title_de||'')}, summary: ${JSON.stringify(a?.subtitle_de||'')}, body: ${JSON.stringify(a?.body_de||'')} },
+  },
+}`;
+  navigator.clipboard.writeText(snippet).then(() => alert('✓ Copied to clipboard!'));
+}
+</script>
+</body>
+</html>

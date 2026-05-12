@@ -1631,6 +1631,77 @@ document.addEventListener('DOMContentLoaded', initCalendarButtons);
   });
 })();
 
+// ── DYNAMIC STATS FROM EASYSCORE API ─────────────────────────
+// Fetches fresh data on load (5-min cache).
+// Updates: team W-L record, fielding stats per player.
+// Batting/pitching not available via /stats — stays hardcoded.
+(function initDynamicStats() {
+  const CACHE_KEY = 'bar3-sync-cache';
+  const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
+  async function sync() {
+    const cached = (() => {
+      try {
+        const s = JSON.parse(localStorage.getItem(CACHE_KEY) || '{}');
+        if (s.fetchedAt && Date.now() - s.fetchedAt < CACHE_TTL) return s;
+      } catch {}
+      return null;
+    })();
+
+    const data = cached || await (async () => {
+      try {
+        const r = await fetch('/.netlify/functions/sync-stats');
+        if (!r.ok) return null;
+        const d = await r.json();
+        localStorage.setItem(CACHE_KEY, JSON.stringify({ ...d, fetchedAt: Date.now() }));
+        return d;
+      } catch { return null; }
+    })();
+
+    if (!data) return;
+
+    // Update W-L record display
+    if (data.record) {
+      document.querySelectorAll('[data-i18n="strip_record"]').forEach(el => {
+        const sibling = el.nextElementSibling;
+        if (sibling) sibling.textContent = data.record.label;
+      });
+    }
+
+    // Merge API fielding stats into PLAYER_EXTENDED_DATA
+    if (data.players && typeof PLAYER_EXTENDED_DATA !== 'undefined') {
+      data.players.forEach(p => {
+        if (!p.playerID || !p.fielding) return;
+        const num = String(p.uniformNr || '');
+        if (!num) return;
+        // Find by uniform number (maps to PLAYER_REGISTRY key)
+        const existing = PLAYER_EXTENDED_DATA[num];
+        if (existing && p.fielding) {
+          existing.fielding = existing.fielding || {};
+          // Update only the season totals from API; preserve per-game log
+          existing.fielding.season = {
+            ...(existing.fielding.season || {}),
+            G:    p.fielding.G,
+            IP:   p.fielding.IP,
+            PO:   p.fielding.PO,
+            A:    p.fielding.A,
+            E:    p.fielding.E,
+            DP:   p.fielding.DP,
+            FPct: p.fielding.FPct,
+          };
+        }
+        // Update player photo in registry if API has one
+        if (p.photo) {
+          const reg = typeof PLAYER_REGISTRY !== 'undefined' ? PLAYER_REGISTRY.get(num) : null;
+          if (reg && !reg.img) reg.img = p.photo;
+        }
+      });
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', sync);
+})();
+
 // ── LIVE SCORE (EasyScore API) ────────────────────────────────
 function initLiveScore() {
   const wrap = document.getElementById('liveScoreWrap');

@@ -5,7 +5,7 @@
   "type": "commonjs",
   "scripts": {
     "generate-icons": "node generate-icons.js",
-    "generate-og":    "node generate-og-image.js"
+    "generate-og": "node generate-og-image.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,8 @@
   "license": "ISC",
   "devDependencies": {
     "sharp": "^0.34.5"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.95.2"
   }
 }
