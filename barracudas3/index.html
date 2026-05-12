@@ -4,6 +4,12 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Zurich Barracudas — Baseball Club</title>
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#0d1f0f" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Barracudas" />
+<link rel="apple-touch-icon" href="assets/logo.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
@@ -355,5 +361,80 @@
 </div>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="app.js"></script><script src="lang.js"></script>
+
+<!-- ── PWA: install prompt banner ── -->
+<div id="pwaPrompt" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:999;
+  background:#0d2e1a;border-top:2px solid #f0b429;padding:14px 20px;
+  display:none;align-items:center;gap:14px;box-shadow:0 -4px 24px rgba(0,0,0,0.5);">
+  <img src="assets/logo.png" alt="Barracudas" style="height:40px;width:40px;object-fit:contain;flex-shrink:0;" />
+  <div style="flex:1;min-width:0;">
+    <div style="font-family:'Anton',sans-serif;font-size:16px;text-transform:uppercase;letter-spacing:0.04em;color:#fff;">
+      Install Barracudas App
+    </div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;color:rgba(255,255,255,0.5);margin-top:2px;">
+      Add to Home Screen for instant access
+    </div>
+  </div>
+  <button id="pwaInstallBtn" style="
+    background:#f0b429;color:#0d1f0f;border:none;
+    font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;
+    letter-spacing:0.1em;text-transform:uppercase;
+    padding:9px 18px;border-radius:999px;cursor:pointer;flex-shrink:0;">
+    Install
+  </button>
+  <button id="pwaDismissBtn" style="
+    background:none;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.5);
+    width:32px;height:32px;border-radius:50%;font-size:1rem;
+    cursor:pointer;flex-shrink:0;display:grid;place-items:center;">
+    ×
+  </button>
+</div>
+
+<script>
+// Service Worker registration
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js')
+      .then(reg => {
+        reg.addEventListener('updatefound', () => {
+          reg.installing?.addEventListener('statechange', function () {
+            if (this.state === 'installed' && navigator.serviceWorker.controller) {
+              this.postMessage({ type: 'SKIP_WAITING' });
+            }
+          });
+        });
+      })
+      .catch(err => console.warn('SW:', err));
+  });
+}
+
+// Install prompt
+(function () {
+  if (localStorage.getItem('pwa-dismissed')) return;
+  let deferredPrompt = null;
+  const banner = document.getElementById('pwaPrompt');
+  const installBtn = document.getElementById('pwaInstallBtn');
+  const dismissBtn = document.getElementById('pwaDismissBtn');
+
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    deferredPrompt = e;
+    setTimeout(() => { banner.style.display = 'flex'; }, 3000);
+  });
+
+  installBtn.addEventListener('click', () => {
+    banner.style.display = 'none';
+    deferredPrompt?.prompt();
+    deferredPrompt?.userChoice.then(() => { deferredPrompt = null; });
+  });
+
+  dismissBtn.addEventListener('click', () => {
+    banner.style.display = 'none';
+    localStorage.setItem('pwa-dismissed', '1');
+  });
+
+  window.addEventListener('appinstalled', () => { banner.style.display = 'none'; });
+})();
+</script>
 </body>
 </html>

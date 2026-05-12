@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Offline — Zürich Barracudas</title>
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#0d1f0f" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Inter Tight", "Helvetica Neue", system-ui, sans-serif;
+    background: #0d1f0f;
+    color: #f5f3ee;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+    gap: 1.5rem;
+  }
+  img { display: block; width: 72px; height: 72px; object-fit: contain; opacity: 0.9; }
+  .icon { font-size: 2.5rem; line-height: 1; }
+  h1 {
+    font-family: "Anton", "Bebas Neue", sans-serif;
+    font-size: clamp(2rem, 8vw, 3.5rem);
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    line-height: 0.9;
+    color: #f5f3ee;
+  }
+  h1 span { color: #f0b429; }
+  .msg {
+    max-width: 380px;
+    font-size: 15px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.6;
+  }
+  .lang-msg {
+    font-size: 13px;
+    color: rgba(255,255,255,0.35);
+    line-height: 1.6;
+    max-width: 380px;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    background: #f0b429;
+    color: #0d1f0f;
+    border: none;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    margin-top: 0.5rem;
+  }
+  .btn:hover { opacity: 0.85; }
+  .divider {
+    width: 40px; height: 1px;
+    background: rgba(255,255,255,0.12);
+  }
+</style>
+</head>
+<body>
+
+<img src="assets/logo.png" alt="Barracudas" onerror="this.style.display='none'" />
+
+<div class="icon">📡</div>
+
+<h1>You're<br /><span>Offline.</span></h1>
+
+<p class="msg">Check your connection to see the latest Barracudas news, scores, and schedule.</p>
+
+<div class="divider"></div>
+
+<p class="lang-msg">
+  <strong>ES</strong> — Sin conexión. Revisa tu conexión para ver las últimas noticias de los Barracudas.<br />
+  <strong>DE</strong> — Offline. Überprüfe deine Verbindung für die neuesten Barracudas-Nachrichten.
+</p>
+
+<button class="btn" onclick="location.reload()">Try Again →</button>
+
+</body>
+</html>

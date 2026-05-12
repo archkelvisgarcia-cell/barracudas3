@@ -1,0 +1,18 @@
+{
+  "name": "Zürich Barracudas Baseball",
+  "short_name": "Barracudas",
+  "description": "Zürich's premier baseball club. Defending Gruppe A Champions.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0d1f0f",
+  "theme_color": "#0d1f0f",
+  "lang": "en",
+  "categories": ["sports"],
+  "icons": [
+    { "src": "assets/logo.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "assets/logo.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "assets/logo.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
