@@ -2,7 +2,7 @@
 // Team: Zürich Barracudas 3 · TeamID 13054 · LeagueID 10144
 // Endpoint pattern: GET /games?id={gameId}  (teamId query param is broken on this key)
 
-const API_KEY  = process.env.EASYSCORE_API_KEY || 'urxiKaOhuH6keoQBwC74a2mi0nsgcAkJ1VBlklK6';
+const API_KEY  = process.env.EASYSCORE_API_KEY;
 const BASE_URL = 'https://api.easyscore.com/v2';
 const TEAM_ID  = parseInt(process.env.EASYSCORE_TEAM_ID  || '13054');
 const HEADERS  = { 'x-api-key': API_KEY };
