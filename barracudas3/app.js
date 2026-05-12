@@ -1631,37 +1631,129 @@ document.addEventListener('DOMContentLoaded', initCalendarButtons);
   });
 })();
 
-// ── LIVE SCORE ────────────────────────────────────────────────
+// ── LIVE SCORE (EasyScore API) ────────────────────────────────
 function initLiveScore() {
-  const banner = document.getElementById('liveScoreBanner');
-  if (!banner || typeof GAMES === 'undefined') return;
+  const wrap = document.getElementById('liveScoreWrap');
+  if (!wrap) return;
 
-  const now     = new Date();
-  const todayISO = now.toISOString().split('T')[0];
-
-  const active = GAMES.find(g => {
-    if (!g.date || g.date !== todayISO) return false;
-    const start = new Date(`${g.date}T${g.time || '12:00'}:00`);
-    const end   = new Date(start.getTime() + 4 * 3600 * 1000);
-    return now >= start && now <= end;
-  });
-
-  if (!active) return;
-
-  function renderLive() {
-    const s = JSON.parse(localStorage.getItem('bar3-live') || '{}');
-    const us    = s.us    ?? '—';
-    const them  = s.them  ?? '—';
-    const inn   = s.inning ? ` · ${s.inning}` : '';
-    banner.style.display = 'flex';
-    banner.innerHTML = `
-      <span class="live-pill">🔴 LIVE</span>
-      <span class="live-score">BAR3 <b>${us}</b> — <b>${them}</b> ${active.opponent}${inn}</span>
-      <a href="results.html" class="live-link">→</a>`;
+  function logoEl(src, abbr) {
+    if (!src) return `<div class="ls-logo-placeholder">${abbr[0]}</div>`;
+    return `<img class="ls-logo" src="${src}" alt="${abbr}" onerror="this.outerHTML='<div class=\\"ls-logo-placeholder\\">${abbr[0]}</div>'" />`;
   }
 
-  renderLive();
-  setInterval(renderLive, 60000);
+  function renderLinescore(ls, bar3Side, currentInning) {
+    if (!ls) return '';
+    const inns = parseInt(ls.innings || 9);
+    const cells = Array.from({ length: Math.max(inns, 9) }, (_, i) => i + 1);
+    const bar3 = ls[bar3Side] || {};
+    const opp  = bar3Side === 'away' ? (ls.home || {}) : (ls.away || {});
+    const bar3line = bar3.line || {};
+    const oppline  = opp.line  || {};
+    const curI = currentInning ?? inns;
+
+    function cell(val, inning) {
+      if (val === undefined || val === null || val === '') return `<td class="ls-zero">·</td>`;
+      const isCur = (inning === curI) ? ' ls-cur' : '';
+      const isZero = val === 0 || val === '0';
+      return `<td class="${isZero ? 'ls-zero' : ''}${isCur}">${val}</td>`;
+    }
+
+    return `<div class="ls-linescore-wrap">
+      <table class="ls-table">
+        <thead><tr>
+          <th></th>
+          ${cells.map(i => `<th>${i}</th>`).join('')}
+          <th>R</th><th>H</th><th>E</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td>${bar3.abbr || 'BAR3'}</td>
+            ${cells.map(i => cell(bar3line[i], i)).join('')}
+            <td class="ls-total">${bar3.totals?.R ?? '—'}</td>
+            <td>${bar3.totals?.H ?? '—'}</td>
+            <td>${bar3.totals?.E ?? '—'}</td>
+          </tr>
+          <tr>
+            <td>${opp.abbr || 'OPP'}</td>
+            ${cells.map(i => cell(oppline[i], i)).join('')}
+            <td class="ls-total">${opp.totals?.R ?? '—'}</td>
+            <td>${opp.totals?.H ?? '—'}</td>
+            <td>${opp.totals?.E ?? '—'}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>`;
+  }
+
+  function renderCard(g) {
+    if (!g) return '';
+    const isLive     = g.live;
+    const bar3Ahead  = (g.bar3Score || 0) > (g.oppScore || 0);
+    const inningNum  = g.lineScore?.innings ?? '';
+
+    const statusLabel = isLive
+      ? (inningNum ? `INN ${inningNum}` : 'IN PROGRESS')
+      : (g.finished ? `FINAL · ${new Date(g.date).toLocaleDateString('en-US', { month:'short', day:'numeric' })}` : '');
+
+    return `<div class="ls-card">
+      <div class="ls-topbar">
+        <span class="ls-badge ${isLive ? 'ls-badge--live' : 'ls-badge--final'}">${isLive ? '🔴 LIVE' : '✓ FINAL'}</span>
+        ${statusLabel ? `<span class="ls-status-label">${statusLabel}</span>` : ''}
+      </div>
+      <div class="ls-score-row">
+        <div class="ls-team">
+          ${logoEl(g.bar3Logo, g.bar3Abbr || 'BAR3')}
+          <div>
+            <div class="ls-team-name">${g.bar3Abbr || 'BAR3'}</div>
+            <div class="ls-team-sub">Barracudas 3</div>
+          </div>
+          <span class="ls-runs${bar3Ahead ? ' ls-runs--highlight' : ''}">${g.bar3Score ?? '—'}</span>
+        </div>
+        <span class="ls-dash">—</span>
+        <div class="ls-team ls-team--home">
+          ${logoEl(g.oppLogo, g.oppAbbr || 'OPP')}
+          <div>
+            <div class="ls-team-name">${g.oppAbbr || 'OPP'}</div>
+            <div class="ls-team-sub">${(g.oppName || '').split(' ').slice(-1)[0] || ''}</div>
+          </div>
+          <span class="ls-runs${!bar3Ahead && g.oppScore > g.bar3Score ? ' ls-runs--highlight' : ''}">${g.oppScore ?? '—'}</span>
+        </div>
+      </div>
+      ${renderLinescore(g.lineScore, g.bar3Side, isLive ? parseInt(inningNum) : null)}
+      <a href="results.html" class="ls-cta">${_t('btn_all_boxscores') || 'ALL BOXSCORES →'}</a>
+    </div>`;
+  }
+
+  async function load() {
+    try {
+      const res  = await fetch('/.netlify/functions/easyscore');
+      if (!res.ok) throw new Error('API error');
+      const data = await res.json();
+      const game = data.live || data.recent || null;
+
+      if (!game) { wrap.style.display = 'none'; return; }
+
+      wrap.style.display = 'block';
+      wrap.innerHTML = `<div class="ls-wrap"><div class="ls-card-container">${renderCard(game)}</div></div>`;
+
+      // Poll every 60s only when live
+      if (game.live) setTimeout(load, 60000);
+    } catch {
+      // Fallback: check localStorage for manual score (admin/score.html)
+      const s = JSON.parse(localStorage.getItem('bar3-live') || '{}');
+      if (!s.us && s.us !== 0) { wrap.style.display = 'none'; return; }
+      const banner = document.createElement('div');
+      banner.id = 'liveScoreBanner';
+      banner.style.cssText = 'display:flex';
+      banner.innerHTML = `<span class="live-pill">🔴 LIVE</span>
+        <span class="live-score">BAR3 <b>${s.us}</b> — <b>${s.them}</b>${s.inning ? ' · ' + s.inning : ''}</span>
+        <a href="results.html" class="live-link">→</a>`;
+      wrap.style.display = 'block';
+      wrap.appendChild(banner);
+    }
+  }
+
+  load();
 }
 
 document.addEventListener('DOMContentLoaded', initLiveScore);
