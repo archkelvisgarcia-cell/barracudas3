@@ -1263,233 +1263,242 @@ function initPlayerStats() {
 document.addEventListener('DOMContentLoaded', initPlayerStats);
 
 // ── AWARDS SECTION ────────────────────────────────────────────
-function initAwards() {
-  const grid    = document.getElementById('awardsGrid');
-  const dataEl  = document.getElementById('roster-data');
-  if (!grid || !dataEl) return;
+// ── AWARDS — pure calculation, no DOM dependencies ────────────
+function calculateAwards() {
+  if (typeof PLAYER_EXTENDED_DATA === 'undefined') return null;
 
-  let roster;
-  try { roster = JSON.parse(dataEl.textContent); } catch (e) { return; }
-
-  function getStat(p, key) {
-    const s = p.stats.find(s => s.k === key);
-    return s ? parseFloat(s.v) : null;
-  }
-  function getExt(num) { return PLAYER_EXTENDED_DATA[num] || null; }
-
-  function norm(val, min, max, invert) {
-    if (val === null || val === undefined || isNaN(val)) return 0;
-    const pct = Math.min(1, Math.max(0, (val - min) / (max - min)));
-    return Math.round((invert ? 1 - pct : pct) * 100);
-  }
-
-  function weightedScore(items) {
-    let num = 0, den = 0;
-    items.forEach(({ val, min = 0, max, invert = false, w }) => {
-      num += norm(val, min, max, invert) * w;
-      den += w;
-    });
-    return den ? Math.round(num / den) : 0;
-  }
-
-  function scoreColor(s) {
-    return s >= 80 ? 'var(--accent)' : s >= 55 ? 'oklch(0.72 0.12 160)' : 'var(--ink-mute)';
-  }
-
-  function renderPhoto(p, size, crown) {
-    const ini = `${p.first[0]}${p.last[0]}`.toUpperCase();
-    const img = p.img
-      ? `<img src="${p.img}" alt="${p.first}" onerror="this.parentNode.textContent='${ini}'" />`
-      : ini;
-    return `<div class="award-photo award-photo--${size}">${img}${crown ? '<span class="award-crown">★</span>' : ''}</div>`;
-  }
-
-  function renderMetric(label, val, pct) {
-    return `<div class="award-metric">
-      <span class="award-metric-label">${label}</span>
-      <div class="award-metric-track"><div class="award-metric-fill" style="width:${pct}%"></div></div>
-      <span class="award-metric-val">${val ?? '—'}</span>
-    </div>`;
-  }
-
-  // ── Award definitions ─────────────────────────────────────────
-  const AWARDS = [
-    {
-      icon: '🏆', name: 'MVP', desc: 'Most Valuable Player',
-      filter: p => (p.type === 'batter' || p.type === 'both') && getStat(p, 'OPS') !== null && getStat(p, 'AVG') > 0.05,
-      score:  p => weightedScore([
-        { val: getStat(p, 'OPS'),       max: 2.0, w: 40 },
-        { val: getStat(p, 'RBI') || 0,  max: 20,  w: 35 },
-        { val: getStat(p, 'AVG'),        max: 0.6, w: 25 },
-      ]),
-      metrics: p => [
-        { label:'OPS', val: getStat(p,'OPS'), pct: norm(getStat(p,'OPS'), 0, 2.0) },
-        { label:'RBI', val: getStat(p,'RBI'), pct: norm(getStat(p,'RBI')||0, 0, 20) },
-        { label:'AVG', val: getStat(p,'AVG'), pct: norm(getStat(p,'AVG'), 0, 0.6) },
-      ],
-    },
-    {
-      icon: '⚾', name: 'Champion Bat', desc: 'Best Hitter',
-      filter: p => (p.type === 'batter' || p.type === 'both') && getStat(p, 'AVG') > 0.05,
-      score:  p => weightedScore([
-        { val: getStat(p,'AVG'),         max: 0.6,  w: 40 },
-        { val: getStat(p,'OBP') || getStat(p,'OPS') || 0, max: 0.7, w: 30 },
-        { val: getStat(p,'OPS'),          max: 2.0,  w: 20 },
-        { val: getStat(p,'HR') || 0,      max: 5,    w: 10 },
-      ]),
-      metrics: p => [
-        { label:'AVG', val: getStat(p,'AVG'), pct: norm(getStat(p,'AVG'), 0, 0.6) },
-        { label:'OBP', val: getStat(p,'OBP') ?? getStat(p,'OPS'), pct: norm(getStat(p,'OBP')||getStat(p,'OPS')||0, 0, 0.7) },
-        { label:'OPS', val: getStat(p,'OPS'), pct: norm(getStat(p,'OPS'), 0, 2.0) },
-      ],
-    },
-    {
-      icon: '🥇', name: 'Best Pitcher', desc: 'Best Starting Pitcher',
-      filter: p => {
-        if (p.type !== 'pitcher' && p.type !== 'both') return false;
-        if (getStat(p, 'ERA') === null) return false;
-        const ext = getExt(p.num);
-        const gs = ext?.pitching?.season?.GS;
-        if (gs !== undefined && gs === 0) return false;
-        return true;
-      },
-      score:  p => weightedScore([
-        { val: getStat(p,'ERA'),  max: 12, invert: true, w: 40 },
-        { val: getStat(p,'WHIP'), max: 3,  invert: true, w: 35 },
-        { val: getStat(p,'K')||0, max: 15,               w: 25 },
-      ]),
-      metrics: p => [
-        { label:'ERA',  val: getStat(p,'ERA'),  pct: norm(getStat(p,'ERA'),  0, 12, true) },
-        { label:'WHIP', val: getStat(p,'WHIP'), pct: norm(getStat(p,'WHIP'), 0, 3,  true) },
-        { label:'K',    val: getStat(p,'K'),    pct: norm(getStat(p,'K')||0, 0, 15) },
-      ],
-    },
-    {
-      icon: '🔥', name: 'Best Reliever', desc: 'Best Relief Pitcher',
-      filter: p => {
-        if (p.type !== 'pitcher' && p.type !== 'both') return false;
-        if (getStat(p, 'ERA') === null) return false;
-        const ext = getExt(p.num);
-        const gs = ext?.pitching?.season?.GS;
-        if (gs !== undefined && gs > 1) return false;
-        return true;
-      },
-      score:  p => weightedScore([
-        { val: getStat(p,'ERA'),  max: 10, invert: true, w: 45 },
-        { val: getStat(p,'WHIP'), max: 3,  invert: true, w: 35 },
-        { val: getStat(p,'K')||0, max: 12,               w: 20 },
-      ]),
-      metrics: p => [
-        { label:'ERA',  val: getStat(p,'ERA'),  pct: norm(getStat(p,'ERA'),  0, 10, true) },
-        { label:'WHIP', val: getStat(p,'WHIP'), pct: norm(getStat(p,'WHIP'), 0, 3,  true) },
-        { label:'K',    val: getStat(p,'K'),    pct: norm(getStat(p,'K')||0, 0, 12) },
-      ],
-    },
-    {
-      icon: '🧤', name: 'Golden Glove', desc: 'Best Defender',
-      filter: p => {
-        const ext = getExt(p.num);
-        return ext?.fielding?.season?.FPct != null;
-      },
-      score:  p => {
-        const fs = getExt(p.num)?.fielding?.season;
-        if (!fs) return 0;
-        return weightedScore([
-          { val: parseFloat(fs.FPct)||0, min: 0.7, max: 1.0,            w: 60 },
-          { val: fs.E||0,               max: 6,   invert: true,          w: 40 },
-        ]);
-      },
-      metrics: p => {
-        const fs = getExt(p.num)?.fielding?.season || {};
-        return [
-          { label:'FPct', val: fs.FPct, pct: norm(parseFloat(fs.FPct)||0, 0.7, 1.0) },
-          { label:'E',    val: fs.E,    pct: norm(fs.E||0, 0, 6, true) },
-          { label:'PO',   val: fs.PO,   pct: norm(fs.PO||0, 0, 50) },
-        ];
-      },
-    },
-  ];
-
-  // Build each card
-  grid.innerHTML = AWARDS.map(award => {
-    const candidates = roster
-      .filter(award.filter)
-      .map(p => ({ p, sc: award.score(p), mx: award.metrics(p) }))
-      .filter(c => c.sc > 0)
-      .sort((a, b) => b.sc - a.sc)
-      .slice(0, 3);
-
-    if (!candidates.length) return '';
-
-    const [first, ...rest] = candidates;
-    const col = scoreColor(first.sc);
-
-    const winnerHTML = `
-      <div class="award-winner award-clickable" data-player-num="${first.p.num}">
-        ${renderPhoto(first.p, 'lg', first.sc >= 80)}
-        <div class="award-details">
-          <div class="award-player-name">${first.p.first} ${first.p.last}</div>
-          <div class="award-player-pos">#${first.p.num} · ${first.p.pos}</div>
-          <div class="award-metrics">${first.mx.map(m => renderMetric(m.label, m.val, m.pct)).join('')}</div>
-        </div>
-        <div class="award-score-badge" style="color:${col};border-color:${col}">
-          <span class="award-score-num">${first.sc}</span>
-          <span class="award-score-denom">/100</span>
-        </div>
-      </div>`;
-
-    const runnersHTML = rest.length ? `
-      <div class="award-runners">
-        ${rest.map(c => {
-          const sc2 = scoreColor(c.sc);
-          return `<div class="award-runner award-clickable" data-player-num="${c.p.num}">
-            ${renderPhoto(c.p, 'sm', false)}
-            <div class="award-runner-info">
-              <span class="award-player-name">${c.p.first[0]}. ${c.p.last}</span>
-              <span class="award-score-sm" style="color:${sc2}">${c.sc}/100</span>
-            </div>
-            <div class="award-mini-metrics">
-              ${c.mx.slice(0,2).map(m => `
-                <div class="award-mini-bar">
-                  <span>${m.label}</span>
-                  <div class="award-metric-track"><div class="award-metric-fill" style="width:${m.pct}%"></div></div>
-                  <span>${m.val ?? '—'}</span>
-                </div>`).join('')}
-            </div>
-          </div>`;
-        }).join('')}
-      </div>` : '';
-
-    return `<div class="award-card reveal">
-      <div class="award-header">
-        <span class="award-icon">${award.icon}</span>
-        <div>
-          <div class="award-name">${award.name}</div>
-          <div class="award-desc">${award.desc}</div>
-        </div>
-      </div>
-      ${winnerHTML}
-      ${runnersHTML}
-    </div>`;
-  }).join('');
-
-  // Click on any winner/runner opens player modal
-  grid.querySelectorAll('.award-clickable').forEach(el => {
-    el.addEventListener('click', () => {
-      const player = PLAYER_REGISTRY.get(el.dataset.playerNum);
-      if (player) openPlayerModal(player);
-    });
+  // Build enriched player list from PLAYER_EXTENDED_DATA
+  const players = Object.entries(PLAYER_EXTENDED_DATA).map(([num, ext]) => {
+    const reg = typeof PLAYER_REGISTRY !== 'undefined' ? PLAYER_REGISTRY.get(num) : null;
+    return {
+      num,
+      fullName: ext.fullName || (reg ? `${reg.first} ${reg.last}` : `#${num}`),
+      shortName: reg ? `${reg.first[0]}. ${reg.last}` : (ext.fullName?.split(' ').pop() || `#${num}`),
+      img:  reg?.img || null,
+      pos:  reg?.pos || '—',
+      bat:  ext.batting?.season  || null,
+      pit:  ext.pitching?.season || null,
+      fld:  ext.fielding?.season || null,
+    };
   });
 
-  // Wire scroll-reveal for new cards
-  if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
-    }, { threshold: 0.1 });
-    grid.querySelectorAll('.reveal').forEach(e => io.observe(e));
-  } else {
-    grid.querySelectorAll('.reveal').forEach(e => e.classList.add('in'));
+  function f(v) { return parseFloat(v) || 0; }
+  function normPct(val, min, max, invert = false) {
+    const pct = Math.min(100, Math.max(0, ((f(val) - min) / (max - min)) * 100));
+    return invert ? 100 - pct : pct;
   }
+
+  // ── Golden Glove: G ≥ 3, IP ≥ 10
+  //    Sort: E↑ → FPct↓ → IP↓ → RF↓
+  const gg = players
+    .filter(p => p.fld && p.fld.G >= 3 && f(p.fld.IP) >= 10)
+    .sort((a, b) => {
+      if (a.fld.E !== b.fld.E)         return a.fld.E - b.fld.E;
+      if (f(a.fld.FPct) !== f(b.fld.FPct)) return f(b.fld.FPct) - f(a.fld.FPct);
+      if (f(a.fld.IP)   !== f(b.fld.IP))   return f(b.fld.IP) - f(a.fld.IP);
+      return f(b.fld.RF || 0) - f(a.fld.RF || 0);
+    })
+    .slice(0, 3)
+    .map(p => ({
+      ...p,
+      metrics: [
+        { label: 'FPct', val: p.fld.FPct, pct: normPct(p.fld.FPct, 0.7, 1.0)       },
+        { label: 'E',    val: p.fld.E,    pct: normPct(p.fld.E,     0,   5, true)   },
+        { label: 'IP',   val: p.fld.IP,   pct: normPct(p.fld.IP,    0,  55)         },
+      ],
+    }));
+
+  // ── Silver Slugger: PA ≥ 10, AB ≥ 8
+  //    Sort: OPS↓ → AVG↓ → RBI↓ → HR↓
+  const ss = players
+    .filter(p => p.bat && p.bat.PA >= 10 && p.bat.AB >= 8)
+    .sort((a, b) => {
+      const opsD = f(b.bat.OPS) - f(a.bat.OPS); if (opsD) return opsD;
+      const avgD = f(b.bat.AVG) - f(a.bat.AVG); if (avgD) return avgD;
+      if (b.bat.RBI !== a.bat.RBI) return b.bat.RBI - a.bat.RBI;
+      return (b.bat.HR || 0) - (a.bat.HR || 0);
+    })
+    .slice(0, 3)
+    .map(p => ({
+      ...p,
+      metrics: [
+        { label: 'OPS', val: p.bat.OPS, pct: normPct(p.bat.OPS, 0,   2.0) },
+        { label: 'AVG', val: p.bat.AVG, pct: normPct(p.bat.AVG, 0,   0.6) },
+        { label: 'RBI', val: p.bat.RBI, pct: normPct(p.bat.RBI, 0,  20)   },
+      ],
+    }));
+
+  // ── Cy Young: IP ≥ 3
+  //    Sort: ERA↑ → WHIP↑ → SO↓ → wins↓
+  const cy = players
+    .filter(p => p.pit && f(p.pit.IP) >= 3)
+    .sort((a, b) => {
+      const eraD = f(a.pit.ERA) - f(b.pit.ERA); if (eraD) return eraD;
+      const whpD = f(a.pit.WHIP) - f(b.pit.WHIP); if (whpD) return whpD;
+      if (a.pit.SO !== b.pit.SO) return b.pit.SO - a.pit.SO;
+      const wa = parseInt((a.pit.WL||'0-0').split('-')[0]) || 0;
+      const wb = parseInt((b.pit.WL||'0-0').split('-')[0]) || 0;
+      return wb - wa;
+    })
+    .slice(0, 3)
+    .map(p => ({
+      ...p,
+      metrics: [
+        { label: 'ERA',  val: p.pit.ERA,  pct: normPct(p.pit.ERA,  0, 12, true) },
+        { label: 'WHIP', val: p.pit.WHIP, pct: normPct(p.pit.WHIP, 0,  3, true) },
+        { label: 'SO',   val: p.pit.SO,   pct: normPct(p.pit.SO,   0, 12)        },
+      ],
+    }));
+
+  // ── MVP: G ≥ 3 in any category; composite score
+  const MAX_SO = Math.max(...players.map(p => p.pit?.SO || 0), 1);
+  function mvpScore(p) {
+    let sc = 0, cats = 0;
+    if (p.bat && p.bat.PA >= 10) {
+      sc += f(p.bat.OPS) * 40 + f(p.bat.AVG) * 20;
+      cats++;
+    }
+    if (p.pit && f(p.pit.IP) >= 3) {
+      sc += Math.max(0, (12 - f(p.pit.ERA)) / 12) * 30;
+      sc += (Math.min(p.pit.SO, MAX_SO) / MAX_SO) * 10;
+      cats++;
+    }
+    if (p.fld && p.fld.G >= 3) {
+      sc += f(p.fld.FPct) * 10;
+      cats++;
+    }
+    if (cats >= 2) sc += 5;
+    return Math.round(sc * 10) / 10;
+  }
+
+  const mvp = players
+    .filter(p => {
+      const gBat = p.bat?.G || 0;
+      const gFld = p.fld?.G || 0;
+      const gPit = (p.pit && f(p.pit.IP) >= 3) ? 3 : 0;
+      return Math.max(gBat, gFld, gPit) >= 3;
+    })
+    .map(p => ({ ...p, _mvpSc: mvpScore(p) }))
+    .sort((a, b) => b._mvpSc - a._mvpSc)
+    .slice(0, 3)
+    .map(p => ({
+      ...p,
+      metrics: [
+        ...(p.bat && p.bat.PA >= 10 ? [{ label: 'OPS', val: p.bat.OPS, pct: normPct(p.bat.OPS, 0, 2.0) }] : []),
+        ...(p.pit && f(p.pit.IP) >= 3 ? [{ label: 'ERA', val: p.pit.ERA, pct: normPct(p.pit.ERA, 0, 12, true) }] : []),
+        ...(p.fld ? [{ label: 'FPct', val: p.fld.FPct, pct: normPct(p.fld.FPct, 0.7, 1.0) }] : []),
+      ].slice(0, 3),
+      mvpSc: p._mvpSc,
+    }));
+
+  return { gg, ss, cy, mvp };
+}
+
+// ── RENDER AWARDS ─────────────────────────────────────────────
+function initAwards() {
+  const grid = document.getElementById('awardsGrid');
+  if (!grid) return;
+
+  function renderPhoto(p, size) {
+    const ini = p.fullName ? p.fullName.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase() : p.num;
+    const img = p.img
+      ? `<img src="${p.img}" alt="${p.shortName}" onerror="this.parentNode.textContent='${ini}'" />`
+      : ini;
+    return `<div class="award-photo award-photo--${size}">${img}</div>`;
+  }
+
+  function renderMetric(m) {
+    return `<div class="award-metric">
+      <span class="award-metric-label">${m.label}</span>
+      <div class="award-metric-track"><div class="award-metric-fill" style="width:${Math.round(m.pct)}%"></div></div>
+      <span class="award-metric-val">${m.val ?? '—'}</span>
+    </div>`;
+  }
+
+  const AWARD_DEFS = [
+    { key:'gg',  icon:'🧤', nameKey:'award_gg_name', descKey:'award_gg_desc' },
+    { key:'ss',  icon:'⚾', nameKey:'award_ss_name', descKey:'award_ss_desc' },
+    { key:'cy',  icon:'🏆', nameKey:'award_cy_name', descKey:'award_cy_desc' },
+    { key:'mvp', icon:'🌟', nameKey:'award_mvp_name', descKey:'award_mvp_desc' },
+  ];
+
+  function renderGrid() {
+    const awards = calculateAwards();
+    if (!awards) { grid.innerHTML = '<p style="color:var(--ink-faint);font-family:var(--mono);font-size:12px;padding:20px;">No player stats available.</p>'; return; }
+
+    const badge = _t('award_badge') || 'CANDIDATE · SEASON IN PROGRESS';
+
+    grid.innerHTML = AWARD_DEFS.map(def => {
+      const candidates = awards[def.key] || [];
+      if (!candidates.length) return '';
+      const [first, ...rest] = candidates;
+
+      const winnerHTML = `
+        <div class="award-winner award-clickable" data-player-num="${first.num}">
+          ${renderPhoto(first, 'lg')}
+          <div class="award-details">
+            <div class="award-player-name">${first.fullName}</div>
+            <div class="award-player-pos">#${first.num} · ${first.pos}</div>
+            <div class="award-metrics">${(first.metrics || []).map(renderMetric).join('')}</div>
+            ${first.mvpSc != null ? `<div style="font-family:var(--mono);font-size:10px;color:var(--accent);margin-top:6px;letter-spacing:0.08em;">Score: ${first.mvpSc}</div>` : ''}
+          </div>
+        </div>`;
+
+      const runnersHTML = rest.length ? `
+        <div class="award-runners">
+          ${rest.map(c => `
+            <div class="award-runner award-clickable" data-player-num="${c.num}">
+              ${renderPhoto(c, 'sm')}
+              <div class="award-runner-info">
+                <span class="award-player-name">${c.shortName}</span>
+                <span class="award-score-sm" style="color:var(--accent)">
+                  ${c.mvpSc != null ? c.mvpSc : (c.metrics?.[0] ? `${c.metrics[0].label} ${c.metrics[0].val}` : '#' + c.num)}
+                </span>
+              </div>
+              <div class="award-mini-metrics">
+                ${(c.metrics || []).slice(0,2).map(m => `
+                  <div class="award-mini-bar">
+                    <span>${m.label}</span>
+                    <div class="award-metric-track"><div class="award-metric-fill" style="width:${Math.round(m.pct)}%"></div></div>
+                    <span>${m.val ?? '—'}</span>
+                  </div>`).join('')}
+              </div>
+            </div>`).join('')}
+        </div>` : '';
+
+      return `<div class="award-card reveal">
+        <div class="award-header">
+          <span class="award-icon">${def.icon}</span>
+          <div>
+            <div class="award-name">${_t(def.nameKey) || def.nameKey}</div>
+            <div class="award-desc">${_t(def.descKey) || def.descKey}</div>
+          </div>
+        </div>
+        <div style="padding:8px 20px 0;font-family:var(--mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(240,180,41,0.55);">${badge}</div>
+        ${winnerHTML}
+        ${runnersHTML}
+      </div>`;
+    }).join('');
+
+    grid.querySelectorAll('.award-clickable').forEach(el => {
+      el.addEventListener('click', () => {
+        const player = typeof PLAYER_REGISTRY !== 'undefined' ? PLAYER_REGISTRY.get(el.dataset.playerNum) : null;
+        if (player) openPlayerModal(player);
+      });
+    });
+
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+      }, { threshold: 0.1 });
+      grid.querySelectorAll('.reveal').forEach(e => io.observe(e));
+    } else {
+      grid.querySelectorAll('.reveal').forEach(e => e.classList.add('in'));
+    }
+  }
+
+  renderGrid();
+  window._barLang?.onLang?.(() => renderGrid());
 }
 
 document.addEventListener('DOMContentLoaded', initAwards);

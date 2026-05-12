@@ -102,6 +102,15 @@
       modal_easyscore: 'View full stats on EasyScore ↗',
       modal_streak_chip: 'game hit streak',
       ig_h1: 'Follow', ig_h2: 'The Journey.',
+
+      award_section_eyebrow: '— Season Awards',
+      award_section_h1: 'Award', award_section_h2: 'Candidates.',
+      award_section_sub: 'Calculated automatically from 2026 season statistics.',
+      award_badge: 'CANDIDATE · SEASON IN PROGRESS',
+      award_gg_name: 'Golden Glove', award_gg_desc: 'Best Defender',
+      award_ss_name: 'Silver Slugger', award_ss_desc: 'Best Hitter',
+      award_cy_name: 'Cy Young Award', award_cy_desc: 'Best Pitcher',
+      award_mvp_name: 'Most Valuable Player', award_mvp_desc: 'Season MVP',
     },
 
     es: {
@@ -204,6 +213,15 @@
       modal_easyscore: 'Ver stats completos en EasyScore ↗',
       modal_streak_chip: 'juegos con hit',
       ig_h1: 'Síguenos', ig_h2: 'En Instagram.',
+
+      award_section_eyebrow: '— Premios de Temporada',
+      award_section_h1: 'Premios', award_section_h2: 'Candidatos.',
+      award_section_sub: 'Calculados automáticamente con las estadísticas reales de 2026.',
+      award_badge: 'CANDIDATO · TEMPORADA EN CURSO',
+      award_gg_name: 'Guante de Oro', award_gg_desc: 'Mejor Defensor',
+      award_ss_name: 'Bateador de Plata', award_ss_desc: 'Mejor Bateador',
+      award_cy_name: 'Premio Cy Young', award_cy_desc: 'Mejor Pitcher',
+      award_mvp_name: 'Jugador Más Valioso', award_mvp_desc: 'MVP de Temporada',
     },
 
     de: {
@@ -306,6 +324,15 @@
       modal_easyscore: 'Vollständige Stats auf EasyScore ↗',
       modal_streak_chip: 'Spiele mit Treffer in Folge',
       ig_h1: 'Folge', ig_h2: 'Uns.',
+
+      award_section_eyebrow: '— Saisonauszeichnungen',
+      award_section_h1: 'Auszeichnungs', award_section_h2: 'Kandidaten.',
+      award_section_sub: 'Automatisch aus den Saison-2026-Statistiken berechnet.',
+      award_badge: 'KANDIDAT · SAISON LÄUFT',
+      award_gg_name: 'Golden Glove', award_gg_desc: 'Bester Feldspieler',
+      award_ss_name: 'Silver Slugger', award_ss_desc: 'Bester Schlagmann',
+      award_cy_name: 'Cy Young Preis', award_cy_desc: 'Bester Werfer',
+      award_mvp_name: 'Wertvollster Spieler', award_mvp_desc: 'Saison-MVP',
     },
   };
 
