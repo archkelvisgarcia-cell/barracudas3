@@ -1597,50 +1597,64 @@ document.addEventListener('DOMContentLoaded', initCalendarButtons);
 
 // ── ONESIGNAL NOTIFICATION BELL ───────────────────────────────
 (function () {
-  // Inject bell into every page's nav-tools
   document.addEventListener('DOMContentLoaded', () => {
     const tools = document.querySelector('.nav-tools');
     if (!tools) return;
+
     const bell = document.createElement('button');
     bell.id = 'notifBell';
     bell.className = 'icon-btn notif-bell';
     bell.setAttribute('aria-label', 'Notifications');
-    bell.title = 'Notifications';
+    bell.title = 'Subscribe to notifications';
     bell.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
       <path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>`;
     const themeBtn = tools.querySelector('#theme-toggle');
     if (themeBtn) tools.insertBefore(bell, themeBtn); else tools.prepend(bell);
 
-    const refresh = async () => {
-      try {
-        if (window.OneSignal) {
-          const sub = await OneSignal.User.PushSubscription.optedIn;
-          bell.classList.toggle('notif-bell--on', !!sub);
-          bell.title = sub ? 'Notifications on — click to unsubscribe' : 'Subscribe to notifications';
-        }
-      } catch (e) {}
-    };
+    function setBellState(isOn) {
+      bell.classList.toggle('notif-bell--on', !!isOn);
+      bell.title = isOn ? 'Notifications on — click to unsubscribe' : 'Subscribe to notifications';
+      localStorage.setItem('barracudas_notifications', isOn ? 'true' : 'false');
+    }
 
-    bell.addEventListener('click', async () => {
+    // Check subscription state once SDK is ready
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    window.OneSignalDeferred.push(async function(OneSignal) {
       try {
-        if (!window.OneSignal) {
-          window.OneSignalDeferred?.push?.(os => os.Slidedown?.promptPush?.());
-          return;
-        }
-        const sub = await OneSignal.User.PushSubscription.optedIn;
-        if (sub) {
-          await OneSignal.User.PushSubscription.optOut();
-        } else {
-          await OneSignal.User.PushSubscription.optIn();
-        }
-        await refresh();
-      } catch (e) {
-        window.OneSignalDeferred?.push?.(os => os.Slidedown?.promptPush?.());
-      }
+        const isOptedIn = await OneSignal.User.PushSubscription.optedIn;
+        setBellState(!!isOptedIn);
+      } catch (e) {}
     });
 
-    window.addEventListener('load', refresh);
+    // Click: always push into deferred queue so SDK is guaranteed ready
+    bell.addEventListener('click', () => {
+      window.OneSignalDeferred = window.OneSignalDeferred || [];
+      window.OneSignalDeferred.push(async function(OneSignal) {
+        try {
+          const permission = await OneSignal.Notifications.permission;
+
+          if (!permission) {
+            // Browser hasn't granted permission yet — request it
+            await OneSignal.Notifications.requestPermission();
+          } else {
+            // Permission granted — toggle opt-in / opt-out
+            const isOptedIn = await OneSignal.User.PushSubscription.optedIn;
+            if (isOptedIn) {
+              await OneSignal.User.PushSubscription.optOut();
+            } else {
+              await OneSignal.User.PushSubscription.optIn();
+            }
+          }
+
+          // Refresh visual state after any action
+          const isOptedIn = await OneSignal.User.PushSubscription.optedIn;
+          setBellState(!!isOptedIn);
+        } catch (e) {
+          console.warn('OneSignal bell:', e.message);
+        }
+      });
+    });
   });
 })();
 
