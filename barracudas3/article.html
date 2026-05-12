@@ -189,8 +189,8 @@
 
   render();
 
-  // Re-render when user switches language (lang.js fires this hook)
-  window._onLangChange = render;
+  // Re-render when user switches language
+  window._barLang?.onLang?.(render);
 })();
 </script>
 </body>

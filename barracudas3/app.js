@@ -331,6 +331,11 @@ function copyLink(btn) {
   els.forEach(e => io.observe(e));
 })();
 
+// ── i18n helper — reads current lang from _barLang ───────────
+function _t(key) {
+  return window._barLang ? window._barLang.t(key) : key;
+}
+
 // ── PLAYER REGISTRY — global lookup for modal ───────────────
 const PLAYER_REGISTRY = new Map();
 
@@ -748,7 +753,7 @@ const PLAYER_EXTENDED_DATA = {
       <div class="player-inner">
         <div class="player-face player-front" style="background-image:url('${p.img}');">
           ${p.captain ? '<span class="captain-badge">★ Captain</span>' : ''}
-          <span class="player-tap-hint">Tap to flip</span>
+          <span class="player-tap-hint" data-i18n="card_tap_flip">Tap to flip</span>
         </div>
         <div class="player-face player-back">
           <span class="num-back">#${p.num}</span>
@@ -766,10 +771,10 @@ const PLAYER_EXTENDED_DATA = {
             `).join('')}
           </div>
           <div class="back-foot">
-            <button class="btn-view-profile" data-num="${p.num}">Ver Perfil →</button>
-            <span class="back-flip">↺ flip</span>
+            <button class="btn-view-profile" data-num="${p.num}" data-i18n="btn_view_profile">View Profile →</button>
+            <span class="back-flip" data-i18n="card_flip_icon">↺ flip</span>
           </div>
-          <span class="player-tap-hint">Tap to flip back</span>
+          <span class="player-tap-hint" data-i18n="card_tap_back">Tap to flip back</span>
         </div>
       </div>
     </div>
@@ -895,7 +900,7 @@ function initNextGameCountdown() {
 
     if (!next) {
       const wrap = document.getElementById('countdown');
-      if (wrap) wrap.innerHTML = '<p style="font-family:var(--mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);">Season Complete · See You in 2027 🦈</p>';
+      if (wrap) wrap.innerHTML = `<p style="font-family:var(--mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);" data-i18n="season_done_msg">Season Complete · See You in 2027 🦈</p>`;
       return;
     }
 
@@ -960,7 +965,7 @@ function initScheduleFilters() {
       if (show) visible++;
     });
     const countEl = document.getElementById('schedFilterCount');
-    if (countEl) countEl.textContent = `${visible} game${visible !== 1 ? 's' : ''}`;
+    if (countEl) countEl.textContent = `${visible} ${visible === 1 ? _t('sched_games_single') : _t('sched_games_plural')}`;
   }
 
   document.querySelectorAll('.sched-filter-btn').forEach(btn => {
@@ -977,6 +982,12 @@ function initScheduleFilters() {
     upcomingBtn.classList.add('active');
   }
   applyFilter('upcoming');
+
+  // Re-compute count text when language changes
+  window._barLang?.onLang?.(() => {
+    const active = document.querySelector('.sched-filter-btn.active');
+    if (active) applyFilter(active.dataset.filter);
+  });
 }
 
 document.addEventListener('DOMContentLoaded', initScheduleFilters);
@@ -1064,7 +1075,7 @@ function initFirstPitch() {
   const next = GAMES.find(g => new Date(`${g.date}T${g.time}:00`) > now);
 
   if (!next) {
-    container.innerHTML = `<p style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:0.8rem;letter-spacing:0.1em;">SEASON COMPLETE 🦈</p>`;
+    container.innerHTML = `<p style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:0.8rem;letter-spacing:0.1em;" data-i18n="next_season_done">SEASON COMPLETE 🦈</p>`;
     return;
   }
 
@@ -1121,7 +1132,7 @@ function initRecentResults() {
   const recent = played.slice(0, 3);
 
   if (!recent.length) {
-    container.innerHTML = `<p style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--ink-mute);">No games played yet.</p>`;
+    container.innerHTML = `<p style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--ink-mute);" data-i18n="res_no_games">No games played yet.</p>`;
     return;
   }
 
@@ -1129,7 +1140,7 @@ function initRecentResults() {
     const isWin = g.result === 'W';
     const isPink = g.notes && g.notes.includes('Pink Game');
     const recapLink = g.recapUrl
-      ? `<a href="${g.recapUrl}" class="result-recap-link">READ RECAP →</a>`
+      ? `<a href="${g.recapUrl}" class="result-recap-link" data-i18n="res_read_recap">READ RECAP →</a>`
       : '';
     return `
       <div class="result-card${isPink ? ' result-card--pink' : ''}">
@@ -1202,17 +1213,17 @@ function initPlayerStats() {
     return `${p.first[0]}${p.last[0]}`.toUpperCase();
   }
 
-  function card(label, player, stat) {
-    if (!player) return `<div class="ps-card"><div class="ps-info"><span class="ps-label">${label}</span><span class="ps-name">—</span></div></div>`;
+  function card(labelKey, player, stat) {
+    if (!player) return `<div class="ps-card"><div class="ps-info"><span class="ps-label" data-i18n="${labelKey}"></span><span class="ps-name">—</span></div></div>`;
     const img = player.img || '';
     const photoContent = img
       ? `<img src="${img}" alt="${shortName(player)}" onerror="this.parentNode.textContent='${initials(player)}'" />`
       : initials(player);
     return `
-      <div class="ps-card" data-num="${player.num}" title="Ver perfil completo">
+      <div class="ps-card" data-num="${player.num}">
         <div class="ps-photo">${photoContent}</div>
         <div class="ps-info">
-          <span class="ps-label">${label}</span>
+          <span class="ps-label" data-i18n="${labelKey}"></span>
           <div class="ps-player-row">
             <span class="ps-num">#${player.num}</span>
             <span class="ps-name">${shortName(player)}</span>
@@ -1230,13 +1241,13 @@ function initPlayerStats() {
     ? topPitcher.stats.find(s => s.k === 'ERA').v + ' ERA · ' + (topPitcher.stats.find(s => s.k === 'W-L')?.v || '') + ' W-L'
     : '—';
   const streakStat = streakLeader
-    ? streakLeader.streak + ' juegos consecutivos con hit'
+    ? `${streakLeader.streak} ${_t('stat_streak_suffix')}`
     : '—';
 
   container.innerHTML = [
-    card('Top Batter 2026',  topBatter,    avgStat),
-    card('Top Pitcher 2026', topPitcher,   eraStat),
-    card('Hitting Streak',   streakLeader, streakStat),
+    card('stat_top_batter',    topBatter,    avgStat),
+    card('stat_top_pitcher',   topPitcher,   eraStat),
+    card('stat_hitting_streak', streakLeader, streakStat),
   ].join('');
 
   // Click on any player stat card opens the modal
@@ -1286,13 +1297,13 @@ function pmBattingPane(ext, basicStats) {
     if (ext.batting.log?.length) {
       const lh = ['Fecha','Rival','#','Pos','AB','R','H','2B','HR','RBI','BB','SO','SB','AVG'];
       const lr = ext.batting.log.map(g => [g.date,g.opp,g.spot,g.pos,g.AB,g.R,g.H,g['2B'],g.HR,g.RBI,g.BB,g.SO,g.SB,g.AVG]);
-      html += `<div class="pm-log-label">Game Log</div>${pmTable(lh, lr, [13], 580)}`;
+      html += `<div class="pm-log-label">${_t('modal_game_log')}</div>${pmTable(lh, lr, [13], 580)}`;
     }
-    return html || `<p class="pm-no-data">Sin datos de bateo disponibles.</p>`;
+    return html || `<p class="pm-no-data">${_t('modal_no_bat_data')}</p>`;
   }
   const batStats = basicStats.filter(s => ['AVG','HR','RBI','OBP','SLG','OPS','SB'].includes(s.k));
-  if (!batStats.length) return `<p class="pm-no-data">Sin datos de bateo disponibles.</p>`;
-  return pmSummary(batStats.map(s => [s.k, s.v])) + `<p class="pm-no-data">Game log no disponible.</p>`;
+  if (!batStats.length) return `<p class="pm-no-data">${_t('modal_no_bat_data')}</p>`;
+  return pmSummary(batStats.map(s => [s.k, s.v])) + `<p class="pm-no-data">${_t('modal_no_log')}</p>`;
 }
 
 function pmPitchingPane(ext, basicStats) {
@@ -1308,17 +1319,17 @@ function pmPitchingPane(ext, basicStats) {
     if (ext.pitching.log?.length) {
       const lh = ['Fecha','Rival','IP','H','R','ER','BB','SO','HBP','WP','BF','ERA'];
       const lr = ext.pitching.log.map(g => [g.date,g.opp,g.IP,g.H,g.R,g.ER,g.BB,g.SO,g.HBP,g.WP,g.BF,g.ERA]);
-      html += `<div class="pm-log-label">Game Log</div>${pmTable(lh, lr, [11], 500)}`;
+      html += `<div class="pm-log-label">${_t('modal_game_log')}</div>${pmTable(lh, lr, [11], 500)}`;
     }
-    return html || `<p class="pm-no-data">Sin datos de pitcheo disponibles.</p>`;
+    return html || `<p class="pm-no-data">${_t('modal_no_pit_data')}</p>`;
   }
   const pitStats = basicStats.filter(s => ['ERA','K','W-L','WHIP'].includes(s.k));
-  if (!pitStats.length) return `<p class="pm-no-data">Sin datos de pitcheo disponibles.</p>`;
-  return pmSummary(pitStats.map(s => [s.k, s.v])) + `<p class="pm-no-data">Game log no disponible.</p>`;
+  if (!pitStats.length) return `<p class="pm-no-data">${_t('modal_no_pit_data')}</p>`;
+  return pmSummary(pitStats.map(s => [s.k, s.v])) + `<p class="pm-no-data">${_t('modal_no_log')}</p>`;
 }
 
 function pmFieldingPane(ext) {
-  if (!ext?.fielding) return `<p class="pm-no-data">Sin datos de fielding disponibles.</p>`;
+  if (!ext?.fielding) return `<p class="pm-no-data">${_t('modal_no_fld_data')}</p>`;
   let html = '';
   const s = ext.fielding.season;
   if (s) {
@@ -1335,9 +1346,9 @@ function pmFieldingPane(ext) {
     const hasPB = ext.fielding.log.some(g => g.PB != null);
     const lh = ['Fecha','Rival','Pos','IP','PO','A','E','FPct', ...(hasPB ? ['PB','SBAtt'] : [])];
     const lr = ext.fielding.log.map(g => [g.date,g.opp,g.pos,g.IP,g.PO,g.A,g.E,g.FPct, ...(hasPB ? [g.PB,g.SBAtt] : [])]);
-    html += `<div class="pm-log-label">Game Log</div>${pmTable(lh, lr, [7], 400)}`;
+    html += `<div class="pm-log-label">${_t('modal_game_log')}</div>${pmTable(lh, lr, [7], 400)}`;
   }
-  return html || `<p class="pm-no-data">Sin datos de fielding disponibles.</p>`;
+  return html || `<p class="pm-no-data">${_t('modal_no_fld_data')}</p>`;
 }
 
 function openPlayerModal(player) {
@@ -1366,19 +1377,20 @@ function openPlayerModal(player) {
 
   // Identity
   const ext = PLAYER_EXTENDED_DATA[player.num] || null;
-  const typeLabel = { batter:'Batter', pitcher:'Pitcher', both:'Two-Way' }[player.type] || 'Player';
-  badgeEl.textContent = `#${player.num} · ${typeLabel}${ext?.age ? ' · ' + ext.age + ' años' : ''}`;
+  const typeMap = { batter: 'modal_batter_type', pitcher: 'modal_pitcher_type', both: 'modal_two_way_type' };
+  const typeLabel = _t(typeMap[player.type] || 'modal_batter_type');
+  badgeEl.textContent = `#${player.num} · ${typeLabel}${ext?.age ? ' · ' + ext.age : ''}`;
   nameEl.textContent  = ext?.fullName || `${player.first} ${player.last}`;
   const meta = [player.pos, player.flag + ' ' + player.country];
-  if (ext?.bats)   meta.push(`Batea: ${ext.bats}`);
-  if (ext?.throws) meta.push(`Lanza: ${ext.throws}`);
+  if (ext?.bats)   meta.push(`${_t('modal_bats')} ${ext.bats}`);
+  if (ext?.throws) meta.push(`${_t('modal_throws')} ${ext.throws}`);
   posEl.textContent = meta.join(' · ');
 
   // Build tabs
   const tabs = [];
-  if (player.type !== 'pitcher') tabs.push({ id:'batting',  label:'Batting'  });
-  if (player.type !== 'batter')  tabs.push({ id:'pitching', label:'Pitching' });
-  if (ext?.fielding)             tabs.push({ id:'fielding', label:'Fielding' });
+  if (player.type !== 'pitcher') tabs.push({ id:'batting',  label: _t('modal_tab_batting')  });
+  if (player.type !== 'batter')  tabs.push({ id:'pitching', label: _t('modal_tab_pitching') });
+  if (ext?.fielding)             tabs.push({ id:'fielding', label: _t('modal_tab_fielding') });
 
   tabsEl.innerHTML = tabs.map((t, i) =>
     `<button class="pm-tab-btn${i === 0 ? ' active' : ''}" data-tab="${t.id}">${t.label}</button>`
@@ -1404,13 +1416,13 @@ function openPlayerModal(player) {
   // Chips
   const chips = [];
   if (player.captain)    chips.push('★ Captain');
-  if (player.streak > 0) chips.push(`${player.streak}-game hit streak`);
+  if (player.streak > 0) chips.push(`${player.streak} ${_t('modal_streak_chip')}`);
   extraEl.innerHTML = chips.map(c => `<span class="pm-chip">${c}</span>`).join('');
   extraEl.style.display = chips.length ? '' : 'none';
 
   // EasyScore link
   linksEl.innerHTML = player.easyscoreId
-    ? `<a class="pm-easyscore-link" href="https://www.easyscore.com/players/${player.easyscoreId}" target="_blank" rel="noopener">Ver stats completos en EasyScore ↗</a>`
+    ? `<a class="pm-easyscore-link" href="https://www.easyscore.com/players/${player.easyscoreId}" target="_blank" rel="noopener">${_t('modal_easyscore')}</a>`
     : '';
 
   modal.classList.add('open');

@@ -63,6 +63,44 @@
       art_btn_back: '← Back to News',
       art_final_score: 'Final Score',
       art_read_full: 'Read Full Article →',
+
+      hero_champs: 'Gruppe A Champions 2024',
+      card_tap_flip: 'Tap to flip',
+      card_tap_back: 'Tap to flip back',
+      card_flip_icon: '↺ flip',
+      btn_view_profile: 'View Profile →',
+      tag_pink_game: '🩷 Pink Game',
+      tag_game_recap: 'Game Recap',
+      tag_player_profile: 'Player Profile',
+      tag_roster_move: 'Roster Move',
+      tag_pitching_cat: 'Pitching',
+      tag_club_cat: 'Club',
+      tag_captains_corner: "Captain's Corner",
+      stat_top_batter: 'Top Batter 2026',
+      stat_top_pitcher: 'Top Pitcher 2026',
+      stat_hitting_streak: 'Hitting Streak',
+      stat_streak_suffix: 'consecutive hits',
+      res_no_games: 'No games played yet.',
+      res_read_recap: 'READ RECAP →',
+      sched_games_plural: 'games',
+      sched_games_single: 'game',
+      next_season_done: 'SEASON COMPLETE 🦈',
+      season_done_msg: 'Season Complete · See You in 2027 🦈',
+      modal_batter_type: 'Batter',
+      modal_pitcher_type: 'Pitcher',
+      modal_two_way_type: 'Two-Way',
+      modal_bats: 'Bats:',
+      modal_throws: 'Throws:',
+      modal_tab_batting: 'Batting',
+      modal_tab_pitching: 'Pitching',
+      modal_tab_fielding: 'Fielding',
+      modal_game_log: 'Game Log',
+      modal_no_bat_data: 'No batting stats available.',
+      modal_no_pit_data: 'No pitching stats available.',
+      modal_no_fld_data: 'No fielding stats available.',
+      modal_no_log: 'Game log not available.',
+      modal_easyscore: 'View full stats on EasyScore ↗',
+      modal_streak_chip: 'game hit streak',
     },
 
     es: {
@@ -126,6 +164,44 @@
       art_btn_back: '← Volver a noticias',
       art_final_score: 'Marcador Final',
       art_read_full: 'Leer artículo completo →',
+
+      hero_champs: 'Campeones Gruppe A 2024',
+      card_tap_flip: 'Toca para voltear',
+      card_tap_back: 'Toca para voltear',
+      card_flip_icon: '↺ voltear',
+      btn_view_profile: 'Ver Perfil →',
+      tag_pink_game: '🩷 Pink Game',
+      tag_game_recap: 'Resumen de Partido',
+      tag_player_profile: 'Perfil de Jugador',
+      tag_roster_move: 'Movimiento de Plantilla',
+      tag_pitching_cat: 'Pitcheo',
+      tag_club_cat: 'Club',
+      tag_captains_corner: 'Rincón del Capitán',
+      stat_top_batter: 'Mejor Bateador 2026',
+      stat_top_pitcher: 'Mejor Pitcher 2026',
+      stat_hitting_streak: 'Racha de Hits',
+      stat_streak_suffix: 'hits consecutivos',
+      res_no_games: 'Aún no hay partidos jugados.',
+      res_read_recap: 'VER RESUMEN →',
+      sched_games_plural: 'partidos',
+      sched_games_single: 'partido',
+      next_season_done: 'TEMPORADA COMPLETA 🦈',
+      season_done_msg: 'Temporada Completa · Hasta 2027 🦈',
+      modal_batter_type: 'Bateador',
+      modal_pitcher_type: 'Pitcher',
+      modal_two_way_type: 'Dos Vías',
+      modal_bats: 'Batea:',
+      modal_throws: 'Lanza:',
+      modal_tab_batting: 'Bateo',
+      modal_tab_pitching: 'Pitcheo',
+      modal_tab_fielding: 'Fildeo',
+      modal_game_log: 'Registro de Partidos',
+      modal_no_bat_data: 'Sin estadísticas de bateo disponibles.',
+      modal_no_pit_data: 'Sin estadísticas de pitcheo disponibles.',
+      modal_no_fld_data: 'Sin estadísticas de fildeo disponibles.',
+      modal_no_log: 'Registro de partidos no disponible.',
+      modal_easyscore: 'Ver stats completos en EasyScore ↗',
+      modal_streak_chip: 'juegos con hit',
     },
 
     de: {
@@ -189,6 +265,44 @@
       art_btn_back: '← Zurück zu Neuigkeiten',
       art_final_score: 'Endergebnis',
       art_read_full: 'Vollständigen Artikel lesen →',
+
+      hero_champs: 'Gruppe-A-Meister 2024',
+      card_tap_flip: 'Tippen zum Umdrehen',
+      card_tap_back: 'Zurücktippen',
+      card_flip_icon: '↺ drehen',
+      btn_view_profile: 'Profil ansehen →',
+      tag_pink_game: '🩷 Pink Game',
+      tag_game_recap: 'Spielbericht',
+      tag_player_profile: 'Spielerprofil',
+      tag_roster_move: 'Kaderveränderung',
+      tag_pitching_cat: 'Pitching',
+      tag_club_cat: 'Klub',
+      tag_captains_corner: 'Kapitäns-Ecke',
+      stat_top_batter: 'Bester Schlagmann 2026',
+      stat_top_pitcher: 'Bester Werfer 2026',
+      stat_hitting_streak: 'Trefferserie',
+      stat_streak_suffix: 'aufeinanderfolgende Treffer',
+      res_no_games: 'Noch keine Spiele gespielt.',
+      res_read_recap: 'BERICHT LESEN →',
+      sched_games_plural: 'Spiele',
+      sched_games_single: 'Spiel',
+      next_season_done: 'SAISON ABGESCHLOSSEN 🦈',
+      season_done_msg: 'Saison Abgeschlossen · Bis 2027 🦈',
+      modal_batter_type: 'Schlagmann',
+      modal_pitcher_type: 'Werfer',
+      modal_two_way_type: 'Allrounder',
+      modal_bats: 'Schlägt:',
+      modal_throws: 'Wirft:',
+      modal_tab_batting: 'Schlagen',
+      modal_tab_pitching: 'Werfen',
+      modal_tab_fielding: 'Feldspiel',
+      modal_game_log: 'Spielprotokoll',
+      modal_no_bat_data: 'Keine Schlagdaten verfügbar.',
+      modal_no_pit_data: 'Keine Wurfdaten verfügbar.',
+      modal_no_fld_data: 'Keine Feldspieldaten verfügbar.',
+      modal_no_log: 'Spielprotokoll nicht verfügbar.',
+      modal_easyscore: 'Vollständige Stats auf EasyScore ↗',
+      modal_streak_chip: 'Spiele mit Treffer in Folge',
     },
   };
 
@@ -204,7 +318,7 @@
     );
     localStorage.setItem('bar3-lang', lang);
     document.documentElement.lang = lang;
-    if (typeof window._onLangChange === 'function') window._onLangChange(lang);
+    (window._langCallbacks || []).forEach(fn => { try { fn(lang); } catch (e) {} });
   }
 
   function init() {
@@ -219,6 +333,17 @@
     ? document.addEventListener('DOMContentLoaded', init)
     : init();
 
-  // Expose globally so article.html can read current lang + translations
-  window._barLang = { get: () => localStorage.getItem('bar3-lang') || 'en', T };
+  // Expose globally for any page to read lang + translations + register callbacks
+  window._barLang = {
+    get: () => localStorage.getItem('bar3-lang') || 'en',
+    T,
+    t: (key) => {
+      const lang = localStorage.getItem('bar3-lang') || 'en';
+      return (T[lang] && T[lang][key]) || (T.en && T.en[key]) || key;
+    },
+    onLang: (fn) => {
+      window._langCallbacks = window._langCallbacks || [];
+      window._langCallbacks.push(fn);
+    },
+  };
 })();
