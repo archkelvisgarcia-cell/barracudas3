@@ -101,6 +101,7 @@
       modal_no_log: 'Game log not available.',
       modal_easyscore: 'View full stats on EasyScore ↗',
       modal_streak_chip: 'game hit streak',
+      ig_h1: 'Follow', ig_h2: 'The Journey.',
     },
 
     es: {
@@ -202,6 +203,7 @@
       modal_no_log: 'Registro de partidos no disponible.',
       modal_easyscore: 'Ver stats completos en EasyScore ↗',
       modal_streak_chip: 'juegos con hit',
+      ig_h1: 'Síguenos', ig_h2: 'En Instagram.',
     },
 
     de: {
@@ -303,6 +305,7 @@
       modal_no_log: 'Spielprotokoll nicht verfügbar.',
       modal_easyscore: 'Vollständige Stats auf EasyScore ↗',
       modal_streak_chip: 'Spiele mit Treffer in Folge',
+      ig_h1: 'Folge', ig_h2: 'Uns.',
     },
   };
 

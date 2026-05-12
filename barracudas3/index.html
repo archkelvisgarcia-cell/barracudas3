@@ -356,21 +356,42 @@
 </section>
 
 <!-- ============== INSTAGRAM FEED ============== -->
+<!-- ============== INSTAGRAM FEED ============== -->
 <section class="ig-section" id="igSection">
   <div class="section-head">
     <div>
       <div class="eyebrow reveal" style="margin-bottom:12px;">— Social</div>
-      <h2 class="section-title reveal"><span class="out">Follow</span><br /><span class="y">The Journey.</span></h2>
+      <h2 class="section-title reveal">
+        <span class="out" data-i18n="ig_h1">Follow</span><br />
+        <span class="y" data-i18n="ig_h2">The Journey.</span>
+      </h2>
     </div>
-    <a href="https://www.instagram.com/" target="_blank" rel="noopener" class="btn btn-ghost reveal" data-delay="1">@barracudas3 ↗</a>
+    <a href="https://www.instagram.com/barracudas_nlb" target="_blank" rel="noopener"
+       class="btn btn-ghost reveal" data-delay="1"
+       style="display:inline-flex;align-items:center;gap:8px;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="2" y="2" width="20" height="20" rx="5"/>
+        <circle cx="12" cy="12" r="4"/>
+        <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+      </svg>
+      @barracudas_nlb ↗
+    </a>
   </div>
-  <div class="ig-grid" id="igGrid">
-    <!-- JS populates from Instagram API via Netlify function -->
-    <div style="grid-column:1/-1;text-align:center;font-family:var(--mono);font-size:11px;color:var(--ink-faint);padding:32px 0;letter-spacing:0.1em;">
-      Connect your Instagram token to display the feed.
-    </div>
+
+  <!-- Behold.so Instagram widget -->
+  <div class="ig-behold-wrap">
+    <behold-widget feed-id="pfRTX8ePauEkuEfiJcrR"></behold-widget>
   </div>
 </section>
+
+<script>
+  (() => {
+    const d = document, s = d.createElement('script');
+    s.type = 'module';
+    s.src  = 'https://w.behold.so/widget.js';
+    d.head.append(s);
+  })();
+</script>
 
 <!-- ============== JOIN CTA ============== -->
 <section class="join" id="join">

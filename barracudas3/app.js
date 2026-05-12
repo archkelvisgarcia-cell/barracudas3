@@ -1666,33 +1666,7 @@ function initLiveScore() {
 
 document.addEventListener('DOMContentLoaded', initLiveScore);
 
-// ── INSTAGRAM FEED ────────────────────────────────────────────
-async function initInstagramFeed() {
-  const grid = document.getElementById('igGrid');
-  if (!grid) return;
-
-  try {
-    const res = await fetch('/.netlify/functions/instagram');
-    if (!res.ok) throw new Error('no data');
-    const { data } = await res.json();
-    if (!data?.length) throw new Error('empty');
-
-    grid.innerHTML = data.slice(0, 6).map(post => {
-      const img = post.media_type === 'VIDEO' ? post.thumbnail_url : post.media_url;
-      const cap = (post.caption || '').slice(0, 80) + (post.caption?.length > 80 ? '…' : '');
-      return `<a class="ig-item" href="${post.permalink}" target="_blank" rel="noopener">
-        <img src="${img}" alt="Instagram post" loading="lazy" />
-        <div class="ig-overlay"><p>${cap}</p></div>
-      </a>`;
-    }).join('');
-  } catch (e) {
-    // Silently hide section if feed unavailable
-    const section = document.getElementById('igSection');
-    if (section) section.style.display = 'none';
-  }
-}
-
-document.addEventListener('DOMContentLoaded', initInstagramFeed);
+// Instagram feed rendered by Behold.so widget (see index.html)
 
 // ── PLAYER PROFILE MODAL ──────────────────────────────────────
 // ── Modal helpers ─────────────────────────────────────────────
