@@ -1425,7 +1425,7 @@ function initAwards() {
     const col = scoreColor(first.sc);
 
     const winnerHTML = `
-      <div class="award-winner">
+      <div class="award-winner award-clickable" data-player-num="${first.p.num}">
         ${renderPhoto(first.p, 'lg', first.sc >= 80)}
         <div class="award-details">
           <div class="award-player-name">${first.p.first} ${first.p.last}</div>
@@ -1442,7 +1442,7 @@ function initAwards() {
       <div class="award-runners">
         ${rest.map(c => {
           const sc2 = scoreColor(c.sc);
-          return `<div class="award-runner">
+          return `<div class="award-runner award-clickable" data-player-num="${c.p.num}">
             ${renderPhoto(c.p, 'sm', false)}
             <div class="award-runner-info">
               <span class="award-player-name">${c.p.first[0]}. ${c.p.last}</span>
@@ -1472,6 +1472,14 @@ function initAwards() {
       ${runnersHTML}
     </div>`;
   }).join('');
+
+  // Click on any winner/runner opens player modal
+  grid.querySelectorAll('.award-clickable').forEach(el => {
+    el.addEventListener('click', () => {
+      const player = PLAYER_REGISTRY.get(el.dataset.playerNum);
+      if (player) openPlayerModal(player);
+    });
+  });
 
   // Wire scroll-reveal for new cards
   if ('IntersectionObserver' in window) {
