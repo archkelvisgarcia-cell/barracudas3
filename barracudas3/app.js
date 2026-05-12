@@ -1617,6 +1617,7 @@ document.addEventListener('DOMContentLoaded', initCalendarButtons);
         if (window.OneSignal) {
           const sub = await OneSignal.User.PushSubscription.optedIn;
           bell.classList.toggle('notif-bell--on', !!sub);
+          bell.title = sub ? 'Notifications on — click to unsubscribe' : 'Subscribe to notifications';
         }
       } catch (e) {}
     };
@@ -1628,9 +1629,12 @@ document.addEventListener('DOMContentLoaded', initCalendarButtons);
           return;
         }
         const sub = await OneSignal.User.PushSubscription.optedIn;
-        if (sub) await OneSignal.User.PushSubscription.optOut();
-        else     await OneSignal.User.PushSubscription.optIn();
-        refresh();
+        if (sub) {
+          await OneSignal.User.PushSubscription.optOut();
+        } else {
+          await OneSignal.User.PushSubscription.optIn();
+        }
+        await refresh();
       } catch (e) {
         window.OneSignalDeferred?.push?.(os => os.Slidedown?.promptPush?.());
       }
@@ -1638,6 +1642,37 @@ document.addEventListener('DOMContentLoaded', initCalendarButtons);
 
     window.addEventListener('load', refresh);
   });
+})();
+
+// ── ONESIGNAL AUTO-TRIGGERS ──────────────────────────────────
+// Client-side: detects live games from EasyScore and sends "🔴 LIVE NOW"
+// notification. Uses sessionStorage to avoid spamming the same game.
+(function () {
+  const SENT_KEY = 'bar3-live-notif-sent';
+
+  async function maybeSendLiveNotif(gameData) {
+    if (!gameData?.live) return;
+    const gameId = String(gameData.id);
+    if (sessionStorage.getItem(SENT_KEY) === gameId) return; // already sent
+
+    try {
+      const opp = (gameData.oppName || gameData.oppAbbr || 'opponent').split(' ').slice(-1)[0];
+      await fetch('/.netlify/functions/notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title:   '🔴 LIVE NOW',
+          message: `BAR3 vs ${opp} — Follow live at barracudas3.netlify.app`,
+          url:     '/',
+          type:    'live',
+        }),
+      });
+      sessionStorage.setItem(SENT_KEY, gameId);
+    } catch (e) { /* silent — notification sending is non-critical */ }
+  }
+
+  // Hook into live score polling — called from initLiveScore after load
+  window._barLiveNotif = maybeSendLiveNotif;
 })();
 
 // ── DYNAMIC STATS FROM EASYSCORE API ─────────────────────────
@@ -1816,8 +1851,11 @@ function initLiveScore() {
       wrap.style.display = 'block';
       wrap.innerHTML = `<div class="ls-wrap"><div class="ls-card-container">${renderCard(game)}</div></div>`;
 
-      // Poll every 60s only when live
-      if (game.live) setTimeout(load, 60000);
+      // Send "LIVE NOW" push notification once per live game
+      if (game.live) {
+        window._barLiveNotif?.(game);
+        setTimeout(load, 60000);
+      }
     } catch {
       // Fallback: check localStorage for manual score (admin/score.html)
       const s = JSON.parse(localStorage.getItem('bar3-live') || '{}');

@@ -3,123 +3,233 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Notifications Admin — Barracudas</title>
+<title>Notifications — Barracudas Admin</title>
 <meta name="robots" content="noindex, nofollow" />
 <link rel="stylesheet" href="../styles.css" />
+<!-- OneSignal for subscriber count -->
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({ appId: "d367a901-afe3-4035-9417-794e6e80fcd4", notifyButton: { enable: false } });
+  });
+</script>
 <style>
-  body { padding: 40px var(--pad); max-width: 520px; margin: 0 auto; }
-  .admin-card { background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 32px; }
-  .admin-title { font-family: var(--display); font-size: 28px; text-transform: uppercase; margin-bottom: 24px; }
-  .field { margin-bottom: 16px; }
-  .field label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); display: block; margin-bottom: 6px; }
-  .field input, .field select, .field textarea {
-    width: 100%; padding: 10px 14px;
-    background: var(--bg-deep); border: 1px solid var(--line);
-    border-radius: var(--r-sm); color: var(--ink);
-    font-family: var(--mono); font-size: 13px;
-  }
-  .field input:focus, .field select:focus, .field textarea:focus { outline: 2px solid var(--accent); border-color: var(--accent); }
-  .field textarea { min-height: 80px; resize: vertical; }
-  .status { font-family: var(--mono); font-size: 12px; margin-top: 12px; min-height: 18px; }
-  #loginWrap { text-align: center; padding: 60px 0; }
+  body { padding:40px var(--pad); max-width:580px; margin:0 auto; }
+  .card { background:var(--bg-elev); border:1px solid var(--line); border-radius:var(--r-lg); padding:28px; margin-bottom:20px; }
+  .title { font-family:var(--display); font-size:22px; text-transform:uppercase; margin-bottom:18px; }
+  .label { font-family:var(--mono); font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-faint); display:block; margin-bottom:5px; }
+  .field { margin-bottom:14px; }
+  input, select, textarea { width:100%; padding:9px 12px; background:var(--bg-deep); border:1px solid var(--line); border-radius:var(--r-sm); color:var(--ink); font-family:var(--mono); font-size:13px; }
+  input:focus, select:focus, textarea:focus { outline:2px solid var(--accent); border-color:var(--accent); }
+  textarea { min-height:72px; resize:vertical; }
+  .status { font-family:var(--mono); font-size:11px; min-height:18px; margin-top:10px; }
+  .hist-item { display:flex; gap:10px; align-items:flex-start; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.05); font-family:var(--mono); font-size:11px; }
+  .hist-item:last-child { border:none; }
+  .hist-time { color:var(--ink-faint); white-space:nowrap; flex-shrink:0; }
+  .hist-text { color:var(--ink-mute); }
+  .pill { display:inline-block; font-family:var(--mono); font-size:9px; letter-spacing:0.1em; background:rgba(240,180,41,0.12); color:var(--accent); border:1px solid rgba(240,180,41,0.25); border-radius:2px; padding:2px 7px; margin-right:4px; }
+  #loginWrap { text-align:center; padding:80px 0; }
+  #loginWrap input { width:260px; text-align:center; }
 </style>
 </head>
 <body>
-<div class="admin-card">
-  <div id="loginWrap">
-    <div class="admin-title">🔐 Admin</div>
-    <div class="field">
-      <label>Password</label>
-      <input type="password" id="pwInput" placeholder="Enter password" />
-    </div>
-    <button class="btn btn-primary" style="width:100%;margin-top:8px;" onclick="checkPw()">Enter</button>
-    <p id="pwErr" style="color:#ff5555;font-family:var(--mono);font-size:11px;margin-top:8px;"></p>
+
+<div id="loginWrap">
+  <div style="font-family:var(--display);font-size:28px;text-transform:uppercase;margin-bottom:20px;">🔔 Notifications</div>
+  <div class="field"><label class="label">Password</label><input type="password" id="pwInput" placeholder="Enter password" /></div>
+  <button class="btn btn-primary" style="width:260px;margin-top:8px;" onclick="checkPw()">Enter</button>
+  <p id="pwErr" style="color:#ff5555;font-family:var(--mono);font-size:11px;margin-top:8px;"></p>
+</div>
+
+<div id="panel" style="display:none">
+
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;gap:12px;flex-wrap:wrap;">
+    <h1 style="font-family:var(--display);font-size:28px;text-transform:uppercase;">🔔 Push Notifications</h1>
+    <a href="index.html" class="btn btn-ghost" style="font-size:12px;">← Admin</a>
   </div>
 
-  <div id="notifPanel" style="display:none">
-    <div class="admin-title">🔔 Send Notification</div>
+  <!-- Status strip -->
+  <div class="card" style="padding:18px 28px;">
+    <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:center;">
+      <div>
+        <span class="label">App ID</span>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--ink-mute);">d367a901-afe3-4035-9417-794e6e80fcd4</span>
+      </div>
+      <div>
+        <span class="label">Subscribers</span>
+        <span id="subCount" style="font-family:var(--display);font-size:22px;color:var(--accent);">—</span>
+      </div>
+      <div>
+        <span class="label">REST API Key</span>
+        <span id="keyStatus" style="font-family:var(--mono);font-size:11px;">checking…</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick send -->
+  <div class="card">
+    <div class="title">Send Notification</div>
+
     <div class="field">
-      <label>Type</label>
-      <select id="notifType">
-        <option value="result">🏆 New Result</option>
+      <label class="label">Type</label>
+      <select id="notifType" onchange="prefill()">
+        <option value="result">⚾ New Result</option>
         <option value="article">📰 New Article</option>
-        <option value="live">🔴 Match Starting</option>
+        <option value="live">🔴 Live Game</option>
+        <option value="pregame">🏟 Game Starting Soon</option>
         <option value="custom">✏️ Custom</option>
       </select>
     </div>
     <div class="field">
-      <label>Title</label>
-      <input type="text" id="notifTitle" placeholder="Barracudas 3 — Match Result" />
+      <label class="label">Title</label>
+      <input type="text" id="notifTitle" placeholder="⚾ Final Score" />
     </div>
     <div class="field">
-      <label>Message</label>
-      <textarea id="notifMsg" placeholder="BAR3 won 9-5 against Sissach Frogs!"></textarea>
+      <label class="label">Message</label>
+      <textarea id="notifMsg" placeholder="BAR3 9 — 23 Eagles · Tap for recap"></textarea>
     </div>
     <div class="field">
-      <label>URL (optional)</label>
+      <label class="label">URL (optional)</label>
       <input type="url" id="notifUrl" placeholder="https://barracudas3.netlify.app/results.html" />
     </div>
-    <button class="btn btn-primary" style="width:100%" onclick="sendNotif()">Send to All Subscribers</button>
-    <div class="status" id="status"></div>
-    <hr style="border-color:var(--line);margin:20px 0;" />
-    <p style="font-family:var(--mono);font-size:10px;color:var(--ink-faint);line-height:1.6;">
-      Requires <strong>ONESIGNAL_APP_ID</strong> and <strong>ONESIGNAL_API_KEY</strong> in Netlify env vars.<br />
-      Get these from <a href="https://onesignal.com" target="_blank" style="color:var(--accent)">onesignal.com</a> after creating your app.
-    </p>
+
+    <button class="btn btn-primary" style="width:100%;" onclick="sendNotif()">
+      Send to All Subscribers
+    </button>
+    <div class="status" id="sendStatus"></div>
   </div>
+
+  <!-- History -->
+  <div class="card">
+    <div class="title">Last 5 Sent</div>
+    <div id="histList">
+      <p style="font-family:var(--mono);font-size:11px;color:var(--ink-faint);">No notifications sent yet.</p>
+    </div>
+  </div>
+
 </div>
 
 <script>
-const PW = 'barracudas2026'; // same as score.html
+const PW = 'barracudas2026';
+const HIST_KEY = 'bar3-notif-history';
 
 function checkPw() {
-  if (document.getElementById('pwInput').value === PW) {
+  if (document.getElementById('pwInput').value === PW || sessionStorage.getItem('bar3-admin') === 'ok') {
+    sessionStorage.setItem('bar3-admin', 'ok');
     document.getElementById('loginWrap').style.display = 'none';
-    document.getElementById('notifPanel').style.display = 'block';
+    document.getElementById('panel').style.display = 'block';
+    init();
   } else {
     document.getElementById('pwErr').textContent = 'Incorrect password.';
   }
 }
+if (sessionStorage.getItem('bar3-admin') === 'ok') {
+  document.getElementById('loginWrap').style.display = 'none';
+  document.getElementById('panel').style.display = 'block';
+  init();
+}
+document.getElementById('pwInput')?.addEventListener('keydown', e => { if (e.key === 'Enter') checkPw(); });
 
-// Auto-fill title based on type
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('notifType')?.addEventListener('change', function() {
-    const map = {
-      result:  'Barracudas 3 — New Result',
-      article: 'Barracudas 3 — New Article',
-      live:    '🔴 Game Starting Now!',
-      custom:  '',
-    };
-    document.getElementById('notifTitle').value = map[this.value] || '';
+async function init() {
+  renderHistory();
+
+  // Subscriber count via OneSignal
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OS) {
+    try {
+      // Use REST API to get subscriber count
+      const r = await fetch('/.netlify/functions/notify-count');
+      const d = await r.json();
+      if (d.total_count != null) {
+        document.getElementById('subCount').textContent = d.total_count.toLocaleString();
+      }
+    } catch { document.getElementById('subCount').textContent = '—'; }
   });
-  document.getElementById('pwInput').addEventListener('keydown', e => { if (e.key === 'Enter') checkPw(); });
-});
+
+  // Check if REST API key is set
+  try {
+    const r = await fetch('/.netlify/functions/notify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title: '__ping__', message: '__ping__' }),
+    });
+    const d = await r.json();
+    const keyEl = document.getElementById('keyStatus');
+    if (d.error && d.error.includes('REST_API_KEY')) {
+      keyEl.innerHTML = '<span style="color:#ff5555">✗ Not configured — add ONESIGNAL_REST_API_KEY to Netlify</span>';
+    } else {
+      keyEl.innerHTML = '<span style="color:#00c864">✓ Configured</span>';
+    }
+  } catch {}
+}
+
+const PREFILLS = {
+  result:  { title: '⚾ Final Score',                url: 'https://barracudas3.netlify.app/results.html' },
+  article: { title: '📰 New from Barracudas',        url: 'https://barracudas3.netlify.app/news.html' },
+  live:    { title: '🔴 LIVE NOW',                   url: 'https://barracudas3.netlify.app/' },
+  pregame: { title: '⚾ Game Day!',                   url: 'https://barracudas3.netlify.app/schedule.html' },
+  custom:  { title: '',                              url: '' },
+};
+
+function prefill() {
+  const type = document.getElementById('notifType').value;
+  const p = PREFILLS[type] || {};
+  if (p.title) document.getElementById('notifTitle').value = p.title;
+  if (p.url)   document.getElementById('notifUrl').value   = p.url;
+}
 
 async function sendNotif() {
   const title   = document.getElementById('notifTitle').value.trim();
-  const msg     = document.getElementById('notifMsg').value.trim();
+  const message = document.getElementById('notifMsg').value.trim();
   const url     = document.getElementById('notifUrl').value.trim();
-  const statusEl = document.getElementById('status');
+  const type    = document.getElementById('notifType').value;
+  const statusEl = document.getElementById('sendStatus');
 
-  if (!title || !msg) { statusEl.style.color = '#ff5555'; statusEl.textContent = 'Title and message are required.'; return; }
+  if (!title || !message) {
+    statusEl.style.color = '#ff5555';
+    statusEl.textContent = 'Title and message are required.';
+    return;
+  }
 
   statusEl.style.color = 'var(--ink-mute)';
   statusEl.textContent = 'Sending…';
 
   try {
-    const res = await fetch('/.netlify/functions/notify', {
+    const r = await fetch('/.netlify/functions/notify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title, message: msg, url }),
+      body: JSON.stringify({ title, message, url, type }),
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Failed');
-    statusEl.style.color = 'var(--accent)';
-    statusEl.textContent = `✓ Sent to ${data.recipients ?? '?'} subscribers.`;
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || `HTTP ${r.status}`);
+
+    statusEl.style.color = '#00c864';
+    statusEl.textContent = `✓ Sent to ${d.recipients ?? '?'} subscribers.`;
+
+    // Save to history
+    const hist = JSON.parse(localStorage.getItem(HIST_KEY) || '[]');
+    hist.unshift({ title, message: message.slice(0, 60), type, ts: Date.now(), recipients: d.recipients });
+    localStorage.setItem(HIST_KEY, JSON.stringify(hist.slice(0, 5)));
+    renderHistory();
   } catch (e) {
     statusEl.style.color = '#ff5555';
-    statusEl.textContent = '✗ ' + e.message + ' — check ONESIGNAL env vars in Netlify.';
+    statusEl.textContent = '✗ ' + e.message;
   }
+}
+
+function renderHistory() {
+  const el = document.getElementById('histList');
+  const hist = JSON.parse(localStorage.getItem(HIST_KEY) || '[]');
+  if (!hist.length) { el.innerHTML = '<p style="font-family:var(--mono);font-size:11px;color:var(--ink-faint);">No notifications sent yet.</p>'; return; }
+  el.innerHTML = hist.map(h => `
+    <div class="hist-item">
+      <span class="hist-time">${new Date(h.ts).toLocaleString()}</span>
+      <div>
+        <span class="pill">${h.type || 'custom'}</span>
+        <span class="hist-text">${h.title} — ${h.message}${h.recipients != null ? ` · <span style="color:var(--accent)">${h.recipients} sent</span>` : ''}</span>
+      </div>
+    </div>`).join('');
 }
 </script>
 </body>

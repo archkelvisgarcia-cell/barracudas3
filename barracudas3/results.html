@@ -31,6 +31,18 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="styles.css" />
+<!-- OneSignal Push Notifications -->
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "d367a901-afe3-4035-9417-794e6e80fcd4",
+      notifyButton: { enable: false },
+      promptOptions: { slidedown: { prompts: [{ type: "push", autoPrompt: true, text: { actionMessage: "⚾ Get live scores and Barracudas news!", acceptButton: "Allow", cancelButton: "No thanks" }, delay: { pageViews: 1, timeDelay: 8 } }] } }
+    });
+  });
+</script>
 <link rel="stylesheet" href="results.css" />
 </head>
 <body>
