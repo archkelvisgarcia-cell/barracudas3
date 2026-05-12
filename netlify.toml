@@ -21,6 +21,6 @@
   to     = "/admin/index.html"
   status = 302
 
-# Scheduled function: check for upcoming games every 30 minutes
+# Scheduled function: check for upcoming games every hour, fires 60 min before
 [functions."notify-pregame"]
-  schedule = "*/30 * * * *"
+  schedule = "0 * * * *"

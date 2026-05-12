@@ -149,7 +149,7 @@ async function init() {
 
   // Check if REST API key is set
   try {
-    const r = await fetch('/.netlify/functions/notify', {
+    const r = await fetch('/.netlify/functions/send-notification', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ title: '__ping__', message: '__ping__' }),
@@ -196,7 +196,7 @@ async function sendNotif() {
   statusEl.textContent = 'Sending…';
 
   try {
-    const r = await fetch('/.netlify/functions/notify', {
+    const r = await fetch('/.netlify/functions/send-notification', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ title, message, url, type }),

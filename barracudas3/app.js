@@ -1657,7 +1657,7 @@ document.addEventListener('DOMContentLoaded', initCalendarButtons);
 
     try {
       const opp = (gameData.oppName || gameData.oppAbbr || 'opponent').split(' ').slice(-1)[0];
-      await fetch('/.netlify/functions/notify', {
+      await fetch('/.netlify/functions/send-notification', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
