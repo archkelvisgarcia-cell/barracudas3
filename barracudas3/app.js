@@ -327,7 +327,7 @@ function copyLink(btn) {
   if (!('IntersectionObserver' in window)) { els.forEach(e => e.classList.add('in')); return; }
   const io = new IntersectionObserver((entries) => {
     entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
-  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+  }, { threshold: 0.1, rootMargin: '0px 0px -20px 0px' });
   els.forEach(e => io.observe(e));
 })();
 
@@ -783,7 +783,7 @@ const PLAYER_EXTENDED_DATA = {
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver((entries) => {
       entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
-    }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+    }, { threshold: 0.1, rootMargin: '0px 0px -20px 0px' });
     grid.querySelectorAll('.reveal').forEach(e => io.observe(e));
   } else {
     grid.querySelectorAll('.reveal').forEach(e => e.classList.add('in'));

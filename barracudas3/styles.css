@@ -199,17 +199,14 @@ a { color: inherit; text-decoration: none; }
   background: var(--accent);
   color: var(--bg-deep);
 }
-/* hide desktop switcher on mobile — shown in mobile menu instead */
+/* hide desktop elements on mobile — shown in mobile menu instead */
 @media (max-width: 900px) {
   .nav-tools .lang-switcher { display: none; }
+  .nav-links, .nav-cta { display: none; }
+  .menu-btn { display: grid; }
 }
 .mobile-menu-foot .lang-switcher {
   background: color-mix(in oklab, var(--ink) 8%, transparent);
-}
-
-@media (max-width: 900px) {
-  .nav-links, .nav-cta { display: none; }
-  .menu-btn { display: grid; }
 }
 
 /* MOBILE MENU OVERLAY */
@@ -693,6 +690,51 @@ a { color: inherit; text-decoration: none; }
   .hero-headline .hero-news-cta  { order: 2; margin-top: 1rem; }
   .hero-headline .hero-btns-mobile { order: 3; }
 }
+
+/* HOME HERO LATEST RESULTS STRIP */
+.latest-strip {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  margin-top: 24px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  overflow: hidden;
+}
+@media (max-width: 700px) { .latest-strip { grid-template-columns: 1fr; } }
+.latest-strip .game {
+  background: color-mix(in oklab, var(--bg) 80%, transparent);
+  backdrop-filter: blur(10px);
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.latest-strip .game:hover { background: color-mix(in oklab, var(--accent) 10%, var(--bg)); }
+.latest-strip .game .top {
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.latest-strip .game .top .res {
+  padding: 2px 8px; border-radius: 4px;
+  font-weight: 700;
+}
+.latest-strip .game .top .res.w { background: var(--accent); color: var(--bg-deep); }
+.latest-strip .game .top .res.l { background: color-mix(in oklab, var(--loss) 30%, transparent); color: var(--ink-faint); }
+.latest-strip .game .matchup {
+  font-family: var(--display);
+  font-size: 22px;
+  text-transform: uppercase;
+  line-height: 0.95;
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 12px;
+}
+.latest-strip .game .matchup .sc { color: var(--accent); }
 
 /* ============================================================
    MARQUEE
@@ -2384,21 +2426,6 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 480px) {
   .pm-stats-grid { grid-template-columns: repeat(2, 1fr); }
   .pm-box { max-height: 95vh; }
-}
-
-/* ── STANDINGS — force visibility on all mobile breakpoints ── */
-@media (max-width: 768px) {
-  .standings-section,
-  #standingsTable,
-  .standings-table-wrap {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    width: 100%;
-  }
-  .standings-table-wrap { overflow-y: hidden; }
 }
 
 /* ══════════════════════════════════════════════════════
