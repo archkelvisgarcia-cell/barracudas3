@@ -1528,21 +1528,6 @@ function initStandings() {
   const wrap = document.getElementById('standingsTable');
   if (!wrap) return;
 
-  // Hardcoded fallback — always rendered immediately (no network needed)
-  const FALLBACK = {
-    league: 'NLA Baseball Gruppe A 2026',
-    updatedAt: '2026-05-13T00:00:00.000Z',
-    standings: [
-      { rank:1, abbr:'EAG',  name:'Luzern Eagles',       gp:5, w:5, l:0, pct:'1.000', isUs:false },
-      { rank:2, abbr:'BAR',  name:'Zürich Barracudas',    gp:5, w:5, l:0, pct:'1.000', isUs:false },
-      { rank:3, abbr:'IND',  name:'Lausanne Indians',      gp:6, w:4, l:2, pct:'.667',  isUs:false },
-      { rank:4, abbr:'BAR3', name:'Zürich Barracudas 3',   gp:7, w:3, l:4, pct:'.429',  isUs:true  },
-      { rank:5, abbr:'CHA2', name:'Challengers 2',         gp:5, w:2, l:3, pct:'.400',  isUs:false },
-      { rank:6, abbr:'FLY2', name:'Zürich Flyers 2',       gp:6, w:0, l:6, pct:'.000',  isUs:false },
-      { rank:7, abbr:'FRO',  name:'Sissach Frogs',         gp:4, w:0, l:4, pct:'.000',  isUs:false },
-    ],
-  };
-
   // Try fetching live data from the API; silently update table if successful
   async function tryFetchLive() {
     try {
@@ -1600,16 +1585,8 @@ function initStandings() {
       ${updated ? `<div class="standings-meta">${updL}: ${updated}</div>` : ''}`;
   }
 
-  // 1. Render immediately from hardcoded data (always works, no network)
-  render(FALLBACK);
-  // 2. Silently upgrade with live API data in the background
+  // Static HTML table already in results.html — just upgrade with live data
   tryFetchLive();
-
-  // Re-render labels when language changes
-  window._barLang?.onLang?.(() => {
-    const cached = document.querySelector('.standings-table');
-    if (cached) render(FALLBACK); // re-render with translated labels
-  });
 }
 
 document.addEventListener('DOMContentLoaded', initStandings);
