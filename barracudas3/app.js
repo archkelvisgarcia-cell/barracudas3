@@ -1515,10 +1515,13 @@ const STANDINGS_LOGOS = {
 };
 
 function standingLogo(t) {
-  const src = STANDINGS_LOGOS[t.abbr] || t.logo || '';
-  const ini = t.abbr ? t.abbr[0] : '?';
-  if (!src) return '<div class="standings-logo-placeholder">' + ini + '</div>';
-  return '<img class="standings-logo" src="' + src + '" alt="' + t.abbr + '" loading="lazy" onerror="this.outerHTML=\'<div class=&quot;standings-logo-placeholder&quot;>' + ini + '</div>\'" />';
+  const src = STANDINGS_LOGOS[t.abbr] || '';
+  const ini = (t.abbr || '?')[0];
+  // Use background-image div to avoid img onerror quoting bugs
+  if (src) {
+    return '<div class="sl-circle" style="background-image:url(\'' + src + '\')" title="' + (t.name || t.abbr) + '"></div>';
+  }
+  return '<div class="sl-circle sl-circle--text">' + ini + '</div>';
 }
 
 function initStandings() {
