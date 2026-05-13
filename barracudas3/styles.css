@@ -2394,7 +2394,9 @@ a { color: inherit; text-decoration: none; }
 .standings-table-wrap {
   border: 1px solid var(--line);
   border-radius: var(--r-lg);
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 .standings-table {

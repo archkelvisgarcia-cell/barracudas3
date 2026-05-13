@@ -1514,6 +1514,13 @@ const STANDINGS_LOGOS = {
   FRO:  'assets/teams/frogs.png',
 };
 
+function standingLogo(t) {
+  const src = STANDINGS_LOGOS[t.abbr] || t.logo || '';
+  const ini = t.abbr ? t.abbr[0] : '?';
+  if (!src) return '<div class="standings-logo-placeholder">' + ini + '</div>';
+  return '<img class="standings-logo" src="' + src + '" alt="' + t.abbr + '" loading="lazy" onerror="this.outerHTML=\'<div class=&quot;standings-logo-placeholder&quot;>' + ini + '</div>\'" />';
+}
+
 function initStandings() {
   const wrap = document.getElementById('standingsTable');
   if (!wrap) return;
@@ -1571,13 +1578,7 @@ function initStandings() {
                 <td>${t.rank}</td>
                 <td>
                   <div class="standings-team-cell">
-                    ${(() => {
-                      const local = STANDINGS_LOGOS[t.abbr];
-                      const src   = local || t.logo;
-                      return src
-                        ? `<img class="standings-logo" src="${src}" alt="${t.abbr}" loading="lazy" onerror="this.outerHTML='<div class=\\"standings-logo-placeholder\\">${t.abbr[0]}</div>'" />`
-                        : `<div class="standings-logo-placeholder">${t.abbr[0]}</div>`;
-                    })()}
+                    ${standingLogo(t)}
                     <div>
                       <div class="standings-team-name">${t.name}</div>
                       <div class="standings-abbr">${t.abbr}</div>
