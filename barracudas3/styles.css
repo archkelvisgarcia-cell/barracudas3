@@ -2712,7 +2712,7 @@ a { color: inherit; text-decoration: none; }
   flex: 1;
 }
 .ls-team--home { flex-direction: row-reverse; }
-.ls-logo { width: 36px; height: 36px; object-fit: contain; }
+.ls-logo { width: 36px; height: 36px; background-size: contain; background-repeat: no-repeat; background-position: center; }
 .ls-logo-placeholder {
   width: 36px; height: 36px;
   border-radius: 50%;

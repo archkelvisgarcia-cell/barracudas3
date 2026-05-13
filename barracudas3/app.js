@@ -1854,8 +1854,9 @@ function initLiveScore() {
   if (!wrap) return;
 
   function logoEl(src, abbr) {
-    if (!src) return `<div class="ls-logo-placeholder">${abbr[0]}</div>`;
-    return `<img class="ls-logo" src="${src}" alt="${abbr}" onerror="this.outerHTML='<div class=\\"ls-logo-placeholder\\">${abbr[0]}</div>'" />`;
+    const ini = (abbr || '?')[0];
+    if (!src) return `<div class="ls-logo-placeholder">${ini}</div>`;
+    return `<div class="ls-logo" style="background-image:url('${src}')" title="${abbr}"></div>`;
   }
 
   function renderLinescore(ls, bar3Side, currentInning) {
