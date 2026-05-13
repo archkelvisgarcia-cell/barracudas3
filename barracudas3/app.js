@@ -1504,6 +1504,16 @@ function initAwards() {
 document.addEventListener('DOMContentLoaded', initAwards);
 
 // ── LEAGUE STANDINGS ──────────────────────────────────────────
+const STANDINGS_LOGOS = {
+  EAG:  'assets/teams/eagles.png',
+  BAR:  'assets/teams/BARLOGO.png',
+  IND:  'assets/teams/indians.png',
+  BAR3: 'assets/logo.png',
+  CHA2: 'assets/teams/challengers.png',
+  FLY2: 'assets/teams/flyers.png',
+  FRO:  'assets/teams/frogs.png',
+};
+
 function initStandings() {
   const wrap = document.getElementById('standingsTable');
   if (!wrap) return;
@@ -1561,9 +1571,13 @@ function initStandings() {
                 <td>${t.rank}</td>
                 <td>
                   <div class="standings-team-cell">
-                    ${t.logo
-                      ? `<img class="standings-logo" src="${t.logo}" alt="${t.abbr}" loading="lazy" onerror="this.outerHTML='<div class=\\"standings-logo-placeholder\\">${t.abbr[0]}</div>'" />`
-                      : `<div class="standings-logo-placeholder">${t.abbr[0]}</div>`}
+                    ${(() => {
+                      const local = STANDINGS_LOGOS[t.abbr];
+                      const src   = local || t.logo;
+                      return src
+                        ? `<img class="standings-logo" src="${src}" alt="${t.abbr}" loading="lazy" onerror="this.outerHTML='<div class=\\"standings-logo-placeholder\\">${t.abbr[0]}</div>'" />`
+                        : `<div class="standings-logo-placeholder">${t.abbr[0]}</div>`;
+                    })()}
                     <div>
                       <div class="standings-team-name">${t.name}</div>
                       <div class="standings-abbr">${t.abbr}</div>
