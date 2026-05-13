@@ -103,6 +103,10 @@
       modal_streak_chip: 'game hit streak',
       ig_h1: 'Follow', ig_h2: 'The Journey.',
 
+      standings_eyebrow: '— Gruppe A 2026',
+      standings_h1: 'League', standings_h2: 'Standings.',
+      standings_team: 'Team', standings_gp: 'GP', standings_w: 'W', standings_l: 'L', standings_pct: 'PCT',
+      standings_updated: 'Updated',
       award_section_eyebrow: '— Season Awards',
       award_section_h1: 'Award', award_section_h2: 'Candidates.',
       award_section_sub: 'Calculated automatically from 2026 season statistics.',
@@ -214,6 +218,10 @@
       modal_streak_chip: 'juegos con hit',
       ig_h1: 'Síguenos', ig_h2: 'En Instagram.',
 
+      standings_eyebrow: '— Gruppe A 2026',
+      standings_h1: 'Posiciones', standings_h2: 'Liga.',
+      standings_team: 'Equipo', standings_gp: 'PJ', standings_w: 'G', standings_l: 'P', standings_pct: 'PCT',
+      standings_updated: 'Actualizado',
       award_section_eyebrow: '— Premios de Temporada',
       award_section_h1: 'Premios', award_section_h2: 'Candidatos.',
       award_section_sub: 'Calculados automáticamente con las estadísticas reales de 2026.',
@@ -325,6 +333,10 @@
       modal_streak_chip: 'Spiele mit Treffer in Folge',
       ig_h1: 'Folge', ig_h2: 'Uns.',
 
+      standings_eyebrow: '— Gruppe A 2026',
+      standings_h1: 'Liga', standings_h2: 'Tabelle.',
+      standings_team: 'Team', standings_gp: 'SP', standings_w: 'S', standings_l: 'N', standings_pct: 'PCT',
+      standings_updated: 'Aktualisiert',
       award_section_eyebrow: '— Saisonauszeichnungen',
       award_section_h1: 'Auszeichnungs', award_section_h2: 'Kandidaten.',
       award_section_sub: 'Automatisch aus den Saison-2026-Statistiken berechnet.',

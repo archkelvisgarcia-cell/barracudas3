@@ -1503,6 +1503,94 @@ function initAwards() {
 
 document.addEventListener('DOMContentLoaded', initAwards);
 
+// ── LEAGUE STANDINGS ──────────────────────────────────────────
+function initStandings() {
+  const wrap = document.getElementById('standingsTable');
+  if (!wrap) return;
+
+  async function load() {
+    try {
+      const res = await fetch('/.netlify/functions/standings');
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      render(data);
+    } catch {
+      // Fallback: hardcoded standings as of May 13, 2026
+      render({
+        league: 'NLA Baseball Gruppe A 2026',
+        updatedAt: '2026-05-13T00:00:00.000Z',
+        standings: [
+          { rank:1, abbr:'EAG',  name:'Luzern Eagles',          gp:5, w:5, l:0, pct:'1.000', isUs:false },
+          { rank:2, abbr:'BAR',  name:'Zürich Barracudas',       gp:5, w:5, l:0, pct:'1.000', isUs:false },
+          { rank:3, abbr:'IND',  name:'Lausanne Indians',         gp:6, w:4, l:2, pct:'.667',  isUs:false },
+          { rank:4, abbr:'BAR3', name:'Zürich Barracudas 3',      gp:7, w:3, l:4, pct:'.429',  isUs:true  },
+          { rank:5, abbr:'CHA2', name:'Challengers 2',            gp:5, w:2, l:3, pct:'.400',  isUs:false },
+          { rank:6, abbr:'FLY2', name:'Zürich Flyers 2',          gp:6, w:0, l:6, pct:'.000',  isUs:false },
+          { rank:7, abbr:'FRO',  name:'Sissach Frogs',            gp:4, w:0, l:4, pct:'.000',  isUs:false },
+        ],
+      });
+    }
+  }
+
+  function render(data) {
+    const rows = data.standings || [];
+    const gpL  = _t('standings_gp')   || 'GP';
+    const wL   = _t('standings_w')    || 'W';
+    const lL   = _t('standings_l')    || 'L';
+    const pctL = _t('standings_pct')  || 'PCT';
+    const teamL= _t('standings_team') || 'Team';
+    const updL = _t('standings_updated') || 'Updated';
+    const updated = data.updatedAt
+      ? new Date(data.updatedAt).toLocaleDateString('en-US', { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' })
+      : '';
+
+    wrap.innerHTML = `
+      <div class="standings-table-wrap reveal in">
+        <table class="standings-table" aria-label="${data.league}">
+          <thead><tr>
+            <th>#</th>
+            <th>${teamL}</th>
+            <th>${gpL}</th>
+            <th>${wL}</th>
+            <th>${lL}</th>
+            <th>${pctL}</th>
+          </tr></thead>
+          <tbody>
+            ${rows.map(t => `
+              <tr class="${t.isUs ? 'standings-us' : ''}">
+                <td>${t.rank}</td>
+                <td>
+                  <div class="standings-team-cell">
+                    ${t.logo
+                      ? `<img class="standings-logo" src="${t.logo}" alt="${t.abbr}" loading="lazy" onerror="this.outerHTML='<div class=\\"standings-logo-placeholder\\">${t.abbr[0]}</div>'" />`
+                      : `<div class="standings-logo-placeholder">${t.abbr[0]}</div>`}
+                    <div>
+                      <div class="standings-team-name">${t.name}</div>
+                      <div class="standings-abbr">${t.abbr}</div>
+                    </div>
+                  </div>
+                </td>
+                <td>${t.gp}</td>
+                <td class="standings-w">${t.w}</td>
+                <td>${t.l}</td>
+                <td class="standings-pct">${t.pct}</td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+      ${updated ? `<div class="standings-meta">${updL}: ${updated}</div>` : ''}`;
+  }
+
+  load();
+  // Re-render labels when language changes
+  window._barLang?.onLang?.(() => {
+    const cached = document.querySelector('.standings-table');
+    if (cached) load(); // reload with translated headers
+  });
+}
+
+document.addEventListener('DOMContentLoaded', initStandings);
+
 // ── ADD TO CALENDAR ───────────────────────────────────────────
 function _calDateStr(date, time) {
   return date.replace(/-/g, '') + 'T' + time.replace(':', '') + '00';
