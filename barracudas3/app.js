@@ -1992,6 +1992,12 @@ function initLiveScore() {
   let _pollTimer = null;
 
   async function load() {
+    // Respect admin toggle — default is OFF (hidden)
+    if (localStorage.getItem('barracudas_scoreboard_active') !== 'true') {
+      wrap.style.display = 'none';
+      return;
+    }
+
     try {
       const res  = await fetch('/.netlify/functions/easyscore');
       if (!res.ok) throw new Error();

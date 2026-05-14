@@ -40,7 +40,32 @@
 
   <!-- Score panel (hidden until logged in) -->
   <div id="scorePanel" style="display:none">
-    <div class="admin-title">🔴 Live Score</div>
+
+    <!-- ── SECTION 1: Scoreboard Toggle ── -->
+    <div class="admin-title">📺 Scoreboard</div>
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:12px;">
+      <span style="font-family:var(--mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-faint);">Visibility</span>
+      <span id="sbToggleStatus" style="font-family:var(--display);font-size:22px;text-transform:uppercase;color:rgba(255,255,255,0.3);">HIDDEN</span>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
+      <button class="btn btn-primary" id="btnSbOn"  onclick="setScoreboard(true)">▶ SHOW ON SITE</button>
+      <button class="btn btn-ghost"   id="btnSbOff" onclick="setScoreboard(false)">■ HIDE FROM SITE</button>
+      <button class="btn btn-ghost"   style="margin-left:auto;" onclick="forceRefresh()">↻ Force Refresh API</button>
+    </div>
+    <div class="status" id="sbStatus" style="height:auto;margin-bottom:10px;"></div>
+
+    <div>
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.10em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:6px;">Last game data</div>
+      <div id="sbPreview" style="background:var(--bg-deep);border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 14px;font-family:var(--mono);font-size:11px;color:var(--ink-mute);">Loading…</div>
+    </div>
+
+    <hr style="border-color:var(--line);margin:24px 0;" />
+
+    <!-- ── SECTION 2: Manual Override ── -->
+    <div class="admin-title" style="font-size:18px;">🔴 Manual Override</div>
+    <p style="font-family:var(--mono);font-size:10px;color:var(--ink-faint);margin-bottom:14px;">
+      Fallback if EasyScore API is down. Stored in this browser's localStorage only.
+    </p>
     <div class="row2">
       <div class="field">
         <label>BAR3 Score</label>
@@ -55,30 +80,99 @@
       <label>Inning / Status</label>
       <input type="text" id="inning" placeholder="e.g. Top 5th · 1 out" />
     </div>
-    <button class="btn btn-primary" style="width:100%" onclick="saveScore()">Update Live Score</button>
-    <button class="btn btn-ghost" style="width:100%;margin-top:8px;" onclick="clearScore()">Clear / End Game</button>
+    <button class="btn btn-primary" style="width:100%" onclick="saveScore()">Save Manual Score</button>
+    <button class="btn btn-ghost" style="width:100%;margin-top:8px;" onclick="clearScore()">Clear Manual Score</button>
     <div class="status" id="status"></div>
-    <hr style="border-color:var(--line);margin:20px 0;" />
-    <p style="font-family:var(--mono);font-size:10px;color:var(--ink-faint);">
-      Score is stored in visitor's localStorage. For real-time sync across devices, connect EasyScore API (set EASYSCORE_API_KEY in Netlify env vars).
-    </p>
   </div>
 </div>
 
 <script>
-const PW = 'barracudas2026'; // change this
+const PW = 'barracudas2026';
+const SB_KEY = 'barracudas_scoreboard_active';
+
 function checkPw() {
   if (document.getElementById('pwInput').value === PW) {
     document.getElementById('loginWrap').style.display = 'none';
     document.getElementById('scorePanel').style.display = 'block';
+    // Populate manual override fields
     const s = JSON.parse(localStorage.getItem('bar3-live') || '{}');
     document.getElementById('scoreUs').value   = s.us    ?? 0;
     document.getElementById('scoreThem').value = s.them  ?? 0;
     document.getElementById('inning').value    = s.inning ?? '';
+    // Init toggle UI + load preview
+    updateToggleUI();
+    loadPreview();
   } else {
     document.getElementById('pwErr').textContent = 'Incorrect password.';
   }
 }
+
+// ── Toggle ────────────────────────────────────────────────────
+function updateToggleUI() {
+  const active = localStorage.getItem(SB_KEY) === 'true';
+  const statusEl = document.getElementById('sbToggleStatus');
+  statusEl.textContent = active ? 'VISIBLE' : 'HIDDEN';
+  statusEl.style.color = active ? 'var(--accent)' : 'rgba(255,255,255,0.3)';
+  document.getElementById('btnSbOn').style.opacity  = active ? '1' : '0.5';
+  document.getElementById('btnSbOff').style.opacity = active ? '0.5' : '1';
+}
+
+function setScoreboard(active) {
+  localStorage.setItem(SB_KEY, active ? 'true' : 'false');
+  updateToggleUI();
+  const el = document.getElementById('sbStatus');
+  el.style.color = active ? 'var(--accent)' : 'rgba(255,255,255,0.45)';
+  el.textContent = active
+    ? '✓ Scoreboard is now visible on the site.'
+    : '✓ Scoreboard is now hidden from the site.';
+}
+
+// ── Force Refresh ─────────────────────────────────────────────
+async function forceRefresh() {
+  const el = document.getElementById('sbStatus');
+  el.style.color = 'rgba(255,255,255,0.45)';
+  el.textContent = '↻ Fetching from EasyScore…';
+  try {
+    const r = await fetch('/.netlify/functions/easyscore?_=' + Date.now());
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const data = await r.json();
+    el.style.color = 'var(--accent)';
+    el.textContent = '✓ Data refreshed · ' + new Date().toLocaleTimeString();
+    renderPreview(data.live || data.recent || null);
+  } catch (e) {
+    el.style.color = '#ff5555';
+    el.textContent = '✗ ' + e.message;
+  }
+}
+
+// ── Preview ───────────────────────────────────────────────────
+function renderPreview(g) {
+  const el = document.getElementById('sbPreview');
+  if (!g) { el.textContent = 'No game data available.'; return; }
+  const date = g.date
+    ? new Date(g.date).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' })
+    : '';
+  const badge = g.live ? '🔴 LIVE' : g.finished ? '✓ FINAL' : 'UPCOMING';
+  const inn   = g.lineScore?.innings ? ' · INN ' + g.lineScore.innings : '';
+  el.innerHTML =
+    `<strong style="color:var(--ink)">${g.bar3Abbr || 'BAR3'}&nbsp;${g.bar3Score ?? 0}&nbsp;—&nbsp;${g.oppScore ?? 0}&nbsp;${g.oppAbbr || 'OPP'}</strong>` +
+    `&nbsp;&nbsp;<span style="color:var(--accent)">${badge}</span>` +
+    (date ? `&nbsp;·&nbsp;${date}` : '') + inn +
+    (g.oppName ? `<br><span style="color:rgba(255,255,255,0.35);font-size:10px;">vs ${g.oppName}</span>` : '');
+}
+
+async function loadPreview() {
+  try {
+    const r = await fetch('/.netlify/functions/easyscore');
+    if (!r.ok) throw new Error();
+    const data = await r.json();
+    renderPreview(data.live || data.recent || null);
+  } catch {
+    document.getElementById('sbPreview').textContent = 'Could not load game data.';
+  }
+}
+
+// ── Manual score ──────────────────────────────────────────────
 function saveScore() {
   const data = {
     us:     parseInt(document.getElementById('scoreUs').value) || 0,
@@ -87,12 +181,14 @@ function saveScore() {
     ts:     Date.now(),
   };
   localStorage.setItem('bar3-live', JSON.stringify(data));
-  document.getElementById('status').textContent = '✓ Score updated — ' + new Date().toLocaleTimeString();
+  document.getElementById('status').textContent = '✓ Manual score saved — ' + new Date().toLocaleTimeString();
 }
+
 function clearScore() {
   localStorage.removeItem('bar3-live');
-  document.getElementById('status').textContent = '✓ Score cleared.';
+  document.getElementById('status').textContent = '✓ Manual score cleared.';
 }
+
 document.getElementById('pwInput').addEventListener('keydown', e => { if (e.key === 'Enter') checkPw(); });
 </script>
 </body>

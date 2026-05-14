@@ -75,6 +75,21 @@
     </div>
   </div>
 
+  <!-- Scoreboard card -->
+  <div class="adm-card" style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+    <div style="flex:1;min-width:200px;">
+      <div class="adm-title" style="margin-bottom:6px;">📺 Scoreboard</div>
+      <p style="font-family:var(--mono);font-size:11px;color:var(--ink-mute);line-height:1.5;margin:0;">
+        Control whether the live score broadcast bar appears on the main site.
+        Toggle ON/OFF, force refresh EasyScore data, and preview the last game.
+      </p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end;flex-shrink:0;">
+      <span id="sbQuickStatus" style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.3);">HIDDEN</span>
+      <a href="score.html" class="btn btn-primary" style="font-size:12px;">Manage →</a>
+    </div>
+  </div>
+
   <!-- Tabs -->
   <div class="tab-bar">
     <button class="tab-btn active" onclick="switchTab('results')">Results</button>
@@ -159,6 +174,15 @@ if (sessionStorage.getItem(PW_KEY) === 'ok') {
   document.getElementById('adminPanel').style.display = 'block';
   loadAll();
 }
+
+// Scoreboard quick status badge
+(function () {
+  const el = document.getElementById('sbQuickStatus');
+  if (!el) return;
+  const active = localStorage.getItem('barracudas_scoreboard_active') === 'true';
+  el.textContent = active ? 'VISIBLE' : 'HIDDEN';
+  el.style.color  = active ? 'var(--accent)' : 'rgba(255,255,255,0.3)';
+})();
 
 document.getElementById('pwInput')?.addEventListener('keydown', e => { if (e.key === 'Enter') checkPw(); });
 
