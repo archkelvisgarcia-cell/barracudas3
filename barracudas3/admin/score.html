@@ -5,6 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Live Score Admin — Barracudas</title>
 <meta name="robots" content="noindex, nofollow" />
+<script>
+(function(){
+  var token = sessionStorage.getItem('admin_token');
+  if (!token) { window.location.replace('/admin/login.html'); return; }
+  try {
+    var data = JSON.parse(atob(token));
+    if (data.exp < Date.now()) { sessionStorage.removeItem('admin_token'); window.location.replace('/admin/login.html'); return; }
+    if (data.role !== 'admin') { window.location.replace('/admin/lineup.html'); }
+  } catch(e) { sessionStorage.removeItem('admin_token'); window.location.replace('/admin/login.html'); }
+})();
+</script>
 <link rel="stylesheet" href="../styles.css" />
 <style>
   body { padding: 40px var(--pad); max-width: 520px; margin: 0 auto; }
@@ -21,25 +32,15 @@
   .field input:focus, .field select:focus { outline: 2px solid var(--accent); border-color: var(--accent); }
   .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .status { font-family: var(--mono); font-size: 12px; color: var(--accent); margin-top: 12px; height: 18px; }
-  #loginWrap { text-align: center; padding: 60px 0; }
-  #loginWrap input { width: 260px; text-align: center; }
 </style>
 </head>
 <body>
+<button onclick="sessionStorage.removeItem('admin_token');window.location.replace('/admin/login.html');"
+  style="position:fixed;top:12px;right:16px;font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.45);padding:5px 12px;border-radius:var(--r-sm);cursor:pointer;z-index:999;">
+  Logout
+</button>
 <div class="admin-card">
-  <!-- Login gate -->
-  <div id="loginWrap">
-    <div class="admin-title">🔐 Admin</div>
-    <div class="field">
-      <label>Password</label>
-      <input type="password" id="pwInput" placeholder="Enter password" />
-    </div>
-    <button class="btn btn-primary" style="width:100%;margin-top:8px;" onclick="checkPw()">Enter</button>
-    <p id="pwErr" style="color:#ff5555;font-family:var(--mono);font-size:11px;margin-top:8px;"></p>
-  </div>
-
-  <!-- Score panel (hidden until logged in) -->
-  <div id="scorePanel" style="display:none">
+  <div id="scorePanel">
 
     <!-- ── SECTION 1: Scoreboard Toggle ── -->
     <div class="admin-title">📺 Scoreboard</div>
@@ -87,25 +88,16 @@
 </div>
 
 <script>
-const PW = 'barracudas2026';
 const SB_KEY = 'barracudas_scoreboard_active';
 
-function checkPw() {
-  if (document.getElementById('pwInput').value === PW) {
-    document.getElementById('loginWrap').style.display = 'none';
-    document.getElementById('scorePanel').style.display = 'block';
-    // Populate manual override fields
-    const s = JSON.parse(localStorage.getItem('bar3-live') || '{}');
-    document.getElementById('scoreUs').value   = s.us    ?? 0;
-    document.getElementById('scoreThem').value = s.them  ?? 0;
-    document.getElementById('inning').value    = s.inning ?? '';
-    // Init toggle UI + load preview
-    updateToggleUI();
-    loadPreview();
-  } else {
-    document.getElementById('pwErr').textContent = 'Incorrect password.';
-  }
-}
+document.addEventListener('DOMContentLoaded', function() {
+  const s = JSON.parse(localStorage.getItem('bar3-live') || '{}');
+  document.getElementById('scoreUs').value   = s.us    ?? 0;
+  document.getElementById('scoreThem').value = s.them  ?? 0;
+  document.getElementById('inning').value    = s.inning ?? '';
+  updateToggleUI();
+  loadPreview();
+});
 
 // ── Toggle ────────────────────────────────────────────────────
 function updateToggleUI() {
@@ -189,7 +181,6 @@ function clearScore() {
   document.getElementById('status').textContent = '✓ Manual score cleared.';
 }
 
-document.getElementById('pwInput').addEventListener('keydown', e => { if (e.key === 'Enter') checkPw(); });
 </script>
 </body>
 </html>

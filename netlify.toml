@@ -15,10 +15,15 @@
   to     = "/.netlify/functions/:splat"
   status = 200
 
-# Redirect /admin pages (no trailing slash issue)
+# Redirect /admin and /admin/ to login
 [[redirects]]
   from   = "/admin"
-  to     = "/admin/index.html"
+  to     = "/admin/login.html"
+  status = 302
+
+[[redirects]]
+  from   = "/admin/"
+  to     = "/admin/login.html"
   status = 302
 
 # Scheduled function: check for upcoming games every hour, fires 60 min before

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lineup — Barracudas Admin</title>
+<meta name="robots" content="noindex, nofollow" />
+<script>
+(function(){
+  var token = sessionStorage.getItem('admin_token');
+  if (!token) { window.location.replace('/admin/login.html'); return; }
+  try {
+    var data = JSON.parse(atob(token));
+    if (data.exp < Date.now()) {
+      sessionStorage.removeItem('admin_token');
+      window.location.replace('/admin/login.html');
+    }
+  } catch(e) {
+    sessionStorage.removeItem('admin_token');
+    window.location.replace('/admin/login.html');
+  }
+})();
+</script>
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  body { max-width: 720px; margin: 0 auto; padding: 40px var(--pad); }
+  .adm-card { background:var(--bg-elev); border:1px solid var(--line); border-radius:var(--r-lg); padding:28px; margin-bottom:20px; }
+</style>
+</head>
+<body>
+
+<button onclick="sessionStorage.removeItem('admin_token');window.location.replace('/admin/login.html');"
+  style="position:fixed;top:12px;right:16px;font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.45);padding:5px 12px;border-radius:var(--r-sm);cursor:pointer;z-index:999;">
+  Logout
+</button>
+
+<div class="adm-card">
+  <div style="font-family:var(--display);font-size:28px;text-transform:uppercase;margin-bottom:16px;">📋 Lineup Manager</div>
+  <p style="font-family:var(--mono);font-size:12px;color:var(--ink-mute);line-height:1.6;">
+    Lineup management features coming soon.<br />
+    Contact the admin for full panel access.
+  </p>
+  <a href="/admin/login.html" style="display:inline-block;margin-top:20px;font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);text-decoration:none;">← Back to login</a>
+</div>
+
+</body>
+</html>
