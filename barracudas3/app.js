@@ -1853,124 +1853,176 @@ function initLiveScore() {
   const wrap = document.getElementById('liveScoreWrap');
   if (!wrap) return;
 
-  function logoEl(src, abbr) {
+  // Local logo map — team abbreviation → local asset path
+  const LOGOS = {
+    'BAR3':'assets/logo.png',     'ZBA':'assets/logo.png',
+    'BAR':'assets/teams/BARLOGO.png', 'NLA':'assets/teams/BARLOGO.png', 'ZBB':'assets/teams/BARLOGO.png',
+    'EAG':'assets/teams/eagles.png',  'LUZ':'assets/teams/eagles.png',
+    'IND':'assets/teams/indians.png', 'LAU':'assets/teams/indians.png',
+    'CHA2':'assets/teams/challengers.png', 'CHA':'assets/teams/challengers.png',
+    'FLY2':'assets/teams/flyers.png', 'FLY':'assets/teams/flyers.png', 'THF':'assets/teams/flyers.png',
+    'FRO':'assets/teams/frogs.png',   'SIS':'assets/teams/frogs.png',
+  };
+
+  function sbLogo(abbr, apiUrl) {
+    const src = LOGOS[abbr] || apiUrl || '';
     const ini = (abbr || '?')[0];
-    if (!src) return `<div class="ls-logo-placeholder">${ini}</div>`;
-    return `<div class="ls-logo" style="background-image:url('${src}')" title="${abbr}"></div>`;
+    if (src) return `<div class="sb-logo" style="background-image:url('${src}')" title="${abbr}"></div>`;
+    return `<div class="sb-logo sb-logo--ini">${ini}</div>`;
   }
 
-  function renderLinescore(ls, bar3Side, currentInning) {
-    if (!ls) return '';
-    const inns = parseInt(ls.innings || 9);
-    const cells = Array.from({ length: Math.max(inns, 9) }, (_, i) => i + 1);
-    const bar3 = ls[bar3Side] || {};
-    const opp  = bar3Side === 'away' ? (ls.home || {}) : (ls.away || {});
-    const bar3line = bar3.line || {};
-    const oppline  = opp.line  || {};
-    const curI = currentInning ?? inns;
+  function sbDiamond(b1, b2, b3) {
+    const b = (cls, on) => `<div class="sb-base ${cls}${on ? ' sb-base--on' : ''}"></div>`;
+    return `<div class="sb-diamond" aria-hidden="true">
+      ${b('sb-base--2nd', b2)}${b('sb-base--3rd', b3)}${b('sb-base--1st', b1)}
+      <div class="sb-base sb-base--home"></div>
+    </div>`;
+  }
 
-    function cell(val, inning) {
-      if (val === undefined || val === null || val === '') return `<td class="ls-zero">·</td>`;
-      const isCur = (inning === curI) ? ' ls-cur' : '';
-      const isZero = val === 0 || val === '0';
-      return `<td class="${isZero ? 'ls-zero' : ''}${isCur}">${val}</td>`;
+  function sbBso(balls, strikes, outs) {
+    const empty = balls == null;
+    function dots(n, max, isOut) {
+      return Array.from({ length: max }, (_, i) => {
+        const on = !empty && i < n;
+        return `<span class="sb-dot${on ? (isOut ? ' sb-dot--out' : ' sb-dot--on') : ''}"></span>`;
+      }).join('');
+    }
+    return `<div class="sb-bso${empty ? ' sb-bso--empty' : ''}">
+      <div class="sb-bso-g"><span class="sb-bso-l">B</span><div class="sb-bso-d">${dots(balls, 4, false)}</div></div>
+      <div class="sb-bso-g"><span class="sb-bso-l">S</span><div class="sb-bso-d">${dots(strikes, 3, false)}</div></div>
+      <div class="sb-bso-g"><span class="sb-bso-l">O</span><div class="sb-bso-d">${dots(outs, 3, true)}</div></div>
+    </div>`;
+  }
+
+  function sbLinescore(ls, bar3Side, curInn) {
+    if (!ls) return '';
+    const inns  = Math.max(parseInt(ls.innings || 9), 9);
+    const cols  = Array.from({ length: inns }, (_, i) => i + 1);
+    const bar3  = ls[bar3Side] || {};
+    const opp   = bar3Side === 'away' ? (ls.home || {}) : (ls.away || {});
+    const b3l   = bar3.line || {};
+    const oppl  = opp.line  || {};
+
+    function cell(val, inn) {
+      if (val == null || val === '') return `<td class="sb-lz">·</td>`;
+      const cur = curInn && inn === curInn ? ' sb-lcur' : '';
+      if ((val === 0 || val === '0') && !cur) return `<td class="sb-lz">0</td>`;
+      return `<td class="${cur.trim()}">${val}</td>`;
     }
 
-    return `<div class="ls-linescore-wrap">
-      <table class="ls-table">
-        <thead><tr>
-          <th></th>
-          ${cells.map(i => `<th>${i}</th>`).join('')}
-          <th>R</th><th>H</th><th>E</th>
-        </tr></thead>
-        <tbody>
-          <tr>
-            <td>${bar3.abbr || 'BAR3'}</td>
-            ${cells.map(i => cell(bar3line[i], i)).join('')}
-            <td class="ls-total">${bar3.totals?.R ?? '—'}</td>
-            <td>${bar3.totals?.H ?? '—'}</td>
-            <td>${bar3.totals?.E ?? '—'}</td>
-          </tr>
-          <tr>
-            <td>${opp.abbr || 'OPP'}</td>
-            ${cells.map(i => cell(oppline[i], i)).join('')}
-            <td class="ls-total">${opp.totals?.R ?? '—'}</td>
-            <td>${opp.totals?.H ?? '—'}</td>
-            <td>${opp.totals?.E ?? '—'}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>`;
+    return `<table class="sb-ls">
+      <thead><tr><th></th>${cols.map(i => `<th>${i}</th>`).join('')}<th class="sb-lsep">R</th><th>H</th><th>E</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="sb-lteam">${bar3.abbr || 'BAR3'}</td>
+          ${cols.map(i => cell(b3l[i], i)).join('')}
+          <td class="sb-lsep sb-lr">${bar3.totals?.R ?? '·'}</td>
+          <td>${bar3.totals?.H ?? '·'}</td><td>${bar3.totals?.E ?? '·'}</td>
+        </tr>
+        <tr>
+          <td class="sb-lteam">${opp.abbr || 'OPP'}</td>
+          ${cols.map(i => cell(oppl[i], i)).join('')}
+          <td class="sb-lsep sb-lr">${opp.totals?.R ?? '·'}</td>
+          <td>${opp.totals?.H ?? '·'}</td><td>${opp.totals?.E ?? '·'}</td>
+        </tr>
+      </tbody>
+    </table>`;
   }
 
-  function renderCard(g) {
+  function sbTicker(g) {
+    const parts = [];
+    if (g.bar3Abbr) parts.push(`${g.bar3Abbr}  ${g.bar3Score ?? 0}`);
+    if (g.oppAbbr)  parts.push(`${g.oppAbbr}  ${g.oppScore ?? 0}`);
+    if (Array.isArray(g.lineup)) {
+      g.lineup.slice(0, 5).forEach(p => {
+        const n = `${(p.FirstName || p.firstName || '')[0] || ''}. ${p.LastName || p.lastName || p.Name || ''}`.trim();
+        if (n.length > 2) parts.push(n);
+      });
+    }
+    const text = parts.join('  ·  ');
+    return `${text}  ·  ${text}`;
+  }
+
+  function renderBroadcast(g) {
     if (!g) return '';
-    const isLive     = g.live;
-    const bar3Ahead  = (g.bar3Score || 0) > (g.oppScore || 0);
-    const inningNum  = g.lineScore?.innings ?? '';
+    const isLive   = g.live;
+    const ls       = g.lineScore;
+    const innNum   = ls?.innings ? parseInt(ls.innings) : null;
+    const b3Ahead  = (g.bar3Score ?? 0) > (g.oppScore ?? 0);
+    const oppAhead = (g.oppScore ?? 0) > (g.bar3Score ?? 0);
 
-    const statusLabel = isLive
-      ? (inningNum ? `INN ${inningNum}` : 'IN PROGRESS')
-      : (g.finished ? `FINAL · ${new Date(g.date).toLocaleDateString('en-US', { month:'short', day:'numeric' })}` : '');
+    const statusText = isLive
+      ? (innNum ? `INN ${innNum}` : 'IN PROGRESS')
+      : g.finished
+        ? `FINAL · ${new Date(g.date).toLocaleDateString('en-US', { month:'short', day:'numeric' })}`
+        : 'UPCOMING';
 
-    return `<div class="ls-card">
-      <div class="ls-topbar">
-        <span class="ls-badge ${isLive ? 'ls-badge--live' : 'ls-badge--final'}">${isLive ? '🔴 LIVE' : '✓ FINAL'}</span>
-        ${statusLabel ? `<span class="ls-status-label">${statusLabel}</span>` : ''}
-      </div>
-      <div class="ls-score-row">
-        <div class="ls-team">
-          ${logoEl(g.bar3Logo, g.bar3Abbr || 'BAR3')}
-          <div>
-            <div class="ls-team-name">${g.bar3Abbr || 'BAR3'}</div>
-            <div class="ls-team-sub">Barracudas 3</div>
+    return `<div class="sb-wrap">
+      <div class="sb-row1">
+        <div class="sb-teams">
+          <div class="sb-team">
+            ${sbLogo(g.bar3Abbr, g.bar3Logo)}
+            <span class="sb-abbr">${g.bar3Abbr || 'BAR3'}</span>
+            <span class="sb-score${b3Ahead ? ' sb-score--lead' : ''}">${g.bar3Score ?? 0}</span>
           </div>
-          <span class="ls-runs${bar3Ahead ? ' ls-runs--highlight' : ''}">${g.bar3Score ?? '—'}</span>
-        </div>
-        <span class="ls-dash">—</span>
-        <div class="ls-team ls-team--home">
-          ${logoEl(g.oppLogo, g.oppAbbr || 'OPP')}
-          <div>
-            <div class="ls-team-name">${g.oppAbbr || 'OPP'}</div>
-            <div class="ls-team-sub">${(g.oppName || '').split(' ').slice(-1)[0] || ''}</div>
+          <span class="sb-vsep">—</span>
+          <div class="sb-team sb-team--r">
+            <span class="sb-score${oppAhead ? ' sb-score--lead' : ''}">${g.oppScore ?? 0}</span>
+            <span class="sb-abbr">${g.oppAbbr || 'OPP'}</span>
+            ${sbLogo(g.oppAbbr, g.oppLogo)}
           </div>
-          <span class="ls-runs${!bar3Ahead && g.oppScore > g.bar3Score ? ' ls-runs--highlight' : ''}">${g.oppScore ?? '—'}</span>
+        </div>
+        <div class="sb-center">
+          ${innNum ? `<div class="sb-inn"><span class="sb-inn-n">${innNum}</span><span class="sb-inn-l">INN</span></div>` : ''}
+          ${sbDiamond(false, false, false)}
+          ${sbBso(null, null, null)}
+        </div>
+        <div class="sb-right">
+          <span class="sb-pill${isLive ? ' sb-pill--live' : ' sb-pill--done'}">${isLive ? '🔴 LIVE' : statusText}</span>
+          ${isLive ? `<div class="sb-ticker-rail"><div class="sb-ticker">${sbTicker(g)}</div></div>` : ''}
         </div>
       </div>
-      ${renderLinescore(g.lineScore, g.bar3Side, isLive ? parseInt(inningNum) : null)}
-      <a href="results.html" class="ls-cta">${_t('btn_all_boxscores') || 'ALL BOXSCORES →'}</a>
+      <div class="sb-row2">
+        <div class="sb-ls-wrap">${sbLinescore(ls, g.bar3Side, isLive ? innNum : null)}</div>
+        <a href="results.html" class="sb-cta">${_t('btn_all_boxscores') || 'ALL BOXSCORES →'}</a>
+      </div>
     </div>`;
   }
+
+  let _pollTimer = null;
 
   async function load() {
     try {
       const res  = await fetch('/.netlify/functions/easyscore');
-      if (!res.ok) throw new Error('API error');
+      if (!res.ok) throw new Error();
       const data = await res.json();
       const game = data.live || data.recent || null;
 
       if (!game) { wrap.style.display = 'none'; return; }
 
       wrap.style.display = 'block';
-      wrap.innerHTML = `<div class="ls-wrap"><div class="ls-card-container">${renderCard(game)}</div></div>`;
+      wrap.innerHTML = renderBroadcast(game);
 
-      // Send "LIVE NOW" push notification once per live game
       if (game.live) {
         window._barLiveNotif?.(game);
-        setTimeout(load, 60000);
+        if (_pollTimer) clearTimeout(_pollTimer);
+        _pollTimer = setTimeout(load, 30000);
+      } else {
+        if (_pollTimer) clearTimeout(_pollTimer);
       }
     } catch {
-      // Fallback: check localStorage for manual score (admin/score.html)
+      // Fallback: manual score from localStorage (admin/score.html)
       const s = JSON.parse(localStorage.getItem('bar3-live') || '{}');
       if (!s.us && s.us !== 0) { wrap.style.display = 'none'; return; }
-      const banner = document.createElement('div');
-      banner.id = 'liveScoreBanner';
-      banner.style.cssText = 'display:flex';
-      banner.innerHTML = `<span class="live-pill">🔴 LIVE</span>
-        <span class="live-score">BAR3 <b>${s.us}</b> — <b>${s.them}</b>${s.inning ? ' · ' + s.inning : ''}</span>
-        <a href="results.html" class="live-link">→</a>`;
       wrap.style.display = 'block';
-      wrap.appendChild(banner);
+      wrap.innerHTML = `<div class="sb-wrap"><div class="sb-row1">
+        <div class="sb-teams">
+          <div class="sb-team">${sbLogo('BAR3','')}<span class="sb-abbr">BAR3</span><span class="sb-score sb-score--lead">${s.us}</span></div>
+          <span class="sb-vsep">—</span>
+          <div class="sb-team sb-team--r"><span class="sb-score">${s.them}</span><span class="sb-abbr">OPP</span><div class="sb-logo sb-logo--ini">O</div></div>
+        </div>
+        <div class="sb-right"><span class="sb-pill sb-pill--live">🔴 LIVE${s.inning ? ' · ' + s.inning : ''}</span></div>
+      </div></div>`;
     }
   }
 
