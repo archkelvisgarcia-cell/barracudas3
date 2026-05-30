@@ -372,7 +372,7 @@ const PLAYER_EXTENDED_DATA = {
     fullName: 'Garcia Rondon Kelvis Carmelo',
     age: 38, bats: 'R', throws: 'R',
     batting: {
-      season: { G:7, PA:30, AB:27, R:12, H:10, '2B':2, '3B':0, HR:2, RBI:11, BB:3, SO:4, SB:1, CS:0, HBP:0, SF:0, AVG:'.370', OBP:'.433', SLG:'.667', OPS:'1.100' },
+      season: { G:9, PA:30, AB:27, R:12, H:10, '2B':2, '3B':0, HR:2, RBI:11, BB:3, SO:4, SB:1, CS:0, HBP:0, SF:0, AVG:'.370', OBP:'.433', SLG:'.667', OPS:'1.100' },
       log: [
         { date:'05/05', opp:'Barracudas NLA',  spot:5, pos:'2B',       AB:3, R:0, H:1, '2B':0, HR:0, RBI:1, BB:1, SO:2, SB:0, AVG:'.370' },
         { date:'05/02', opp:'Luzern Eagles',   spot:5, pos:'2B',       AB:4, R:2, H:1, '2B':0, HR:0, RBI:0, BB:0, SO:1, SB:0, AVG:'.375' },
@@ -405,7 +405,7 @@ const PLAYER_EXTENDED_DATA = {
   '27': { // Elvis Del Valle Diaz
     fullName: 'Del Valle Diaz Elvis', age: 31, bats: 'R', throws: 'R',
     batting: {
-      season: { G:7, PA:37, AB:29, R:15, H:10, '2B':1, '3B':2, HR:0, RBI:4, BB:7, SO:5, SB:4, CS:0, HBP:1, SF:0, AVG:'.345', OBP:'.486', SLG:'.517', OPS:'1.004' },
+      season: { G:9, PA:37, AB:29, R:15, H:10, '2B':1, '3B':2, HR:0, RBI:4, BB:7, SO:5, SB:4, CS:0, HBP:1, SF:0, AVG:'.345', OBP:'.486', SLG:'.517', OPS:'1.004' },
       log: [
         { date:'05/05', opp:'Barracudas NLA',   spot:1, pos:'SS',     AB:3, R:2, H:1, '2B':0, HR:0, RBI:0, BB:1, SO:1, SB:0, AVG:'.345' },
         { date:'05/02', opp:'Luzern Eagles',    spot:1, pos:'SS',     AB:4, R:3, H:1, '2B':0, HR:0, RBI:0, BB:1, SO:1, SB:1, AVG:'.346' },
@@ -422,8 +422,10 @@ const PLAYER_EXTENDED_DATA = {
       ],
     },
     fielding: {
-      season: { G:7, IP:'51.0', PO:12, A:18, E:4, DP:0, PB:0, RF:'5.29', FPct:'.882' },
+      // StatDef EasyScore (both games): 9-53.0-12-20-4-1 → FPct=(12+20)/(36)=.889
+      season: { G:9, IP:'53.0', PO:12, A:20, E:4, DP:1, PB:0, RF:'5.43', FPct:'.889' },
       log: [
+        { date:'05/30', opp:'Sissach Frogs DH', pos:'SS',     IP:'7.0', PO:0, A:2, E:0, FPct:'.889' },
         { date:'05/05', opp:'Barracudas NLA',   pos:'SS',     IP:'7.0', PO:1, A:4, E:0, FPct:'.882' },
         { date:'05/02', opp:'Luzern Eagles',    pos:'SS',     IP:'7.0', PO:3, A:3, E:0, FPct:'.862' },
         { date:'05/02', opp:'Luzern Eagles',    pos:'2B/SS',  IP:'9.0', PO:2, A:3, E:0, FPct:'.826' },
@@ -437,7 +439,7 @@ const PLAYER_EXTENDED_DATA = {
   '1': { // Juan Malchans
     fullName: 'Malchans Caridad Juan Leonel', bats: 'R', throws: 'R',
     batting: {
-      season: { G:7, PA:36, AB:30, R:12, H:7, '2B':3, '3B':0, HR:0, RBI:12, BB:4, SO:3, SB:2, CS:0, HBP:2, SF:0, AVG:'.233', OBP:'.361', SLG:'.333', OPS:'.694' },
+      season: { G:9, PA:36, AB:30, R:12, H:7, '2B':3, '3B':0, HR:0, RBI:12, BB:4, SO:3, SB:2, CS:0, HBP:2, SF:0, AVG:'.233', OBP:'.361', SLG:'.333', OPS:'.694' },
       log: [
         { date:'05/05', opp:'Barracudas NLA',   spot:2, pos:'DH/P',   AB:4, R:1, H:2, '2B':1, HR:0, RBI:2, BB:0, SO:1, SB:0, AVG:'.233' },
         { date:'05/02', opp:'Luzern Eagles',    spot:2, pos:'DH',     AB:5, R:1, H:2, '2B':1, HR:0, RBI:1, BB:0, SO:0, SB:0, AVG:'.192' },
@@ -455,8 +457,10 @@ const PLAYER_EXTENDED_DATA = {
       ],
     },
     fielding: {
-      season: { G:7, IP:'22.2', PO:5, A:1, E:2, DP:0, PB:0, RF:'2.38', FPct:'.750' },
+      // StatDef EasyScore (both games): 6-24.2-8-3-2-1 → FPct=(8+3)/(13)=.846
+      season: { G:6, IP:'24.2', PO:8, A:3, E:2, DP:1, PB:0, RF:'2.59', FPct:'.846' },
       log: [
+        { date:'05/30', opp:'Sissach Frogs DH', pos:'2B',   IP:'7.0', PO:3, A:2, E:0, FPct:'.846' },
         { date:'05/05', opp:'Barracudas NLA',   pos:'DH/P',  IP:'0.2', PO:0, A:0, E:0, FPct:'.750' },
         { date:'05/02', opp:'Luzern Eagles',    pos:'DH',    IP:'0.0', PO:0, A:0, E:0, FPct:'.750' },
         { date:'05/02', opp:'Luzern Eagles',    pos:'DH',    IP:'0.0', PO:0, A:0, E:0, FPct:'.750' },
@@ -496,7 +500,7 @@ const PLAYER_EXTENDED_DATA = {
   '15': { // Jose Medina
     fullName: 'Medina Reyes Jose Antonio', age: 38, bats: 'S', throws: 'R', captain: true,
     batting: {
-      season: { G:7, PA:33, AB:22, R:6, H:10, '2B':2, '3B':2, HR:0, RBI:11, BB:6, SO:2, SB:4, CS:0, HBP:4, SF:1, AVG:'.455', OBP:'.606', SLG:'.727', OPS:'1.333' },
+      season: { G:9, PA:33, AB:22, R:6, H:10, '2B':2, '3B':2, HR:0, RBI:11, BB:6, SO:2, SB:4, CS:0, HBP:4, SF:1, AVG:'.455', OBP:'.606', SLG:'.727', OPS:'1.333' },
       log: [
         { date:'05/05', opp:'Barracudas NLA',   spot:3, pos:'C', AB:4, R:0, H:2, '2B':0, HR:0, RBI:0, BB:0, SO:0, SB:0, AVG:'.455' },
         { date:'05/02', opp:'Luzern Eagles',    spot:3, pos:'C', AB:4, R:0, H:2, '2B':0, HR:0, RBI:2, BB:0, SO:1, SB:0, AVG:'.444' },
@@ -508,8 +512,10 @@ const PLAYER_EXTENDED_DATA = {
     },
     pitching: null,
     fielding: {
-      season: { G:7, IP:'47.0', PO:48, A:2, E:1, DP:0, PB:7, SBAtt:12, RF:'9.57', FPct:'.980' },
+      // StatDef EasyScore (both games): 9-53.2-52-4-1-0 → FPct=(52+4)/(57)=.982
+      season: { G:9, IP:'53.2', PO:52, A:4, E:1, DP:0, PB:7, SBAtt:12, RF:'9.57', FPct:'.982' },
       log: [
+        { date:'05/30', opp:'Sissach Frogs DH', pos:'C',  IP:'7.0', PO:4,  A:2, E:0, PB:0, SBAtt:0, FPct:'.982' },
         { date:'05/05', opp:'Barracudas NLA',   pos:'C', IP:'7.0', PO:3,  A:0, E:0, PB:2, SBAtt:2, FPct:'.980' },
         { date:'05/02', opp:'Luzern Eagles',    pos:'C', IP:'7.0', PO:2,  A:0, E:0, PB:1, SBAtt:1, FPct:'.979' },
         { date:'05/02', opp:'Luzern Eagles',    pos:'C', IP:'5.0', PO:5,  A:0, E:0, PB:0, SBAtt:2, FPct:'.978' },
@@ -541,7 +547,7 @@ const PLAYER_EXTENDED_DATA = {
   '34': { // Jhomar Lima
     fullName: 'Rosa Lima Jhomar Bienvenido', age: 32, bats: 'R', throws: 'R',
     batting: {
-      season: { G:7, PA:34, AB:27, R:9, H:15, '2B':2, '3B':0, HR:3, RBI:18, BB:6, SO:1, SB:1, CS:0, HBP:0, SF:1, AVG:'.556', OBP:'.618', SLG:'.963', OPS:'1.581' },
+      season: { G:9, PA:34, AB:27, R:9, H:15, '2B':2, '3B':0, HR:3, RBI:18, BB:6, SO:1, SB:1, CS:0, HBP:0, SF:1, AVG:'.556', OBP:'.618', SLG:'.963', OPS:'1.581' },
       log: [
         { date:'05/05', opp:'Barracudas NLA',   spot:4, pos:'3B',   AB:2, R:0, H:2, '2B':0, HR:0, RBI:1,  BB:1, SO:0, SB:0, AVG:'.556' },
         { date:'05/02', opp:'Luzern Eagles',    spot:4, pos:'3B',   AB:4, R:1, H:2, '2B':0, HR:0, RBI:2,  BB:1, SO:0, SB:0, AVG:'.520' },
@@ -553,8 +559,10 @@ const PLAYER_EXTENDED_DATA = {
     },
     pitching: null,
     fielding: {
-      season: { G:7, IP:'50.0', PO:4, A:4, E:2, DP:0, PB:1, SBAtt:2, RF:'1.44', FPct:'.800' },
+      // StatDef EasyScore (both games): 9-52.2-2-4-3-0 → FPct=(2+4)/(9)=.667
+      season: { G:9, IP:'52.2', PO:2, A:4, E:3, DP:0, PB:0, RF:'.86', FPct:'.667' },
       log: [
+        { date:'05/30', opp:'Sissach Frogs DH', pos:'3B',  IP:'7.0', PO:0, A:0, E:1, FPct:'.667' },
         { date:'05/05', opp:'Barracudas NLA',   pos:'3B',   IP:'6.0', PO:2, A:0, E:0, FPct:'.800' },
         { date:'05/02', opp:'Luzern Eagles',    pos:'3B',   IP:'7.0', PO:0, A:3, E:1, FPct:'.750' },
         { date:'05/02', opp:'Luzern Eagles',    pos:'3B/C', IP:'9.0', PO:2, A:0, E:0, FPct:'.750' },
@@ -568,7 +576,7 @@ const PLAYER_EXTENDED_DATA = {
   '77': { // Jhon Arregoitia
     fullName: 'Arregoitia Villarreal Jhon Manuel', age: 32, bats: 'R', throws: 'R',
     batting: {
-      season: { G:7, PA:35, AB:29, R:8, H:3, '2B':1, '3B':0, HR:0, RBI:6, BB:6, SO:7, SB:1, CS:0, HBP:0, SF:0, AVG:'.103', OBP:'.257', SLG:'.138', OPS:'.395' },
+      season: { G:9, PA:35, AB:29, R:8, H:3, '2B':1, '3B':0, HR:0, RBI:6, BB:6, SO:7, SB:1, CS:0, HBP:0, SF:0, AVG:'.103', OBP:'.257', SLG:'.138', OPS:'.395' },
       log: [
         { date:'05/05', opp:'Barracudas NLA',   spot:6, pos:'1B',    AB:4, R:0, H:0, '2B':0, HR:0, RBI:0, BB:0, SO:3, SB:0, AVG:'.103' },
         { date:'05/02', opp:'Luzern Eagles',    spot:6, pos:'1B',    AB:4, R:0, H:1, '2B':1, HR:0, RBI:2, BB:0, SO:1, SB:0, AVG:'.120' },
@@ -580,8 +588,10 @@ const PLAYER_EXTENDED_DATA = {
     },
     pitching: null,
     fielding: {
-      season: { G:7, IP:'50.0', PO:25, A:1, E:3, DP:0, PB:0, RF:'4.68', FPct:'.897' },
+      // StatDef EasyScore (both games): 9-52.2-33-1-1-1 → FPct=(33+1)/(35)=.971
+      season: { G:9, IP:'52.2', PO:33, A:1, E:1, DP:1, PB:0, RF:'5.82', FPct:'.971' },
       log: [
+        { date:'05/30', opp:'Sissach Frogs DH', pos:'1B',   IP:'7.0', PO:8, A:0, E:0, FPct:'.971' },
         { date:'05/05', opp:'Barracudas NLA',   pos:'1B',    IP:'7.0', PO:6, A:0, E:0, FPct:'.897' },
         { date:'05/02', opp:'Luzern Eagles',    pos:'1B',    IP:'6.0', PO:5, A:0, E:0, FPct:'.870' },
         { date:'05/02', opp:'Luzern Eagles',    pos:'1B/SS', IP:'9.0', PO:3, A:0, E:2, FPct:'.833' },
@@ -595,7 +605,7 @@ const PLAYER_EXTENDED_DATA = {
   '30': { // Carlos Moreno
     fullName: 'Moreno Carlos', age: 31, bats: 'R', throws: 'R',
     batting: {
-      season: { G:7, PA:34, AB:29, R:8, H:7, '2B':2, '3B':0, HR:0, RBI:6, BB:2, SO:7, SB:9, CS:0, HBP:3, SF:0, AVG:'.241', OBP:'.353', SLG:'.310', OPS:'.663' },
+      season: { G:9, PA:34, AB:29, R:8, H:7, '2B':2, '3B':0, HR:0, RBI:6, BB:2, SO:7, SB:9, CS:0, HBP:3, SF:0, AVG:'.241', OBP:'.353', SLG:'.310', OPS:'.663' },
       log: [
         { date:'05/05', opp:'Barracudas NLA',   spot:7, pos:'CF/3B', AB:3, R:1, H:1, '2B':1, HR:0, RBI:0, BB:0, SO:1, SB:1, AVG:'.241' },
         { date:'05/02', opp:'Luzern Eagles',    spot:7, pos:'CF',    AB:3, R:1, H:1, '2B':0, HR:0, RBI:0, BB:0, SO:2, SB:1, AVG:'.231' },
@@ -607,8 +617,10 @@ const PLAYER_EXTENDED_DATA = {
     },
     pitching: null,
     fielding: {
-      season: { G:7, IP:'51.0', PO:25, A:1, E:0, DP:0, PB:0, RF:'4.59', FPct:'1.000' },
+      // StatDef EasyScore (both games): 9-56.2-25-1-0-0 → FPct=1.000
+      season: { G:9, IP:'56.2', PO:25, A:1, E:0, DP:0, PB:0, RF:'4.06', FPct:'1.000' },
       log: [
+        { date:'05/30', opp:'Sissach Frogs DH', pos:'CF',   IP:'7.0', PO:0, A:0, E:0, FPct:'1.000' },
         { date:'05/05', opp:'Barracudas NLA',   pos:'3B/CF', IP:'7.0', PO:4, A:1, E:0, FPct:'1.000' },
         { date:'05/02', opp:'Luzern Eagles',    pos:'CF',    IP:'7.0', PO:5, A:0, E:0, FPct:'1.000' },
         { date:'05/02', opp:'Luzern Eagles',    pos:'CF',    IP:'9.0', PO:4, A:0, E:0, FPct:'1.000' },
@@ -724,19 +736,23 @@ const PLAYER_EXTENDED_DATA = {
     fullName: 'Elias Angel Marcial', bats: 'R', throws: 'R',
     batting: null,
     pitching: {
-      season: { G:3, GS:1, IP:'8.0', H:7, R:11, ER:7, BB:7, SO:12, HR:2, HBP:3, WP:1, BF:42, WL:'1-0', SV:0, OppAVG:'.233', WHIP:'1.75', ERA:'6.13' },
+      // ERA: 7 ER / 10.667 IP × 9 = 5.91 | IP delta from StatDef: 10.2 - 8.0 = 2.2 (G2) | 1 run unearned (Frogs 4 errors)
+      season: { G:4, GS:1, IP:'10.2', H:8, R:12, ER:7, BB:7, SO:12, HR:2, HBP:3, WP:1, BF:50, WL:'2-0', SV:0, OppAVG:'.200', WHIP:'1.41', ERA:'5.91' },
       log: [
+        { date:'05/30', opp:'Sissach Frogs G2', IP:'2.2', H:1, R:1, ER:0, BB:0, SO:0, HBP:0, WP:0, BF:8,  ERA:'5.91', note:'W · Mercy Rule · 1 unearned run (4 Frogs errors)' },
         { date:'05/05', opp:'Barracudas NLA',   IP:'1.1', H:2, R:4, ER:2, BB:2, SO:1,  HBP:0, WP:0, BF:8,  ERA:'6.13' },
         { date:'05/02', opp:'Luzern Eagles',    IP:'2.2', H:3, R:4, ER:2, BB:2, SO:2,  HBP:1, WP:1, BF:14, ERA:'5.25' },
         { date:'04/19', opp:'Therwil Flyers 2', IP:'4.0', H:2, R:3, ER:3, BB:3, SO:9,  HBP:2, WP:0, BF:19, ERA:'5.25' },
       ],
     },
     fielding: {
-      season: { G:3, IP:'8.0', PO:0, A:0, E:2, DP:0, PB:0, RF:'0.00', FPct:'.000' },
+      // StatDef from EasyScore G2 (ID 19272): 4-10.2-0-2-2-0
+      season: { G:4, IP:'10.2', PO:0, A:2, E:2, DP:0, PB:0, RF:'.00', FPct:'.500' },
       log: [
-        { date:'05/05', opp:'Barracudas NLA',   pos:'P', IP:'1.1', PO:0, A:0, E:2, FPct:'.000' },
-        { date:'05/02', opp:'Luzern Eagles',    pos:'P', IP:'2.2', PO:0, A:0, E:0, FPct:'—'   },
-        { date:'04/19', opp:'Therwil Flyers 2', pos:'P', IP:'4.0', PO:0, A:0, E:0, FPct:'—'   },
+        { date:'05/30', opp:'Sissach Frogs G2', pos:'P',  IP:'2.2', PO:0, A:2, E:0, FPct:'.500' },
+        { date:'05/05', opp:'Barracudas NLA',   pos:'P',  IP:'1.1', PO:0, A:0, E:2, FPct:'.000' },
+        { date:'05/02', opp:'Luzern Eagles',    pos:'P',  IP:'2.2', PO:0, A:0, E:0, FPct:'—'   },
+        { date:'04/19', opp:'Therwil Flyers 2', pos:'P',  IP:'4.0', PO:0, A:0, E:0, FPct:'—'   },
       ],
     },
   },
@@ -745,16 +761,20 @@ const PLAYER_EXTENDED_DATA = {
     fullName: 'Vasquez Nuñez Michael', age: 31, bats: 'R', throws: 'R',
     batting: null,
     pitching: {
-      season: { G:3, GS:3, IP:'12.0', H:11, R:11, ER:8, BB:11, SO:3, HR:0, HBP:3, WP:10, BF:61, WL:'0-1', SV:0, OppAVG:'.239', WHIP:'1.83', ERA:'4.67' },
+      // ERA: 8 ER / 16.0 IP × 9 = 4.50 | WHIP: (15H+11BB)/16 = 1.63 | W from May 30 G1 shutout
+      season: { G:4, GS:4, IP:'16.0', H:15, R:11, ER:8, BB:11, SO:3, HR:0, HBP:3, WP:10, BF:77, WL:'1-1', SV:0, OppAVG:'.224', WHIP:'1.63', ERA:'4.50' },
       log: [
+        { date:'05/30', opp:'Sissach Frogs G1', IP:'4.0', H:4, R:0, ER:0, BB:0, SO:0, HBP:0, WP:0, BF:16, ERA:'4.50', note:'Shutout W · Mercy Rule' },
         { date:'05/05', opp:'Barracudas NLA',   IP:'3.0', H:1, R:2,  ER:2, BB:4, SO:0, HBP:2, WP:1, BF:15, ERA:'4.67' },
         { date:'05/02', opp:'Luzern Eagles',    IP:'3.1', H:2, R:3,  ER:2, BB:5, SO:0, HBP:0, WP:2, BF:18, ERA:'4.67' },
         { date:'04/26', opp:'Lausanne Indians', IP:'5.2', H:8, R:6,  ER:4, BB:2, SO:3, HBP:1, WP:7, BF:28, ERA:'4.94' },
       ],
     },
     fielding: {
-      season: { G:3, IP:'12.0', PO:0, A:1, E:1, DP:0, PB:0, RF:'.75', FPct:'.500' },
+      // StatDef from EasyScore G1 (ID 19271): 4-16.0-1-1-1-0
+      season: { G:4, IP:'16.0', PO:1, A:1, E:1, DP:0, PB:0, RF:'.75', FPct:'.667' },
       log: [
+        { date:'05/30', opp:'Sissach Frogs G1', pos:'P', IP:'4.0', PO:1, A:0, E:0, FPct:'.667' },
         { date:'05/05', opp:'Barracudas NLA',   pos:'P', IP:'3.0', PO:0, A:0, E:0, FPct:'.500' },
         { date:'05/02', opp:'Luzern Eagles',    pos:'P', IP:'3.1', PO:0, A:1, E:0, FPct:'.500' },
         { date:'04/26', opp:'Lausanne Indians', pos:'P', IP:'5.2', PO:0, A:0, E:1, FPct:'.000' },
