@@ -101,16 +101,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // ── Toggle ────────────────────────────────────────────────────
 function updateToggleUI() {
-  const active = localStorage.getItem(SB_KEY) === 'true';
+  // null/unset = VISIBLE (default ON); only 'false' hides it
+  const hidden = localStorage.getItem(SB_KEY) === 'false';
   const statusEl = document.getElementById('sbToggleStatus');
-  statusEl.textContent = active ? 'VISIBLE' : 'HIDDEN';
-  statusEl.style.color = active ? 'var(--accent)' : 'rgba(255,255,255,0.3)';
-  document.getElementById('btnSbOn').style.opacity  = active ? '1' : '0.5';
-  document.getElementById('btnSbOff').style.opacity = active ? '0.5' : '1';
+  statusEl.textContent = hidden ? 'HIDDEN' : 'VISIBLE';
+  statusEl.style.color = hidden ? 'rgba(255,255,255,0.3)' : 'var(--accent)';
+  document.getElementById('btnSbOn').style.opacity  = hidden ? '0.5' : '1';
+  document.getElementById('btnSbOff').style.opacity = hidden ? '1' : '0.5';
 }
 
 function setScoreboard(active) {
-  localStorage.setItem(SB_KEY, active ? 'true' : 'false');
+  // ON = remove key (default) or set 'true'; OFF = set 'false' to force-hide
+  if (active) localStorage.removeItem(SB_KEY);
+  else localStorage.setItem(SB_KEY, 'false');
   updateToggleUI();
   const el = document.getElementById('sbStatus');
   el.style.color = active ? 'var(--accent)' : 'rgba(255,255,255,0.45)';

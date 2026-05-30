@@ -1992,8 +1992,8 @@ function initLiveScore() {
   let _pollTimer = null;
 
   async function load() {
-    // Respect admin toggle — default is OFF (hidden)
-    if (localStorage.getItem('barracudas_scoreboard_active') !== 'true') {
+    // Admin can force-hide the scoreboard; default is ON for all visitors
+    if (localStorage.getItem('barracudas_scoreboard_active') === 'false') {
       wrap.style.display = 'none';
       return;
     }
