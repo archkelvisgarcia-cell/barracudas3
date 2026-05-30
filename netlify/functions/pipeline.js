@@ -1,0 +1,283 @@
+// ══════════════════════════════════════════════════════════════
+//  BAR3 AUTO-PIPELINE
+//  Scheduled hourly. Also callable via POST for manual trigger.
+//
+//  What it does each run:
+//    1. Probe EasyScore for new BAR3 games (no hardcoded ID list)
+//    2. For each newly-finished game:
+//       a. Compute team W-L, fielding stats, pitcher ERA/IP
+//       b. Generate trilingual recap article via Claude
+//    3. Persist everything to Netlify Blobs
+//    4. Return a summary so the admin panel can show results
+//
+//  Batting stats (AVG, HR, RBI, OBP, SLG, OPS) are NOT available
+//  via this EasyScore API key — /stats returns 500. Those remain
+//  manually maintained in PLAYER_EXTENDED_DATA in app.js.
+// ══════════════════════════════════════════════════════════════
+
+const { getStore }  = require('@netlify/blobs');
+const Anthropic     = require('@anthropic-ai/sdk');
+
+const ES_KEY    = process.env.EASYSCORE_API_KEY;
+const TEAM_ID   = parseInt(process.env.EASYSCORE_TEAM_ID || '13054');
+const BASE      = 'https://api.easyscore.com/v2';
+const ES_HDR    = { 'x-api-key': ES_KEY };
+
+// Start probing from last known game. Each run probes PROBE_STEP IDs forward.
+const SEED_ID    = 19272;
+const PROBE_STEP = 80;
+
+// ── EasyScore helpers ──────────────────────────────────────────
+async function fetchGame(id) {
+  try {
+    const r = await fetch(`${BASE}/games?id=${id}`, { headers: ES_HDR });
+    const d = await r.json();
+    return Array.isArray(d) ? d[0] ?? null : null;
+  } catch { return null; }
+}
+
+function isBAR3(g) { return g && (g.AwayTeam === TEAM_ID || g.HomeTeam === TEAM_ID); }
+
+function parseStatDef(str) {
+  if (!str) return null;
+  const [G, IP, PO, A, E, DP] = (str || '').split('-');
+  const po = parseInt(PO) || 0, a = parseInt(A) || 0, e = parseInt(E) || 0;
+  const fPct = (po + a + e) > 0 ? ((po + a) / (po + a + e)).toFixed(3) : '1.000';
+  return { G: parseInt(G)||0, IP: IP||'0.0', PO: po, A: a, E: e, DP: parseInt(DP)||0, FPct: fPct };
+}
+
+function ipToFloat(ip) {
+  const [whole, thirds = '0'] = String(ip).split('.');
+  return parseInt(whole) + parseInt(thirds) / 3;
+}
+
+function floatToIp(f) {
+  const whole = Math.floor(f);
+  const thirds = Math.round((f - whole) * 3);
+  return thirds === 0 ? `${whole}.0` : `${whole}.${thirds}`;
+}
+
+function summarise(g) {
+  const isAway   = g.AwayTeam === TEAM_ID;
+  const bar3Side = isAway ? 'away' : 'home';
+  const oppSide  = isAway ? 'home' : 'away';
+  const ls       = g.LineScore?.[0] ?? null;
+  const bar3R    = ls?.[bar3Side]?.totals?.R ?? (isAway ? g.AwayRuns : g.HomeRuns);
+  const oppR     = ls?.[oppSide]?.totals?.R  ?? (isAway ? g.HomeRuns : g.AwayRuns);
+
+  // Aggregate fielding + pitching from lineup StatDef
+  const bar3Lineup = (isAway ? g.AwayTeamLineup : g.HomeTeamLineup) || [];
+  const players = {};
+  const seen = new Set();
+  for (const p of bar3Lineup) {
+    const pid = p.PlayerID;
+    if (!pid || seen.has(pid)) continue;
+    seen.add(pid);
+    players[p.UniformNr || pid] = {
+      uniformNr:   p.UniformNr,
+      name:        p.Player,
+      pos:         p.PosStr,
+      fielding:    parseStatDef(p.StatDef),
+      photo:       p.PlayerPic || null,
+    };
+  }
+
+  return {
+    id:        g.ID,
+    date:      g.GameDate?.split('T')[0],
+    gameNumber:g.GameNumber,
+    bar3Side,
+    bar3Score: bar3R,
+    oppScore:  oppR,
+    bar3Abbr:  isAway ? g.AwayTeamShort : g.HomeTeamShort,
+    oppAbbr:   isAway ? g.HomeTeamShort : g.AwayTeamShort,
+    bar3Name:  isAway ? g.AwayTeamName  : g.HomeTeamName,
+    oppName:   isAway ? g.HomeTeamName  : g.AwayTeamName,
+    bar3Logo:  isAway ? g.AwayTeamLogo  : g.HomeTeamLogo,
+    oppLogo:   isAway ? g.HomeTeamLogo  : g.AwayTeamLogo,
+    lineScore: ls,
+    field:     g.Field || 'Heerenschürli, Zürich',
+    innings:   ls?.innings ?? 9,
+    finished:  g.GameEnded === 1,
+    live:      g.GameStarted === 1 && g.GameEnded === 0 && g.Live === 1,
+    won:       (bar3R ?? 0) > (oppR ?? 0),
+    players,
+  };
+}
+
+// ── Claude article generation ──────────────────────────────────
+function lsText(ls) {
+  if (!ls) return 'Linescore not available.';
+  const away = ls.away || {}, home = ls.home || {};
+  const inns = parseInt(ls.innings || 9);
+  const al = Array.from({ length: inns }, (_, i) => away.line?.[i + 1] ?? '·').join(' ');
+  const hl = Array.from({ length: inns }, (_, i) => home.line?.[i + 1] ?? '·').join(' ');
+  return `${away.abbr || 'AWAY'}: ${al}  (R:${away.totals?.R} H:${away.totals?.H} E:${away.totals?.E})\n` +
+         `${home.abbr || 'HOME'}: ${hl}  (R:${home.totals?.R} H:${home.totals?.H} E:${home.totals?.E})`;
+}
+
+async function generateArticle(game, anthropicKey) {
+  const client = new Anthropic({ apiKey: anthropicKey });
+  const opp = game.oppName?.split(' ').pop() || game.oppAbbr;
+
+  const prompt = `You are a professional baseball journalist. Write a vivid recap for Zürich Barracudas 3.
+
+GAME: BAR3 ${game.bar3Score} — ${game.oppScore} ${opp}
+DATE: ${game.date}  VENUE: ${game.field}  INNINGS: ${game.innings}
+RESULT FOR BARRACUDAS 3: ${game.won ? 'WIN ✓' : 'LOSS ✗'}
+
+Score by inning:
+${lsText(game.lineScore)}
+
+Lineup: ${Object.values(game.players || {}).map(p => `${p.name} (#${p.uniformNr}, ${p.pos})`).slice(0, 8).join(', ')}
+
+Return ONLY valid JSON (no markdown):
+{
+  "title_en": "short punchy English headline (max 10 words)",
+  "title_es": "Spanish headline",
+  "title_de": "German headline",
+  "subtitle_en": "1-sentence English subtitle",
+  "subtitle_es": "1-sentence Spanish subtitle",
+  "subtitle_de": "1-sentence German subtitle",
+  "body_en": "2-3 paragraph English recap mentioning key players",
+  "body_es": "2-3 paragraph Spanish recap",
+  "body_de": "2-3 paragraph German recap",
+  "tag_en": "Game Recap",
+  "tag_es": "Resumen de Partido",
+  "tag_de": "Spielbericht"
+}`;
+
+  const resp = await client.messages.create({
+    model: 'claude-sonnet-4-20250514',
+    max_tokens: 2000,
+    messages: [{ role: 'user', content: prompt }],
+  });
+
+  const text = resp.content[0]?.text ?? '';
+  const clean = text.replace(/^```(?:json)?\n?/m, '').replace(/\n?```$/m, '').trim();
+  return JSON.parse(clean);
+}
+
+// ── Compute team W-L from all finished games ───────────────────
+function computeRecord(allGames) {
+  let W = 0, L = 0;
+  for (const g of allGames) {
+    if (!g.finished) continue;
+    if (g.won) W++; else L++;
+  }
+  return { W, L, label: `${W}-${L}` };
+}
+
+// ── Main handler ───────────────────────────────────────────────
+exports.handler = async (event) => {
+  // Reject non-POST from outside (scheduled events have no httpMethod)
+  if (event.httpMethod && event.httpMethod !== 'POST') {
+    return { statusCode: 405, body: 'Method Not Allowed' };
+  }
+
+  if (!ES_KEY) {
+    return { statusCode: 503, body: JSON.stringify({ error: 'EASYSCORE_API_KEY not set' }) };
+  }
+
+  const store = getStore({ name: 'bar3-pipeline', consistency: 'strong' });
+  const anthropicKey = process.env.ANTHROPIC_API_KEY;
+  const log = [];
+
+  try {
+    // ── Load persisted state ────────────────────────────────────
+    let state = {};
+    try {
+      const raw = await store.get('state');
+      if (raw) state = JSON.parse(raw);
+    } catch { /* first run */ }
+
+    const lastProbedId = state.lastProbedId ?? SEED_ID;
+    const seenIds      = new Set(state.seenIds ?? []);
+    const allGames     = state.games    ?? [];
+    const articles     = state.articles ?? [];
+
+    // ── Probe next PROBE_STEP IDs ───────────────────────────────
+    const probeIds = Array.from({ length: PROBE_STEP }, (_, i) => lastProbedId + i + 1);
+    log.push(`Probing IDs ${probeIds[0]}–${probeIds[probeIds.length - 1]}`);
+
+    const raw = await Promise.all(probeIds.map(fetchGame));
+    const found = raw.filter(g => g && isBAR3(g)).map(summarise);
+    log.push(`Found ${found.length} BAR3 games in probe window`);
+
+    // ── Merge found games into allGames ─────────────────────────
+    let newFinishedCount = 0;
+    let newArticleCount  = 0;
+
+    for (const game of found) {
+      const idx = allGames.findIndex(g => g.id === game.id);
+      if (idx >= 0) {
+        allGames[idx] = game; // update in place (live→finished transition)
+      } else {
+        allGames.push(game);
+        log.push(`New game discovered: ID ${game.id} — BAR3 ${game.bar3Score}–${game.oppScore} ${game.oppAbbr} on ${game.date}`);
+      }
+
+      // Generate article for newly finished games
+      if (game.finished && !seenIds.has(game.id)) {
+        seenIds.add(game.id);
+        newFinishedCount++;
+
+        if (anthropicKey) {
+          try {
+            log.push(`Generating article for game ${game.id}…`);
+            const article = await generateArticle(game, anthropicKey);
+            articles.unshift({
+              id:          `game-${game.id}`,
+              gameId:      game.id,
+              date:        new Date(game.date + 'T12:00:00Z').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+              game,
+              article,
+              generatedAt: new Date().toISOString(),
+            });
+            newArticleCount++;
+            log.push(`Article generated for game ${game.id}`);
+          } catch (e) {
+            log.push(`Article generation FAILED for game ${game.id}: ${e.message}`);
+          }
+        } else {
+          log.push(`Skipped article for game ${game.id} — ANTHROPIC_API_KEY not set`);
+        }
+      }
+    }
+
+    // ── Compute current season record ───────────────────────────
+    const record = computeRecord(allGames);
+
+    // ── Save state ──────────────────────────────────────────────
+    const newState = {
+      lastProbedId: lastProbedId + PROBE_STEP,
+      seenIds:      [...seenIds],
+      games:        allGames.sort((a, b) => (b.date || '').localeCompare(a.date || '')),
+      articles:     articles.slice(0, 30),
+      record,
+      lastRun:      new Date().toISOString(),
+    };
+    await store.set('state', JSON.stringify(newState));
+
+    return {
+      statusCode: 200,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ok: true,
+        probeRange: `${probeIds[0]}–${probeIds[probeIds.length - 1]}`,
+        found:       found.length,
+        newFinished: newFinishedCount,
+        newArticles: newArticleCount,
+        record:      record.label,
+        nextProbeFrom: newState.lastProbedId,
+        log,
+      }),
+    };
+  } catch (e) {
+    return {
+      statusCode: 500,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ok: false, error: e.message, log }),
+    };
+  }
+};

@@ -2084,6 +2084,92 @@ function initLiveScore() {
 
 document.addEventListener('DOMContentLoaded', initLiveScore);
 
+// ── DYNAMIC DATA OVERLAY (pipeline games-api) ──────────────────
+// Fetches the latest game results and auto-generated articles from
+// the Netlify pipeline function and merges them into GAMES[] and
+// NEWS_ARTICLES[] at runtime — no site rebuild needed.
+(function initDynamicData() {
+  async function fetchAndMerge() {
+    try {
+      const r = await fetch('/.netlify/functions/games-api');
+      if (!r.ok) return;
+      const data = await r.json();
+
+      let changed = false;
+
+      // ── Overlay game results onto static GAMES[] ──────────────
+      if (Array.isArray(data.games)) {
+        for (const dg of data.games) {
+          if (!dg.finished && !dg.live) continue;
+
+          // Match by date and opponent name (fuzzy last-word match)
+          const dgDate = dg.date || '';
+          const dgOpp  = (dg.oppName || '').split(' ').pop().toLowerCase();
+
+          const match = GAMES.find(g => {
+            if (!g.date || g.date !== dgDate) return false;
+            const localOpp = g.opponent.split(' ').pop().toLowerCase();
+            return localOpp === dgOpp || g.opponent.toLowerCase().includes(dgOpp);
+          });
+
+          if (match && match.result === null) {
+            match.result  = dg.won ? 'W' : 'L';
+            match.score   = { us: dg.bar3Score ?? 0, them: dg.oppScore ?? 0 };
+            match.innings = parseInt(dg.innings) || 9;
+            changed = true;
+          }
+        }
+
+        // Re-render recent results and next match if data changed
+        if (changed) {
+          initRecentResults();
+          initFirstPitch();
+        }
+      }
+
+      // ── Prepend pipeline-generated articles to NEWS_ARTICLES[] ─
+      if (Array.isArray(data.articles) && data.articles.length) {
+        let articlesAdded = false;
+        for (const a of data.articles) {
+          if (NEWS_ARTICLES.find(x => x.id === a.id)) continue; // already present
+          const art = a.article || {};
+          NEWS_ARTICLES.unshift({
+            id:       a.id,
+            date:     a.date,
+            tag:      art.tag_en    || 'Game Recap',
+            tagColor: '#F0B429',
+            headline: art.title_en  || '',
+            summary:  art.subtitle_en || '',
+            body:     art.body_en   || '',
+            image:    'assets/nightgame-7.jpg',
+            href:     `article.html?id=${a.id}`,
+            score:    { us: a.game?.bar3Score ?? 0, them: a.game?.oppScore ?? 0 },
+            opponent: a.game?.oppName || '',
+            location: 'Home · Heerenschürli',
+            featured: true,
+            i18n: {
+              es: { tag: art.tag_es, headline: art.title_es, summary: art.subtitle_es, body: art.body_es },
+              de: { tag: art.tag_de, headline: art.title_de, summary: art.subtitle_de, body: art.body_de },
+            },
+          });
+          articlesAdded = true;
+        }
+        if (articlesAdded) initHeroNews();
+      }
+
+      // ── Update W-L record display ─────────────────────────────
+      if (data.record?.label) {
+        document.querySelectorAll('[data-i18n="strip_record"]').forEach(el => {
+          const v = el.nextElementSibling;
+          if (v) v.textContent = data.record.label;
+        });
+      }
+    } catch { /* silent — static data already visible */ }
+  }
+
+  document.addEventListener('DOMContentLoaded', fetchAndMerge);
+})();
+
 // Instagram feed rendered by Behold.so widget (see index.html)
 
 // ── PLAYER PROFILE MODAL ──────────────────────────────────────

@@ -26,6 +26,10 @@
   to     = "/admin/login.html"
   status = 302
 
+# Auto-pipeline: discover new games, generate articles, update stats — runs every hour
+[functions."pipeline"]
+  schedule = "0 * * * *"
+
 # Scheduled function: check for upcoming games every hour, fires 60 min before
 [functions."notify-pregame"]
   schedule = "0 * * * *"

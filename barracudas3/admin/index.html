@@ -79,6 +79,35 @@
     </div>
   </div>
 
+  <!-- Auto-pipeline card -->
+  <div class="adm-card">
+    <div style="display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap;">
+      <div style="flex:1;min-width:200px;">
+        <div class="adm-title" style="margin-bottom:6px;">⚙️ Auto-Pipeline</div>
+        <p style="font-family:var(--mono);font-size:11px;color:var(--ink-mute);line-height:1.6;margin:0 0 12px;">
+          Runs hourly. Discovers new EasyScore games, generates Claude recap articles,
+          updates W-L record and fielding/pitching stats. Batting stats (AVG/HR/RBI)
+          require manual entry — not available via this EasyScore API key.
+        </p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+          <button class="btn btn-primary" style="font-size:12px;" onclick="runPipeline()">
+            <span id="pipelineBtnLabel">▶ Run Now</span>
+          </button>
+          <span class="adm-status" id="pipelineStatus" style="font-size:11px;"></span>
+        </div>
+        <div id="pipelineLog" style="margin-top:12px;font-family:var(--mono);font-size:10px;color:var(--ink-faint);line-height:1.7;max-height:120px;overflow-y:auto;display:none;"></div>
+      </div>
+      <div style="flex-shrink:0;text-align:right;">
+        <div class="adm-label">Last run</div>
+        <div id="pipelineLastRun" style="font-family:var(--mono);font-size:11px;color:var(--ink-mute);">—</div>
+        <div class="adm-label" style="margin-top:10px;">Next probe from ID</div>
+        <div id="pipelineNextId" style="font-family:var(--mono);font-size:11px;color:var(--ink-mute);">—</div>
+        <div class="adm-label" style="margin-top:10px;">Auto-articles stored</div>
+        <div id="pipelineArticleCount" style="font-family:var(--mono);font-size:11px;color:var(--accent);">—</div>
+      </div>
+    </div>
+  </div>
+
   <!-- Scoreboard card -->
   <div class="adm-card" style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
     <div style="flex:1;min-width:200px;">
@@ -167,6 +196,59 @@ document.addEventListener('DOMContentLoaded', loadAll);
   el.textContent = active ? 'VISIBLE' : 'HIDDEN';
   el.style.color  = active ? 'var(--accent)' : 'rgba(255,255,255,0.3)';
 })();
+
+// ── Pipeline controls ──────────────────────────────────────────
+async function runPipeline() {
+  const btn    = document.getElementById('pipelineBtnLabel');
+  const status = document.getElementById('pipelineStatus');
+  const logEl  = document.getElementById('pipelineLog');
+  btn.textContent = 'Running…';
+  status.style.color = 'var(--ink-mute)';
+  status.textContent = '';
+  logEl.style.display = 'none';
+
+  try {
+    const r = await fetch('/.netlify/functions/pipeline', { method: 'POST' });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || `HTTP ${r.status}`);
+
+    status.style.color = '#00c864';
+    status.textContent = `✓ Done · ${d.found} games · ${d.newFinished} new · ${d.newArticles} articles · Record ${d.record}`;
+
+    // Update pipeline info panel
+    document.getElementById('pipelineNextId').textContent  = d.nextProbeFrom ?? '—';
+    document.getElementById('pipelineLastRun').textContent = new Date().toLocaleTimeString();
+
+    if (d.log?.length) {
+      logEl.innerHTML = d.log.map(l => `<div>${l}</div>`).join('');
+      logEl.style.display = 'block';
+    }
+
+    // Refresh pipeline status
+    loadPipelineStatus();
+  } catch (e) {
+    status.style.color = '#ff5555';
+    status.textContent = '✗ ' + e.message;
+  } finally {
+    btn.textContent = '▶ Run Now';
+  }
+}
+
+async function loadPipelineStatus() {
+  try {
+    const r = await fetch('/.netlify/functions/games-api');
+    if (!r.ok) return;
+    const d = await r.json();
+    const lastRunEl = document.getElementById('pipelineLastRun');
+    const artEl     = document.getElementById('pipelineArticleCount');
+    if (d.lastRun && lastRunEl) {
+      lastRunEl.textContent = new Date(d.lastRun).toLocaleString();
+    }
+    if (artEl) artEl.textContent = (d.articles?.length ?? 0) + ' articles';
+  } catch { /* silent */ }
+}
+
+document.addEventListener('DOMContentLoaded', loadPipelineStatus);
 
 // ── Tabs ──────────────────────────────────────────────────────
 function switchTab(id) {
