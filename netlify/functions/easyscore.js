@@ -9,8 +9,10 @@ const HEADERS  = { 'x-api-key': API_KEY };
 
 // All confirmed BAR3 game IDs (updated as season progresses).
 // Probe IDs above MAX_KNOWN to catch new scheduled games automatically.
+// May 2: 19245,19246 · May 5: 19251,19252,19255,19256,19259,19264,19271,19272
+// May 30: IDs unknown — probing ahead to discover them
 const KNOWN_IDS = [19245, 19246, 19251, 19252, 19255, 19256, 19259, 19264, 19271, 19272];
-const PROBE_AHEAD = 15; // how many IDs above the max known to probe
+const PROBE_AHEAD = 60; // increased from 15 — covers ~3 weeks of global ID increments
 
 async function fetchGame(id) {
   try {
