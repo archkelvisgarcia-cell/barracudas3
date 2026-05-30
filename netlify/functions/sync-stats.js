@@ -12,6 +12,7 @@ const BASE_URL = 'https://api.easyscore.com/v2';
 const TEAM_ID  = parseInt(process.env.EASYSCORE_TEAM_ID || '13054');
 const HEADERS  = { 'x-api-key': API_KEY };
 
+// Apr 19: 19245 · Apr 26: 19246 · May 2: 19251,19252 · May 5: 19255,19256,19259,19264,19271 · May 30 G2: 19272
 const KNOWN_IDS = [19245, 19246, 19251, 19252, 19255, 19256, 19259, 19264, 19271, 19272];
 
 async function fetchGame(id) {

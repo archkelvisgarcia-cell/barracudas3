@@ -45,7 +45,8 @@ const GAMES = [
     date: '2026-05-30', time: '14:00', label: 'MAY 30 · 2026 · G2',
     opponent: 'Sissach Frogs', opponentLogo: 'assets/teams/frogs.png',
     location: 'Home · Heerenschürli', league: 'Gruppe A',
-    result: null, score: null, innings: null, notes: '',
+    result: 'W', score: { us: 21, them: 1 }, innings: 3,
+    notes: 'Mercy Rule · A.Elias P', recapUrl: 'article.html?id=frogs-g2-may30',
   },
   {
     date: '2026-06-02', time: '18:30', label: 'JUN 2 · 2026',
@@ -87,6 +88,31 @@ const HERO_BG_IMAGES = [
 
 // ── NEWS ARTICLES — single source of truth ──────────────────
 const NEWS_ARTICLES = [
+  {
+    id: 'frogs-g2-may30',
+    date: 'May 30, 2026', tag: 'Game Recap', tagColor: '#F0B429',
+    headline: 'Barracudas 3 Crush Sissach Frogs 21–1 in Three-Inning Mercy Rule Demolition',
+    summary: 'Angel Elias dominated on the mound as BAR3 erupted for 21 runs and 17 hits at Heerenschürli, running the Frogs off the field in mercy-rule fashion.',
+    body: 'Zürich Barracudas 3 delivered a statement performance at Heerenschürli on May 30, steamrolling the Sissach Frogs 21–1 in just three innings to claim a dominant mercy-rule victory. The offense came alive from the opening frame and never relented, piling up 21 runs on 17 hits while the Frogs committed four errors that compounded the damage. Angel Elias was locked in from the first pitch, holding Sissach to a single run on one lone hit across his three innings of work. Behind the plate, José Medina commanded the game masterfully, while Elvis Del Valle ran the bases with urgency throughout and Jhomar Rosa Lima anchored the left side of the infield at third base. Juan Malchans was steady at second, Jhon Arregoitia held down first, and Carlos Moreno provided sure-handed coverage in center field. The win pushes BAR3\'s Gruppe A record to 4–4 on the season. The squad now turns its attention to June 7, when the Challengers 2 visit Heerenschürli for a crucial home doubleheader.',
+    image: 'assets/nightgame-7.jpg',
+    href: 'article.html?id=frogs-g2-may30',
+    score: { us: 21, them: 1 }, opponent: 'Sissach Frogs', location: 'Home · Heerenschürli',
+    notes: '3 innings · Mercy Rule · A.Elias P',
+    i18n: {
+      es: {
+        tag: 'Resumen de Partido',
+        headline: 'Barracudas 3 aplastan a Sissach Frogs 21-1 en demolición de tres entradas por la regla de misericordia',
+        summary: 'Angel Elias dominó en el montículo mientras BAR3 explotó con 21 carreras y 17 hits en el Heerenschürli, sacando a los Frogs del campo por la regla de misericordia.',
+        body: 'Los Zürich Barracudas 3 ofrecieron una actuación demoledora en el Heerenschürli el 30 de mayo, arrasando a los Sissach Frogs 21-1 en apenas tres entradas para llevarse una victoria por la regla de misericordia. La ofensiva cobró vida desde el primer inning y no dio respiro, acumulando 21 carreras en 17 hits mientras los Frogs cometían cuatro errores que multiplicaron el daño. Angel Elias fue dominante desde el primer lanzamiento, limitando a Sissach a una sola carrera y un hit en sus tres entradas de trabajo. Detrás del plato, José Medina comandó el partido magistralmente, mientras Elvis Del Valle corrió las bases con agresividad y Jhomar Rosa Lima ancló el lado izquierdo del cuadro interior en tercera base. Juan Malchans fue constante en la segunda, Jhon Arregoitia dominó la primera, y Carlos Moreno brindó cobertura segura en el jardín central. La victoria eleva el récord de BAR3 en Gruppe A a 4-4 en la temporada. El equipo ahora enfoca su atención al 7 de junio, cuando los Challengers 2 visiten el Heerenschürli para un importante doble juego de local.',
+      },
+      de: {
+        tag: 'Spielbericht',
+        headline: 'Barracudas 3 zerstören Sissach Frogs 21-1 in Drei-Inning-Mercy-Rule-Demolierung',
+        summary: 'Angel Elias dominierte auf dem Mound, während BAR3 im Heerenschürli 21 Läufe und 17 Hits erzielte und die Frogs per Mercy Rule vom Feld fegte.',
+        body: 'Die Zürich Barracudas 3 zeigten am 30. Mai im Heerenschürli eine vernichtende Leistung und walzten die Sissach Frogs 21-1 in nur drei Innings nieder, um sich einen dominanten Mercy-Rule-Sieg zu sichern. Die Offensive erwachte vom ersten Inning an und ließ nie nach — 21 Läufe auf 17 Hits, während die Frogs vier Fehler begingen, die den Schaden weiter vergrößerten. Angel Elias war von Anfang an auf dem Mound fokussiert und beschränkte Sissach auf einen einzigen Lauf und einen Hit in seinen drei Innings. Hinter dem Schläger kommandierte José Medina das Spiel meisterhaft, während Elvis Del Valle aggressiv auf den Bases lief und Jhomar Rosa Lima die linke Seite des Infields an der dritten Base verankerte. Juan Malchans war konstant an der zweiten, Jhon Arregoitia hielt die erste Base, und Carlos Moreno sorgte für sichere Abdeckung im Center Field. Der Sieg verbessert BAR3s Gruppe-A-Bilanz auf 4-4 in der Saison. Das Team richtet nun seinen Blick auf den 7. Juni, wenn die Challengers 2 für ein wichtiges Heim-Doppelspiel ins Heerenschürli kommen.',
+      },
+    },
+  },
   {
     id: 'pink-game-may5',
     date: 'May 5, 2026', tag: '🩷 Pink Game', tagColor: '#FF3EA5',
