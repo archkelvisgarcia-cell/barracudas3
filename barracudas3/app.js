@@ -422,8 +422,8 @@ const PLAYER_EXTENDED_DATA = {
       ],
     },
     fielding: {
-      // StatDef EasyScore (both games): 9-53.0-12-20-4-1 → FPct=(12+20)/(36)=.889
-      season: { G:9, IP:'53.0', PO:12, A:20, E:4, DP:1, PB:0, RF:'5.43', FPct:'.889' },
+      // StatDef EasyScore (fresh fetch G2): 9-53.1-12-20-4-1 → FPct=(12+20)/(36)=.889
+      season: { G:9, IP:'53.1', PO:12, A:20, E:4, DP:1, PB:0, RF:'5.41', FPct:'.889' },
       log: [
         { date:'05/30', opp:'Sissach Frogs DH', pos:'SS',     IP:'7.0', PO:0, A:2, E:0, FPct:'.889' },
         { date:'05/05', opp:'Barracudas NLA',   pos:'SS',     IP:'7.0', PO:1, A:4, E:0, FPct:'.882' },
@@ -457,8 +457,8 @@ const PLAYER_EXTENDED_DATA = {
       ],
     },
     fielding: {
-      // StatDef EasyScore (both games): 6-24.2-8-3-2-1 → FPct=(8+3)/(13)=.846
-      season: { G:6, IP:'24.2', PO:8, A:3, E:2, DP:1, PB:0, RF:'2.59', FPct:'.846' },
+      // StatDef EasyScore (fresh fetch G2): 6-25.0-8-3-2-1 → FPct=(8+3)/(13)=.846
+      season: { G:6, IP:'25.0', PO:8, A:3, E:2, DP:1, PB:0, RF:'2.52', FPct:'.846' },
       log: [
         { date:'05/30', opp:'Sissach Frogs DH', pos:'2B',   IP:'7.0', PO:3, A:2, E:0, FPct:'.846' },
         { date:'05/05', opp:'Barracudas NLA',   pos:'DH/P',  IP:'0.2', PO:0, A:0, E:0, FPct:'.750' },
@@ -512,8 +512,8 @@ const PLAYER_EXTENDED_DATA = {
     },
     pitching: null,
     fielding: {
-      // StatDef EasyScore (both games): 9-53.2-52-4-1-0 → FPct=(52+4)/(57)=.982
-      season: { G:9, IP:'53.2', PO:52, A:4, E:1, DP:0, PB:7, SBAtt:12, RF:'9.57', FPct:'.982' },
+      // StatDef EasyScore (fresh fetch G2): 9-54.0-53-4-1-0 → FPct=(53+4)/(58)=.983
+      season: { G:9, IP:'54.0', PO:53, A:4, E:1, DP:0, PB:7, SBAtt:12, RF:'9.50', FPct:'.983' },
       log: [
         { date:'05/30', opp:'Sissach Frogs DH', pos:'C',  IP:'7.0', PO:4,  A:2, E:0, PB:0, SBAtt:0, FPct:'.982' },
         { date:'05/05', opp:'Barracudas NLA',   pos:'C', IP:'7.0', PO:3,  A:0, E:0, PB:2, SBAtt:2, FPct:'.980' },
@@ -559,8 +559,8 @@ const PLAYER_EXTENDED_DATA = {
     },
     pitching: null,
     fielding: {
-      // StatDef EasyScore (both games): 9-52.2-2-4-3-0 → FPct=(2+4)/(9)=.667
-      season: { G:9, IP:'52.2', PO:2, A:4, E:3, DP:0, PB:0, RF:'.86', FPct:'.667' },
+      // StatDef EasyScore (fresh fetch G2): 9-53.0-2-4-3-0 → FPct=(2+4)/(9)=.667
+      season: { G:9, IP:'53.0', PO:2, A:4, E:3, DP:0, PB:0, RF:'.85', FPct:'.667' },
       log: [
         { date:'05/30', opp:'Sissach Frogs DH', pos:'3B',  IP:'7.0', PO:0, A:0, E:1, FPct:'.667' },
         { date:'05/05', opp:'Barracudas NLA',   pos:'3B',   IP:'6.0', PO:2, A:0, E:0, FPct:'.800' },
@@ -588,8 +588,8 @@ const PLAYER_EXTENDED_DATA = {
     },
     pitching: null,
     fielding: {
-      // StatDef EasyScore (both games): 9-52.2-33-1-1-1 → FPct=(33+1)/(35)=.971
-      season: { G:9, IP:'52.2', PO:33, A:1, E:1, DP:1, PB:0, RF:'5.82', FPct:'.971' },
+      // StatDef EasyScore (fresh fetch G2): 9-53.0-33-1-1-1 → FPct=(33+1)/(35)=.971
+      season: { G:9, IP:'53.0', PO:33, A:1, E:1, DP:1, PB:0, RF:'5.77', FPct:'.971' },
       log: [
         { date:'05/30', opp:'Sissach Frogs DH', pos:'1B',   IP:'7.0', PO:8, A:0, E:0, FPct:'.971' },
         { date:'05/05', opp:'Barracudas NLA',   pos:'1B',    IP:'7.0', PO:6, A:0, E:0, FPct:'.897' },
@@ -617,8 +617,8 @@ const PLAYER_EXTENDED_DATA = {
     },
     pitching: null,
     fielding: {
-      // StatDef EasyScore (both games): 9-56.2-25-1-0-0 → FPct=1.000
-      season: { G:9, IP:'56.2', PO:25, A:1, E:0, DP:0, PB:0, RF:'4.06', FPct:'1.000' },
+      // StatDef EasyScore (fresh fetch G2): 9-57.0-25-1-0-0 → FPct=1.000
+      season: { G:9, IP:'57.0', PO:25, A:1, E:0, DP:0, PB:0, RF:'4.10', FPct:'1.000' },
       log: [
         { date:'05/30', opp:'Sissach Frogs DH', pos:'CF',   IP:'7.0', PO:0, A:0, E:0, FPct:'1.000' },
         { date:'05/05', opp:'Barracudas NLA',   pos:'3B/CF', IP:'7.0', PO:4, A:1, E:0, FPct:'1.000' },
@@ -736,20 +736,21 @@ const PLAYER_EXTENDED_DATA = {
     fullName: 'Elias Angel Marcial', bats: 'R', throws: 'R',
     batting: null,
     pitching: {
-      // ERA: 7 ER / 10.667 IP × 9 = 5.91 | IP delta from StatDef: 10.2 - 8.0 = 2.2 (G2) | 1 run unearned (Frogs 4 errors)
-      season: { G:4, GS:1, IP:'10.2', H:8, R:12, ER:7, BB:7, SO:12, HR:2, HBP:3, WP:1, BF:50, WL:'2-0', SV:0, OppAVG:'.200', WHIP:'1.41', ERA:'5.91' },
+      // ERA: 7 ER / 11.0 IP × 9 = 5.73 | EasyScore StatDef confirmed IP=11.0 (was 10.2 — corrected)
+      // G2 May 30: 3.0 IP (not 2.2 as previously estimated) | 1 unearned run, Frogs 4 errors
+      season: { G:4, GS:1, IP:'11.0', H:8, R:12, ER:7, BB:7, SO:12, HR:2, HBP:3, WP:1, BF:53, WL:'2-0', SV:0, OppAVG:'.195', WHIP:'1.36', ERA:'5.73' },
       log: [
-        { date:'05/30', opp:'Sissach Frogs G2', IP:'2.2', H:1, R:1, ER:0, BB:0, SO:0, HBP:0, WP:0, BF:8,  ERA:'5.91', note:'W · Mercy Rule · 1 unearned run (4 Frogs errors)' },
+        { date:'05/30', opp:'Sissach Frogs G2', IP:'3.0', H:1, R:1, ER:0, BB:0, SO:0, HBP:0, WP:0, BF:10, ERA:'5.73', note:'W · Mercy Rule · 1 unearned run (4 Frogs errors)' },
         { date:'05/05', opp:'Barracudas NLA',   IP:'1.1', H:2, R:4, ER:2, BB:2, SO:1,  HBP:0, WP:0, BF:8,  ERA:'6.13' },
         { date:'05/02', opp:'Luzern Eagles',    IP:'2.2', H:3, R:4, ER:2, BB:2, SO:2,  HBP:1, WP:1, BF:14, ERA:'5.25' },
         { date:'04/19', opp:'Therwil Flyers 2', IP:'4.0', H:2, R:3, ER:3, BB:3, SO:9,  HBP:2, WP:0, BF:19, ERA:'5.25' },
       ],
     },
     fielding: {
-      // StatDef from EasyScore G2 (ID 19272): 4-10.2-0-2-2-0
-      season: { G:4, IP:'10.2', PO:0, A:2, E:2, DP:0, PB:0, RF:'.00', FPct:'.500' },
+      // StatDef from EasyScore G2 (fresh fetch): 4-11.0-0-2-2-0 (corrected from 10.2)
+      season: { G:4, IP:'11.0', PO:0, A:2, E:2, DP:0, PB:0, RF:'.00', FPct:'.500' },
       log: [
-        { date:'05/30', opp:'Sissach Frogs G2', pos:'P',  IP:'2.2', PO:0, A:2, E:0, FPct:'.500' },
+        { date:'05/30', opp:'Sissach Frogs G2', pos:'P',  IP:'3.0', PO:0, A:2, E:0, FPct:'.500' },
         { date:'05/05', opp:'Barracudas NLA',   pos:'P',  IP:'1.1', PO:0, A:0, E:2, FPct:'.000' },
         { date:'05/02', opp:'Luzern Eagles',    pos:'P',  IP:'2.2', PO:0, A:0, E:0, FPct:'—'   },
         { date:'04/19', opp:'Therwil Flyers 2', pos:'P',  IP:'4.0', PO:0, A:0, E:0, FPct:'—'   },
