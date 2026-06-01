@@ -2036,6 +2036,37 @@ function initLiveScore() {
     </div>`;
   }
 
+  // ── Hero live card ───────────────────────────────────────────
+  function updateHeroLiveBadge(liveGame, nextGame) {
+    const card = document.getElementById('heroLiveCard');
+    if (!card) return;
+
+    if (liveGame) {
+      const b3 = liveGame.bar3Score ?? 0;
+      const op = liveGame.oppScore  ?? 0;
+      const score = `${liveGame.bar3Abbr || 'BAR3'} ${b3} — ${op} ${liveGame.oppAbbr || 'OPP'}`;
+      card.style.display = 'block';
+      card.innerHTML = `<a class="hero-live-btn hero-live-btn--live" href="#liveScoreWrap"
+          onclick="event.preventDefault();document.getElementById('liveScoreWrap').scrollIntoView({behavior:'smooth'})">
+          <span class="hero-live-dot"></span>
+          <span class="hero-live-label">LIVE NOW</span>
+          <span class="hero-live-score">${score}</span>
+        </a>`;
+    } else if (nextGame) {
+      const dt  = new Date(`${nextGame.date}T${nextGame.time || '00:00'}:00`);
+      const ds  = dt.toLocaleDateString('en-US', { month:'short', day:'numeric' }).toUpperCase();
+      const ts  = `${String(dt.getHours()).padStart(2,'0')}:${String(dt.getMinutes()).padStart(2,'0')}`;
+      const opp = nextGame.opponent.split(' ').pop().toUpperCase();
+      card.style.display = 'block';
+      card.innerHTML = `<a class="hero-live-btn hero-live-btn--next" href="schedule.html">
+          <span class="hero-live-label">NEXT UP</span>
+          <span class="hero-live-score">${opp} · ${ds} · ${ts}</span>
+        </a>`;
+    } else {
+      card.style.display = 'none';
+    }
+  }
+
   let _pollTimer = null;
 
   async function load() {
@@ -2049,24 +2080,44 @@ function initLiveScore() {
       const res  = await fetch('/.netlify/functions/easyscore');
       if (!res.ok) throw new Error();
       const data = await res.json();
-      const game = data.live || data.recent || null;
 
-      if (!game) { wrap.style.display = 'none'; return; }
-
-      wrap.style.display = 'block';
-      wrap.innerHTML = renderBroadcast(game);
-
-      if (game.live) {
-        window._barLiveNotif?.(game);
+      // ── State: LIVE ──────────────────────────────────────────
+      if (data.live) {
+        wrap.style.display = 'block';
+        wrap.innerHTML = renderBroadcast(data.live);
+        updateHeroLiveBadge(data.live, null);
+        window._barLiveNotif?.(data.live);
         if (_pollTimer) clearTimeout(_pollTimer);
-        _pollTimer = setTimeout(load, 30000);
-      } else {
-        if (_pollTimer) clearTimeout(_pollTimer);
+        _pollTimer = setTimeout(load, 30000); // poll every 30s while live
+        return;
       }
+
+      // ── State: FINAL (recent finished game) ──────────────────
+      if (data.recent) {
+        wrap.style.display = 'block';
+        wrap.innerHTML = renderBroadcast(data.recent);
+        // Hero shows next upcoming game, not a finished game
+        const next = GAMES.find(g => g.result === null && new Date(`${g.date}T${g.time || '23:59'}:00`) > new Date());
+        updateHeroLiveBadge(null, next ?? null);
+        if (_pollTimer) clearTimeout(_pollTimer);
+        return;
+      }
+
+      // ── State: no data ───────────────────────────────────────
+      wrap.style.display = 'none';
+      const next = GAMES.find(g => g.result === null && new Date(`${g.date}T${g.time || '23:59'}:00`) > new Date());
+      updateHeroLiveBadge(null, next ?? null);
+      if (_pollTimer) clearTimeout(_pollTimer);
+
     } catch {
       // Fallback: manual score from localStorage (admin/score.html)
       const s = JSON.parse(localStorage.getItem('bar3-live') || '{}');
-      if (!s.us && s.us !== 0) { wrap.style.display = 'none'; return; }
+      if (!s.us && s.us !== 0) {
+        wrap.style.display = 'none';
+        const next = GAMES.find(g => g.result === null && new Date(`${g.date}T${g.time || '23:59'}:00`) > new Date());
+        updateHeroLiveBadge(null, next ?? null);
+        return;
+      }
       wrap.style.display = 'block';
       wrap.innerHTML = `<div class="sb-wrap"><div class="sb-row1">
         <div class="sb-teams">
@@ -2076,8 +2127,12 @@ function initLiveScore() {
         </div>
         <div class="sb-right"><span class="sb-pill sb-pill--live">🔴 LIVE${s.inning ? ' · ' + s.inning : ''}</span></div>
       </div></div>`;
+      updateHeroLiveBadge({ bar3Abbr:'BAR3', bar3Score:s.us, oppAbbr:'OPP', oppScore:s.them }, null);
     }
   }
+
+  // Expose so initDynamicData can trigger a refresh when it detects a live game
+  window._refreshScoreboard = load;
 
   load();
 }
@@ -2163,6 +2218,13 @@ document.addEventListener('DOMContentLoaded', initLiveScore);
           const v = el.nextElementSibling;
           if (v) v.textContent = data.record.label;
         });
+      }
+
+      // ── If games-api reports a live game, wake up the scoreboard ─
+      // initLiveScore uses easyscore.js for direct real-time data;
+      // games-api detecting `live` just tells us to refresh faster.
+      if (data.live && typeof window._refreshScoreboard === 'function') {
+        window._refreshScoreboard();
       }
     } catch { /* silent — static data already visible */ }
   }
