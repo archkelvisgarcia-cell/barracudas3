@@ -9,12 +9,6 @@
 [functions]
   node_bundler = "esbuild"
 
-# Redirect /api/* → Netlify functions
-[[redirects]]
-  from   = "/.netlify/functions/*"
-  to     = "/.netlify/functions/:splat"
-  status = 200
-
 # Redirect /admin and /admin/ to login
 [[redirects]]
   from   = "/admin"
