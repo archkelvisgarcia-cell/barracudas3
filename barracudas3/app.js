@@ -1584,6 +1584,70 @@ function standingLogo(t) {
   return '<div class="sl-circle sl-circle--text">' + ini + '</div>';
 }
 
+// ── HERO MINI-STANDINGS ───────────────────────────────────────
+function initHeroStandings() {
+  const wrap = document.getElementById('heroMiniStandings');
+  if (!wrap) return;
+
+  // Current standings — same source as results.html static table
+  const FALLBACK = [
+    { rank:1, abbr:'EAG',  name:'Luzern Eagles',       w:5, l:0, pct:'1.000', isUs:false },
+    { rank:2, abbr:'BAR',  name:'Zürich Barracudas',    w:5, l:0, pct:'1.000', isUs:false },
+    { rank:3, abbr:'IND',  name:'Lausanne Indians',      w:4, l:2, pct:'.667',  isUs:false },
+    { rank:4, abbr:'BAR3', name:'Barracudas 3',          w:5, l:4, pct:'.556',  isUs:true  },
+    { rank:5, abbr:'CHA2', name:'Challengers 2',         w:2, l:3, pct:'.400',  isUs:false },
+    { rank:6, abbr:'FLY2', name:'Zürich Flyers 2',       w:0, l:6, pct:'.000',  isUs:false },
+    { rank:7, abbr:'FRO',  name:'Sissach Frogs',         w:0, l:8, pct:'.000',  isUs:false },
+  ];
+
+  function hmsLogo(abbr) {
+    const src = STANDINGS_LOGOS[abbr] || '';
+    if (src) return `<div class="hms-logo" style="background-image:url('${src}')" title="${abbr}"></div>`;
+    return `<div class="hms-logo hms-logo--ini">${(abbr || '?')[0]}</div>`;
+  }
+
+  function render(rows) {
+    wrap.innerHTML = `<div class="hms-wrap">
+      <div class="hms-head">
+        <span class="hms-title">Gruppe A 2026</span>
+        <a class="hms-link" href="results.html#standings">Full Standings ↗</a>
+      </div>
+      ${rows.map(t => `
+        <div class="hms-row${t.isUs ? ' hms-us' : ''}">
+          <span class="hms-rank">${t.rank}</span>
+          ${hmsLogo(t.abbr)}
+          <span class="hms-name">${t.isUs ? 'BAR3' : t.name.split(' ').pop()}</span>
+          <span class="hms-stat">${t.w}</span>
+          <span class="hms-stat">${t.l}</span>
+          <span class="hms-pct">${t.pct}</span>
+        </div>`).join('')}
+    </div>`;
+  }
+
+  // Render immediately from hardcoded data
+  render(FALLBACK);
+
+  // Silently upgrade from API
+  fetch('/.netlify/functions/standings')
+    .then(r => r.ok ? r.json() : null)
+    .then(data => {
+      if (!data?.standings?.length) return;
+      const rows = data.standings.map((t, i) => ({
+        rank: i + 1,
+        abbr: t.abbr,
+        name: t.name,
+        w: t.W ?? t.w ?? 0,
+        l: t.L ?? t.l ?? 0,
+        pct: t.PCT ?? t.pct ?? '.000',
+        isUs: t.isUs ?? t.abbr === 'BAR3',
+      }));
+      render(rows);
+    })
+    .catch(() => { /* keep FALLBACK */ });
+}
+
+document.addEventListener('DOMContentLoaded', initHeroStandings);
+
 function initStandings() {
   const wrap = document.getElementById('standingsTable');
   if (!wrap) return;
