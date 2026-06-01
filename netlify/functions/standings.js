@@ -78,15 +78,25 @@ exports.handler = async () => {
     }
   }
 
-  // Sort: wins desc → losses asc → name asc
-  const sorted = Object.values(teams)
+  // Sort: PCT desc → wins desc → name asc
+  const rawSorted = Object.values(teams)
     .filter(t => t.gp > 0)
     .sort((a, b) => {
+      const pctA = a.gp ? a.w / a.gp : 0;
+      const pctB = b.gp ? b.w / b.gp : 0;
+      if (pctB !== pctA) return pctB - pctA;
       if (b.w !== a.w) return b.w - a.w;
-      if (a.l !== b.l) return a.l - b.l;
       return a.abbr.localeCompare(b.abbr);
-    })
-    .map((t, i) => ({
+    });
+
+  const leader = rawSorted[0];
+  const sorted = rawSorted.map((t, i) => {
+    const gbRaw = i === 0
+      ? null
+      : ((leader.w - t.w) + (t.l - leader.l)) / 2;
+    const gb = gbRaw === null ? '—'
+      : (gbRaw % 1 === 0 ? String(gbRaw) : gbRaw.toFixed(1));
+    return {
       rank: i + 1,
       abbr: t.abbr,
       name: t.name,
@@ -95,8 +105,10 @@ exports.handler = async () => {
       w:    t.w,
       l:    t.l,
       pct:  t.gp ? (t.w / t.gp).toFixed(3).replace(/^0/, '') : '.000',
+      gb,
       isUs: t.abbr === 'BAR3',
-    }));
+    };
+  });
 
   return {
     statusCode: 200,

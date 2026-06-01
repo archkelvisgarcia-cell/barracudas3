@@ -1641,15 +1641,15 @@ function initHeroStandings() {
   const wrap = document.getElementById('heroMiniStandings');
   if (!wrap) return;
 
-  // Current standings — same source as results.html static table
+  // Current standings — June 1, 2026 (synced with results.html static table)
   const FALLBACK = [
-    { rank:1, abbr:'EAG',  name:'Luzern Eagles',       w:5, l:0, pct:'1.000', isUs:false },
-    { rank:2, abbr:'BAR',  name:'Zürich Barracudas',    w:5, l:0, pct:'1.000', isUs:false },
-    { rank:3, abbr:'IND',  name:'Lausanne Indians',      w:4, l:2, pct:'.667',  isUs:false },
-    { rank:4, abbr:'BAR3', name:'Barracudas 3',          w:5, l:4, pct:'.556',  isUs:true  },
-    { rank:5, abbr:'CHA2', name:'Challengers 2',         w:2, l:3, pct:'.400',  isUs:false },
-    { rank:6, abbr:'FLY2', name:'Zürich Flyers 2',       w:0, l:6, pct:'.000',  isUs:false },
-    { rank:7, abbr:'FRO',  name:'Sissach Frogs',         w:0, l:8, pct:'.000',  isUs:false },
+    { rank:1, abbr:'BAR',  name:'Zürich Barracudas',    w:10, l:1, pct:'.909', gb:'—',   isUs:false },
+    { rank:2, abbr:'EAG',  name:'Luzern Eagles',        w:7,  l:1, pct:'.875', gb:'1.5', isUs:false },
+    { rank:3, abbr:'BAR3', name:'Barracudas 3',          w:5,  l:4, pct:'.556', gb:'4',   isUs:true  },
+    { rank:4, abbr:'IND',  name:'Lausanne Indians',      w:5,  l:5, pct:'.500', gb:'4.5', isUs:false },
+    { rank:5, abbr:'CHA2', name:'Challengers 2',         w:4,  l:6, pct:'.400', gb:'5.5', isUs:false },
+    { rank:6, abbr:'FRO',  name:'Sissach Frogs',         w:0,  l:6, pct:'.000', gb:'7.5', isUs:false },
+    { rank:7, abbr:'FLY2', name:'Zürich Flyers 2',       w:0,  l:8, pct:'.000', gb:'8.5', isUs:false },
   ];
 
   function hmsLogo(abbr) {
@@ -1736,6 +1736,7 @@ function initStandings() {
             <th>${wL}</th>
             <th>${lL}</th>
             <th>${pctL}</th>
+            <th>GB</th>
           </tr></thead>
           <tbody>
             ${rows.map(t => `
@@ -1754,6 +1755,7 @@ function initStandings() {
                 <td class="standings-w">${t.w}</td>
                 <td>${t.l}</td>
                 <td class="standings-pct">${t.pct}</td>
+                <td class="standings-gb">${t.gb ?? '—'}</td>
               </tr>`).join('')}
           </tbody>
         </table>
