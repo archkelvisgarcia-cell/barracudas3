@@ -1247,91 +1247,127 @@ function initRecentResults() {
 
 document.addEventListener('DOMContentLoaded', initRecentResults);
 
-// ── PLAYER STATS STRIP ────────────────────────────────────────
+// ── CALCULATE TOP PERFORMERS ───────────────────────────────────
+// Reads PLAYER_EXTENDED_DATA — zero hardcoded values.
+// Returns { batter, pitcher, fielder } or null for each category.
+//
+// TOP BATTER  = (OPS×40) + (AVG×30) + (RBI×1.5) + (HR×3)   min AB ≥ 10
+// TOP PITCHER = (1/ERA×30) + (SO×1.5) + (W×5) + (1/WHIP×20) min IP ≥ 4.0
+// GUANTE ORO  = (FPct×50) + (A×0.5) + (PO×0.3)             min IP ≥ 45.0 (strict)
+function calculateTopPerformers() {
+  const EXT = typeof PLAYER_EXTENDED_DATA !== 'undefined' ? PLAYER_EXTENDED_DATA : {};
+
+  const fv = v => parseFloat(v) || 0;
+
+  function ipFloat(ip) {
+    const s = String(ip || '0').split('.');
+    return parseInt(s[0] || 0) + parseInt(s[1] || 0) / 3;
+  }
+
+  function wins(wl) {
+    return parseInt(String(wl || '0-0').split('-')[0]) || 0;
+  }
+
+  let topBatter   = null, scoreBat  = -Infinity;
+  let topPitcher  = null, scorePit  = -Infinity;
+  let topFielder  = null, scoreFld  = -Infinity;
+
+  for (const [num, ext] of Object.entries(EXT)) {
+    const reg  = typeof PLAYER_REGISTRY !== 'undefined' ? PLAYER_REGISTRY.get(num) : null;
+    const meta = {
+      num,
+      shortName: reg
+        ? `${reg.first.split(' ')[0][0]}. ${reg.last}`
+        : (ext.fullName?.split(' ').pop() || `#${num}`),
+      img: reg?.img || null,
+    };
+
+    // ── TOP BATTER ──
+    const bat = ext.batting?.season;
+    if (bat && fv(bat.AB) >= 10) {
+      const s = fv(bat.OPS)*40 + fv(bat.AVG)*30 + fv(bat.RBI)*1.5 + fv(bat.HR)*3;
+      if (s > scoreBat) {
+        scoreBat = s;
+        topBatter = { ...meta, statLine: `${bat.AVG} AVG · ${fv(bat.RBI)} RBI · ${bat.OPS} OPS` };
+      }
+    }
+
+    // ── TOP PITCHER ──
+    const pit = ext.pitching?.season;
+    if (pit && ipFloat(pit.IP) >= 4.0) {
+      const era  = fv(pit.ERA);
+      const whip = fv(pit.WHIP);
+      const s = (era  > 0 ? (1/era)  * 30 : 60) +   // ERA 0.00 → cap at 60
+                (whip > 0 ? (1/whip) * 20 : 40) +   // WHIP 0.00 → cap at 40
+                fv(pit.SO) * 1.5 +
+                wins(pit.WL) * 5;
+      if (s > scorePit) {
+        scorePit = s;
+        const wl  = String(pit.WL || '0-0');
+        const wStr = `${wins(pit.WL)}-${wl.split('-')[1] || 0}`;
+        topPitcher = { ...meta, statLine: `${pit.ERA} ERA · ${wStr} W-L · ${fv(pit.SO)} K` };
+      }
+    }
+
+    // ── GUANTE DE ORO — strict IP ≥ 45.0 ──
+    const fld = ext.fielding?.season;
+    if (fld && ipFloat(fld.IP) >= 45.0) {
+      const s = fv(fld.FPct)*50 + fv(fld.A)*0.5 + fv(fld.PO)*0.3;
+      if (s > scoreFld) {
+        scoreFld = s;
+        topFielder = { ...meta, statLine: `${fld.FPct} FPct · ${fv(fld.PO)} PO · ${fv(fld.A)} A` };
+      }
+    }
+  }
+
+  return { batter: topBatter, pitcher: topPitcher, fielder: topFielder };
+}
+
+// ── PLAYER STATS STRIP ─────────────────────────────────────────
 function initPlayerStats() {
   const container = document.getElementById('playerStrip');
-  const dataEl    = document.getElementById('roster-data');
-  if (!container || !dataEl) return;
+  if (!container) return;
 
-  let roster;
-  try { roster = JSON.parse(dataEl.textContent); } catch (e) { return; }
+  const { batter, pitcher, fielder } = calculateTopPerformers();
 
-  // Top Batter — highest AVG among batters/both
-  const batters = roster.filter(p => {
-    const avg = p.stats.find(s => s.k === 'AVG');
-    return avg && (p.type === 'batter' || p.type === 'both');
-  });
-  const topBatter = batters.reduce((best, p) => {
-    const avg = parseFloat(p.stats.find(s => s.k === 'AVG').v);
-    const bestAvg = parseFloat(best.stats.find(s => s.k === 'AVG').v);
-    return avg > bestAvg ? p : best;
-  }, batters[0]);
-
-  // Top Pitcher — lowest ERA among players who have ERA stat
-  const pitchers = roster.filter(p => p.stats.find(s => s.k === 'ERA'));
-  const topPitcher = pitchers.reduce((best, p) => {
-    const era = parseFloat(p.stats.find(s => s.k === 'ERA').v);
-    const bestEra = parseFloat(best.stats.find(s => s.k === 'ERA').v);
-    return era < bestEra ? p : best;
-  }, pitchers[0]);
-
-  // Hitting Streak — highest streak among non-pitchers
-  const streakers = roster.filter(p => p.type !== 'pitcher' && (p.streak || 0) > 0);
-  const streakLeader = streakers.length
-    ? streakers.reduce((best, p) => (p.streak || 0) > (best.streak || 0) ? p : best, streakers[0])
-    : null;
-
-  function shortName(p) {
-    return `${p.first.split(' ')[0][0]}. ${p.last}`;
-  }
-
-  function initials(p) {
-    return `${p.first[0]}${p.last[0]}`.toUpperCase();
-  }
-
-  function card(labelKey, player, stat) {
-    if (!player) return `<div class="ps-card"><div class="ps-info"><span class="ps-label" data-i18n="${labelKey}"></span><span class="ps-name">—</span></div></div>`;
-    const img = player.img || '';
-    const photoContent = img
-      ? `<img src="${img}" alt="${shortName(player)}" onerror="this.parentNode.textContent='${initials(player)}'" />`
-      : initials(player);
-    return `
-      <div class="ps-card" data-num="${player.num}">
-        <div class="ps-photo">${photoContent}</div>
+  function card(i18nKey, fbLabel, player) {
+    const label = _t(i18nKey) || fbLabel;
+    if (!player) {
+      return `<div class="ps-card">
         <div class="ps-info">
-          <span class="ps-label" data-i18n="${labelKey}"></span>
-          <div class="ps-player-row">
-            <span class="ps-num">#${player.num}</span>
-            <span class="ps-name">${shortName(player)}</span>
-          </div>
-          <span class="ps-stat">${stat}</span>
+          <span class="ps-label">${label}</span>
+          <span class="ps-name" style="font-size:10px;opacity:.45;line-height:1.4;">Sin candidato —<br/>datos insuficientes</span>
         </div>
+      </div>`;
+    }
+    const ini = (player.shortName || '??').replace(/[^A-Za-zÀ-ÿ]/g, '').substring(0, 2).toUpperCase();
+    const photo = player.img
+      ? `<img src="${player.img}" alt="${player.shortName}" onerror="this.parentNode.textContent='${ini}'" />`
+      : ini;
+    return `<div class="ps-card" data-num="${player.num}">
+      <div class="ps-photo">${photo}</div>
+      <div class="ps-info">
+        <span class="ps-label">${label}</span>
+        <div class="ps-player-row">
+          <span class="ps-num">#${player.num}</span>
+          <span class="ps-name">${player.shortName}</span>
+        </div>
+        <span class="ps-stat">${player.statLine}</span>
       </div>
-    `;
+    </div>`;
   }
-
-  const avgStat = topBatter
-    ? topBatter.stats.find(s => s.k === 'AVG').v + ' AVG · ' + (topBatter.stats.find(s => s.k === 'RBI')?.v || '—') + ' RBI'
-    : '—';
-  const eraStat = topPitcher
-    ? topPitcher.stats.find(s => s.k === 'ERA').v + ' ERA · ' + (topPitcher.stats.find(s => s.k === 'W-L')?.v || '') + ' W-L'
-    : '—';
-  const streakStat = streakLeader
-    ? `${streakLeader.streak} ${_t('stat_streak_suffix')}`
-    : '—';
 
   container.innerHTML = [
-    card('stat_top_batter',    topBatter,    avgStat),
-    card('stat_top_pitcher',   topPitcher,   eraStat),
-    card('stat_hitting_streak', streakLeader, streakStat),
+    card('stat_top_batter',   'Top Batter 2026',    batter),
+    card('stat_top_pitcher',  'Top Pitcher 2026',   pitcher),
+    card('stat_golden_glove', 'Guante de Oro 2026', fielder),
   ].join('');
 
-  // Click on any player stat card opens the modal
   container.querySelectorAll('.ps-card[data-num]').forEach(el => {
     el.style.cursor = 'pointer';
     el.addEventListener('click', () => {
-      const player = PLAYER_REGISTRY.get(el.dataset.num);
-      if (player) openPlayerModal(player);
+      const p = typeof PLAYER_REGISTRY !== 'undefined' ? PLAYER_REGISTRY.get(el.dataset.num) : null;
+      if (p) openPlayerModal(p);
     });
   });
 }
@@ -2314,11 +2350,12 @@ document.addEventListener('DOMContentLoaded', initLiveScore);
       }
 
       // ── If games-api reports a live game, wake up the scoreboard ─
-      // initLiveScore uses easyscore.js for direct real-time data;
-      // games-api detecting `live` just tells us to refresh faster.
       if (data.live && typeof window._refreshScoreboard === 'function') {
         window._refreshScoreboard();
       }
+
+      // ── Re-render Top Performers after any data update ─────────
+      initPlayerStats();
     } catch { /* silent — static data already visible */ }
   }
 
