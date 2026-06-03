@@ -90,6 +90,31 @@ const HERO_BG_IMAGES = [
 // ── NEWS ARTICLES — single source of truth ──────────────────
 const NEWS_ARTICLES = [
   {
+    id: 'nla-june2',
+    date: 'June 2, 2026', tag: 'Game Recap', tagColor: '#F0B429',
+    headline: 'NLA Barracudas Overpower BAR3 17–3 in Lopsided Inter-Club Clash',
+    summary: 'Zürich\'s NLA squad handed BAR3 a humbling 17–3 defeat at Heerenschürli on Tuesday evening, exposing the gap between the club\'s top and development squads.',
+    body: 'It was a tough Tuesday night at Heerenschürli as the Zürich Barracudas NLA — the club\'s top squad — came calling and left no room for doubt, handing BAR3 a 17–3 defeat in a NL Baseball Gruppe A contest. From the opening inning, the NLA\'s superior pitching and disciplined approach at the plate kept BAR3\'s bats cold. The offense managed just three runs on the night, with Jhomar Rosa Lima (1-for-2, 1 RBI), Yohandris Pedroso (1-for-2, 1 RBI), and Jhon Arregoitia (1-for-2, 1 RBI) providing the only bright spots in an otherwise difficult evening. Carlos Moreno added a base hit but the lineup couldn\'t string together the big innings BAR3 has shown in recent weeks. Elvis Del Valle, Juan Malchans, and José Medina were kept off the hit column entirely. On the mound, BAR3 struggled to contain the NLA\'s potent lineup as the visitors piled up 17 runs across seven innings. Despite the loss, the outing serves as a valuable benchmark — the NLA represents the highest level within the club, and facing them sharpens the competitive edge BAR3 needs heading into the second half of the Gruppe A season. BAR3 returns to action June 7 at home against Challengers 2 in a crucial doubleheader with playoff positioning on the line.',
+    image: 'assets/nightgame-1.jpg',
+    href: 'article.html?id=nla-june2',
+    score: { us: 3, them: 17 }, opponent: 'Barracudas NLA', location: 'Home · Heerenschürli',
+    notes: '7 innings · NL vs NLA inter-club',
+    i18n: {
+      es: {
+        tag: 'Resumen de Partido',
+        headline: 'Los Barracudas NLA dominan a BAR3 17-3 en el duelo interclub',
+        summary: 'El equipo NLA de Zürich infligió una derrota 17-3 a BAR3 en Heerenschürli el martes por la noche, evidenciando la diferencia entre el primer equipo del club y el equipo de desarrollo.',
+        body: 'Fue una difícil noche del martes en Heerenschürli cuando los Zürich Barracudas NLA — el primer equipo del club — se hicieron presentes y no dejaron margen de duda, venciendo a BAR3 por 17-3 en un partido de la NL Baseball Gruppe A. Desde el primer inning, el superior pitcheo del NLA y su disciplina al bate mantuvieron los bates de BAR3 fríos. La ofensiva solo pudo conectar tres carreras en la noche, con Jhomar Rosa Lima (1-de-2, 1 impulsada), Yohandris Pedroso (1-de-2, 1 impulsada) y Jhon Arregoitia (1-de-2, 1 impulsada) como los únicos puntos brillantes. Carlos Moreno agregó un hit, pero el lineup no pudo encadenar las grandes entradas que BAR3 ha demostrado en semanas recientes. Elvis Del Valle, Juan Malchans y José Medina no pudieron conectar hits. A pesar de la derrota, el partido sirve como un valioso punto de referencia — el NLA representa el nivel más alto dentro del club, y enfrentarlos aguza el filo competitivo que BAR3 necesita de cara a la segunda mitad de la temporada Gruppe A. BAR3 vuelve a la acción el 7 de junio en casa contra los Challengers 2.',
+      },
+      de: {
+        tag: 'Spielbericht',
+        headline: 'NLA Barracudas bezwingen BAR3 17:3 im klaren Clubduell',
+        summary: 'Zürichs NLA-Mannschaft erteilte BAR3 am Dienstagabend im Heerenschürli eine deutliche 17:3-Niederlage und demonstrierte den Klassenunterschied zwischen den beiden Clubteams.',
+        body: 'Es war ein harter Dienstagabend im Heerenschürli, als die Zürich Barracudas NLA — die erste Mannschaft des Clubs — zu Besuch kamen und keinen Zweifel aufkommen ließen: 17:3-Sieg im NL Baseball Gruppe A-Spiel. Von Beginn an hielten das überlegene Pitching und die disziplinierte Offensivarbeit des NLA-Teams die Schlagmänner von BAR3 kalt. Die Offensive erzielte auf der Nacht nur drei Läufe, wobei Jhomar Rosa Lima (1-für-2, 1 RBI), Yohandris Pedroso (1-für-2, 1 RBI) und Jhon Arregoitia (1-für-2, 1 RBI) die einzigen Lichtblicke blieben. Carlos Moreno fügte einen Hit hinzu, aber das Lineup konnte keine großen Innings aneinanderreihen. Elvis Del Valle, Juan Malchans und José Medina blieben ohne Hit. Trotz der Niederlage dient das Spiel als wertvoller Maßstab — das NLA-Team repräsentiert das höchste Niveau innerhalb des Clubs. BAR3 kehrt am 7. Juni gegen die Challengers 2 in einer entscheidenden Heimspielbegegnung zurück.',
+      },
+    },
+  },
+  {
     id: 'frogs-doubleheader-may30',
     date: 'May 30, 2026', tag: '🧹 Doubleheader Sweep', tagColor: '#F0B429',
     headline: 'Barracudas 3 Sweep Frogs with Back-to-Back Mercy Rule Annihilations — 48 Runs, 7 Innings',
