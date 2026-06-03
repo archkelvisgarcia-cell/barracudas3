@@ -95,6 +95,87 @@ async function fetchGame(id) {
   } catch { return null; }
 }
 
+// ── Swiss Baseball scraper ─────────────────────────────────────
+// swiss-baseball.ch uses EasyScore Firestore as backend.
+// It shows ALL Swiss league games including inter-club (NLA vs NL)
+// that don't appear in the EasyScore REST API with LeagueID 10144.
+async function scrapeSwissBaseball(page) {
+  console.log('  Scraping swiss-baseball.ch for BAR3 games...');
+  await page.goto('https://www.swiss-baseball.ch', { waitUntil: 'domcontentloaded', timeout: 25000 });
+  await page.waitForTimeout(5000);
+
+  // Click "VERGANGENE SPIELE" to show past games
+  await page.evaluate(() => {
+    const el = Array.from(document.querySelectorAll('*'))
+      .find(e => e.textContent.trim() === 'VERGANGENE SPIELE' && e.children.length === 0);
+    if (el) el.click();
+  });
+  await page.waitForTimeout(4000);
+
+  const text = await page.evaluate(() => document.body.innerText || '');
+  const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 3);
+
+  const games = [];
+  let currentDate = '';
+
+  // Parse format: "time\tleague\tgame_nr\taway\thome\tscore\t...\tlocation"
+  for (const line of lines) {
+    // Detect date headers like "Sa. 30.05.2026" or "Di. 02.06.2026"
+    const dateMatch = line.match(/^(?:Mo|Di|Mi|Do|Fr|Sa|So)\.\s+(\d{2}\.\d{2}\.\d{4})$/);
+    if (dateMatch) {
+      const [d, m, y] = dateMatch[1].split('.');
+      currentDate = `${y}-${m}-${d}`; // YYYY-MM-DD
+      continue;
+    }
+
+    // Detect game lines — tab-separated
+    const parts = line.split('\t').map(p => p.trim());
+    if (parts.length < 5) continue;
+    const [time, league, nr, away, home, score] = parts;
+    if (!time.match(/^\d{2}:\d{2}$/) || !league || !away || !home) continue;
+
+    // Only care about games with Barracudas 3
+    if (!away.includes('Barracudas 3') && !home.includes('Barracudas 3')) continue;
+
+    // Only process games with a score (completed)
+    if (!score || !score.match(/^\d+-\d+/)) continue;
+
+    const [awayR, homeR] = score.split('-').map(n => parseInt(n) || 0);
+    const bar3IsAway = away.includes('Barracudas 3');
+    const bar3R = bar3IsAway ? awayR : homeR;
+    const oppR  = bar3IsAway ? homeR : awayR;
+    const oppName = bar3IsAway ? home : away;
+
+    games.push({
+      date: currentDate,
+      time,
+      league,
+      gameNr: nr,
+      bar3R,
+      oppR,
+      oppName: oppName.trim(),
+      won: bar3R > oppR,
+      source: 'swiss-baseball',
+    });
+  }
+
+  // Also extract live standings from the TABELLEN section
+  const standings = [];
+  let inGruppeA = false;
+  for (const line of lines) {
+    if (line.includes('NL Baseball Gruppe A')) { inGruppeA = true; continue; }
+    if (line.includes('NL Baseball Gruppe B') || line.includes('NLA ')) { inGruppeA = false; continue; }
+    if (!inGruppeA) continue;
+    const m = line.match(/^(\d+)\.\s+(\w+)\s+(\d+)\s+(\d+)\s+(\d+)\s+([\d.]+)\s+(\S+)/);
+    if (m) {
+      standings.push({ rank:parseInt(m[1]), abbr:m[2], g:parseInt(m[3]), w:parseInt(m[4]), l:parseInt(m[5]), pct:m[6], gb:m[7] });
+    }
+  }
+
+  console.log(`  Swiss Baseball: found ${games.length} BAR3 completed games, ${standings.length} standings rows`);
+  return { games, standings };
+}
+
 // ── 1. GAME DISCOVERY via EasyScore REST API ───────────────────
 async function findNewGames(state) {
   if (FORCE_ID) {
@@ -141,7 +222,6 @@ async function scrapeBoxscore(page, gameId) {
     const allTables = Array.from(document.querySelectorAll('table'));
 
     for (const table of allTables) {
-      const text = table.textContent || '';
       const headers = Array.from(table.querySelectorAll('th')).map(th => th.textContent.trim());
 
       // Detect batting stats table (has AB, R, H columns)
@@ -354,12 +434,6 @@ function updatePlayerExtendedData(uniformNum, season, pitching, newLogEntries) {
 
   // Update batting season stats for the player
   if (season) {
-    // Pattern: find the player's batting.season line
-    const seasonLine = new RegExp(
-      `('${uniformNum}'[\\s\\S]*?batting:[\\s\\S]*?)(season:\\s*\\{[^}]+\\})`,
-      // Match up to ~1000 chars to avoid crossing into next player
-    );
-
     // Build new season string (single-line format matching existing style)
     const s = season;
     const newSeasonStr = `season: { G:${s.G}, PA:${s.PA}, AB:${s.AB}, R:${s.R}, H:${s.H}, '2B':${s['2B']}, '3B':${s['3B']}, HR:${s.HR}, RBI:${s.RBI}, BB:${s.BB}, SO:${s.SO}, SB:${s.SB}, CS:${s.CS}, HBP:${s.HBP}, SF:${s.SF}, AVG:'${s.AVG}', OBP:'${s.OBP}', SLG:'${s.SLG}', OPS:'${s.OPS}' }`;
@@ -549,6 +623,63 @@ function updateStandingsBar3Row(W, L) {
   }
 }
 
+// ── 9. FILE UPDATE: full standings from Swiss Baseball ────────
+function updateStandingsFromSwiss(standings) {
+  // Build a map abbr → row data
+  const map = {};
+  standings.forEach(s => { map[s.abbr] = s; });
+  if (!Object.keys(map).length) return;
+
+  // Update BAR3 row in FALLBACK (app.js)
+  const bar3 = map['BAR3'];
+  if (bar3) {
+    let app = fs.readFileSync(APP_JS, 'utf8');
+    const fbPat = /(\{ rank:\d+, abbr:'BAR3'[^}]+w:)\d+(, l:)\d+(, pct:')[^']+('[^}]+gb:')[^']+(')/;
+    if (fbPat.test(app)) {
+      app = app.replace(fbPat, `$1${bar3.w}$2${bar3.l}$3${bar3.pct}$4${bar3.gb}$5`);
+      fs.writeFileSync(APP_JS, app);
+      console.log(`  ✓ Swiss Baseball standings applied to FALLBACK`);
+    }
+  }
+
+  // Update full standings table in results.html
+  let src = fs.readFileSync(RESULTS_HTML, 'utf8');
+  const LOGOS_MAP = {
+    BAR: 'assets/teams/BARLOGO.png', EAG: 'assets/teams/eagles.png',
+    BAR3: 'assets/logo.png', IND: 'assets/teams/indians.png',
+    CHA2: 'assets/teams/challengers.png', FLY2: 'assets/teams/flyers.png',
+    FRO: 'assets/teams/frogs.png',
+  };
+  const NAMES_MAP = {
+    BAR: 'Zürich Barracudas', EAG: 'Luzern Eagles',
+    BAR3: 'Zürich Barracudas 3', IND: 'Lausanne Indians',
+    CHA2: 'Challengers 2', FLY2: 'Zürich Flyers 2', FRO: 'Sissach Frogs',
+  };
+
+  const newTbody = standings.map(s => {
+    const logo = LOGOS_MAP[s.abbr] ? `<div class="sl-circle" style="background-image:url('${LOGOS_MAP[s.abbr]}')" title="${NAMES_MAP[s.abbr]||s.abbr}"></div>` : '';
+    const name = NAMES_MAP[s.abbr] || s.abbr;
+    const isUs = s.abbr === 'BAR3' ? ' class="standings-us"' : '';
+    return `          <tr${isUs}>
+            <td>${s.rank}</td>
+            <td><div class="standings-team-cell">${logo}<div><div class="standings-team-name">${name}</div><div class="standings-abbr">${s.abbr}</div></div></div></td>
+            <td>${s.g}</td><td class="standings-w">${s.w}</td><td>${s.l}</td><td class="standings-pct">${s.pct}</td><td class="standings-gb">${s.gb}</td>
+          </tr>`;
+  }).join('\n');
+
+  const tbodyPat = /(<tbody>)([\s\S]*?)(<\/tbody>)/;
+  if (tbodyPat.test(src)) {
+    src = src.replace(tbodyPat, `$1\n${newTbody}\n        $3`);
+    // Update meta date
+    src = src.replace(
+      /(standings-meta[^>]*>Updated:)[^<]+(<)/,
+      `$1 ${new Date().toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' })}$2`
+    );
+    fs.writeFileSync(RESULTS_HTML, src);
+    console.log(`  ✓ Full standings table updated from Swiss Baseball data`);
+  }
+}
+
 // ── MAIN ───────────────────────────────────────────────────────
 async function main() {
   console.log('━━ BAR3 Playwright Scraper ━━━━━━━━━━━━━━━━━━━━');
@@ -564,17 +695,9 @@ async function main() {
   const state = loadState();
   console.log(`State: lastProbedId=${state.lastProbedId} | record=${state.record.W}-${state.record.L}`);
 
-  // ── Step 1: Find new finished games ─────────────────────────
+  // ── Step 1: Find new finished games (EasyScore API) ─────────
   const newGames = await findNewGames(state);
-  console.log(`\nNew finished BAR3 games: ${newGames.length}`);
-
-  if (newGames.length === 0 && !FORCE_ID) {
-    state.lastProbedId += PROBE_STEP;
-    saveState(state);
-    setOutput('updated', 'false');
-    setOutput('summary', '✅ No new games today');
-    return;
-  }
+  console.log(`\nNew finished BAR3 games (EasyScore): ${newGames.length}`);
 
   // ── Step 2: Launch Playwright browser ───────────────────────
   console.log('\nLaunching Chromium...');
@@ -585,6 +708,39 @@ async function main() {
     locale: 'en-US',
   });
   const page = await context.newPage();
+
+  // ── Step 2b: Swiss Baseball scrape — catches inter-club games ─
+  // (NLA vs BAR3 and other games not in EasyScore Gruppe A API)
+  let swissData = { games: [], standings: [] };
+  try { swissData = await scrapeSwissBaseball(page); }
+  catch(e) { console.log(`  ⚠ Swiss Baseball scrape failed: ${e.message}`); }
+
+  // Filter Swiss Baseball games not yet in processedIds / GAMES[]
+  const swissNewGames = swissData.games.filter(sg => {
+    // Must have a result and not be already registered
+    const alreadyInEasyscore = newGames.some(eg =>
+      (eg.GameDate || '').startsWith(sg.date)
+    );
+    // Check if GAMES[] already has a result for this date (simple check)
+    const src = fs.readFileSync(APP_JS, 'utf8');
+    const hasResult = new RegExp(`date:\\s*'${sg.date}'[^}]*?result:\\s*'[WL]'`).test(src);
+    return !alreadyInEasyscore && !hasResult;
+  });
+  console.log(`Swiss Baseball: ${swissData.games.length} BAR3 games found, ${swissNewGames.length} new unregistered`);
+
+  // Update full standings from Swiss Baseball if available (more accurate than our FALLBACK)
+  if (swissData.standings.length >= 6 && !DRY_RUN) {
+    updateStandingsFromSwiss(swissData.standings);
+  }
+
+  if (newGames.length === 0 && swissNewGames.length === 0 && !FORCE_ID) {
+    state.lastProbedId += PROBE_STEP;
+    saveState(state);
+    await browser.close();
+    setOutput('updated', 'false');
+    setOutput('summary', '✅ No new games today');
+    return;
+  }
 
   const commitParts = [];
   const summaryLines = [];
@@ -684,6 +840,32 @@ async function main() {
     state.processedIds.push(rawGame.ID);
     commitParts.push(`${date} ${won ? 'WIN' : 'LOSS'} ${bar3R}-${oppR} vs ${oppAbbr}`);
     summaryLines.push(`${won ? '🟢 WIN' : '🔴 LOSS'} ${bar3R}–${oppR} vs ${oppAbbr} (${date}) · Record now ${newW}-${newL}`);
+  }
+
+  // ── Process Swiss Baseball inter-club games (no EasyScore ID) ─
+  for (const sg of swissNewGames) {
+    console.log(`\n▶ [Swiss Baseball] ${sg.date} | BAR3 ${sg.bar3R}–${sg.oppR} ${sg.oppName} | ${sg.won ? 'WIN' : 'LOSS'} | ${sg.league}`);
+
+    const oppWords = sg.oppName.split(' ');
+    const oppAbbr  = oppWords.length >= 2 ? oppWords[oppWords.length - 1].toUpperCase().slice(0, 4) : 'OPP';
+    const swissGame = {
+      id: null, date: sg.date, bar3Side: 'home', isAway: false,
+      bar3R: sg.bar3R, oppR: sg.oppR,
+      bar3Abbr: 'BAR3', oppAbbr, oppName: sg.oppName,
+      innings: 7, won: sg.won, field: 'Heerenschürli, Zürich', lineup: [],
+    };
+
+    const updated = updateGamesArray(swissGame);
+    if (updated) {
+      const newW = state.record.W + (sg.won ? 1 : 0);
+      const newL = state.record.L + (sg.won ? 0 : 1);
+      updateRecord(newW, newL);
+      updateStandingsBar3Row(newW, newL);
+      state.record.W = newW;
+      state.record.L = newL;
+      commitParts.push(`${sg.date} ${sg.won ? 'WIN' : 'LOSS'} ${sg.bar3R}-${sg.oppR} vs ${oppAbbr} [Swiss Baseball]`);
+      summaryLines.push(`${sg.won ? '🟢' : '🔴'} ${sg.bar3R}–${sg.oppR} vs ${sg.oppName} (${sg.date}) · ${sg.league}`);
+    }
   }
 
   await browser.close();

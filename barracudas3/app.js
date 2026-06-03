@@ -53,7 +53,7 @@ const GAMES = [
     date: '2026-06-02', time: '18:30', label: 'JUN 2 · 2026',
     opponent: 'Barracudas NLA', opponentLogo: 'assets/teams/BARLOGO.png',
     location: 'Home · Heerenschürli', league: 'NL vs NLA',
-    result: null, score: null, innings: null, notes: '',
+    result: 'L', score: { us: 3, them: 17 }, innings: 7, notes: '',
   },
   {
     date: '2026-06-07', time: '11:00', label: 'JUN 7 · 2026 · G1',
@@ -1641,15 +1641,15 @@ function initHeroStandings() {
   const wrap = document.getElementById('heroMiniStandings');
   if (!wrap) return;
 
-  // Current standings — June 1, 2026 (synced with results.html static table)
+  // Current standings — June 4, 2026 (from swiss-baseball.ch live data)
   const FALLBACK = [
-    { rank:1, abbr:'BAR',  name:'Zürich Barracudas',    w:10, l:1, pct:'.909', gb:'—',   isUs:false },
-    { rank:2, abbr:'EAG',  name:'Luzern Eagles',        w:7,  l:1, pct:'.875', gb:'1.5', isUs:false },
-    { rank:3, abbr:'BAR3', name:'Barracudas 3',          w:5,  l:4, pct:'.556', gb:'4',   isUs:true  },
-    { rank:4, abbr:'IND',  name:'Lausanne Indians',      w:5,  l:5, pct:'.500', gb:'4.5', isUs:false },
-    { rank:5, abbr:'CHA2', name:'Challengers 2',         w:4,  l:6, pct:'.400', gb:'5.5', isUs:false },
-    { rank:6, abbr:'FRO',  name:'Sissach Frogs',         w:0,  l:6, pct:'.000', gb:'7.5', isUs:false },
-    { rank:7, abbr:'FLY2', name:'Zürich Flyers 2',       w:0,  l:8, pct:'.000', gb:'8.5', isUs:false },
+    { rank:1, abbr:'BAR',  name:'Zürich Barracudas',    w:11, l:1,  pct:'.917', gb:'—', isUs:false },
+    { rank:2, abbr:'EAG',  name:'Luzern Eagles',        w:9,  l:1,  pct:'.900', gb:'1', isUs:false },
+    { rank:3, abbr:'BAR3', name:'Barracudas 3',          w:5,  l:5,  pct:'.500', gb:'5', isUs:true  },
+    { rank:4, abbr:'IND',  name:'Lausanne Indians',      w:5,  l:5,  pct:'.500', gb:'5', isUs:false },
+    { rank:5, abbr:'CHA2', name:'Challengers 2',         w:4,  l:6,  pct:'.400', gb:'6', isUs:false },
+    { rank:6, abbr:'FRO',  name:'Sissach Frogs',         w:0,  l:6,  pct:'.000', gb:'8', isUs:false },
+    { rank:7, abbr:'FLY2', name:'Zürich Flyers 2',       w:0,  l:10, pct:'.000', gb:'10', isUs:false },
   ];
 
   function hmsLogo(abbr) {
