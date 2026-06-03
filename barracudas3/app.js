@@ -405,8 +405,9 @@ const PLAYER_EXTENDED_DATA = {
   '27': { // Elvis Del Valle Diaz
     fullName: 'Del Valle Diaz Elvis', age: 31, bats: 'R', throws: 'R',
     batting: {
-      season: { G:9, PA:47, AB:36, R:22, H:13, '2B':1, '3B':2, HR:1, RBI:11, BB:10, SO:5, SB:5, CS:0, HBP:1, SF:0, AVG:'.361', OBP:'.511', SLG:'.583', OPS:'1.094' },
+      season: { G:10, PA:51, AB:39, R:22, H:13, '2B':1, '3B':2, HR:1, RBI:11, BB:10, SO:6, SB:5, CS:0, HBP:2, SF:0, AVG:'.333', OBP:'.490', SLG:'.538', OPS:'1.029' },
       log: [
+        { date:'06/02', opp:'Barracudas NLA', spot:1, pos:'SS', AB:3, R:0, H:0, '2B':0, HR:0, RBI:0, BB:0, SO:1, SB:0, AVG:'.333' },
         { date:'05/30', opp:'Sissach Frogs G2', spot:1, pos:'SS', AB:3, R:4, H:1, '2B':0, HR:1, RBI:4, BB:2, SO:0, SB:0, AVG:'.361' },
         { date:'05/30', opp:'Sissach Frogs G1', spot:1, pos:'SS', AB:4, R:3, H:2, '2B':0, HR:0, RBI:3, BB:1, SO:0, SB:0, AVG:'.364' },
         { date:'05/05', opp:'Barracudas NLA',   spot:1, pos:'SS',     AB:3, R:2, H:1, '2B':0, HR:0, RBI:0, BB:1, SO:1, SB:0, AVG:'.345' },
@@ -441,8 +442,9 @@ const PLAYER_EXTENDED_DATA = {
   '1': { // Juan Malchans
     fullName: 'Malchans Caridad Juan Leonel', bats: 'R', throws: 'R',
     batting: {
-      season: { G:9, PA:45, AB:37, R:19, H:12, '2B':5, '3B':0, HR:0, RBI:16, BB:6, SO:3, SB:2, CS:0, HBP:2, SF:0, AVG:'.324', OBP:'.444', SLG:'.459', OPS:'.904' },
+      season: { G:10, PA:49, AB:41, R:19, H:12, '2B':5, '3B':0, HR:0, RBI:16, BB:6, SO:4, SB:2, CS:0, HBP:2, SF:0, AVG:'.293', OBP:'.408', SLG:'.415', OPS:'.823' },
       log: [
+        { date:'06/02', opp:'Barracudas NLA', spot:2, pos:'2B', AB:4, R:0, H:0, '2B':0, HR:0, RBI:0, BB:0, SO:1, SB:0, AVG:'.293' },
         { date:'05/30', opp:'Sissach Frogs G2', spot:2, pos:'2B', AB:4, R:4, H:2, '2B':2, HR:0, RBI:3, BB:1, SO:0, SB:0, AVG:'.324' },
         { date:'05/30', opp:'Sissach Frogs G1', spot:2, pos:'2B', AB:3, R:3, H:3, '2B':0, HR:0, RBI:1, BB:1, SO:0, SB:0, AVG:'.303' },
         { date:'05/05', opp:'Barracudas NLA',   spot:2, pos:'DH/P',   AB:4, R:1, H:2, '2B':1, HR:0, RBI:2, BB:0, SO:1, SB:0, AVG:'.233' },
@@ -504,8 +506,9 @@ const PLAYER_EXTENDED_DATA = {
   '15': { // Jose Medina
     fullName: 'Medina Reyes Jose Antonio', age: 38, bats: 'S', throws: 'R', captain: true,
     batting: {
-      season: { G:9, PA:42, AB:27, R:10, H:14, '2B':4, '3B':2, HR:0, RBI:15, BB:8, SO:2, SB:4, CS:0, HBP:4, SF:1, AVG:'.519', OBP:'.667', SLG:'.815', OPS:'1.481' },
+      season: { G:10, PA:43, AB:28, R:11, H:14, '2B':4, '3B':2, HR:0, RBI:15, BB:10, SO:3, SB:4, CS:0, HBP:4, SF:1, AVG:'.500', OBP:'.674', SLG:'.786', OPS:'1.460' },
       log: [
+        { date:'06/02', opp:'Barracudas NLA', spot:3, pos:'C',  AB:1, R:1, H:0, '2B':0, HR:0, RBI:0, BB:1, SO:0, SB:0, AVG:'.500' },
         { date:'05/30', opp:'Sissach Frogs G2', spot:3, pos:'C', AB:3, R:3, H:3, '2B':1, HR:0, RBI:3, BB:2, SO:0, SB:0, AVG:'.519' },
         { date:'05/30', opp:'Sissach Frogs G1', spot:3, pos:'C', AB:2, R:1, H:1, '2B':1, HR:0, RBI:1, BB:0, SO:0, SB:0, AVG:'.458' },
         { date:'05/05', opp:'Barracudas NLA',   spot:3, pos:'C', AB:4, R:0, H:2, '2B':0, HR:0, RBI:0, BB:0, SO:0, SB:0, AVG:'.455' },
@@ -535,8 +538,9 @@ const PLAYER_EXTENDED_DATA = {
   '16': { // Yohandris Pedroso Munoz
     fullName: 'Pedroso Munoz Yohandris', bats: 'R', throws: 'R',
     batting: {
-      season: { G:4, PA:19, AB:14, R:7, H:6, '2B':3, '3B':0, HR:0, RBI:4, BB:5, SO:0, SB:2, CS:0, HBP:0, SF:0, AVG:'.429', OBP:'.579', SLG:'.643', OPS:'1.222' },
+      season: { G:5, PA:21, AB:16, R:7, H:7, '2B':3, '3B':0, HR:0, RBI:5, BB:5, SO:0, SB:2, CS:0, HBP:0, SF:0, AVG:'.438', OBP:'.571', SLG:'.625', OPS:'1.196' },
       log: [
+        { date:'06/02', opp:'Barracudas NLA', spot:5, pos:'DH', AB:2, R:0, H:1, '2B':0, HR:0, RBI:1, BB:0, SO:0, SB:0, AVG:'.438' },
         { date:'05/30', opp:'Sissach Frogs G2', spot:5, pos:'DH', AB:4, R:1, H:1, '2B':1, HR:0, RBI:0, BB:1, SO:0, SB:0, AVG:'.429' },
         { date:'05/30', opp:'Sissach Frogs G1', spot:5, pos:'DH', AB:3, R:2, H:1, '2B':0, HR:0, RBI:1, BB:1, SO:0, SB:0, AVG:'.500' },
       ],
@@ -566,8 +570,9 @@ const PLAYER_EXTENDED_DATA = {
   '34': { // Jhomar Lima
     fullName: 'Rosa Lima Jhomar Bienvenido', age: 32, bats: 'R', throws: 'R',
     batting: {
-      season: { G:9, PA:43, AB:33, R:13, H:20, '2B':2, '3B':0, HR:3, RBI:24, BB:9, SO:1, SB:1, CS:0, HBP:0, SF:1, AVG:'.606', OBP:'.674', SLG:'.939', OPS:'1.614' },
+      season: { G:10, PA:46, AB:35, R:14, H:21, '2B':2, '3B':0, HR:3, RBI:25, BB:10, SO:2, SB:1, CS:0, HBP:0, SF:1, AVG:'.600', OBP:'.681', SLG:'.914', OPS:'1.595' },
       log: [
+        { date:'06/02', opp:'Barracudas NLA', spot:4, pos:'3B', AB:2, R:1, H:1, '2B':0, HR:0, RBI:1, BB:1, SO:0, SB:0, AVG:'.600' },
         { date:'05/30', opp:'Sissach Frogs G2', spot:4, pos:'3B', AB:4, R:2, H:3, '2B':0, HR:0, RBI:3, BB:1, SO:0, SB:0, AVG:'.606' },
         { date:'05/30', opp:'Sissach Frogs G1', spot:4, pos:'3B', AB:2, R:2, H:2, '2B':0, HR:0, RBI:3, BB:2, SO:0, SB:0, AVG:'.586' },
         { date:'05/05', opp:'Barracudas NLA',   spot:4, pos:'3B',   AB:2, R:0, H:2, '2B':0, HR:0, RBI:1,  BB:1, SO:0, SB:0, AVG:'.556' },
@@ -597,8 +602,9 @@ const PLAYER_EXTENDED_DATA = {
   '77': { // Jhon Arregoitia
     fullName: 'Arregoitia Villarreal Jhon Manuel', age: 32, bats: 'R', throws: 'R',
     batting: {
-      season: { G:9, PA:43, AB:36, R:11, H:4, '2B':1, '3B':0, HR:0, RBI:8, BB:6, SO:7, SB:3, CS:0, HBP:0, SF:0, AVG:'.111', OBP:'.256', SLG:'.139', OPS:'.395' },
+      season: { G:10, PA:45, AB:38, R:11, H:5, '2B':1, '3B':0, HR:0, RBI:9, BB:7, SO:7, SB:3, CS:0, HBP:0, SF:0, AVG:'.132', OBP:'.283', SLG:'.158', OPS:'.441' },
       log: [
+        { date:'06/02', opp:'Barracudas NLA', spot:6, pos:'1B', AB:2, R:0, H:1, '2B':0, HR:0, RBI:1, BB:0, SO:0, SB:0, AVG:'.132' },
         { date:'05/30', opp:'Sissach Frogs G2', spot:6, pos:'1B', AB:3, R:2, H:0, '2B':0, HR:0, RBI:1, BB:0, SO:0, SB:0, AVG:'.111' },
         { date:'05/30', opp:'Sissach Frogs G1', spot:6, pos:'1B', AB:4, R:1, H:1, '2B':0, HR:0, RBI:1, BB:0, SO:0, SB:0, AVG:'.121' },
         { date:'05/05', opp:'Barracudas NLA',   spot:6, pos:'1B',    AB:4, R:0, H:0, '2B':0, HR:0, RBI:0, BB:0, SO:3, SB:0, AVG:'.103' },
@@ -628,8 +634,9 @@ const PLAYER_EXTENDED_DATA = {
   '30': { // Carlos Moreno
     fullName: 'Moreno Carlos', age: 31, bats: 'R', throws: 'R',
     batting: {
-      season: { G:9, PA:42, AB:33, R:15, H:10, '2B':3, '3B':0, HR:0, RBI:8, BB:6, SO:7, SB:10, CS:0, HBP:3, SF:0, AVG:'.303', OBP:'.452', SLG:'.394', OPS:'.846' },
+      season: { G:10, PA:45, AB:35, R:15, H:11, '2B':3, '3B':0, HR:0, RBI:8, BB:7, SO:7, SB:10, CS:0, HBP:3, SF:0, AVG:'.314', OBP:'.467', SLG:'.400', OPS:'.867' },
       log: [
+        { date:'06/02', opp:'Barracudas NLA', spot:7, pos:'CF', AB:2, R:0, H:1, '2B':0, HR:0, RBI:0, BB:1, SO:0, SB:0, AVG:'.314' },
         { date:'05/30', opp:'Sissach Frogs G2', spot:7, pos:'CF', AB:2, R:3, H:1, '2B':0, HR:0, RBI:1, BB:2, SO:0, SB:0, AVG:'.303' },
         { date:'05/30', opp:'Sissach Frogs G1', spot:7, pos:'CF', AB:2, R:4, H:2, '2B':1, HR:0, RBI:1, BB:2, SO:0, SB:0, AVG:'.290' },
         { date:'05/05', opp:'Barracudas NLA',   spot:7, pos:'CF/3B', AB:3, R:1, H:1, '2B':1, HR:0, RBI:0, BB:0, SO:1, SB:1, AVG:'.241' },
