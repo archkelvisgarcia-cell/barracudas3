@@ -14,11 +14,11 @@
   "author": "Kelvis Garcia",
   "license": "ISC",
   "devDependencies": {
-    "sharp": "^0.34.5",
-    "@playwright/test": "^1.45.0"
+    "sharp": "^0.34.5"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.95.2",
-    "@netlify/blobs": "^8.1.0"
+    "@netlify/blobs": "^8.1.0",
+    "@playwright/test": "^1.60.0"
   }
 }
