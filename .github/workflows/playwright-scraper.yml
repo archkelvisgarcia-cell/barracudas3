@@ -1,0 +1,71 @@
+name: EasyScore Playwright Scraper
+
+on:
+  # 23:00 hora Suiza (CEST = UTC+2) → 21:00 UTC
+  schedule:
+    - cron: '0 21 * * *'
+
+  # Trigger manual desde GitHub Actions UI
+  workflow_dispatch:
+    inputs:
+      game_id:
+        description: 'EasyScore game ID específico (dejar vacío = auto-detect)'
+        required: false
+        type: string
+      dry_run:
+        description: 'Dry run — scraping sin escribir archivos'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    permissions:
+      contents: write
+      issues: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          npm install --save-dev @playwright/test@latest
+          npx playwright install chromium --with-deps
+
+      - name: Run Playwright scraper
+        id: scrape
+        env:
+          EASYSCORE_API_KEY:  ${{ secrets.EASYSCORE_API_KEY }}
+          EASYSCORE_TEAM_ID:  '13054'
+          GITHUB_TOKEN:       ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY:  ${{ github.repository }}
+          FORCE_GAME_ID:      ${{ inputs.game_id }}
+          DRY_RUN:            ${{ inputs.dry_run }}
+        run: node scripts/playwright-scraper.js
+
+      - name: Commit updated files
+        if: steps.scrape.outputs.updated == 'true' && inputs.dry_run != 'true'
+        run: |
+          git config user.name  "BAR3 Playwright Bot"
+          git config user.email "bot@barracudas3.netlify.app"
+          git add barracudas3/app.js barracudas3/index.html barracudas3/results.html scripts/game-state.json
+          git diff --cached --quiet || git commit -m "Auto-update: ${{ steps.scrape.outputs.commit_msg }}"
+          git push origin main
+
+      - name: Job summary
+        if: always()
+        run: |
+          echo "## EasyScore Scraper Result" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "${{ steps.scrape.outputs.summary }}" >> $GITHUB_STEP_SUMMARY
