@@ -221,7 +221,7 @@
           <h2>${headline}<span class="y">.</span></h2>
           <p style="font-size:17px;color:var(--ink);font-weight:500;margin-bottom:16px;line-height:1.5;">${summary}</p>
           ${scorebox}
-          ${hasBody ? `<p style="line-height:1.7;color:var(--ink-mute);font-size:16px;">${body}</p>` : comingSoon}
+          ${hasBody ? `<div class="art-body">${body}</div>` : comingSoon}
           <p style="margin-top:20px;font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-faint);">${t('art_press_desk')}</p>
           <div style="display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;">
             <a href="results.html" class="btn btn-ghost">${t('art_btn_boxscore')}</a>
