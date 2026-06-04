@@ -160,20 +160,60 @@
     return `<div class="pp-table-wrap"><table class="pp-table"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
   }
 
+  // Static image map — PLAYER_REGISTRY is empty on this page because
+  // <script id="roster-data"> lives only in index.html.
+  const PLAYER_IMGS = {
+    '20': 'assets/players/kg20.png',
+    '27': 'assets/players/ev27.png',
+    '1':  'assets/players/jm1.png',
+    '15': 'assets/players/jm15-portrait.png',
+    '34': 'assets/players/jhl34.png',
+    '16': 'assets/players/yp00.png',
+    '77': 'assets/players/ja77.png',
+    '30': 'assets/players/cm30.png',
+    '13': 'assets/players/ae13.png',
+    '22': 'assets/players/mv22.png',
+    '11': 'assets/players/cl11.png',
+    '28': 'assets/players/frn28.png',
+    '23': 'assets/players/sl23.png',
+    '36': 'assets/players/wp36.png',
+    '8':  'assets/players/rmh8.png',
+  };
+
+  // Static metadata for fields not in PLAYER_EXTENDED_DATA
+  const PLAYER_META = {
+    '20': { pos:'2B · RP', country:'DOM', flag:'🇩🇴', captain:false },
+    '27': { pos:'SS · OF', country:'DOM', flag:'🇩🇴', captain:false },
+    '1':  { pos:'IF',      country:'DOM', flag:'🇩🇴', captain:false },
+    '15': { pos:'C',       country:'DOM', flag:'🇩🇴', captain:true  },
+    '34': { pos:'3B',      country:'DOM', flag:'🇩🇴', captain:false },
+    '16': { pos:'DH',      country:'DOM', flag:'🇩🇴', captain:false },
+    '77': { pos:'1B',      country:'CUB', flag:'🇨🇺', captain:false },
+    '30': { pos:'CF',      country:'VEN', flag:'🇻🇪', captain:false },
+    '13': { pos:'SP · RP', country:'DOM', flag:'🇩🇴', captain:false },
+    '22': { pos:'SP',      country:'DOM', flag:'🇩🇴', captain:false },
+    '11': { pos:'OF',      country:'SUI', flag:'🇨🇭', captain:false },
+    '28': { pos:'IF',      country:'CUB', flag:'🇨🇺', captain:false },
+    '23': { pos:'1B',      country:'SUI', flag:'🇨🇭', captain:false },
+    '36': { pos:'SP · OF', country:'DOM', flag:'🇩🇴', captain:false },
+    '8':  { pos:'OF · RP', country:'DOM', flag:'🇩🇴', captain:false },
+  };
+
   function render() {
     if (!num) { notFound(); return; }
 
     const ext = typeof PLAYER_EXTENDED_DATA !== 'undefined' ? PLAYER_EXTENDED_DATA[num] : null;
     const reg = typeof PLAYER_REGISTRY !== 'undefined' ? PLAYER_REGISTRY.get(num) : null;
+    const meta = PLAYER_META[num] || {};
 
     if (!ext && !reg) { notFound(); return; }
 
     const name     = ext?.fullName || (reg ? `${reg.first} ${reg.last}` : `#${num}`);
-    const pos      = reg?.pos || '—';
-    const country  = reg?.country || '—';
-    const flag     = reg?.flag || '';
-    const img      = reg?.img || '';
-    const captain  = reg?.captain;
+    const pos      = reg?.pos     || meta.pos     || '—';
+    const country  = reg?.country || meta.country || '—';
+    const flag     = reg?.flag    || meta.flag    || '';
+    const img      = PLAYER_IMGS[num] || reg?.img || '';
+    const captain  = reg?.captain ?? meta.captain;
     const bat      = ext?.batting?.season;
     const pit      = ext?.pitching?.season;
     const fld      = ext?.fielding?.season;
