@@ -192,13 +192,19 @@ exports.handler = async (event) => {
     return { statusCode: 503, body: JSON.stringify({ error: 'EASYSCORE_API_KEY not set' }) };
   }
 
-  // Skip on non-game days (unless triggered manually via POST with a body)
-  const isManual = event.httpMethod === 'POST' && event.body;
+  // Any POST = manual trigger from admin panel — always run regardless of game day.
+  // Scheduled cron calls have no httpMethod set (or it's undefined).
+  const isManual = event.httpMethod === 'POST';
   if (!isManual && !isGameDay()) {
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ok: true, skipped: true, reason: 'No game scheduled today or yesterday' }),
+      body: JSON.stringify({
+        ok: true, skipped: true,
+        reason: 'No game scheduled today or yesterday',
+        found: 0, newFinished: 0, newArticles: 0, record: '—',
+        log: ['Skipped — not a game day'],
+      }),
     };
   }
 
