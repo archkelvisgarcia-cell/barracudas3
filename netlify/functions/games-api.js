@@ -39,11 +39,12 @@ exports.handler = async () => {
         'Access-Control-Allow-Origin': '*',
       },
       body: JSON.stringify({
-        games:    state.games    ?? [],
-        articles: state.articles ?? [],
-        record:   state.record   ?? null,
+        games:     state.games     ?? [],
+        articles:  state.articles  ?? [],
+        record:    state.record    ?? null,
+        standings: state.standings ?? null,
         live,
-        lastRun:  state.lastRun  ?? null,
+        lastRun:   state.lastRun   ?? null,
       }),
     };
   } catch (e) {

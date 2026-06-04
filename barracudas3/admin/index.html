@@ -93,6 +93,9 @@
           <button class="btn btn-primary" style="font-size:12px;" onclick="runPipeline()">
             <span id="pipelineBtnLabel">▶ Run Now</span>
           </button>
+          <button class="btn btn-ghost" style="font-size:12px;border-color:rgba(220,38,38,0.4);color:#ff6666;" onclick="initBlobs()" title="Use after Deploy without cache">
+            🔄 Re-init Blobs
+          </button>
           <span class="adm-status" id="pipelineStatus" style="font-size:11px;"></span>
         </div>
         <div id="pipelineLog" style="margin-top:12px;font-family:var(--mono);font-size:10px;color:var(--ink-faint);line-height:1.7;max-height:120px;overflow-y:auto;display:none;"></div>
@@ -231,6 +234,29 @@ async function runPipeline() {
     status.textContent = '✗ ' + e.message;
   } finally {
     btn.textContent = '▶ Run Now';
+  }
+}
+
+async function initBlobs() {
+  const status = document.getElementById('pipelineStatus');
+  const btn = event.target;
+  btn.disabled = true;
+  btn.textContent = 'Initializing…';
+  status.style.color = 'var(--ink-mute)';
+  status.textContent = '↻ Writing base data to Blobs…';
+  try {
+    const r = await fetch('/.netlify/functions/init-blobs', { method: 'POST' });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || `HTTP ${r.status}`);
+    status.style.color = '#00c864';
+    status.textContent = `✓ Blobs initialized — ${d.games} games · ${d.record} · Run pipeline to sync`;
+    loadPipelineStatus();
+  } catch (e) {
+    status.style.color = '#ff5555';
+    status.textContent = '✗ ' + e.message;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '🔄 Re-init Blobs';
   }
 }
 
