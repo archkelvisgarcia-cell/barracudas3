@@ -392,7 +392,7 @@ function initFirstPitch() {
   const container = document.getElementById('firstPitchCard');
   if (!container) return;
 
-  const now = new Date();
+  const now  = new Date();
   const next = GAMES.find(g => new Date(`${g.date}T${g.time}:00`) > now);
 
   if (!next) {
@@ -400,12 +400,12 @@ function initFirstPitch() {
     return;
   }
 
-  const dt = new Date(`${next.date}T${next.time}:00`);
-  const dayStr = dt.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase();
+  const dt      = new Date(`${next.date}T${next.time}:00`);
+  const dayStr  = dt.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase();
   const timeStr = `${String(dt.getHours()).padStart(2,'0')}:${String(dt.getMinutes()).padStart(2,'0')}`;
 
-  const nextIdx = GAMES.indexOf(next);
-  const after = GAMES[nextIdx + 1];
+  const nextIdx  = GAMES.indexOf(next);
+  const after    = GAMES[nextIdx + 1];
   const afterStr = after
     ? `${new Date(after.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).toUpperCase()} · ${after.opponent.split(' ').pop().toUpperCase()}`
     : '—';
@@ -418,15 +418,36 @@ function initFirstPitch() {
     </div>
     <div class="vs">
       <div class="team us">
-        <div class="crest"><img src="assets/logo.png" alt="" style="height:48px;width:auto;" /></div>
+        <div class="crest"><img src="assets/logo.png" alt="" style="height:48px;width:auto;" loading="lazy" /></div>
         <div class="name">Barracudas 3</div>
         <div class="sub">Gruppe A</div>
       </div>
       <div class="center">VS</div>
       <div class="team them">
-        <div class="crest"><img src="${next.opponentLogo}" alt="${next.opponent}" style="height:48px;width:auto;" onerror="this.style.display='none'" /></div>
+        <div class="crest"><img src="${next.opponentLogo}" alt="${next.opponent}" style="height:48px;width:auto;" loading="lazy" onerror="this.style.display='none'" /></div>
         <div class="name">${next.opponent}</div>
         <div class="sub">${next.location}</div>
+      </div>
+    </div>
+    <div id="fp-countdown" style="
+      display:grid;grid-template-columns:repeat(4,1fr);gap:8px;
+      margin:14px 0;background:var(--bg-deep);border-radius:var(--r-md);
+      padding:14px 12px;border:1px solid var(--line);">
+      <div style="text-align:center;">
+        <div id="fp-days" style="font-family:var(--display);font-size:28px;line-height:1;color:var(--accent);">—</div>
+        <div style="font-family:var(--mono);font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-faint);margin-top:3px;">Days</div>
+      </div>
+      <div style="text-align:center;">
+        <div id="fp-hours" style="font-family:var(--display);font-size:28px;line-height:1;color:var(--ink);">—</div>
+        <div style="font-family:var(--mono);font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-faint);margin-top:3px;">Hours</div>
+      </div>
+      <div style="text-align:center;">
+        <div id="fp-mins" style="font-family:var(--display);font-size:28px;line-height:1;color:var(--ink);">—</div>
+        <div style="font-family:var(--mono);font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-faint);margin-top:3px;">Min</div>
+      </div>
+      <div style="text-align:center;">
+        <div id="fp-secs" style="font-family:var(--display);font-size:28px;line-height:1;color:var(--ink-mute);">—</div>
+        <div style="font-family:var(--mono);font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-faint);margin-top:3px;">Sec</div>
       </div>
     </div>
     <div class="info-row">
@@ -435,6 +456,24 @@ function initFirstPitch() {
       <div><div class="k">League</div><div class="v">${next.league.split(' ·')[0]}</div></div>
     </div>
   `;
+
+  // Live countdown — updates every second
+  function tick() {
+    const diff = dt - new Date();
+    if (diff <= 0) { clearInterval(_fpTimer); return; }
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    const pad = n => String(n).padStart(2, '0');
+    const el = id => document.getElementById(id);
+    if (el('fp-days'))  el('fp-days').textContent  = d;
+    if (el('fp-hours')) el('fp-hours').textContent = pad(h);
+    if (el('fp-mins'))  el('fp-mins').textContent  = pad(m);
+    if (el('fp-secs'))  el('fp-secs').textContent  = pad(s);
+  }
+  tick();
+  const _fpTimer = setInterval(tick, 1000);
 }
 
 document.addEventListener('DOMContentLoaded', initFirstPitch);
