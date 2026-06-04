@@ -72,7 +72,6 @@ const GAMES = [
 
 // ── HERO BACKGROUND CAROUSEL — Pink Game photos ─────────────
 const HERO_BG_IMAGES = [
-  'assets/nightgame-1.jpg',
   'assets/nightgame-3.jpg',
   'assets/nightgame-7.jpg',
   'assets/nightgame-9.jpg',
