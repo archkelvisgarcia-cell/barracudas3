@@ -24,8 +24,9 @@ const BASE      = 'https://api.easyscore.com/v2';
 const ES_HDR    = { 'x-api-key': ES_KEY };
 
 // Start probing from last known game. Each run probes PROBE_STEP IDs forward.
+// Keep low (≤15) to stay within Netlify's 26s function timeout.
 const SEED_ID    = 19272;
-const PROBE_STEP = 80;
+const PROBE_STEP = 15;
 
 // ── EasyScore helpers ──────────────────────────────────────────
 async function fetchGame(id) {
@@ -148,7 +149,7 @@ Return ONLY valid JSON (no markdown):
 }`;
 
   const resp = await client.messages.create({
-    model: 'claude-sonnet-4-20250514',
+    model: 'claude-sonnet-4-6',
     max_tokens: 2000,
     messages: [{ role: 'user', content: prompt }],
   });
