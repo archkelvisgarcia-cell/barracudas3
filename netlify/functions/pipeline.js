@@ -28,6 +28,29 @@ const ES_HDR    = { 'x-api-key': ES_KEY };
 const SEED_ID    = 19272;
 const PROBE_STEP = 15;
 
+// Known BAR3 game dates (YYYY-MM-DD). Keep in sync with GAMES[] in app.js.
+// The pipeline only runs on game days or the day after.
+// Add new dates here when the schedule is updated.
+const GAME_DATES = new Set([
+  '2026-04-19', '2026-04-26',
+  '2026-05-02', '2026-05-05',
+  '2026-05-30', '2026-06-02',
+  '2026-06-07',
+  // Add future game dates below as the season progresses:
+]);
+
+function isGameDay() {
+  // Swiss time = UTC+2 (CEST). Convert 'now' to Swiss local date.
+  const now = new Date();
+  const swiss = new Date(now.toLocaleString('en-US', { timeZone: 'Europe/Zurich' }));
+  const today = swiss.toISOString().split('T')[0];
+  // Also check yesterday — results may not be in EasyScore until late night.
+  const yesterday = new Date(swiss);
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yd = yesterday.toISOString().split('T')[0];
+  return GAME_DATES.has(today) || GAME_DATES.has(yd);
+}
+
 // ── EasyScore helpers ──────────────────────────────────────────
 async function fetchGame(id) {
   try {
@@ -45,17 +68,6 @@ function parseStatDef(str) {
   const po = parseInt(PO) || 0, a = parseInt(A) || 0, e = parseInt(E) || 0;
   const fPct = (po + a + e) > 0 ? ((po + a) / (po + a + e)).toFixed(3) : '1.000';
   return { G: parseInt(G)||0, IP: IP||'0.0', PO: po, A: a, E: e, DP: parseInt(DP)||0, FPct: fPct };
-}
-
-function ipToFloat(ip) {
-  const [whole, thirds = '0'] = String(ip).split('.');
-  return parseInt(whole) + parseInt(thirds) / 3;
-}
-
-function floatToIp(f) {
-  const whole = Math.floor(f);
-  const thirds = Math.round((f - whole) * 3);
-  return thirds === 0 ? `${whole}.0` : `${whole}.${thirds}`;
 }
 
 function summarise(g) {
@@ -178,6 +190,16 @@ exports.handler = async (event) => {
 
   if (!ES_KEY) {
     return { statusCode: 503, body: JSON.stringify({ error: 'EASYSCORE_API_KEY not set' }) };
+  }
+
+  // Skip on non-game days (unless triggered manually via POST with a body)
+  const isManual = event.httpMethod === 'POST' && event.body;
+  if (!isManual && !isGameDay()) {
+    return {
+      statusCode: 200,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ok: true, skipped: true, reason: 'No game scheduled today or yesterday' }),
+    };
   }
 
   const store = getStore({ name: 'bar3-pipeline', consistency: 'strong' });
