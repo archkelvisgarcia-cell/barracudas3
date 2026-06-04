@@ -51,6 +51,76 @@
   --accent: oklch(0.78 0.18 95);
 }
 
+/* ══════════════════════════════════════════════════════
+   LIGHT MODE — HERO OVERRIDES
+   The hero always has a dark photographic background.
+   All text inside must be white regardless of theme.
+══════════════════════════════════════════════════════ */
+
+/* Dark overlay: replace the white-tinted default with a true dark gradient */
+[data-theme="light"] .hero-overlay {
+  background: linear-gradient(90deg, rgba(0,0,0,0.5) 0%, transparent 65%);
+}
+[data-theme="light"] .hero-slide::after {
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.52) 0%,
+    rgba(0,0,0,0.32) 35%,
+    rgba(0,0,0,0.82) 82%,
+    rgba(0,0,0,0.96) 100%
+  );
+}
+
+/* Force white text on all hero content */
+[data-theme="light"] .hero-stamp       { color: rgba(255,255,255,0.65); }
+[data-theme="light"] .hero-stamp strong { color: #fff; }
+[data-theme="light"] .hero-headline h1  { color: #fff; }
+[data-theme="light"] .hero-headline h1 .y   { color: var(--accent); }
+[data-theme="light"] .hero-headline h1 .out {
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(255,255,255,0.45);
+}
+[data-theme="light"] .hero-tagline            { border-top-color: rgba(255,255,255,0.12); }
+[data-theme="light"] .hero-tagline p         { color: rgba(255,255,255,0.88); }
+[data-theme="light"] .hero-btns-mobile .btn  { color: #fff; border-color: rgba(255,255,255,0.35); }
+
+/* Live card and next-up pill inside hero */
+[data-theme="light"] .hero-live-btn--next  {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.25);
+  color: rgba(255,255,255,0.9);
+}
+[data-theme="light"] .hero-live-btn--next .hero-live-label { color: var(--accent); }
+[data-theme="light"] .hero-live-btn--next .hero-live-score { color: rgba(255,255,255,0.7); }
+
+/* News CTA card inside hero */
+[data-theme="light"] .hero-news-cta-inner {
+  background: rgba(0,0,0,0.6);
+  border-color: rgba(255,255,255,0.12);
+}
+
+/* ── Light mode: hero strip (Record / League / Home / Next) ── */
+[data-theme="light"] .hero-strip > div { background: var(--bg-elev); }
+[data-theme="light"] .hero-strip .k   { color: var(--ink-faint); }
+[data-theme="light"] .hero-strip .v   { color: var(--ink); }
+
+/* ── Light mode: Top Performers cards ── */
+[data-theme="light"] .ps-card    { background: var(--bg-elev); border: 1px solid var(--line); }
+[data-theme="light"] .ps-photo   { background: var(--bg-deep); border-color: var(--accent); }
+[data-theme="light"] .ps-name    { color: var(--ink); }
+[data-theme="light"] .ps-num     { color: var(--ink-faint); }
+[data-theme="light"] .ps-stat    { color: var(--ink-mute); }
+
+/* ── Light mode: mini-standings inside hero (glass stays dark) ── */
+[data-theme="light"] .hms-wrap {
+  background: rgba(0,0,0,0.55);
+  border-color: rgba(255,255,255,0.14);
+}
+[data-theme="light"] .hms-head    { border-bottom-color: rgba(255,255,255,0.1); }
+[data-theme="light"] .hms-row     { border-bottom-color: rgba(255,255,255,0.06); }
+[data-theme="light"] .hms-row:hover { background: rgba(255,255,255,0.05); }
+[data-theme="light"] .hms-row.hms-us { background: rgba(240,180,41,0.15); }
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 html { scroll-behavior: smooth; }
