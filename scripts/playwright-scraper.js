@@ -329,18 +329,19 @@ async function scrapePlayerStats(page, playerId) {
       const rows    = Array.from(table.querySelectorAll('tbody tr'));
 
       // ── Batting season totals ──────────────────────────────
+      // NOTE: headers[0] is the table title <th> with no matching <td>.
+      // So cells[i] corresponds to headers[i+1]. Fix: use cells[i-1].
       if (headers.includes('AVG') && headers.includes('AB') && headers.includes('OPS')) {
-        // Find the totals row (usually the last, or labeled "Totals")
-        const totalRow = rows.find(r => {
-          const txt = r.cells[0]?.textContent.trim().toLowerCase();
-          return txt === 'totals' || txt === 'total' || r === rows[rows.length - 1];
-        }) || rows[rows.length - 1];
+        // Find the Gruppe A row (most relevant for BAR3)
+        const gruppeARow = rows.find(r => r.cells[1]?.textContent.includes('Gruppe A'))
+          || rows[rows.length - 1];
 
-        if (totalRow) {
-          const cells = Array.from(totalRow.querySelectorAll('td'));
+        if (gruppeARow) {
+          const cells = Array.from(gruppeARow.querySelectorAll('td'));
+          // Subtract 1 from header index to get the matching cell index
           const get = h => {
             const i = headers.indexOf(h);
-            return i >= 0 ? (cells[i]?.textContent.trim() || '0') : '0';
+            return (i > 0) ? (cells[i - 1]?.textContent.trim() || '0') : '0';
           };
           result.season = {
             G:    parseInt(get('G'))   || 0,
@@ -368,10 +369,11 @@ async function scrapePlayerStats(page, playerId) {
 
       // ── Pitching season totals ─────────────────────────────
       if (headers.includes('ERA') && headers.includes('IP') && headers.includes('SO')) {
-        const totalRow = rows[rows.length - 1];
-        if (totalRow) {
-          const cells = Array.from(totalRow.querySelectorAll('td'));
-          const get = h => { const i = headers.indexOf(h); return i >= 0 ? (cells[i]?.textContent.trim() || '0') : '0'; };
+        const gruppeARow = rows.find(r => r.cells[1]?.textContent.includes('Gruppe A'))
+          || rows[rows.length - 1];
+        if (gruppeARow) {
+          const cells = Array.from(gruppeARow.querySelectorAll('td'));
+          const get = h => { const i = headers.indexOf(h); return (i > 0) ? (cells[i - 1]?.textContent.trim() || '0') : '0'; };
           result.pitching = {
             G:   parseInt(get('G'))  || 0,
             GS:  parseInt(get('GS')) || 0,
@@ -382,39 +384,43 @@ async function scrapePlayerStats(page, playerId) {
             BB:  parseInt(get('BB')) || 0,
             SO:  parseInt(get('SO')) || 0,
             HR:  parseInt(get('HR')) || 0,
-            WL:  get('W-L') || get('WL') || '0-0',
+            WL:  get('W-L') || '0-0',
             ERA: get('ERA') || '0.00',
             WHIP:get('WHIP')|| '0.00',
           };
         }
       }
 
-      // ── Game log ───────────────────────────────────────────
-      const dateIdx = headers.findIndex(h => h.toLowerCase().includes('date'));
-      const oppIdx  = headers.findIndex(h => h.toLowerCase().includes('opp') || h.toLowerCase().includes('vs'));
-
-      if (dateIdx >= 0 && headers.includes('AB') && rows.length > 0 && rows.length < 30) {
+      // ── Game log (6-Game Log Batting) ─────────────────────────
+      // Same offset fix: headers[0] = title, so cells[i-1] = header[i].
+      // Log row layout: cells[0]=Date, [1]=Round, [2]=Opponent, [3]=Spot, [4]=Pos,
+      //                 [5]=AB, [6]=R, [7]=H, [8]=2B, [9]=3B, [10]=HR, [11]=RBI,
+      //                 [12]=BB, [13]=SO, [14]=SB, [23]=AVG*
+      if (headers.some(h => h.includes('6-Game Log Batting')) && rows.length > 0 && rows.length <= 7) {
         for (const row of rows) {
           const cells = Array.from(row.querySelectorAll('td'));
-          if (cells.length < 4) continue;
-          const dateVal = cells[dateIdx]?.textContent.trim();
-          const oppVal  = cells[oppIdx >= 0 ? oppIdx : 1]?.textContent.trim() || '?';
-          if (!dateVal || dateVal.toLowerCase() === 'date') continue;
+          if (cells.length < 8) continue;
+          const dateVal = cells[0]?.textContent.trim();
+          if (!dateVal || !dateVal.match(/\d{2}\/\d{2}\/\d{4}/)) continue;
+          // Only Gruppe A games
+          if (!cells[1]?.textContent.includes('Gruppe A')) continue;
 
-          const get = h => { const i = headers.indexOf(h); return i >= 0 ? cells[i]?.textContent.trim() : undefined; };
           const entry = {
             date: dateVal,
-            opp: oppVal,
-            AB:   parseInt(get('AB'))  || 0,
-            R:    parseInt(get('R'))   || 0,
-            H:    parseInt(get('H'))   || 0,
-            '2B': parseInt(get('2B'))  || 0,
-            HR:   parseInt(get('HR'))  || 0,
-            RBI:  parseInt(get('RBI')) || 0,
-            BB:   parseInt(get('BB'))  || 0,
-            SO:   parseInt(get('SO'))  || 0,
-            SB:   parseInt(get('SB'))  || 0,
-            AVG:  get('AVG') || '',
+            opp:  cells[2]?.textContent.trim() || '?',
+            spot: cells[3]?.textContent.trim(),
+            pos:  cells[4]?.textContent.trim() || '?',
+            AB:   parseInt(cells[5]?.textContent)  || 0,
+            R:    parseInt(cells[6]?.textContent)   || 0,
+            H:    parseInt(cells[7]?.textContent)   || 0,
+            '2B': parseInt(cells[8]?.textContent)   || 0,
+            '3B': parseInt(cells[9]?.textContent)   || 0,
+            HR:   parseInt(cells[10]?.textContent)  || 0,
+            RBI:  parseInt(cells[11]?.textContent)  || 0,
+            BB:   parseInt(cells[12]?.textContent)  || 0,
+            SO:   parseInt(cells[13]?.textContent)  || 0,
+            SB:   parseInt(cells[14]?.textContent)  || 0,
+            AVG:  cells[cells.length - 1]?.textContent.trim() || '',
           };
           if (entry.AB > 0 || entry.BB > 0) result.log.push(entry);
         }
@@ -473,6 +479,19 @@ function updatePlayerExtendedData(uniformNum, season, pitching, newLogEntries) {
   }
 
   if (!DRY_RUN) fs.writeFileSync(APP_JS, src);
+
+  // Also update roster-data card backs in index.html
+  if (season && !DRY_RUN) {
+    let html = fs.readFileSync(INDEX_HTML, 'utf8');
+    // Pattern: "num":"XX" entry — update its AVG, RBI, OBP/SB, OPS stats
+    const cardPat = new RegExp(`("num":"${uniformNum}"[^}]*?"stats":\\[)(.*?)(\\])`,'s');
+    if (cardPat.test(html)) {
+      const newStats = `{"k":"AVG","v":"${season.AVG}"},{"k":"RBI","v":"${season.RBI}"},{"k":"OBP","v":"${season.OBP}"},{"k":"OPS","v":"${season.OPS}"}`;
+      html = html.replace(cardPat, `$1${newStats}$3`);
+      fs.writeFileSync(INDEX_HTML, html);
+      console.log(`    ✓ Updated roster-data card stats for #${uniformNum}`);
+    }
+  }
 }
 
 // ── 5. FILE UPDATE: GAMES[] in app.js ─────────────────────────

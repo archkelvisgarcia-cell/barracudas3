@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Player — Zürich Barracudas 3</title>
+<meta name="robots" content="index, follow" />
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#0d1f0f" />
+<link rel="apple-touch-icon" href="assets/icons/icon-180x180.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  .pp-hero {
+    padding: clamp(40px,8vw,100px) var(--pad) 0;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: clamp(24px,4vw,56px);
+    align-items: end;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: clamp(32px,5vw,64px);
+  }
+  .pp-photo {
+    width: clamp(120px,18vw,200px);
+    height: clamp(150px,22vw,250px);
+    border-radius: var(--r-lg);
+    background: var(--bg-elev);
+    background-size: cover;
+    background-position: center top;
+    border: 2px solid var(--line);
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    font-family: var(--display);
+    font-size: 48px;
+    color: var(--ink-faint);
+    overflow: hidden;
+  }
+  .pp-photo img { width:100%;height:100%;object-fit:cover;object-position:center top; }
+  .pp-meta { padding-bottom: 8px; }
+  .pp-num  { font-family:var(--display);font-size:clamp(56px,10vw,120px);line-height:1;color:var(--accent);letter-spacing:-0.02em; }
+  .pp-name { font-family:var(--display);font-size:clamp(28px,5vw,56px);text-transform:uppercase;line-height:1;margin-bottom:10px; }
+  .pp-tags { display:flex;gap:8px;flex-wrap:wrap;margin-top:10px; }
+  .pp-tag  { font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-faint);padding:4px 10px;border:1px solid var(--line);border-radius:var(--r-pill); }
+  .pp-tag--accent { color:var(--accent);border-color:rgba(240,180,41,0.35); }
+
+  .pp-body { max-width:1280px;margin:0 auto;padding:clamp(32px,6vw,80px) var(--pad); }
+
+  .pp-section { margin-bottom:clamp(32px,5vw,64px); }
+  .pp-section-title {
+    font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;
+    color:var(--ink-faint);border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:20px;
+  }
+
+  /* Summary stats pills */
+  .pp-summary { display:flex;flex-wrap:wrap;gap:12px;margin-bottom:24px; }
+  .pp-pill { background:var(--bg-elev);border:1px solid var(--line);border-radius:var(--r-md);padding:14px 20px;min-width:90px;text-align:center; }
+  .pp-pill .k { font-family:var(--mono);font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:4px; }
+  .pp-pill .v { font-family:var(--display);font-size:24px;color:var(--ink); }
+  .pp-pill .v.hl { color:var(--accent); }
+
+  /* Stats table */
+  .pp-table-wrap { overflow-x:auto;-webkit-overflow-scrolling:touch; }
+  .pp-table { width:100%;border-collapse:collapse;font-family:var(--mono);font-size:12px; }
+  .pp-table th { background:var(--bg-deep);padding:8px 12px;text-align:center;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-faint);border-bottom:1px solid var(--line);white-space:nowrap; }
+  .pp-table th:first-child { text-align:left; }
+  .pp-table td { padding:9px 12px;text-align:center;color:var(--ink-mute);border-bottom:1px solid rgba(255,255,255,0.04); }
+  .pp-table td:first-child { text-align:left;color:var(--ink);font-weight:600; }
+  .pp-table tr:last-child td { border-bottom:none; }
+  .pp-table td.hl { color:var(--accent);font-weight:700; }
+  .pp-table tr:hover td { background:rgba(255,255,255,0.02); }
+
+  .pp-back { display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-mute);text-decoration:none;margin-bottom:24px; }
+  .pp-back:hover { color:var(--accent); }
+
+  @media (max-width:640px) {
+    .pp-hero { grid-template-columns:1fr;gap:20px; }
+    .pp-photo { width:100%;height:200px;border-radius:var(--r-md); }
+    .pp-num { font-size:56px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <a href="index.html" class="nav-logo">
+    <img src="assets/logo.png" alt="Barracudas" style="height:40px;width:auto;" />
+    <span>Barracudas</span>
+  </a>
+  <nav class="nav-links">
+    <a href="index.html" data-i18n="nav_home">Home</a>
+    <a href="schedule.html" data-i18n="nav_schedule">Schedule</a>
+    <a href="results.html" data-i18n="nav_results">Results</a>
+    <a href="news.html" data-i18n="nav_news">News</a>
+    <a href="index.html#roster" class="active" data-i18n="nav_roster">Roster</a>
+  </nav>
+  <div class="nav-tools">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <div class="lang-switcher">
+      <button class="lang-btn" data-lang="en">ENG</button>
+      <button class="lang-btn" data-lang="es">ESP</button>
+      <button class="lang-btn" data-lang="de">GER</button>
+    </div>
+    <button class="icon-btn menu-btn" id="menu-open" aria-label="Open menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu">
+  <div class="mobile-menu-head">
+    <a href="index.html" class="nav-logo"><img src="assets/logo.png" alt="" style="height:36px;width:auto;" /><span>Barracudas</span></a>
+    <button class="icon-btn" id="menu-close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+  </div>
+  <nav>
+    <a href="index.html"><span data-i18n="nav_home">Home</span><span class="num">01</span></a>
+    <a href="schedule.html"><span data-i18n="nav_schedule">Schedule</span><span class="num">02</span></a>
+    <a href="results.html"><span data-i18n="nav_results">Results</span><span class="num">03</span></a>
+    <a href="news.html"><span data-i18n="nav_news">News</span><span class="num">04</span></a>
+    <a href="index.html#roster"><span data-i18n="nav_roster">Roster</span><span class="num">05</span></a>
+  </nav>
+</div>
+
+<div id="pp-root">
+  <div style="padding:80px var(--pad);text-align:center;font-family:var(--mono);color:var(--ink-faint);">Loading player…</div>
+</div>
+
+<script src="data-schedule.js"></script>
+<script src="data-players.js"></script>
+<script src="app.js"></script>
+<script src="lang.js"></script>
+<script>
+(function () {
+  const params = new URLSearchParams(location.search);
+  const num    = params.get('num') || params.get('id') || '';
+  const root   = document.getElementById('pp-root');
+
+  function f(v) { return parseFloat(v) || 0; }
+
+  function notFound() {
+    root.innerHTML = `<div style="padding:80px var(--pad);text-align:center;">
+      <p style="font-family:var(--mono);font-size:14px;color:var(--ink-faint);">Player #${num} not found.</p>
+      <a href="index.html#roster" class="btn btn-ghost" style="margin-top:20px;">← Back to Roster</a>
+    </div>`;
+  }
+
+  function pill(k, v, hl = false) {
+    return `<div class="pp-pill"><div class="k">${k}</div><div class="v${hl ? ' hl' : ''}">${v ?? '—'}</div></div>`;
+  }
+
+  function statsTable(headers, rows, hlCols = []) {
+    const head = headers.map(h => `<th>${h}</th>`).join('');
+    const body = rows.map(row =>
+      `<tr>${row.map((c, i) => `<td class="${hlCols.includes(i) ? 'hl' : ''}">${c ?? '—'}</td>`).join('')}</tr>`
+    ).join('');
+    return `<div class="pp-table-wrap"><table class="pp-table"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
+  }
+
+  function render() {
+    if (!num) { notFound(); return; }
+
+    const ext = typeof PLAYER_EXTENDED_DATA !== 'undefined' ? PLAYER_EXTENDED_DATA[num] : null;
+    const reg = typeof PLAYER_REGISTRY !== 'undefined' ? PLAYER_REGISTRY.get(num) : null;
+
+    if (!ext && !reg) { notFound(); return; }
+
+    const name     = ext?.fullName || (reg ? `${reg.first} ${reg.last}` : `#${num}`);
+    const pos      = reg?.pos || '—';
+    const country  = reg?.country || '—';
+    const flag     = reg?.flag || '';
+    const img      = reg?.img || '';
+    const captain  = reg?.captain;
+    const bat      = ext?.batting?.season;
+    const pit      = ext?.pitching?.season;
+    const fld      = ext?.fielding?.season;
+    const batLog   = ext?.batting?.log   || [];
+    const pitLog   = ext?.pitching?.log  || [];
+    const fldLog   = ext?.fielding?.log  || [];
+    const ini      = name.split(' ').map(w => w[0] || '').join('').slice(0, 2).toUpperCase();
+
+    // Update page title and meta
+    document.title = `${name} #${num} — Zürich Barracudas 3`;
+
+    // ── Hero ──────────────────────────────────────────────────
+    let sections = '';
+
+    // ── Batting section ───────────────────────────────────────
+    if (bat) {
+      sections += `<div class="pp-section">
+        <div class="pp-section-title">Batting — Season 2026</div>
+        <div class="pp-summary">
+          ${pill('G',   bat.G)}
+          ${pill('AVG', bat.AVG, true)}
+          ${pill('OPS', bat.OPS, true)}
+          ${pill('HR',  bat.HR)}
+          ${pill('RBI', bat.RBI)}
+          ${pill('AB',  bat.AB)}
+          ${pill('H',   bat.H)}
+          ${pill('2B',  bat['2B'])}
+          ${pill('BB',  bat.BB)}
+          ${pill('SB',  bat.SB)}
+          ${pill('OBP', bat.OBP)}
+          ${pill('SLG', bat.SLG)}
+        </div>`;
+
+      if (batLog.length) {
+        sections += statsTable(
+          ['Date', 'Opponent', 'Pos', 'AB', 'R', 'H', '2B', 'HR', 'RBI', 'BB', 'SO', 'AVG'],
+          batLog.map(g => [
+            g.date, g.opp, g.pos, g.AB, g.R, g.H, g['2B'], g.HR, g.RBI, g.BB, g.SO ?? 0, g.AVG
+          ]),
+          [11] // highlight AVG column
+        );
+      }
+      sections += '</div>';
+    }
+
+    // ── Pitching section ──────────────────────────────────────
+    if (pit) {
+      sections += `<div class="pp-section">
+        <div class="pp-section-title">Pitching — Season 2026</div>
+        <div class="pp-summary">
+          ${pill('G',    pit.G)}
+          ${pill('ERA',  pit.ERA, true)}
+          ${pill('WHIP', pit.WHIP, true)}
+          ${pill('IP',   pit.IP)}
+          ${pill('W-L',  pit.WL || pit['W-L'])}
+          ${pill('SO',   pit.SO)}
+          ${pill('BB',   pit.BB)}
+          ${pill('H',    pit.H)}
+          ${pill('ER',   pit.ER)}
+        </div>`;
+
+      if (pitLog.length) {
+        sections += statsTable(
+          ['Date', 'Opponent', 'IP', 'H', 'R', 'ER', 'BB', 'SO', 'ERA'],
+          pitLog.map(g => [g.date, g.opp, g.IP, g.H, g.R, g.ER, g.BB, g.SO, g.ERA]),
+          [8]
+        );
+      }
+      sections += '</div>';
+    }
+
+    // ── Fielding section ──────────────────────────────────────
+    if (fld) {
+      sections += `<div class="pp-section">
+        <div class="pp-section-title">Fielding — Season 2026</div>
+        <div class="pp-summary">
+          ${pill('G',    fld.G)}
+          ${pill('FPct', fld.FPct, true)}
+          ${pill('IP',   fld.IP)}
+          ${pill('PO',   fld.PO)}
+          ${pill('A',    fld.A)}
+          ${pill('E',    fld.E)}
+        </div>`;
+
+      if (fldLog.length) {
+        sections += statsTable(
+          ['Date', 'Opponent', 'Pos', 'IP', 'PO', 'A', 'E', 'FPct'],
+          fldLog.map(g => [g.date, g.opp, g.pos, g.IP, g.PO, g.A, g.E, g.FPct]),
+          [7]
+        );
+      }
+      sections += '</div>';
+    }
+
+    if (!bat && !pit && !fld) {
+      sections = '<p style="color:var(--ink-faint);font-family:var(--mono);font-size:13px;">Stats not yet available for this player.</p>';
+    }
+
+    root.innerHTML = `
+      <div class="pp-hero">
+        <div class="pp-photo">
+          ${img ? `<img src="${img}" alt="${name}" onerror="this.style.display='none';this.parentNode.textContent='${ini}'" />` : ini}
+        </div>
+        <div class="pp-meta">
+          <div class="pp-num">#${num}</div>
+          <div class="pp-name">${name}${captain ? ' <span style="color:var(--accent);font-size:0.5em;">★ C</span>' : ''}</div>
+          <div class="pp-tags">
+            <span class="pp-tag">${flag} ${country}</span>
+            <span class="pp-tag">${pos}</span>
+            ${bat  ? `<span class="pp-tag pp-tag--accent">${bat.AVG} AVG · ${bat.OPS} OPS</span>` : ''}
+            ${pit  ? `<span class="pp-tag pp-tag--accent">${pit.ERA} ERA · ${pit.WL || pit['W-L'] || ''} W-L</span>` : ''}
+            ${ext?.bats ? `<span class="pp-tag">Bats ${ext.bats} · Throws ${ext.throws}</span>` : ''}
+          </div>
+        </div>
+      </div>
+
+      <div class="pp-body">
+        <a href="index.html#roster" class="pp-back">← All Players</a>
+        ${sections}
+      </div>`;
+  }
+
+  // Wait for data files + PLAYER_REGISTRY to be populated
+  document.addEventListener('DOMContentLoaded', () => {
+    // PLAYER_REGISTRY is populated by the roster IIFE in app.js.
+    // Give it a tick to run after DOMContentLoaded.
+    setTimeout(render, 50);
+  });
+
+  // Re-render on language switch
+  window._barLang?.onLang?.(() => render());
+})();
+</script>
+</body>
+</html>
