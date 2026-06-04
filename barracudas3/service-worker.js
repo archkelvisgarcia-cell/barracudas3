@@ -1,4 +1,4 @@
-const CACHE = 'barracudas-v1';
+const CACHE = 'barracudas-v3';  // bump when JS files change
 
 const PRECACHE = [
   '/',
@@ -7,10 +7,13 @@ const PRECACHE = [
   '/results.html',
   '/news.html',
   '/article.html',
+  '/player.html',
   '/pink-game-recap.html',
   '/offline.html',
   '/styles.css',
   '/results.css',
+  '/data-schedule.js',
+  '/data-players.js',
   '/app.js',
   '/lang.js',
   '/manifest.json',
