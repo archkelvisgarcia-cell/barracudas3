@@ -13,7 +13,7 @@ const { getStore } = require('@netlify/blobs');
 
 exports.handler = async () => {
   try {
-    const store = getStore({ name: 'bar3-pipeline', consistency: 'strong' });
+    const store = getStore({ name: 'bar3-pipeline', siteID: process.env.NETLIFY_SITE_ID, token: process.env.NETLIFY_AUTH_TOKEN });
     const raw = await store.get('state');
 
     if (!raw) {

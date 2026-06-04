@@ -202,7 +202,7 @@ exports.handler = async (event) => {
     };
   }
 
-  const store = getStore({ name: 'bar3-pipeline', consistency: 'strong' });
+  const store = getStore({ name: 'bar3-pipeline', siteID: process.env.NETLIFY_SITE_ID, token: process.env.NETLIFY_AUTH_TOKEN });
   const anthropicKey = process.env.ANTHROPIC_API_KEY;
   const log = [];
 

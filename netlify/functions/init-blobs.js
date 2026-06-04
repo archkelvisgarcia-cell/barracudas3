@@ -76,7 +76,7 @@ exports.handler = async (event) => {
   const log = [];
 
   try {
-    const store = getStore({ name: 'bar3-pipeline', consistency: 'strong' });
+    const store = getStore({ name: 'bar3-pipeline', siteID: process.env.NETLIFY_SITE_ID, token: process.env.NETLIFY_AUTH_TOKEN });
 
     log.push('Fetching known game IDs from EasyScore…');
     const raw   = await Promise.all(KNOWN_IDS.map(fetchGame));
