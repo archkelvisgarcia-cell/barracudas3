@@ -438,10 +438,11 @@ function initLatestNews() {
     const date = (a.date || '').toUpperCase();
     const meta = [tag, date].filter(Boolean).join(' · ');
     const img  = a.image || 'assets/og-image.jpg';
+    const pos  = a.imagePosition || 'center 25%';
     return `
       <a class="hn-card reveal" data-delay="${i}" href="${a.href || 'news.html'}">
         <div class="hn-card-img">
-          <img src="${img}" alt="${a.headline}" loading="lazy" />
+          <img src="${img}" alt="${a.headline}" loading="lazy" style="object-position:${pos}" />
         </div>
         <div class="hn-card-body">
           <div class="hn-card-tag">${meta}</div>
