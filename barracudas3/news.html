@@ -409,7 +409,7 @@ function searchNews(q) {
       if (existing.has(a.id)) continue;
       const sd = parseSortDate(a.date);
       const el = document.createElement('article');
-      el.className = 'news-card reveal';
+      el.className = 'news-card reveal in';
       el.dataset.category = (a.tag || '').toLowerCase().includes('recap') ? 'recap' : 'club';
       el.dataset.sortDate = sd;
       el.dataset.articleId = a.id;

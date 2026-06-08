@@ -407,7 +407,7 @@ function initNewsFeature() {
       ${slidesHtml}
       ${dotsHtml}
     </div>
-    <div class="body reveal">
+    <div class="body">
       <span class="byline" style="color:${tagColor};">${a.tag} · ${a.date} · ${venue}</span>
       <h2>${a.headline}<span class="y">.</span></h2>
       <p style="font-size:18px;color:var(--ink);font-weight:500;margin-bottom:16px;">${a.summary}</p>
