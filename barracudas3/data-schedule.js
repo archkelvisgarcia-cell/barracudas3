@@ -96,6 +96,7 @@ const NEWS_ARTICLES = [
     summary: 'Zürich\'s NLA squad handed BAR3 a humbling 17–3 defeat at Heerenschürli on Tuesday evening, exposing the gap between the club\'s top and development squads.',
     body: 'It was a tough Tuesday night at Heerenschürli as the Zürich Barracudas NLA — the club\'s top squad — came calling and left no room for doubt, handing BAR3 a 17–3 defeat in a NL Baseball Gruppe A contest. From the opening inning, the NLA\'s superior pitching and disciplined approach at the plate kept BAR3\'s bats cold. The offense managed just three runs on the night, with Jhomar Rosa Lima (1-for-2, 1 RBI), Yohandris Pedroso (1-for-2, 1 RBI), and Jhon Arregoitia (1-for-2, 1 RBI) providing the only bright spots in an otherwise difficult evening. Carlos Moreno added a base hit but the lineup couldn\'t string together the big innings BAR3 has shown in recent weeks. Elvis Del Valle, Juan Malchans, and José Medina were kept off the hit column entirely. On the mound, BAR3 struggled to contain the NLA\'s potent lineup as the visitors piled up 17 runs across seven innings. Despite the loss, the outing serves as a valuable benchmark — the NLA represents the highest level within the club, and facing them sharpens the competitive edge BAR3 needs heading into the second half of the Gruppe A season. BAR3 returns to action June 7 at home against Challengers 2 in a crucial doubleheader with playoff positioning on the line.',
     image: 'assets/news/recap-june2-ondeck.jpg',
+    carouselImages: ['assets/news/recap-june2-ondeck.jpg', 'assets/news/recap-june2-batter.jpg', 'assets/news/recap-june2-coaches.jpg', 'assets/news/recap-june2-base.jpg', 'assets/news/recap-june2-dugout.jpg'],
     href: 'article.html?id=nla-june2',
     score: { us: 3, them: 17 }, opponent: 'Barracudas NLA', location: 'Home · Heerenschürli',
     notes: '7 innings · NL vs NLA inter-club',
@@ -122,6 +123,7 @@ const NEWS_ARTICLES = [
     summary: 'Vasquez and Elias each delivered mercy-rule gems as BAR3 outscored Sissach 48–1 across both games, capitalizing on 11 Frogs errors to post the most dominant doubleheader in recent memory.',
     body: 'Zürich Barracudas 3 made it a day to remember at Heerenschürli on May 30, sweeping the Sissach Frogs in a historic doubleheader that left absolutely no doubt about who the better team was. In Game 1, Michael Vasquez was untouchable on the mound, holding the Frogs scoreless on four hits over four innings while seven Sissach errors opened the floodgates for a thunderous 27–0 BAR3 mercy-rule victory — 15 hits and 27 runs in four frames. Game 2 brought more of the same. Angel Elias stepped in and picked up right where Vasquez left off, working three efficient innings and allowing just one run as the offense piled on another 21 runs on 17 hits for a 21–1 final. Across seven combined innings, the Barracudas outscored Sissach 48–1, collected 32 hits, and watched the Frogs commit 11 errors. Elvis Del Valle was a force at shortstop all day, Jhomar Rosa Lima anchored third base through both games, and José Medina was a pillar behind the plate. The sweep pushes BAR3\'s Gruppe A record to 5–4. Next up: Challengers 2 at Heerenschürli on June 7.',
     image: 'assets/nightgame-7.jpg',
+    carouselImages: ['assets/nightgame-7.jpg', 'assets/nightgame-14.jpg', 'assets/nightgame-20.jpg', 'assets/nightgame-22.jpg'],
     href: 'article.html?id=frogs-doubleheader-may30',
     score: { us: 48, them: 1 }, opponent: 'Sissach Frogs', location: 'Home · Heerenschürli',
     notes: 'G1: 27-0 (4 inn) · G2: 21-1 (3 inn) · Mercy Rule sweep',
@@ -146,6 +148,7 @@ const NEWS_ARTICLES = [
     headline: 'Barracudas 3 Fall 17–5 in Pink Game as NLA Squad Proves Too Strong',
     summary: 'Under the lights of Heerenschürli, the Barracudas 3 donned their pink uniforms for breast cancer awareness — but the NLA squad had other plans.',
     image: 'assets/news-pink-game-02.jpg',
+    carouselImages: ['assets/nightgame-2.jpg', 'assets/nightgame-7.jpg', 'assets/nightgame-14.jpg', 'assets/nightgame-20.jpg', 'assets/nightgame-22.jpg', 'assets/pink-game-team.jpg', 'assets/news-pink-game-02.jpg'],
     href: 'pink-game-recap.html', featured: true,
     score: { us: 5, them: 17 }, opponent: 'Barracudas NLA', location: 'Home · Heerenschürli',
     i18n: {

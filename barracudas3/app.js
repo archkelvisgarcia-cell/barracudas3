@@ -367,12 +367,13 @@ function initHeroNews() {
 document.addEventListener('DOMContentLoaded', initHeroNews);
 
 // ── NEWS FEATURE CAROUSEL ────────────────────────────────────
-(function () {
+function initNewsFeatureCarousel() {
   const wrap = document.getElementById('newsFeatureCarousel');
   if (!wrap) return;
   const slides = wrap.querySelectorAll('.news-carousel-slide');
   const dots   = wrap.querySelectorAll('.ncd');
   if (!slides.length) return;
+  if (wrap._ct) clearInterval(wrap._ct);
   let cur = 0;
   function goTo(i) {
     slides[cur].classList.remove('active');
@@ -381,9 +382,46 @@ document.addEventListener('DOMContentLoaded', initHeroNews);
     slides[cur].classList.add('active');
     dots[cur] && dots[cur].classList.add('active');
   }
-  dots.forEach((d, i) => d.addEventListener('click', () => { clearInterval(t); goTo(i); t = setInterval(() => goTo(cur + 1), 4000); }));
-  let t = setInterval(() => goTo(cur + 1), 4000);
-})();
+  dots.forEach((d, i) => d.addEventListener('click', () => { clearInterval(wrap._ct); goTo(i); wrap._ct = setInterval(() => goTo(cur + 1), 4000); }));
+  wrap._ct = setInterval(() => goTo(cur + 1), 4000);
+}
+
+function initNewsFeature() {
+  const el = document.getElementById('newsFeatureEl');
+  if (!el || typeof NEWS_ARTICLES === 'undefined' || !NEWS_ARTICLES.length) return;
+  const a = NEWS_ARTICLES[0];
+  const tagColor = a.tagColor || '#F0B429';
+  const images = a.carouselImages || (a.image ? [a.image] : ['assets/nightgame-7.jpg']);
+  const venue = (a.location || 'Heerenschürli').split('·').pop().trim();
+  const slidesHtml = images.map((img, i) =>
+    `<div class="news-carousel-slide${i === 0 ? ' active' : ''}" style="background-image:url('${img}')"></div>`
+  ).join('');
+  const dotsHtml = images.length > 1
+    ? `<div class="news-carousel-dots">${images.map((_, i) => `<button class="ncd${i === 0 ? ' active' : ''}"></button>`).join('')}</div>`
+    : '';
+  const shareUrl = encodeURIComponent('https://barracudas3.netlify.app/news.html');
+  const shareText = encodeURIComponent('Zürich Barracudas 3: ' + a.headline);
+  el.style.borderLeft = `4px solid ${tagColor}`;
+  el.innerHTML = `
+    <div class="img" id="newsFeatureCarousel">
+      ${slidesHtml}
+      ${dotsHtml}
+    </div>
+    <div class="body reveal">
+      <span class="byline" style="color:${tagColor};">${a.tag} · ${a.date} · ${venue}</span>
+      <h2>${a.headline}<span class="y">.</span></h2>
+      <p style="font-size:18px;color:var(--ink);font-weight:500;margin-bottom:16px;">${a.summary}</p>
+      <a href="${a.href || '#'}" class="btn btn-ghost" style="align-self:start;margin-top:8px;border-color:${tagColor};color:${tagColor};">Read article →</a>
+      <div class="share-bar">
+        <span class="share-label">Share</span>
+        <a href="https://wa.me/?text=${shareText}%20%E2%80%93%20${shareUrl}" target="_blank" rel="noopener" class="share-btn whatsapp" title="Share on WhatsApp"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></a>
+        <button class="share-btn copy" onclick="copyLink(this)" title="Copy link"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg></button>
+      </div>
+    </div>
+  `;
+  initNewsFeatureCarousel();
+}
+document.addEventListener('DOMContentLoaded', initNewsFeature);
 
 // ── NEWS CARD CLICK — navigate ignoring share bar ─────────────
 document.addEventListener('DOMContentLoaded', () => {
@@ -1638,6 +1676,7 @@ document.addEventListener('DOMContentLoaded', initLiveScore);
         if (articlesAdded) {
           _sortNews();
           initHeroNews();
+          initNewsFeature();
           if (typeof window.refreshNewsGrid === 'function') window.refreshNewsGrid();
         }
       }
