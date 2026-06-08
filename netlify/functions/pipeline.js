@@ -28,6 +28,11 @@ const ES_HDR    = { 'x-api-key': ES_KEY };
 const SEED_ID    = 19272;
 const PROBE_STEP = 15;
 
+// Confirmed BAR3 game IDs. Re-probed every run to catch late EasyScore entries
+// (EasyScore sometimes assigns an ID before the score is entered, causing the
+// forward probe to pass over it and miss the result when it appears later).
+const CATCHUP_IDS = [19279, 19280];
+
 // Known BAR3 game dates (YYYY-MM-DD). Keep in sync with GAMES[] in app.js.
 // The pipeline only runs on game days or the day after.
 // Add new dates here when the schedule is updated.
@@ -228,11 +233,14 @@ exports.handler = async (event) => {
     const allGames     = state.games    ?? [];
     const articles     = state.articles ?? [];
 
-    // ── Probe next PROBE_STEP IDs ───────────────────────────────
+    // ── Probe next PROBE_STEP IDs + catch-up IDs ──────────────────
     const probeIds = Array.from({ length: PROBE_STEP }, (_, i) => lastProbedId + i + 1);
     log.push(`Probing IDs ${probeIds[0]}–${probeIds[probeIds.length - 1]}`);
 
-    const raw = await Promise.all(probeIds.map(fetchGame));
+    // Also re-probe known IDs that EasyScore may have entered after the forward
+    // probe already passed them (late data entry is common in amateur leagues).
+    const allProbeIds = [...new Set([...CATCHUP_IDS, ...probeIds])];
+    const raw = await Promise.all(allProbeIds.map(fetchGame));
     const found = raw.filter(g => g && isBAR3(g)).map(summarise);
     log.push(`Found ${found.length} BAR3 games in probe window`);
 

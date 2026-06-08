@@ -60,13 +60,13 @@ const GAMES = [
     date: '2026-06-07', time: '11:00', label: 'JUN 7 · 2026 · G1',
     opponent: 'Challengers 2', opponentLogo: 'assets/teams/challengers.png',
     location: 'Home · Heerenschürli', league: 'Gruppe A',
-    result: null, score: null, innings: null, notes: '',
+    result: 'W', score: { us: 23, them: 13 }, innings: 7, notes: '',
   },
   {
     date: '2026-06-07', time: '14:00', label: 'JUN 7 · 2026 · G2',
     opponent: 'Challengers 2', opponentLogo: 'assets/teams/challengers.png',
     location: 'Home · Heerenschürli', league: 'Gruppe A',
-    result: null, score: null, innings: null, notes: '',
+    result: 'W', score: { us: 15, them: 7 }, innings: 7, notes: '',
   },
 ];
 
