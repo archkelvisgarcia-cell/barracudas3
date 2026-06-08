@@ -4,7 +4,18 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Player — Zürich Barracudas 3</title>
+<meta name="description" content="Player profile, stats and highlights — Zürich Barracudas 3." />
 <meta name="robots" content="index, follow" />
+<meta id="metaOgTitle"  property="og:title"        content="Player — Zürich Barracudas 3" />
+<meta id="metaOgDesc"   property="og:description"  content="Player profile, stats and highlights — Zürich Barracudas 3." />
+<meta id="metaOgImage"  property="og:image"        content="https://barracudas3.netlify.app/assets/og-image.jpg" />
+<meta id="metaOgUrl"    property="og:url"          content="https://barracudas3.netlify.app/player.html" />
+<meta property="og:type"      content="profile" />
+<meta property="og:site_name" content="Zürich Barracudas" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta id="metaTwTitle"  name="twitter:title"       content="Player — Zürich Barracudas 3" />
+<meta id="metaTwDesc"   name="twitter:description" content="Player profile, stats and highlights — Zürich Barracudas 3." />
+<meta id="metaTwImage"  name="twitter:image"       content="https://barracudas3.netlify.app/assets/og-image.jpg" />
 <link rel="manifest" href="manifest.json" />
 <meta name="theme-color" content="#0d1f0f" />
 <link rel="apple-touch-icon" href="assets/icons/icon-180x180.png" />
@@ -224,6 +235,16 @@
 
     // Update page title and meta
     document.title = `${name} #${num} — Zürich Barracudas 3`;
+    (function() {
+      const BASE   = 'https://barracudas3.netlify.app/';
+      const ogImg  = img ? BASE + img : BASE + 'assets/og-image.jpg';
+      const ogTitle = `${name} #${num} — Zürich Barracudas`;
+      const ogDesc  = `#${num} · ${pos}${country ? ' · ' + country : ''} · Zürich Barracudas 3.`;
+      [['metaOgTitle', ogTitle], ['metaTwTitle', ogTitle]].forEach(([id, v]) => { const el = document.getElementById(id); if (el) el.setAttribute('content', v); });
+      [['metaOgDesc',  ogDesc],  ['metaTwDesc',  ogDesc ]].forEach(([id, v]) => { const el = document.getElementById(id); if (el) el.setAttribute('content', v); });
+      [['metaOgImage', ogImg],   ['metaTwImage', ogImg  ]].forEach(([id, v]) => { const el = document.getElementById(id); if (el) el.setAttribute('content', v); });
+      const urlEl = document.getElementById('metaOgUrl'); if (urlEl) urlEl.setAttribute('content', BASE + 'player.html?num=' + num);
+    })();
 
     // ── Hero ──────────────────────────────────────────────────
     let sections = '';

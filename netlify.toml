@@ -1,7 +1,8 @@
 [build]
-  command   = ""
-  publish   = "barracudas3"
-  functions = "netlify/functions"
+  command        = ""
+  publish        = "barracudas3"
+  functions      = "netlify/functions"
+  edge_functions = "netlify/edge-functions"
 
 [build.environment]
   NODE_VERSION = "20"
