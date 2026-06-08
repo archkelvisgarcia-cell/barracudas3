@@ -70,9 +70,33 @@ const GAMES = [
   },
   {
     date: '2026-06-14', time: '11:00', label: 'JUN 14 · 2026',
-    opponent: 'TBD', opponentLogo: 'assets/teams/challengers.png',
+    opponent: 'TBD', opponentLogo: null,
     location: 'TBD', league: 'TOP 6 — Swiss League',
     result: null, score: null, innings: null, notes: '',
+  },
+  {
+    date: '2026-06-28', time: '11:00', label: 'JUN 28 · 2026',
+    opponent: 'TBD', opponentLogo: null,
+    location: 'TBD', league: 'TOP 6 — Swiss League',
+    result: null, score: null, innings: null, notes: 'Fecha por confirmar',
+  },
+  {
+    date: '2026-07-12', time: '11:00', label: 'JUL 12 · 2026',
+    opponent: 'TBD', opponentLogo: null,
+    location: 'TBD', league: 'TOP 6 — Swiss League',
+    result: null, score: null, innings: null, notes: 'Fecha por confirmar',
+  },
+  {
+    date: '2026-07-26', time: '11:00', label: 'JUL 26 · 2026',
+    opponent: 'TBD', opponentLogo: null,
+    location: 'TBD', league: 'Semifinal — Swiss League',
+    result: null, score: null, innings: null, notes: 'Fecha por confirmar',
+  },
+  {
+    date: '2026-08-16', time: '11:00', label: 'AGO 16 · 2026',
+    opponent: 'TBD', opponentLogo: null,
+    location: 'TBD', league: 'Final — Swiss League',
+    result: null, score: null, innings: null, notes: 'Fecha por confirmar',
   },
 ];
 
