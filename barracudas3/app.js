@@ -936,7 +936,9 @@ const STANDINGS_LOGOS = {
   BAR:  'assets/teams/BARLOGO.png',
   IND:  'assets/teams/indians.png',
   BAR3: 'assets/logo.png',
+  CHA:  'assets/teams/challengers.png',
   CHA2: 'assets/teams/challengers.png',
+  FLY:  'assets/teams/flyers.png',
   FLY2: 'assets/teams/flyers.png',
   FRO:  'assets/teams/frogs.png',
 };
@@ -956,15 +958,14 @@ function initHeroStandings() {
   const wrap = document.getElementById('heroMiniStandings');
   if (!wrap) return;
 
-  // Current standings — June 8, 2026 (post June 7 doubleheader vs Challengers 2)
+  // TOP 6 qualified teams — Gruppe phase final standings (June 9, 2026)
   const FALLBACK = [
-    { rank:1, abbr:'BAR',  name:'Zürich Barracudas',    w:11, l:1,  pct:'.917', gb:'—',  isUs:false },
-    { rank:2, abbr:'EAG',  name:'Luzern Eagles',        w:9,  l:1,  pct:'.900', gb:'1',  isUs:false },
-    { rank:3, abbr:'BAR3', name:'Barracudas 3',          w:7,  l:5,  pct:'.583', gb:'3',  isUs:true  },
-    { rank:4, abbr:'IND',  name:'Lausanne Indians',      w:5,  l:5,  pct:'.500', gb:'5',  isUs:false },
-    { rank:5, abbr:'CHA2', name:'Challengers 2',         w:4,  l:8,  pct:'.333', gb:'7',  isUs:false },
-    { rank:6, abbr:'FRO',  name:'Sissach Frogs',         w:0,  l:8,  pct:'.000', gb:'10', isUs:false },
-    { rank:7, abbr:'FLY2', name:'Zürich Flyers 2',       w:0,  l:10, pct:'.000', gb:'10', isUs:false },
+    { rank:1, abbr:'FLY',  name:'Zürich Flyers',      w:10, l:0, pct:'1.000', gb:'—', isUs:false },
+    { rank:2, abbr:'BAR',  name:'Zürich Barracudas',  w:11, l:1, pct:'.917',  gb:'—', isUs:false },
+    { rank:3, abbr:'EAG',  name:'Luzern Eagles',      w:9,  l:1, pct:'.900',  gb:'—', isUs:false },
+    { rank:4, abbr:'LIO',  name:'Lions',              w:6,  l:4, pct:'.600',  gb:'—', isUs:false },
+    { rank:5, abbr:'BAR3', name:'Barracudas 3',        w:7,  l:5, pct:'.583',  gb:'—', isUs:true  },
+    { rank:6, abbr:'CHA',  name:'Challengers',        w:5,  l:5, pct:'.500',  gb:'—', isUs:false },
   ];
 
   function hmsLogo(abbr) {
