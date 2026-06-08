@@ -60,13 +60,13 @@ const GAMES = [
     date: '2026-06-07', time: '11:00', label: 'JUN 7 · 2026 · G1',
     opponent: 'Challengers 2', opponentLogo: 'assets/teams/challengers.png',
     location: 'Home · Heerenschürli', league: 'Gruppe A',
-    result: 'W', score: { us: 23, them: 13 }, innings: 7, notes: '',
+    result: 'W', score: { us: 23, them: 13 }, innings: 8, notes: 'Girasole starts · Rosa Lima HR', recapUrl: 'article.html?id=challengers-g1-june7',
   },
   {
     date: '2026-06-07', time: '14:00', label: 'JUN 7 · 2026 · G2',
     opponent: 'Challengers 2', opponentLogo: 'assets/teams/challengers.png',
     location: 'Home · Heerenschürli', league: 'Gruppe A',
-    result: 'W', score: { us: 15, them: 7 }, innings: 7, notes: '',
+    result: 'W', score: { us: 15, them: 7 }, innings: 7, notes: 'Vasquez W · Sweep', recapUrl: 'article.html?id=challengers-g2-june7',
   },
 ];
 
@@ -89,6 +89,58 @@ const HERO_BG_IMAGES = [
 
 // ── NEWS ARTICLES — single source of truth ──────────────────
 const NEWS_ARTICLES = [
+  {
+    id: 'challengers-g2-june7',
+    date: 'June 7, 2026', tag: 'Game Recap', tagColor: '#F0B429',
+    headline: 'Vasquez Dominates, BAR3 Complete Sweep with 15–7 Win in Game 2',
+    summary: 'Michael Vasquez threw four dominant shutout innings and BAR3\'s offense erupted in the third and sixth to clinch the Sunday sweep over Challengers 2 at Heerenschürli.',
+    image: 'assets/news/recap-june7-pitcher.jpg',
+    carouselImages: ['assets/news/recap-june7-pitcher.jpg', 'assets/news/recap-june7-dugout-vibes.jpg', 'assets/news/recap-june7-batter-swing.jpg', 'assets/news/recap-june7-ondeck.jpg', 'assets/news/recap-june7-full-dugout.jpg'],
+    href: 'article.html?id=challengers-g2-june7',
+    score: { us: 15, them: 7 }, opponent: 'Zürich Challengers 2', location: 'Away · Heerenschürli',
+    notes: 'G2 · 7 innings · Vasquez W',
+    body: '<p>With the Game 1 momentum squarely in their corner, the Zürich Barracudas 3 made it a perfect Sunday at Heerenschürli — a crisp 15–7 victory and a complete doubleheader sweep over Zürich Challengers 2. Michael Vasquez was the story in Game 2, setting the tone with four flawless shutout innings that kept Challengers completely off the board through the first four frames. BAR3\'s bats responded with a five-run third and a five-run sixth inning to provide the cushion Vasquez and the bullpen needed.</p><figure class="art-figure"><img src="assets/news/recap-june7-pitcher.jpg" alt="Vasquez deals on the mound" loading="lazy" /><figcaption class="art-caption">Michael Vasquez (#22) was dominant through four innings, allowing zero runs before exiting in a turbulent fifth.</figcaption></figure><p>The only blemish came in the fifth: Challengers erupted for six runs to briefly make it a contest, chasing Vasquez with two outs. Kelvis Garcia stepped on the mound and stopped the bleeding, then Yohandris Pedroso — primarily a DH — took the ball for the final two innings and surrendered just a single run, completing a composed bullpen effort. The Barracudas answered the fifth-inning scare immediately, piling five more runs in the sixth to push the lead back to double digits. Jhomar Rosa Lima stayed white-hot with two hits and three RBI across the afternoon continuation, while Del Valle and Medina kept delivering from the top of the order.</p><figure class="art-figure"><img src="assets/news/recap-june7-dugout-vibes.jpg" alt="BAR3 dugout celebration" loading="lazy" /><figcaption class="art-caption">The BAR3 dugout was electric after locking up the sweep — two wins, 38 combined runs on the day.</figcaption></figure><p>The final score of 15–7 brings BAR3\'s Gruppe A record to 7–5 and cements June 7 as one of the best days of the season. With 31 combined hits across both games and a pitching staff that — aside from two rough innings — handled Challengers with authority, BAR3 heads into the second half of the campaign with genuine momentum. The sweep also snaps a two-game losing streak from the previous inter-club matchups. Next up: the Gruppe A schedule resumes and the Barracudas will look to keep pressing.</p>',
+    i18n: {
+      es: {
+        tag: 'Resumen de Partido',
+        headline: 'Vasquez domina y BAR3 completa la barrida con victoria 15-7 en el Juego 2',
+        summary: 'Michael Vasquez lanzó cuatro entradas de blanqueada y la ofensiva de BAR3 estalló en el tercero y sexto inning para completar la barrida del domingo ante los Challengers 2.',
+        body: '<p>Con el impulso del Juego 1 de su lado, los Zürich Barracudas 3 sellaron un perfecto domingo en el Heerenschürli con una victoria 15–7 sobre los Zürich Challengers 2, completando la barrida del doble juego. Michael Vasquez fue la figura del Juego 2, dominando con cuatro entradas perfectas de blanqueada antes de que Challengers explotara para seis carreras en el quinto inning. La respuesta de BAR3 fue inmediata: cinco carreras en el tercero y cinco más en el sexto aseguraron el resultado.</p><p>Kelvis Garcia y Yohandris Pedroso cerraron el partido desde el montículo, mientras Jhomar Rosa Lima continuó su racha brillante con dos hits y tres impulsadas. La victoria eleva el récord de BAR3 en Gruppe A a 7-5, con 31 hits combinados en el día y el impulso firmemente del lado barracuda rumbo a la segunda mitad de temporada.</p>',
+      },
+      de: {
+        tag: 'Spielbericht',
+        headline: 'Vasquez glänzt, BAR3 komplettiert Sweep mit 15:7-Sieg in Spiel 2',
+        summary: 'Michael Vasquez warf vier dominante Shutout-Innings und BAR3\'s Offense explodierte im dritten und sechsten Inning, um den Sonntags-Sweep gegen die Challengers 2 zu sichern.',
+        body: '<p>Mit dem Rückenwind aus Spiel 1 machten die Zürich Barracudas 3 den perfekten Sonntag perfekt — ein 15:7-Sieg und ein vollständiger Doubleheader-Sweep gegen die Zürich Challengers 2 im Heerenschürli. Michael Vasquez lieferte mit vier makellosen Shutout-Innings die Vorlage, bevor Challengers im fünften Inning für sechs Läufe sorgten. BAR3 antwortete sofort mit fünf Runs im sechsten Inning und sicherte so den Sieg. Kelvis Garcia und Yohandris Pedroso sorgten vom Mound aus für die Kontrolle, während Jhomar Rosa Lima mit zwei Hits und drei RBI weiter in Topform blieb. Der Sieg verbessert BAR3s Gruppe-A-Bilanz auf 7–5.</p>',
+      },
+    },
+  },
+  {
+    id: 'challengers-g1-june7',
+    date: 'June 7, 2026', tag: 'Game Recap', tagColor: '#F0B429',
+    headline: 'Barracudas 3 Outlast Challengers in Wild 23–13 Eight-Inning Battle',
+    summary: 'BAR3 exploded for 23 runs and 19 hits, withstanding a pair of Challengers surges to claim Game 1 of the Sunday doubleheader — Rosa Lima\'s HR the exclamation mark on a dominant offensive afternoon.',
+    image: 'assets/news/recap-june7-scoreboard.jpg',
+    carouselImages: ['assets/news/recap-june7-scoreboard.jpg', 'assets/news/recap-june7-rosa-lima.jpg', 'assets/news/recap-june7-batter-swing.jpg', 'assets/news/recap-june7-ondeck.jpg', 'assets/news/recap-june7-full-dugout.jpg'],
+    href: 'article.html?id=challengers-g1-june7',
+    score: { us: 23, them: 13 }, opponent: 'Zürich Challengers 2', location: 'Away · Heerenschürli',
+    notes: 'G1 · 8 innings · Girasole starts',
+    body: '<p>The Zürich Barracudas 3 came out firing on all cylinders in Game 1 of Sunday\'s doubleheader, ambushing the Zürich Challengers 2 for four runs in the opening frame and never looked back. A 19-hit offensive onslaught across eight innings — punctuated by Jhomar Rosa Lima\'s towering home run in the fourth inning — gave BAR3 a 23–13 victory that set the tone for the afternoon sweep. Rosa Lima finished with three hits and five RBI, the undisputed catalyst of a lineup that saw every spot in the order contribute.</p><figure class="art-figure"><img src="assets/news/recap-june7-rosa-lima.jpg" alt="Jhomar Rosa Lima rounds the bases" loading="lazy" /><figcaption class="art-caption">Jhomar Rosa Lima (#34) rounds the bases after his fourth-inning home run — his three-hit, five-RBI day powered the BAR3 attack.</figcaption></figure><p>Andrea Girasole took the ball to start and worked through four innings as BAR3 built a commanding lead, though Challengers made things briefly interesting with a four-run second and another three-run push in the seventh. Each time, the BAR3 offense answered the call. Elvis Del Valle sparked the table from the leadoff spot, José Medina drove in three from behind the dish, and the middle of the lineup — Pedroso, Garcia, Moreno — kept the pressure relentless. Hansel Rodriguez, Juan Malchans, and Wilkin Peguero handled the bullpen duties in turns, with Peguero completing a clean eighth to seal the result.</p><figure class="art-figure"><img src="assets/news/recap-june7-batter-swing.jpg" alt="BAR3 batter connects" loading="lazy" /><figcaption class="art-caption">BAR3 connected for 19 hits — the lineup produced in every inning except the fifth as the Challengers defense committed seven errors.</figcaption></figure><p>The Challengers\' seven fielding errors proved costly, repeatedly extending BAR3 innings and turning would-be third outs into crooked numbers on the scoreboard. The final score of 23–13 in eight innings was a testament to BAR3\'s discipline at the plate — 19 clean hits regardless of the errors gifted to them. The team wasted no time regrouping between games: Game 2 was scheduled to begin at 14:00 with Michael Vasquez taking the mound.</p>',
+    i18n: {
+      es: {
+        tag: 'Resumen de Partido',
+        headline: 'Barracudas 3 superan a los Challengers en una batalla de 23-13 en ocho entradas',
+        summary: 'BAR3 explotó para 23 carreras y 19 hits, resistiendo dos amenazas de los Challengers para llevarse el Juego 1 del doble juego del domingo — el jonrón de Rosa Lima fue el punto de exclamación de una tarde ofensiva dominante.',
+        body: '<p>Los Zürich Barracudas 3 salieron disparados en el Juego 1 del doble juego del domingo, anotando cuatro carreras en el primer inning y nunca miraron atrás. Un ataque de 19 hits en ocho entradas — coronado por el jonrón de Jhomar Rosa Lima en el cuarto — le dio a BAR3 una victoria 23–13 sobre los Zürich Challengers 2. Rosa Lima terminó con tres hits y cinco impulsadas, siendo el catalizador indiscutible de una alineación donde todos los spots contribuyeron.</p><p>Elvis Del Valle encendió el partido desde el primero en el orden, José Medina produjo tres carreras desde detrás del plato, y el medio de la alineación — Pedroso, García, Moreno — mantuvo la presión constante. Andrea Girasole inició y trabajó cuatro entradas mientras BAR3 construía su ventaja. Hansel Rodriguez, Juan Malchans y Wilkin Peguero se relevaron en el montículo, con Peguero cerrando una octava entrada limpia para sellar el resultado. Los siete errores de los Challengers resultaron costosos, extendiendo repetidamente las entradas de BAR3.</p>',
+      },
+      de: {
+        tag: 'Spielbericht',
+        headline: 'Barracudas 3 bezwingen Challengers in wildem 23:13-Acht-Innings-Duell',
+        summary: 'BAR3 explodierte für 23 Runs und 19 Hits und widerstand zwei Challengers-Surges, um Spiel 1 des Sonntags-Doubleheaders zu gewinnen — Rosa Limas Home Run war das Ausrufezeichen des Tages.',
+        body: '<p>Die Zürich Barracudas 3 starteten mit einem Feuerwerk in Spiel 1 des Sonntags-Doubleheaders: Vier Runs im ersten Inning setzten den Ton, und ein 19-Hit-Angriff über acht Innings — gekrönt von Jhomar Rosa Limas monströsem Home Run im vierten Inning — brachte BAR3 einen 23:13-Sieg über die Zürich Challengers 2. Rosa Lima schloss den Tag mit drei Hits und fünf RBI ab und war der unbestrittene Motor des BAR3-Angriffs.</p><p>Elvis Del Valle zündete das Feuer vom Leadoff-Spot aus, José Medina lieferte drei RBI hinter dem Schläger, und die Mitte des Line-ups — Pedroso, Garcia, Moreno — hielt den Druck konstant. Andrea Girasole startete und arbeitete vier Innings, während die Bullpen-Trio Rodriguez, Malchans und Peguero die letzten vier Innings sauber verwalteten. Sieben Challengers-Fehler öffneten zusätzliche Türen, aber BAR3 hätte den Sieg auch ohne sie verdient.</p>',
+      },
+    },
+  },
   {
     id: 'nla-june2',
     date: 'June 2, 2026', tag: 'Game Recap', tagColor: '#F0B429',
