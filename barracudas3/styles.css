@@ -3395,3 +3395,64 @@ behold-widget { display: block; }
   color: var(--ink-faint);
   letter-spacing: 0.06em;
 }
+
+/* ── Hero Latest News (home page 3-column grid) ─────────────── */
+.hn-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  background: var(--line);
+  margin-top: 8px;
+}
+@media (max-width: 900px) { .hn-grid { grid-template-columns: 1fr; } }
+
+.hn-card {
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  transition: background 0.2s;
+  outline: none;
+}
+.hn-card:hover { background: var(--bg-elev); }
+
+.hn-card-img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+.hn-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  transition: transform 0.35s ease;
+  display: block;
+}
+.hn-card:hover .hn-card-img img { transform: scale(1.04); }
+
+.hn-card-body {
+  padding: 20px 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+.hn-card-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.hn-card-headline {
+  font-family: var(--display);
+  font-size: clamp(16px, 1.8vw, 22px);
+  line-height: 0.95;
+  text-transform: uppercase;
+  color: var(--ink);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

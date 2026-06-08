@@ -425,6 +425,42 @@ function initNewsFeature() {
 }
 document.addEventListener('DOMContentLoaded', initNewsFeature);
 
+// ── LATEST NEWS (home page 3-column grid) ─────────────────────
+function initLatestNews() {
+  const grid = document.getElementById('latestNewsGrid');
+  if (!grid || typeof NEWS_ARTICLES === 'undefined') return;
+
+  const latest = NEWS_ARTICLES.slice(0, 3);
+  if (!latest.length) return;
+
+  grid.innerHTML = latest.map((a, i) => {
+    const tag  = (a.tag  || '').toUpperCase();
+    const date = (a.date || '').toUpperCase();
+    const meta = [tag, date].filter(Boolean).join(' · ');
+    const img  = a.image || 'assets/og-image.jpg';
+    return `
+      <a class="hn-card reveal" data-delay="${i}" href="${a.href || 'news.html'}">
+        <div class="hn-card-img">
+          <img src="${img}" alt="${a.headline}" loading="lazy" />
+        </div>
+        <div class="hn-card-body">
+          <div class="hn-card-tag">${meta}</div>
+          <div class="hn-card-headline">${a.headline}</div>
+        </div>
+      </a>`;
+  }).join('');
+
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, { threshold: 0.1 });
+    grid.querySelectorAll('.reveal').forEach(e => io.observe(e));
+  } else {
+    grid.querySelectorAll('.reveal').forEach(e => e.classList.add('in'));
+  }
+}
+document.addEventListener('DOMContentLoaded', initLatestNews);
+
 // ── NEWS CARD CLICK — navigate ignoring share bar ─────────────
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.news-card[data-article-href]').forEach(card => {
