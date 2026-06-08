@@ -715,10 +715,10 @@ function calculateAwards() {
     return invert ? 100 - pct : pct;
   }
 
-  // ── Golden Glove: G ≥ 3, IP ≥ 10
+  // ── Golden Glove: IP ≥ 18 (≈50% del promedio del equipo: 31 IP)
   //    Sort: E↑ → FPct↓ → IP↓ → RF↓
   const gg = players
-    .filter(p => p.fld && p.fld.G >= 3 && f(p.fld.IP) >= 10)
+    .filter(p => p.fld && f(p.fld.IP) >= 18)
     .sort((a, b) => {
       if (a.fld.E !== b.fld.E)         return a.fld.E - b.fld.E;
       if (f(a.fld.FPct) !== f(b.fld.FPct)) return f(b.fld.FPct) - f(a.fld.FPct);
@@ -735,10 +735,10 @@ function calculateAwards() {
       ],
     }));
 
-  // ── Silver Slugger: PA ≥ 10, AB ≥ 8
+  // ── Silver Slugger: PA ≥ 20, AB ≥ 15 (≈50% del promedio del equipo: 34 PA)
   //    Sort: OPS↓ → AVG↓ → RBI↓ → HR↓
   const ss = players
-    .filter(p => p.bat && p.bat.PA >= 10 && p.bat.AB >= 8)
+    .filter(p => p.bat && p.bat.PA >= 20 && p.bat.AB >= 15)
     .sort((a, b) => {
       const opsD = f(b.bat.OPS) - f(a.bat.OPS); if (opsD) return opsD;
       const avgD = f(b.bat.AVG) - f(a.bat.AVG); if (avgD) return avgD;
@@ -755,10 +755,10 @@ function calculateAwards() {
       ],
     }));
 
-  // ── Cy Young: IP ≥ 3
+  // ── Cy Young: IP ≥ 6 (≈50% del promedio de pitchers: 8.3 IP)
   //    Sort: ERA↑ → WHIP↑ → SO↓ → wins↓
   const cy = players
-    .filter(p => p.pit && f(p.pit.IP) >= 3)
+    .filter(p => p.pit && f(p.pit.IP) >= 6)
     .sort((a, b) => {
       const eraD = f(a.pit.ERA) - f(b.pit.ERA); if (eraD) return eraD;
       const whpD = f(a.pit.WHIP) - f(b.pit.WHIP); if (whpD) return whpD;
@@ -781,16 +781,16 @@ function calculateAwards() {
   const MAX_SO = Math.max(...players.map(p => p.pit?.SO || 0), 1);
   function mvpScore(p) {
     let sc = 0, cats = 0;
-    if (p.bat && p.bat.PA >= 10) {
+    if (p.bat && p.bat.PA >= 20) {
       sc += f(p.bat.OPS) * 40 + f(p.bat.AVG) * 20;
       cats++;
     }
-    if (p.pit && f(p.pit.IP) >= 3) {
+    if (p.pit && f(p.pit.IP) >= 6) {
       sc += Math.max(0, (12 - f(p.pit.ERA)) / 12) * 30;
       sc += (Math.min(p.pit.SO, MAX_SO) / MAX_SO) * 10;
       cats++;
     }
-    if (p.fld && p.fld.G >= 3) {
+    if (p.fld && f(p.fld.IP) >= 18) {
       sc += f(p.fld.FPct) * 10;
       cats++;
     }
@@ -800,10 +800,10 @@ function calculateAwards() {
 
   const mvp = players
     .filter(p => {
-      const gBat = p.bat?.G || 0;
-      const gFld = p.fld?.G || 0;
-      const gPit = (p.pit && f(p.pit.IP) >= 3) ? 3 : 0;
-      return Math.max(gBat, gFld, gPit) >= 3;
+      const qualBat = p.bat && p.bat.PA >= 20;
+      const qualPit = p.pit && f(p.pit.IP) >= 6;
+      const qualFld = p.fld && f(p.fld.IP) >= 18;
+      return qualBat || qualPit || qualFld;
     })
     .map(p => ({ ...p, _mvpSc: mvpScore(p) }))
     .sort((a, b) => b._mvpSc - a._mvpSc)
