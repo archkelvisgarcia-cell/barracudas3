@@ -3,6 +3,15 @@
    Data lives in: data-schedule.js, data-players.js
 ============================================================ */
 
+// Keep NEWS_ARTICLES sorted newest-first. Called once at load and again
+// after pipeline articles are prepended, so NEWS_ARTICLES[0] is always latest.
+function _sortNews() {
+  if (typeof NEWS_ARTICLES !== 'undefined') {
+    NEWS_ARTICLES.sort((a, b) => new Date(b.date) - new Date(a.date));
+  }
+}
+_sortNews();
+
 
 // SHARE — copy current page URL to clipboard with visual feedback
 function copyLink(btn) {
@@ -1626,7 +1635,11 @@ document.addEventListener('DOMContentLoaded', initLiveScore);
           });
           articlesAdded = true;
         }
-        if (articlesAdded) initHeroNews();
+        if (articlesAdded) {
+          _sortNews();
+          initHeroNews();
+          if (typeof window.refreshNewsGrid === 'function') window.refreshNewsGrid();
+        }
       }
 
       // ── Update W-L record display ─────────────────────────────
