@@ -4,6 +4,7 @@
   "description": "Zürich Barracudas Baseball Club website",
   "type": "commonjs",
   "scripts": {
+    "sync": "node scripts/sync-player-stats.js --player=all",
     "generate-icons": "node generate-icons.js",
     "generate-og": "node generate-og-image.js"
   },
