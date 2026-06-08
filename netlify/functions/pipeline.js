@@ -48,7 +48,10 @@ function isGameDay() {
   const yesterday = new Date(swiss);
   yesterday.setDate(yesterday.getDate() - 1);
   const yd = yesterday.toISOString().split('T')[0];
-  return GAME_DATES.has(today) || GAME_DATES.has(yd);
+  const twoDaysAgo = new Date(swiss);
+  twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+  const d2 = twoDaysAgo.toISOString().split('T')[0];
+  return GAME_DATES.has(today) || GAME_DATES.has(yd) || GAME_DATES.has(d2);
 }
 
 // ── EasyScore helpers ──────────────────────────────────────────

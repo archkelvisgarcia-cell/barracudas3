@@ -1576,13 +1576,15 @@ document.addEventListener('DOMContentLoaded', initLiveScore);
           const dgDate = dg.date || '';
           const dgOpp  = (dg.oppName || '').split(' ').pop().toLowerCase();
 
-          const match = GAMES.find(g => {
+          // For doubleheaders: find the first unfilled slot matching date+opponent
+          const candidates = GAMES.filter(g => {
             if (!g.date || g.date !== dgDate) return false;
             const localOpp = g.opponent.split(' ').pop().toLowerCase();
             return localOpp === dgOpp || g.opponent.toLowerCase().includes(dgOpp);
           });
+          const match = candidates.find(g => g.result === null);
 
-          if (match && match.result === null) {
+          if (match) {
             match.result  = dg.won ? 'W' : 'L';
             match.score   = { us: dg.bar3Score ?? 0, them: dg.oppScore ?? 0 };
             match.innings = parseInt(dg.innings) || 9;
