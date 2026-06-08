@@ -12,10 +12,10 @@ const PLAYER_EXTENDED_DATA = {
     fullName: 'Garcia Rondon Kelvis Carmelo',
     age: 38, bats: 'R', throws: 'R',
     batting: {
-      season: { G:11, PA:37, AB:33, R:15, H:13, '2B':3, '3B':0, HR:2, RBI:14, BB:4, SO:4, SB:1, CS:0, HBP:0, SF:0, AVG:'.394', OBP:'.459', SLG:'.667', OPS:'1.126' },
+      season: { G:10, PA:40, AB:34, R:16, H:14, '2B':2, '3B':0, HR:2, RBI:13, BB:4, SO:4, SB:2, CS:0, HBP:1, SF:1, AVG:'.412', OBP:'.475', SLG:'.647', OPS:'1.122' },
       log: [
-        { date:'06/07', opp:'Challengers 2 G2', spot:6, pos:'2B',      AB:2, R:1, H:1, '2B':0, HR:0, RBI:1, BB:0, SO:0, SB:0, AVG:'.394' },
-        { date:'06/07', opp:'Challengers 2 G1', spot:6, pos:'RF',      AB:4, R:2, H:2, '2B':1, HR:0, RBI:2, BB:1, SO:0, SB:0, AVG:'.394' },
+        { date:'06/07', opp:'Challengers 2 G2', spot:10, pos:'P/2B',  AB:0, R:0, H:0, '2B':0, HR:0, RBI:0, BB:0, SO:0, SB:0, HBP:1, AVG:'.412' },
+        { date:'06/07', opp:'Challengers 2 G1', spot:6,  pos:'RF',    AB:5, R:3, H:3, '2B':0, HR:0, RBI:2, BB:1, SO:0, SB:1, SF:1, AVG:'.412' },
         { date:'05/05', opp:'Barracudas NLA',  spot:5, pos:'2B',       AB:3, R:0, H:1, '2B':0, HR:0, RBI:1, BB:1, SO:2, SB:0, AVG:'.370' },
         { date:'05/02', opp:'Luzern Eagles',   spot:5, pos:'2B',       AB:4, R:2, H:1, '2B':0, HR:0, RBI:0, BB:0, SO:1, SB:0, AVG:'.375' },
         { date:'05/02', opp:'Luzern Eagles',   spot:5, pos:'2B/3B',    AB:5, R:3, H:3, '2B':2, HR:1, RBI:3, BB:0, SO:0, SB:0, AVG:'.400' },
@@ -25,9 +25,9 @@ const PLAYER_EXTENDED_DATA = {
       ],
     },
     pitching: {
-      season: { G:3, GS:0, IP:'4.0', H:2, R:0, ER:0, BB:1, SO:8, HR:0, HBP:1, WP:1, BF:17, WL:'0-0', SV:0, OppAVG:'.133', WHIP:'0.75', ERA:'0.00' },
+      season: { G:3, GS:0, IP:'4.0', H:4, R:2, ER:0, BB:3, SO:7, HR:0, HBP:1, WP:2, BF:20, WL:'0-0', SV:0, OppAVG:'.267', WHIP:'1.75', ERA:'0.00' },
       log: [
-        { date:'06/07', opp:'Challengers 2 G2', IP:'0.2', H:0, R:0, ER:0, BB:0, SO:1, HBP:0, WP:0, BF:3,  ERA:'0.00' },
+        { date:'06/07', opp:'Challengers 2 G2', IP:'0.2', H:2, R:2, ER:0, BB:2, SO:0, HBP:0, WP:1, BF:6,  ERA:'0.00' },
         { date:'04/26', opp:'Lausanne Indians',  IP:'2.1', H:2, R:0, ER:0, BB:0, SO:5, HBP:0, WP:1, BF:9,  ERA:'0.00' },
         { date:'04/19', opp:'Therwil Flyers 2', IP:'1.0', H:0, R:0, ER:0, BB:1, SO:2, HBP:1, WP:0, BF:5,  ERA:'0.00' },
       ],
