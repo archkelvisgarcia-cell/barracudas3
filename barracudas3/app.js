@@ -68,15 +68,17 @@ function _t(key) {
 
 // ROSTER — render flip cards directly from JSON stats
 (function () {
-  const grid = document.querySelector('.roster-grid');
   const data = document.getElementById('roster-data');
-  if (!grid || !data) return;
+  if (!data) return;
 
   let roster;
   try { roster = JSON.parse(data.textContent); } catch (e) { return; }
 
-  // Register all players globally
+  // Always register players globally (needed on all pages for modals/stats)
   roster.forEach(p => PLAYER_REGISTRY.set(p.num, p));
+
+  const grid = document.querySelector('.roster-grid');
+  if (!grid) return; // registry only — no grid to render on this page
 
   grid.innerHTML = roster.map((p, i) => `
     <div class="player reveal${p.captain ? ' is-captain' : ''}" data-delay="${i % 4}">
@@ -434,7 +436,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// ── FIRST PITCH — next upcoming game card ────────────────────
+// ── FIRST PITCH — compact next-game badge ────────────────────
 function initFirstPitch() {
   const container = document.getElementById('firstPitchCard');
   if (!container) return;
@@ -443,84 +445,29 @@ function initFirstPitch() {
   const next = GAMES.find(g => new Date(`${g.date}T${g.time}:00`) > now);
 
   if (!next) {
-    container.innerHTML = `<p style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:0.8rem;letter-spacing:0.1em;" data-i18n="next_season_done">SEASON COMPLETE 🦈</p>`;
+    container.innerHTML = `<span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);" data-i18n="next_season_done">SEASON COMPLETE 🦈</span>`;
     return;
   }
 
-  const dt      = new Date(`${next.date}T${next.time}:00`);
-  const dayStr  = dt.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase();
-  const timeStr = `${String(dt.getHours()).padStart(2,'0')}:${String(dt.getMinutes()).padStart(2,'0')}`;
+  const dt       = new Date(`${next.date}T${next.time}:00`);
+  const monthDay = dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).toUpperCase();
+  const timeStr  = `${String(dt.getHours()).padStart(2,'0')}:${String(dt.getMinutes()).padStart(2,'0')}`;
+  const opp      = next.opponent;
+  const loc      = next.location || next.league;
 
-  const nextIdx  = GAMES.indexOf(next);
-  const after    = GAMES[nextIdx + 1];
-  const afterStr = after
-    ? `${new Date(after.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).toUpperCase()} · ${after.opponent.split(' ').pop().toUpperCase()}`
-    : '—';
-
-  container.className = 'match-card reveal in';
   container.innerHTML = `
-    <div class="head">
-      <span class="tag">${dayStr} · ${timeStr}</span>
-      <span class="eyebrow">${next.league}</span>
-    </div>
-    <div class="vs">
-      <div class="team us">
-        <div class="crest"><img src="assets/logo.png" alt="" style="height:48px;width:auto;" loading="lazy" /></div>
-        <div class="name">Barracudas 3</div>
-        <div class="sub">Gruppe A</div>
-      </div>
-      <div class="center">VS</div>
-      <div class="team them">
-        <div class="crest"><img src="${next.opponentLogo}" alt="${next.opponent}" style="height:48px;width:auto;" loading="lazy" onerror="this.style.display='none'" /></div>
-        <div class="name">${next.opponent}</div>
-        <div class="sub">${next.location}</div>
-      </div>
-    </div>
-    <div id="fp-countdown" style="
-      display:grid;grid-template-columns:repeat(4,1fr);gap:8px;
-      margin:14px 0;background:var(--bg-deep);border-radius:var(--r-md);
-      padding:14px 12px;border:1px solid var(--line);">
-      <div style="text-align:center;">
-        <div id="fp-days" style="font-family:var(--display);font-size:28px;line-height:1;color:var(--accent);">—</div>
-        <div style="font-family:var(--mono);font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-faint);margin-top:3px;">Days</div>
-      </div>
-      <div style="text-align:center;">
-        <div id="fp-hours" style="font-family:var(--display);font-size:28px;line-height:1;color:var(--ink);">—</div>
-        <div style="font-family:var(--mono);font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-faint);margin-top:3px;">Hours</div>
-      </div>
-      <div style="text-align:center;">
-        <div id="fp-mins" style="font-family:var(--display);font-size:28px;line-height:1;color:var(--ink);">—</div>
-        <div style="font-family:var(--mono);font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-faint);margin-top:3px;">Min</div>
-      </div>
-      <div style="text-align:center;">
-        <div id="fp-secs" style="font-family:var(--display);font-size:28px;line-height:1;color:var(--ink-mute);">—</div>
-        <div style="font-family:var(--mono);font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-faint);margin-top:3px;">Sec</div>
-      </div>
-    </div>
-    <div class="info-row">
-      <div><div class="k">Date</div><div class="v">${new Date(next.date).toLocaleDateString('en-US',{month:'short',day:'numeric'}).toUpperCase()}</div></div>
-      <div><div class="k">Next</div><div class="v">${afterStr}</div></div>
-      <div><div class="k">League</div><div class="v">${next.league.split(' ·')[0]}</div></div>
-    </div>
-  `;
-
-  // Live countdown — updates every second
-  function tick() {
-    const diff = dt - new Date();
-    if (diff <= 0) { clearInterval(_fpTimer); return; }
-    const d = Math.floor(diff / 86400000);
-    const h = Math.floor((diff % 86400000) / 3600000);
-    const m = Math.floor((diff % 3600000) / 60000);
-    const s = Math.floor((diff % 60000) / 1000);
-    const pad = n => String(n).padStart(2, '0');
-    const el = id => document.getElementById(id);
-    if (el('fp-days'))  el('fp-days').textContent  = d;
-    if (el('fp-hours')) el('fp-hours').textContent = pad(h);
-    if (el('fp-mins'))  el('fp-mins').textContent  = pad(m);
-    if (el('fp-secs'))  el('fp-secs').textContent  = pad(s);
-  }
-  tick();
-  const _fpTimer = setInterval(tick, 1000);
+    <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.1em;
+      text-transform:uppercase;display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;">
+      <span style="background:var(--accent);color:#0d1f0f;font-weight:700;font-size:10px;
+        letter-spacing:0.14em;padding:3px 10px;border-radius:999px;">NEXT</span>
+      <span style="color:var(--ink);">${monthDay}</span>
+      <span style="color:var(--line);">·</span>
+      <span style="color:var(--ink-mute);">${timeStr}</span>
+      <span style="color:var(--line);">·</span>
+      <span style="color:var(--ink);">vs ${opp}</span>
+      <span style="color:var(--line);">·</span>
+      <span style="color:var(--ink-mute);">${loc}</span>
+    </span>`;
 }
 
 document.addEventListener('DOMContentLoaded', initFirstPitch);
@@ -625,7 +572,7 @@ function calculateTopPerformers() {
 
     // ── TOP PITCHER ──
     const pit = ext.pitching?.season;
-    if (pit && ipFloat(pit.IP) >= 4.0) {
+    if (pit && ipFloat(pit.IP) >= 6.0) {
       const era  = fv(pit.ERA);
       const whip = fv(pit.WHIP);
       const s = (era  > 0 ? (1/era)  * 30 : 60) +   // ERA 0.00 → cap at 60
@@ -972,14 +919,14 @@ function initHeroStandings() {
   const wrap = document.getElementById('heroMiniStandings');
   if (!wrap) return;
 
-  // Current standings — June 4, 2026 (from swiss-baseball.ch live data)
+  // Current standings — June 8, 2026 (post June 7 doubleheader vs Challengers 2)
   const FALLBACK = [
-    { rank:1, abbr:'BAR',  name:'Zürich Barracudas',    w:11, l:1,  pct:'.917', gb:'—', isUs:false },
-    { rank:2, abbr:'EAG',  name:'Luzern Eagles',        w:9,  l:1,  pct:'.900', gb:'1', isUs:false },
-    { rank:3, abbr:'BAR3', name:'Barracudas 3',          w:5,  l:5,  pct:'.500', gb:'5', isUs:true  },
-    { rank:4, abbr:'IND',  name:'Lausanne Indians',      w:5,  l:5,  pct:'.500', gb:'5', isUs:false },
-    { rank:5, abbr:'CHA2', name:'Challengers 2',         w:4,  l:6,  pct:'.400', gb:'6', isUs:false },
-    { rank:6, abbr:'FRO',  name:'Sissach Frogs',         w:0,  l:6,  pct:'.000', gb:'8', isUs:false },
+    { rank:1, abbr:'BAR',  name:'Zürich Barracudas',    w:11, l:1,  pct:'.917', gb:'—',  isUs:false },
+    { rank:2, abbr:'EAG',  name:'Luzern Eagles',        w:9,  l:1,  pct:'.900', gb:'1',  isUs:false },
+    { rank:3, abbr:'BAR3', name:'Barracudas 3',          w:7,  l:5,  pct:'.583', gb:'3',  isUs:true  },
+    { rank:4, abbr:'IND',  name:'Lausanne Indians',      w:5,  l:5,  pct:'.500', gb:'5',  isUs:false },
+    { rank:5, abbr:'CHA2', name:'Challengers 2',         w:4,  l:8,  pct:'.333', gb:'7',  isUs:false },
+    { rank:6, abbr:'FRO',  name:'Sissach Frogs',         w:0,  l:8,  pct:'.000', gb:'10', isUs:false },
     { rank:7, abbr:'FLY2', name:'Zürich Flyers 2',       w:0,  l:10, pct:'.000', gb:'10', isUs:false },
   ];
 
@@ -992,7 +939,7 @@ function initHeroStandings() {
   function render(rows) {
     wrap.innerHTML = `<div class="hms-wrap">
       <div class="hms-head">
-        <span class="hms-title">Gruppe A 2026</span>
+        <span class="hms-title">TOP 6 · Swiss League 2026</span>
         <a class="hms-link" href="results.html#standings">Full Standings ↗</a>
       </div>
       ${rows.map(t => `

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Roster — Zürich Barracudas 3 · 2026</title>
+<meta name="description" content="Full active roster for the Zürich Barracudas 3. Player profiles, positions, and 2026 season stats." />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://barracudas3.netlify.app/roster.html" />
+<meta property="og:type"        content="website" />
+<meta property="og:site_name"   content="Zürich Barracudas" />
+<meta property="og:title"       content="Roster — Zürich Barracudas 3 · 2026" />
+<meta property="og:description" content="Full active roster for the Zürich Barracudas 3. Player profiles, positions, and 2026 season stats." />
+<meta property="og:image"       content="https://barracudas3.netlify.app/assets/og-image.jpg" />
+<meta property="og:image:width"  content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:url"         content="https://barracudas3.netlify.app/roster.html" />
+<meta name="twitter:card"        content="summary_large_image" />
+<meta name="twitter:title"       content="Roster — Zürich Barracudas 3 · 2026" />
+<meta name="twitter:description" content="Full active roster. Player profiles, positions, and 2026 season stats." />
+<meta name="twitter:image"       content="https://barracudas3.netlify.app/assets/og-image.jpg" />
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#0d1f0f" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Barracudas" />
+<link rel="apple-touch-icon" href="assets/icons/icon-180x180.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- ============== NAV ============== -->
+<header class="nav">
+  <a href="index.html" class="nav-logo">
+    <img src="assets/logo.png" alt="Barracudas" style="height: 40px; width: auto;" />
+    <span>Barracudas</span>
+  </a>
+  <nav class="nav-links">
+    <a href="index.html" data-i18n="nav_home">Home</a>
+    <a href="schedule.html" data-i18n="nav_schedule">Schedule</a>
+    <a href="results.html" data-i18n="nav_results">Results</a>
+    <a href="news.html" data-i18n="nav_news">News</a>
+    <a href="roster.html" class="active" data-i18n="nav_roster">Roster</a>
+  </nav>
+  <div class="nav-tools">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <div class="lang-switcher">
+      <button class="lang-btn" data-lang="en">ENG</button>
+      <button class="lang-btn" data-lang="es">ESP</button>
+      <button class="lang-btn" data-lang="de">GER</button>
+    </div>
+    <a href="index.html#join" class="nav-cta" data-i18n="nav_join">Join the Club →</a>
+    <button class="icon-btn menu-btn" id="menu-open" aria-label="Open menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobile-menu">
+  <div class="mobile-menu-head">
+    <a href="index.html" class="nav-logo">
+      <img src="assets/logo.png" alt="Barracudas" style="height: 36px; width: auto;" loading="lazy" />
+      <span>Barracudas</span>
+    </a>
+    <button class="icon-btn" id="menu-close" aria-label="Close menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <nav>
+    <a href="index.html"><span data-i18n="nav_home">Home</span><span class="num">01</span></a>
+    <a href="schedule.html"><span data-i18n="nav_schedule">Schedule</span><span class="num">02</span></a>
+    <a href="results.html"><span data-i18n="nav_results">Results</span><span class="num">03</span></a>
+    <a href="news.html"><span data-i18n="nav_news">News</span><span class="num">04</span></a>
+    <a href="roster.html"><span data-i18n="nav_roster">Roster</span><span class="num">05</span></a>
+  </nav>
+  <div class="mobile-menu-foot">
+    <div class="lang-switcher">
+      <button class="lang-btn" data-lang="en">ENG</button>
+      <button class="lang-btn" data-lang="es">ESP</button>
+      <button class="lang-btn" data-lang="de">GER</button>
+    </div>
+    <span>Zürich · CH</span>
+    <span>Est. 1986</span>
+  </div>
+</div>
+
+<!-- ============== PAGE HEADER ============== -->
+<section class="section" style="padding-bottom:0;">
+  <div class="section-head" style="padding-top:clamp(60px,10vw,120px);">
+    <div>
+      <div class="eyebrow reveal" style="margin-bottom:12px;" data-i18n="roster_eyebrow">— Active Roster</div>
+      <h1 class="section-title reveal" data-delay="1">
+        <span data-i18n="roster_h1">The</span> <span class="y" data-i18n="roster_h2">Squad.</span>
+      </h1>
+    </div>
+    <p class="reveal" data-delay="2"
+       style="max-width:380px;color:var(--ink-mute);line-height:1.5;font-size:15px;"
+       data-i18n="roster_sub">Hover over any card to flip it and see real 2026 season stats.</p>
+  </div>
+</section>
+
+<!-- ============== ROSTER (FLIP CARDS) ============== -->
+<section class="roster" id="roster" style="padding-top:0;">
+  <div class="roster-grid"></div>
+
+  <script id="roster-data" type="application/json">
+  [
+    {"first":"Juan","last":"Malchans","num":"1","pos":"IF","country":"DOM","flag":"🇩🇴",
+     "img":"assets/players/jm1.png","easyscoreId":42266,"type":"batter","streak":2,
+     "stats":[{"k":"AVG","v":".293"},{"k":"RBI","v":"16"},{"k":"OBP","v":".408"},{"k":"OPS","v":".823"}]},
+
+    {"first":"Elvis","last":"Del Valle","num":"27","pos":"OF · SS","country":"DOM","flag":"🇩🇴",
+     "img":"assets/players/ev27.png","easyscoreId":26400,"type":"batter","streak":2,
+     "stats":[{"k":"AVG","v":".333"},{"k":"RBI","v":"11"},{"k":"SB","v":"5"},{"k":"OPS","v":"1.029"}]},
+
+    {"first":"Jose","last":"Medina","num":"15","pos":"C","country":"DOM","flag":"🇩🇴",
+     "img":"assets/players/jm15-portrait.png","captain":true,"easyscoreId":37907,"type":"batter","streak":3,
+     "stats":[{"k":"AVG","v":".500"},{"k":"RBI","v":"15"},{"k":"OBP","v":".674"},{"k":"OPS","v":"1.460"}]},
+
+    {"first":"Jhomar","last":"Lima","num":"34","pos":"3B","country":"DOM","flag":"🇩🇴",
+     "img":"assets/players/jhl34.png","easyscoreId":34551,"type":"batter","streak":4,
+     "stats":[{"k":"AVG","v":".600"},{"k":"HR","v":"3"},{"k":"RBI","v":"25"},{"k":"OPS","v":"1.595"}]},
+
+    {"first":"Kelvis","last":"Garcia","num":"20","pos":"2B · RP","country":"DOM","flag":"🇩🇴",
+     "img":"assets/players/kg20.png","easyscoreId":19648,"type":"both","streak":3,
+     "stats":[{"k":"AVG","v":".370"},{"k":"RBI","v":"11"},{"k":"ERA","v":"0.00"},{"k":"OPS","v":"1.100"}]},
+
+    {"first":"Jhon","last":"Arregoitia","num":"77","pos":"1B","country":"CUB","flag":"🇨🇺",
+     "img":"assets/players/ja77.png","easyscoreId":34542,"type":"batter","streak":0,
+     "stats":[{"k":"AVG","v":".132"},{"k":"RBI","v":"9"},{"k":"OBP","v":".283"},{"k":"OPS","v":".441"}]},
+
+    {"first":"Sascha","last":"Litscher","num":"23","pos":"1B","country":"SUI","flag":"🇨🇭",
+     "img":"assets/players/sl23.png","easyscoreId":3825,"type":"batter","streak":2,
+     "stats":[{"k":"AVG","v":".500"},{"k":"RBI","v":"0"},{"k":"SB","v":"1"},{"k":"OPS","v":"1.000"}]},
+
+    {"first":"Carlos","last":"Moreno","num":"30","pos":"CF","country":"VEN","flag":"🇻🇪",
+     "img":"assets/players/cm30.png","easyscoreId":35528,"type":"batter","streak":1,
+     "stats":[{"k":"AVG","v":".314"},{"k":"RBI","v":"8"},{"k":"SB","v":"10"},{"k":"OPS","v":".867"}]},
+
+    {"first":"Wilkin","last":"Peguero","num":"36","pos":"SP · OF","country":"DOM","flag":"🇩🇴",
+     "img":"assets/players/wp36.png","easyscoreId":38086,"type":"pitcher","streak":0,
+     "stats":[{"k":"ERA","v":"9.62"},{"k":"K","v":"10"},{"k":"W-L","v":"1-2"},{"k":"WHIP","v":"2.63"}]},
+
+    {"first":"Francisco Robles","last":"Noa","num":"28","pos":"IF","country":"CUB","flag":"🇨🇺",
+     "img":"assets/players/frn28.png","easyscoreId":9083,"type":"batter","streak":0,
+     "stats":[{"k":"AVG","v":".077"},{"k":"RBI","v":"0"},{"k":"OBP","v":".294"},{"k":"OPS","v":".371"}]},
+
+    {"first":"Clemens","last":"Lombriser","num":"11","pos":"OF","country":"SUI","flag":"🇨🇭",
+     "img":"assets/players/cl11.png","easyscoreId":3831,"type":"batter","streak":1,
+     "stats":[{"k":"AVG","v":".105"},{"k":"RBI","v":"5"},{"k":"OBP","v":".292"},{"k":"OPS","v":".397"}]},
+
+    {"first":"Michael","last":"Vasquez","num":"22","pos":"SP","country":"DOM","flag":"🇩🇴",
+     "img":"assets/players/mv22.png","easyscoreId":37221,"type":"pitcher","streak":0,
+     "stats":[{"k":"ERA","v":"3.50"},{"k":"K","v":"7"},{"k":"W-L","v":"1-1"},{"k":"WHIP","v":"1.81"}]},
+
+    {"first":"Angel","last":"Elias","num":"13","pos":"SP · RP","country":"DOM","flag":"🇩🇴",
+     "img":"assets/players/ae13.png","easyscoreId":47363,"type":"pitcher","streak":0,
+     "stats":[{"k":"ERA","v":"5.09"},{"k":"K","v":"14"},{"k":"W-L","v":"3-0"},{"k":"WHIP","v":"1.55"}]},
+
+    {"first":"Rodriguez Martin","last":"Hansel","num":"8","pos":"OF · RP · SP","country":"DOM","flag":"🇩🇴",
+     "img":"assets/players/rmh8.png","easyscoreId":45832,"type":"both","streak":1,
+     "stats":[{"k":"AVG","v":".500"},{"k":"HR","v":"1"},{"k":"ERA","v":"9.62"},{"k":"WHIP","v":"2.61"}]},
+
+    {"first":"Yohandris","last":"Pedroso","num":"16","pos":"DH","country":"DOM","flag":"🇩🇴",
+     "img":"assets/players/yp00.png","easyscoreId":24327,"type":"batter","streak":0,
+     "stats":[{"k":"AVG","v":".438"},{"k":"RBI","v":"5"},{"k":"OBP","v":".571"},{"k":"OPS","v":"1.196"}]}
+  ]
+  </script>
+</section>
+
+<!-- ============== FOOTER ============== -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div>
+      <div class="nav-logo" style="margin-bottom:20px;">
+        <img src="assets/logo.png" alt="" style="height:40px;width:auto;" loading="lazy" />
+        <span>Barracudas</span>
+      </div>
+      <p style="color:var(--ink-mute);max-width:340px;line-height:1.5;font-size:14px;">
+        <span data-i18n="footer_desc">Zürich Barracudas Baseball Club. Founded 1986. Home of the 2024 NL Baseball Gruppe A Champions.</span>
+      </p>
+    </div>
+    <div>
+      <h4 data-i18n="footer_h_club">Club</h4>
+      <ul>
+        <li><a href="schedule.html" data-i18n="footer_schedule">Schedule</a></li>
+        <li><a href="news.html" data-i18n="footer_news">News</a></li>
+        <li><a href="roster.html" data-i18n="footer_roster">Roster</a></li>
+        <li><a href="index.html#join" data-i18n="footer_join">Join Us</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 data-i18n="footer_h_visit">Visit</h4>
+      <ul>
+        <li><a href="#">Heerenschürli</a></li>
+        <li><a href="#">Zürich, CH</a></li>
+        <li><a href="#" data-i18n="footer_directions">Directions</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 data-i18n="footer_h_connect">Connect</h4>
+      <ul>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Facebook</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-big">BARRACUDAS</div>
+  <div class="footer-meta">
+    <span data-i18n="footer_copy">© 2026 Zürich Barracudas Baseball Club</span>
+    <span data-i18n="footer_tagline">Bite Harder · Est. 1986</span>
+  </div>
+</footer>
+
+<!-- ============ PLAYER PROFILE MODAL ============ -->
+<div id="playerModal" class="player-modal" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="pm-overlay" id="pmOverlay"></div>
+  <div class="pm-box">
+    <button class="pm-close" id="pmClose" aria-label="Cerrar">×</button>
+    <div class="pm-header">
+      <div class="pm-photo" id="pmPhoto"></div>
+      <div class="pm-identity">
+        <span class="pm-badge" id="pmBadge"></span>
+        <h2 class="pm-name" id="pmName"></h2>
+        <p class="pm-pos" id="pmPos"></p>
+      </div>
+    </div>
+    <div class="pm-tabs" id="pmTabs"></div>
+    <div class="pm-tab-content" id="pmTabContent"></div>
+    <div class="pm-extra" id="pmExtra"></div>
+    <div class="pm-links" id="pmLinks"></div>
+  </div>
+</div>
+
+<script src="data-schedule.js"></script>
+<script src="data-players.js"></script>
+<script src="app.js"></script>
+<script src="lang.js"></script>
+</body>
+</html>

@@ -100,7 +100,7 @@
     <a href="schedule.html" data-i18n="nav_schedule">Schedule</a>
     <a href="results.html" data-i18n="nav_results">Results</a>
     <a href="news.html" data-i18n="nav_news">News</a>
-    <a href="#roster" data-i18n="nav_roster">Roster</a>
+    <a href="roster.html" data-i18n="nav_roster">Roster</a>
   </nav>
   <div class="nav-tools">
     <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme">
@@ -178,7 +178,7 @@
         <p data-i18n="hero_tagline">Zurich's premier baseball club. Defending NL Baseball Gruppe A champions, 40 years of grinding through Swiss summers, dirt under the nails, ball in the glove.</p>
         <div class="hero-btns" style="display:flex;gap:12px;">
           <a href="schedule.html" class="btn btn-primary" data-i18n="btn_next_game">Next Game →</a>
-          <a href="#roster" class="btn btn-ghost" data-i18n="btn_meet_squad">Meet the Squad</a>
+          <a href="roster.html" class="btn btn-ghost" data-i18n="btn_meet_squad">Meet the Squad</a>
         </div>
       </div>
 
@@ -191,7 +191,7 @@
       <!-- BOTONES SOLO MOBILE — visibles cuando .hero-tagline se oculta -->
       <div class="hero-btns-mobile">
         <a href="schedule.html" class="btn btn-primary" data-i18n="btn_next_game">Next Game →</a>
-        <a href="#roster" class="btn btn-ghost" data-i18n="btn_meet_squad">Meet the Squad</a>
+        <a href="roster.html" class="btn btn-ghost" data-i18n="btn_meet_squad">Meet the Squad</a>
       </div>
 
       <!-- MINI-STANDINGS WIDGET — populated by initHeroStandings() -->
@@ -207,10 +207,10 @@
 <!-- ============== STATS STRIP ============== -->
 <section class="stats-strip-section">
   <div class="hero-strip">
-    <div><span class="k" data-i18n="strip_record">Record 2026</span><span class="v">5-5</span></div>
-    <div><span class="k" data-i18n="strip_league">League</span><span class="v">Gruppe A</span></div>
+    <div><span class="k" data-i18n="strip_record">Record 2026</span><span class="v">7-5</span></div>
+    <div><span class="k" data-i18n="strip_league">League</span><span class="v">TOP 6</span></div>
     <div><span class="k" data-i18n="strip_home">Home</span><span class="v">Heerenschürli</span></div>
-    <div><span class="k" data-i18n="strip_next">Next</span><span class="v">May 30 · vs Frogs</span></div>
+    <div><span class="k" data-i18n="strip_next">Next</span><span class="v">JUN 14 · 11:00</span></div>
   </div>
   <div class="player-strip" id="playerStrip">
     <!-- JS renders top batter, top pitcher, hitting streak -->
@@ -225,16 +225,15 @@
   </div>
 </div>
 
-<!-- ============== NEXT MATCH ============== -->
-<section class="next-match">
-  <div class="left reveal">
-    <div class="eyebrow" style="margin-bottom:16px;" data-i18n="next_eyebrow">— Next Up</div>
-    <h2><span class="out" data-i18n="next_h1">First</span><br /><span data-i18n="next_h2">Pitch.</span></h2>
-    <p data-i18n="next_body">Tuesday matchup against the NLA Barracudas — the big dogs of Swiss baseball. A chance to test ourselves against the best in the country. Bite harder.</p>
-    <a href="schedule.html" class="btn btn-primary" data-i18n="btn_full_schedule">Full Schedule →</a>
-  </div>
-  <div id="firstPitchCard"></div>
-</section>
+<!-- ============== NEXT GAME — compact badge ============== -->
+<div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  padding:13px var(--pad);background:var(--bg-elev);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);">
+  <div id="firstPitchCard" style="flex:1;min-width:180px;"></div>
+  <a href="schedule.html" class="btn btn-ghost"
+     style="flex-shrink:0;font-size:11px;padding:8px 16px;"
+     data-i18n="btn_full_schedule">Full Schedule →</a>
+</div>
 
 <!-- ============== RESULTS ============== -->
 <section class="section" style="padding-top:0;">
@@ -252,23 +251,10 @@
   </div>
 </section>
 
-<!-- ============== ROSTER (FLIP CARDS) ============== -->
-<section class="roster" id="roster">
-  <div class="section-head">
-    <div>
-      <div class="eyebrow reveal" style="margin-bottom:12px;" data-i18n="roster_eyebrow">— Active Roster</div>
-      <h2 class="section-title reveal" data-delay="1"><span data-i18n="roster_h1">The</span> <span class="y" data-i18n="roster_h2">Squad.</span></h2>
-    </div>
-    <p class="reveal" data-delay="2" style="max-width:380px;color:var(--ink-mute);line-height:1.5;font-size:15px;" data-i18n="roster_sub">Hover over any card to flip it and see real 2026 season stats.</p>
-  </div>
-  <div class="roster-grid"></div>
-
-  <!-- ══════════════════════════════════════════════════════
-       ROSTER DATA — easyscoreId maps each player to EasyScore
-       Pitchers: stats show ERA, K, W-L, WHIP
-       Batters:  stats show AVG, HR, RBI, OBP  (fallback until API loads)
-  ══════════════════════════════════════════════════════ -->
-  <script id="roster-data" type="application/json">
+<!-- ROSTER DATA — kept here to populate PLAYER_REGISTRY on home page
+     (awards, player strip, and modals all depend on it)
+     The visual roster grid lives at roster.html -->
+<script id="roster-data" type="application/json">
   [
     {"first":"Juan","last":"Malchans","num":"1","pos":"IF","country":"DOM","flag":"🇩🇴",
      "img":"assets/players/jm1.png","easyscoreId":42266,"type":"batter","streak":2,
@@ -331,7 +317,6 @@
      "stats":[{"k":"AVG","v":".438"},{"k":"RBI","v":"5"},{"k":"OBP","v":".571"},{"k":"OPS","v":"1.196"}]}
   ]
   </script>
-</section>
 
 <!-- ============== AWARDS ============== -->
 <section class="section awards-section" id="awards">
@@ -415,7 +400,7 @@
       <ul>
         <li><a href="schedule.html" data-i18n="footer_schedule">Schedule</a></li>
         <li><a href="news.html" data-i18n="footer_news">News</a></li>
-        <li><a href="#roster" data-i18n="footer_roster">Roster</a></li>
+        <li><a href="roster.html" data-i18n="footer_roster">Roster</a></li>
         <li><a href="#join" data-i18n="footer_join">Join Us</a></li>
       </ul>
     </div>

@@ -68,6 +68,12 @@ const GAMES = [
     location: 'Home · Heerenschürli', league: 'Gruppe A',
     result: 'W', score: { us: 15, them: 7 }, innings: 7, notes: 'Vasquez W · Sweep', recapUrl: 'article.html?id=challengers-g2-june7',
   },
+  {
+    date: '2026-06-14', time: '11:00', label: 'JUN 14 · 2026',
+    opponent: 'TBD', opponentLogo: 'assets/teams/challengers.png',
+    location: 'TBD', league: 'TOP 6 — Swiss League',
+    result: null, score: null, innings: null, notes: '',
+  },
 ];
 
 // ── HERO BACKGROUND CAROUSEL — Pink Game photos ─────────────

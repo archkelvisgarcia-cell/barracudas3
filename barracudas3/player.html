@@ -105,7 +105,7 @@
     <a href="schedule.html" data-i18n="nav_schedule">Schedule</a>
     <a href="results.html" data-i18n="nav_results">Results</a>
     <a href="news.html" data-i18n="nav_news">News</a>
-    <a href="index.html#roster" class="active" data-i18n="nav_roster">Roster</a>
+    <a href="roster.html" class="active" data-i18n="nav_roster">Roster</a>
   </nav>
   <div class="nav-tools">
     <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme">
@@ -132,7 +132,7 @@
     <a href="schedule.html"><span data-i18n="nav_schedule">Schedule</span><span class="num">02</span></a>
     <a href="results.html"><span data-i18n="nav_results">Results</span><span class="num">03</span></a>
     <a href="news.html"><span data-i18n="nav_news">News</span><span class="num">04</span></a>
-    <a href="index.html#roster"><span data-i18n="nav_roster">Roster</span><span class="num">05</span></a>
+    <a href="roster.html"><span data-i18n="nav_roster">Roster</span><span class="num">05</span></a>
   </nav>
 </div>
 
@@ -155,7 +155,7 @@
   function notFound() {
     root.innerHTML = `<div style="padding:80px var(--pad);text-align:center;">
       <p style="font-family:var(--mono);font-size:14px;color:var(--ink-faint);">Player #${num} not found.</p>
-      <a href="index.html#roster" class="btn btn-ghost" style="margin-top:20px;">← Back to Roster</a>
+      <a href="roster.html" class="btn btn-ghost" style="margin-top:20px;">← Back to Roster</a>
     </div>`;
   }
 
@@ -352,7 +352,7 @@
       </div>
 
       <div class="pp-body">
-        <a href="index.html#roster" class="pp-back">← All Players</a>
+        <a href="roster.html" class="pp-back">← All Players</a>
         ${sections}
       </div>`;
   }
