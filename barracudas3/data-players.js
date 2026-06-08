@@ -283,7 +283,7 @@ const PLAYER_EXTENDED_DATA = {
   '77': { // Jhon Arregoitia
     fullName: 'Arregoitia Villarreal Jhon Manuel', age: 32, bats: 'R', throws: 'R',
     batting: {
-      season: { G:12, PA:52, AB:45, R:14, H:8, '2B':1, '3B':0, HR:0, RBI:14, BB:7, SO:9, SB:3, CS:0, HBP:0, SF:0, AVG:'.178', OBP:'.288', SLG:'.200', OPS:'.488' },
+      season: { G:12, PA:57, AB:46, R:13, H:7, '2B':1, '3B':0, HR:0, RBI:11, BB:9, SO:9, SB:3, CS:0, HBP:2, SF:0, AVG:'.152', OBP:'.316', SLG:'.174', OPS:'.490' },
       log: [
         { date:'06/07', opp:'Challengers 2 G2', spot:8, pos:'1B', AB:3, R:1, H:1, '2B':0, HR:0, RBI:2, BB:0, SO:1, SB:0, AVG:'.178' },
         { date:'06/07', opp:'Challengers 2 G1', spot:8, pos:'1B', AB:4, R:2, H:2, '2B':0, HR:0, RBI:3, BB:0, SO:1, SB:0, AVG:'.178' },
@@ -301,7 +301,7 @@ const PLAYER_EXTENDED_DATA = {
     pitching: null,
     fielding: {
       // StatDef EasyScore (fresh fetch G2): 9-53.0-33-1-1-1 → FPct=(33+1)/(35)=.971
-      season: { G:9, IP:'53.0', PO:33, A:1, E:1, DP:1, PB:0, RF:'5.77', FPct:'.971' },
+      season: { G:0, GS:0, IP:'0', H:0, R:0, ER:0, BB:0, SO:0, HR:0, HBP:0, WP:0, BF:0, WL:'0', SV:0, OppAVG:'.000', WHIP:'0', ERA:'0' },
       log: [
         { date:'05/30', opp:'Sissach Frogs DH', pos:'1B',   IP:'7.0', PO:8, A:0, E:0, FPct:'.971' },
         { date:'05/05', opp:'Barracudas NLA',   pos:'1B',    IP:'7.0', PO:6, A:0, E:0, FPct:'.897' },
