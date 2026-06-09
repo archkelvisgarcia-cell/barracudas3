@@ -17,6 +17,8 @@
 
 const { getStore }  = require('@netlify/blobs');
 const Anthropic     = require('@anthropic-ai/sdk');
+const { calculateAwards, calculateTopPerformers } = require('./_award-calc');
+const { PLAYER_EXTENDED_DATA } = require('../../barracudas3/data-players.js');
 
 const ES_KEY    = process.env.EASYSCORE_API_KEY;
 const TEAM_ID   = parseInt(process.env.EASYSCORE_TEAM_ID || '13054');
@@ -288,6 +290,16 @@ exports.handler = async (event) => {
     // ── Compute current season record ───────────────────────────
     const record = computeRecord(allGames);
 
+    // ── Compute awards from latest player data ───────────────────
+    let awards = null, topPerformers = null;
+    try {
+      awards        = calculateAwards(PLAYER_EXTENDED_DATA);
+      topPerformers = calculateTopPerformers(PLAYER_EXTENDED_DATA);
+      log.push('Awards and top performers calculated successfully');
+    } catch (e) {
+      log.push(`Award calculation failed: ${e.message}`);
+    }
+
     // ── Save state ──────────────────────────────────────────────
     const newState = {
       lastProbedId: lastProbedId + PROBE_STEP,
@@ -295,6 +307,8 @@ exports.handler = async (event) => {
       games:        allGames.sort((a, b) => (b.date || '').localeCompare(a.date || '')),
       articles:     articles.slice(0, 30),
       record,
+      awards,
+      topPerformers,
       lastRun:      new Date().toISOString(),
     };
     await store.set('state', JSON.stringify(newState));

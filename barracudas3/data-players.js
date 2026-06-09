@@ -516,3 +516,6 @@ const PLAYER_EXTENDED_DATA = {
   },
 };
 
+// Node.js compat — lets pipeline.js require() this file for server-side award calc
+if (typeof module !== 'undefined') module.exports = { PLAYER_EXTENDED_DATA };
+

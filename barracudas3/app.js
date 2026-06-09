@@ -563,12 +563,6 @@ function initRecentResults() {
 document.addEventListener('DOMContentLoaded', initRecentResults);
 
 // ── CALCULATE TOP PERFORMERS ───────────────────────────────────
-// Reads PLAYER_EXTENDED_DATA — zero hardcoded values.
-// Returns { batter, pitcher, fielder } or null for each category.
-//
-// TOP BATTER  = (OPS×40) + (AVG×30) + (RBI×1.5) + (HR×3)   min AB ≥ 10
-// TOP PITCHER = (1/ERA×30) + (SO×1.5) + (W×5) + (1/WHIP×20) min IP ≥ 4.0
-// GUANTE ORO  = (FPct×50) + (A×0.5) + (PO×0.3)             min IP ≥ 45.0 (strict)
 function calculateTopPerformers() {
   const EXT = typeof PLAYER_EXTENDED_DATA !== 'undefined' ? PLAYER_EXTENDED_DATA : {};
 
@@ -639,11 +633,24 @@ function calculateTopPerformers() {
 }
 
 // ── PLAYER STATS STRIP ─────────────────────────────────────────
-function initPlayerStats() {
+function initPlayerStats(serverData) {
   const container = document.getElementById('playerStrip');
   if (!container) return;
 
-  const { batter, pitcher, fielder } = calculateTopPerformers();
+  // Use server-computed data if available; enriches display info from PLAYER_REGISTRY
+  let batter, pitcher, fielder;
+  if (serverData) {
+    function enrich(p) {
+      if (!p) return null;
+      const reg = typeof PLAYER_REGISTRY !== 'undefined' ? PLAYER_REGISTRY.get(p.num) : null;
+      return { ...p, img: reg?.img || null, shortName: reg ? `${reg.first.split(' ')[0][0]}. ${reg.last}` : (p.fullName?.split(' ').pop() || `#${p.num}`) };
+    }
+    batter  = enrich(serverData.batter);
+    pitcher = enrich(serverData.pitcher);
+    fielder = enrich(serverData.fielder);
+  } else {
+    ({ batter, pitcher, fielder } = calculateTopPerformers());
+  }
 
   function card(i18nKey, fbLabel, player) {
     const label = _t(i18nKey) || fbLabel;
@@ -824,9 +831,20 @@ function calculateAwards() {
 }
 
 // ── RENDER AWARDS ─────────────────────────────────────────────
-function initAwards() {
+function initAwards(serverAwards) {
   const grid = document.getElementById('awardsGrid');
   if (!grid) return;
+
+  // Enrich server candidates with display data from PLAYER_REGISTRY
+  function enrichCandidate(p) {
+    const reg = typeof PLAYER_REGISTRY !== 'undefined' ? PLAYER_REGISTRY.get(p.num) : null;
+    return {
+      ...p,
+      img:       reg?.img  || null,
+      pos:       reg?.pos  || '—',
+      shortName: reg ? `${reg.first[0]}. ${reg.last}` : (p.fullName?.split(' ').pop() || `#${p.num}`),
+    };
+  }
 
   function renderPhoto(p, size) {
     const ini = p.fullName ? p.fullName.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase() : p.num;
@@ -852,7 +870,17 @@ function initAwards() {
   ];
 
   function renderGrid() {
-    const awards = calculateAwards();
+    let awards;
+    if (serverAwards) {
+      awards = {
+        gg:  (serverAwards.gg  || []).map(enrichCandidate),
+        ss:  (serverAwards.ss  || []).map(enrichCandidate),
+        cy:  (serverAwards.cy  || []).map(enrichCandidate),
+        mvp: (serverAwards.mvp || []).map(enrichCandidate),
+      };
+    } else {
+      awards = calculateAwards();
+    }
     if (!awards) { grid.innerHTML = '<p style="color:var(--ink-faint);font-family:var(--mono);font-size:12px;padding:20px;">No player stats available.</p>'; return; }
 
     const badge = _t('award_badge') || 'CANDIDATE · SEASON IN PROGRESS';
@@ -1663,9 +1691,9 @@ document.addEventListener('DOMContentLoaded', initLiveScore);
         window._refreshScoreboard();
       }
 
-      // ── Re-render Top Performers + Awards after any data update ─
-      initPlayerStats();
-      initAwards();
+      // ── Re-render Top Performers + Awards with server-computed data ─
+      initPlayerStats(data.topPerformers ?? null);
+      initAwards(data.awards ?? null);
     } catch { /* silent — static data already visible */ }
   }
 
