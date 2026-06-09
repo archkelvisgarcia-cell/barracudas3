@@ -146,7 +146,7 @@ const PLAYER_EXTENDED_DATA = {
   },
 
   '28': { // Francisco Robles Noa
-    fullName: 'Francisco Robles Noa', age: 26, bats: 'R', throws: 'R',
+    fullName: 'Francisco Robles Noa', age: 26, bats: 'R', throws: 'R', excludeFromAwards: true,
     batting: {
       season: { G:8, PA:19, AB:15, R:4, H:1, '2B':0, '3B':0, HR:0, RBI:0, BB:3, SO:8, SB:1, CS:0, HBP:1, SF:0, AVG:'.067', OBP:'.263', SLG:'.067', OPS:'.330' },
       log: [

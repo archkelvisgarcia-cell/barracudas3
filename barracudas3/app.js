@@ -695,19 +695,21 @@ function calculateAwards() {
   if (typeof PLAYER_EXTENDED_DATA === 'undefined') return null;
 
   // Build enriched player list from PLAYER_EXTENDED_DATA
-  const players = Object.entries(PLAYER_EXTENDED_DATA).map(([num, ext]) => {
-    const reg = typeof PLAYER_REGISTRY !== 'undefined' ? PLAYER_REGISTRY.get(num) : null;
-    return {
-      num,
-      fullName: ext.fullName || (reg ? `${reg.first} ${reg.last}` : `#${num}`),
-      shortName: reg ? `${reg.first[0]}. ${reg.last}` : (ext.fullName?.split(' ').pop() || `#${num}`),
-      img:  reg?.img || null,
-      pos:  reg?.pos || '—',
-      bat:  ext.batting?.season  || null,
-      pit:  ext.pitching?.season || null,
-      fld:  ext.fielding?.season || null,
-    };
-  });
+  const players = Object.entries(PLAYER_EXTENDED_DATA)
+    .filter(([, ext]) => !ext.excludeFromAwards)
+    .map(([num, ext]) => {
+      const reg = typeof PLAYER_REGISTRY !== 'undefined' ? PLAYER_REGISTRY.get(num) : null;
+      return {
+        num,
+        fullName: ext.fullName || (reg ? `${reg.first} ${reg.last}` : `#${num}`),
+        shortName: reg ? `${reg.first[0]}. ${reg.last}` : (ext.fullName?.split(' ').pop() || `#${num}`),
+        img:  reg?.img || null,
+        pos:  reg?.pos || '—',
+        bat:  ext.batting?.season  || null,
+        pit:  ext.pitching?.season || null,
+        fld:  ext.fielding?.season || null,
+      };
+    });
 
   function f(v) { return parseFloat(v) || 0; }
   function normPct(val, min, max, invert = false) {
