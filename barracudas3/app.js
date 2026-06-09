@@ -961,14 +961,16 @@ function initHeroStandings() {
   const wrap = document.getElementById('heroMiniStandings');
   if (!wrap) return;
 
-  // TOP 6 qualified teams — Gruppe phase final standings (June 9, 2026)
-  const FALLBACK = [
-    { rank:1, abbr:'FLY',  name:'Zürich Flyers',      w:10, l:0, pct:'1.000', gb:'—', isUs:false },
-    { rank:2, abbr:'BAR',  name:'Zürich Barracudas',  w:11, l:1, pct:'.917',  gb:'—', isUs:false },
-    { rank:3, abbr:'EAG',  name:'Luzern Eagles',      w:9,  l:1, pct:'.900',  gb:'—', isUs:false },
-    { rank:4, abbr:'LIO',  name:'Lions',              w:6,  l:4, pct:'.600',  gb:'—', isUs:false },
-    { rank:5, abbr:'BAR3', name:'Barracudas 3',        w:7,  l:5, pct:'.583',  gb:'—', isUs:true  },
-    { rank:6, abbr:'CHA',  name:'Challengers',        w:5,  l:5, pct:'.500',  gb:'—', isUs:false },
+  // TOP 6 — Gruppe phase final standings (June 9, 2026)
+  const GRUPPE_A = [
+    { rank:1, abbr:'BAR',  name:'Zürich Barracudas', w:11, l:1, pct:'.917', isUs:false },
+    { rank:2, abbr:'EAG',  name:'Luzern Eagles',     w:9,  l:1, pct:'.900', isUs:false },
+    { rank:3, abbr:'BAR3', name:'Barracudas 3',       w:7,  l:5, pct:'.583', isUs:true  },
+  ];
+  const GRUPPE_B = [
+    { rank:1, abbr:'FLY',  name:'Zürich Flyers',  w:10, l:0, pct:'1.000', isUs:false },
+    { rank:2, abbr:'LIO',  name:'Lions',          w:6,  l:4, pct:'.600',  isUs:false },
+    { rank:3, abbr:'CHA',  name:'Challengers',    w:5,  l:5, pct:'.500',  isUs:false },
   ];
 
   function hmsLogo(abbr) {
@@ -977,17 +979,17 @@ function initHeroStandings() {
     return `<div class="hms-logo hms-logo--ini">${(abbr || '?')[0]}</div>`;
   }
 
-  function render(rows) {
-    wrap.innerHTML = `<div class="hms-wrap">
+  function renderGroup(label, rows) {
+    return `<div class="hms-wrap">
       <div class="hms-head">
-        <span class="hms-title">TOP 6 · Swiss League 2026</span>
-        <a class="hms-link" href="results.html#standings">Full Standings ↗</a>
+        <span class="hms-title">${label}</span>
+        <span class="hms-col-labels"><span>W</span><span>L</span><span>PCT</span></span>
       </div>
       ${rows.map(t => `
         <div class="hms-row${t.isUs ? ' hms-us' : ''}">
           <span class="hms-rank">${t.rank}</span>
           ${hmsLogo(t.abbr)}
-          <span class="hms-name">${t.isUs ? 'BAR3' : t.name.split(' ').pop()}</span>
+          <span class="hms-name">${t.name.split(' ').pop()}</span>
           <span class="hms-stat">${t.w}</span>
           <span class="hms-stat">${t.l}</span>
           <span class="hms-pct">${t.pct}</span>
@@ -995,26 +997,18 @@ function initHeroStandings() {
     </div>`;
   }
 
-  // Render immediately from hardcoded data
-  render(FALLBACK);
+  function render() {
+    wrap.innerHTML = `
+      <div class="hms-groups">
+        ${renderGroup('Gruppe A', GRUPPE_A)}
+        ${renderGroup('Gruppe B', GRUPPE_B)}
+      </div>
+      <div class="hms-footer-link">
+        <a class="hms-link" href="results.html#standings">Full Standings ↗</a>
+      </div>`;
+  }
 
-  // Silently upgrade from API
-  fetch('/.netlify/functions/standings')
-    .then(r => r.ok ? r.json() : null)
-    .then(data => {
-      if (!data?.standings?.length) return;
-      const rows = data.standings.map((t, i) => ({
-        rank: i + 1,
-        abbr: t.abbr,
-        name: t.name,
-        w: t.W ?? t.w ?? 0,
-        l: t.L ?? t.l ?? 0,
-        pct: t.PCT ?? t.pct ?? '.000',
-        isUs: t.isUs ?? t.abbr === 'BAR3',
-      }));
-      render(rows);
-    })
-    .catch(() => { /* keep FALLBACK */ });
+  render();
 }
 
 document.addEventListener('DOMContentLoaded', initHeroStandings);

@@ -760,6 +760,7 @@ a { color: inherit; text-decoration: none; }
   .hero-headline #heroLiveCard      { order: 0; margin-top: 0; }
   .hero-headline .hero-news-cta    { order: 2; margin-top: 1rem; }
   .hero-headline .hero-btns-mobile { order: 3; }
+  .hms-groups { grid-template-columns: 1fr; gap: 8px; }
 }
 
 /* ── HERO LIVE CARD ── */
@@ -818,7 +819,32 @@ a { color: inherit; text-decoration: none; }
 #heroMiniStandings {
   margin-top: 20px;
   width: 100%;
-  max-width: 420px;
+  max-width: 560px;
+}
+.hms-groups {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.hms-footer-link {
+  margin-top: 8px;
+  text-align: right;
+}
+.hms-col-labels {
+  display: flex;
+  gap: 0;
+  font-family: var(--mono);
+  font-size: 9px;
+  color: rgba(255,255,255,0.25);
+  letter-spacing: 0.05em;
+}
+.hms-col-labels span {
+  min-width: 22px;
+  text-align: center;
+}
+.hms-col-labels span:last-child {
+  min-width: 40px;
+  text-align: right;
 }
 .hms-wrap {
   background: rgba(0,0,0,0.45);
