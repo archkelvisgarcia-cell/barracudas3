@@ -1,5 +1,6 @@
-const CACHE = 'barracudas-v3';  // bump when JS files change
+const CACHE = 'barracudas-v4';  // bumped — data-players.js now Network First
 
+// Static shell files that are safe to precache (change rarely)
 const PRECACHE = [
   '/',
   '/index.html',
@@ -12,12 +13,16 @@ const PRECACHE = [
   '/offline.html',
   '/styles.css',
   '/results.css',
-  '/data-schedule.js',
-  '/data-players.js',
   '/app.js',
   '/lang.js',
   '/manifest.json',
   '/assets/logo.png',
+];
+
+// Data files that must always be fresh — served Network First
+const DATA_FILES = [
+  '/data-players.js',
+  '/data-schedule.js',
 ];
 
 // Install — pre-cache shell
@@ -39,8 +44,9 @@ self.addEventListener('activate', e => {
 });
 
 // Fetch strategy:
-// - HTML pages  → Network First (fresh content, fall back to cache, then offline.html)
-// - Assets      → Cache First (fast, update in background)
+// - HTML pages        → Network First (always fresh, fall back to cache)
+// - Data JS files     → Network First (player stats / schedule must never be stale)
+// - Other assets      → Cache First with background revalidation (fast)
 self.addEventListener('fetch', e => {
   const { request } = e;
   const url = new URL(request.url);
@@ -48,10 +54,11 @@ self.addEventListener('fetch', e => {
   // Only handle same-origin requests
   if (url.origin !== location.origin) return;
 
-  const isHTML = request.headers.get('accept')?.includes('text/html');
+  const isHTML     = request.headers.get('accept')?.includes('text/html');
+  const isDataFile = DATA_FILES.some(f => url.pathname === f);
 
-  if (isHTML) {
-    // Network First for HTML
+  if (isHTML || isDataFile) {
+    // Network First — always try network, fall back to cache
     e.respondWith(
       fetch(request)
         .then(res => {
@@ -65,7 +72,7 @@ self.addEventListener('fetch', e => {
         )
     );
   } else {
-    // Cache First for assets (JS, CSS, images)
+    // Cache First for static assets (CSS, images, fonts, etc.)
     e.respondWith(
       caches.match(request).then(cached => {
         if (cached) {
