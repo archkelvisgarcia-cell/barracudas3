@@ -1,4 +1,4 @@
-const CACHE = 'barracudas-v4';  // bumped — data-players.js now Network First
+const CACHE = 'barracudas-v5';  // bumped — API calls now bypass SW cache entirely
 
 // Static shell files that are safe to precache (change rarely)
 const PRECACHE = [
@@ -53,6 +53,9 @@ self.addEventListener('fetch', e => {
 
   // Only handle same-origin requests
   if (url.origin !== location.origin) return;
+
+  // Netlify Functions (API calls) — never cache, always hit network
+  if (url.pathname.startsWith('/.netlify/')) return;
 
   const isHTML     = request.headers.get('accept')?.includes('text/html');
   const isDataFile = DATA_FILES.some(f => url.pathname === f);
