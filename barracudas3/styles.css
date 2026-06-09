@@ -104,12 +104,31 @@
 [data-theme="light"] .hero-strip .k   { color: var(--ink-faint); }
 [data-theme="light"] .hero-strip .v   { color: var(--ink); }
 
-/* ── Light mode: Top Performers cards ── */
+/* ── Light mode: Top Performers cards (outside hero) ── */
 [data-theme="light"] .ps-card    { background: var(--bg-elev); border: 1px solid var(--line); }
 [data-theme="light"] .ps-photo   { background: var(--bg-deep); border-color: var(--accent); }
 [data-theme="light"] .ps-name    { color: var(--ink); }
 [data-theme="light"] .ps-num     { color: var(--ink-faint); }
 [data-theme="light"] .ps-stat    { color: var(--ink-mute); }
+
+/* ── Top Performers inside hero — always dark/glass regardless of theme ── */
+.hero .player-strip {
+  background: transparent;
+  border-top: 1px solid rgba(255,255,255,0.12);
+  margin-top: 1.5rem;
+}
+.hero .ps-card {
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.hero .ps-name { color: #f8f8f6; }
+.hero .ps-num  { color: rgba(255,255,255,0.45); }
+.hero .ps-stat { color: rgba(255,255,255,0.6); }
+[data-theme="light"] .hero .ps-card { background: rgba(0,0,0,0.5); border: none; }
+[data-theme="light"] .hero .ps-name { color: #f8f8f6; }
+[data-theme="light"] .hero .ps-num  { color: rgba(255,255,255,0.45); }
+[data-theme="light"] .hero .ps-stat { color: rgba(255,255,255,0.6); }
 
 /* ── Light mode: mini-standings inside hero (glass stays dark) ── */
 [data-theme="light"] .hms-wrap {
@@ -758,8 +777,8 @@ a { color: inherit; text-decoration: none; }
   }
   .hero-headline #heroMiniStandings { order: 1; margin-top: 0; }
   .hero-headline #heroLiveCard      { order: 0; margin-top: 0; }
-  .hero-headline .hero-news-cta    { order: 2; margin-top: 1rem; }
-  .hero-headline .hero-btns-mobile { order: 3; }
+  .hero-headline #playerStrip       { order: 2; margin-top: 1rem; }
+  .hero-headline .hero-btns-mobile  { order: 3; }
 
   /* standings compact on mobile — reduce size, never hide rows */
   #heroMiniStandings { max-width: 100%; }

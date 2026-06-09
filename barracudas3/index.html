@@ -185,8 +185,8 @@
       <!-- LIVE GAME BADGE / NEXT GAME — driven by initLiveScore() -->
       <div id="heroLiveCard" style="display:none"></div>
 
-      <!-- NEWS CTA — desktop: floats top-left; mobile: fluye debajo de los botones -->
-      <div class="hero-news-cta" id="heroNewsCta"></div>
+      <!-- TOP PERFORMERS STRIP — desktop: fluye bajo el headline; mobile: order:2 -->
+      <div class="player-strip" id="playerStrip"></div>
 
       <!-- BOTONES SOLO MOBILE — visibles cuando .hero-tagline se oculta -->
       <div class="hero-btns-mobile">
@@ -211,9 +211,6 @@
     <div><span class="k" data-i18n="strip_league">League</span><span class="v">TOP 6</span></div>
     <div><span class="k" data-i18n="strip_home">Home</span><span class="v">Heerenschürli</span></div>
     <div><span class="k" data-i18n="strip_next">Next</span><span class="v">JUN 14 · 11:00</span></div>
-  </div>
-  <div class="player-strip" id="playerStrip">
-    <!-- JS renders top batter, top pitcher, hitting streak -->
   </div>
 </section>
 

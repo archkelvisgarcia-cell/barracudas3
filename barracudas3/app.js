@@ -694,7 +694,7 @@ function initPlayerStats(serverData) {
   });
 }
 
-document.addEventListener('DOMContentLoaded', initPlayerStats);
+document.addEventListener('DOMContentLoaded', () => initPlayerStats(null));
 
 // ── AWARDS SECTION ────────────────────────────────────────────
 // ── AWARDS — pure calculation, no DOM dependencies ────────────
