@@ -3624,7 +3624,7 @@ behold-widget { display: block; }
    INTERACTIVE FIELD SECTION — scroll-driven animation
 ============================================================ */
 .field-section {
-  height: 300vh;
+  height: 250vh;
   position: relative;
 }
 .field-sticky {
@@ -3693,6 +3693,11 @@ behold-widget { display: block; }
   display: block;
   user-select: none;
   -webkit-user-drag: none;
+  /* starts invisible — JS drives opacity + scale via scroll */
+  opacity: 0;
+  transform: scale(0.95);
+  transform-origin: center center;
+  will-change: opacity, transform;
 }
 
 /* ── player pin ── */

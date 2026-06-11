@@ -1922,29 +1922,44 @@ function closePlayerModal() {
 
 // ── INTERACTIVE FIELD SECTION ─────────────────────────────────
 function initFieldSection() {
-  const section = document.getElementById('fieldSection');
+  const section  = document.getElementById('fieldSection');
   if (!section) return;
 
-  const pins   = Array.from(section.querySelectorAll('.fp-pin'));
-  const fill   = document.getElementById('fieldProgress');
-  const cta    = document.getElementById('fieldCta');
+  const pins     = Array.from(section.querySelectorAll('.fp-pin'));
+  const fieldImg = section.querySelector('.field-img');
+  const fill     = document.getElementById('fieldProgress');
+  const cta      = document.getElementById('fieldCta');
 
-  // Reveal thresholds (0‒1) — CF first (far), Catcher last (near)
-  const PIN_T = [0.06, 0.19, 0.32, 0.45, 0.56, 0.68, 0.82];
-  const CTA_T = 0.93;
+  // Field image fades in over first 12% of scroll progress
+  const FIELD_IN = 0.12;
+
+  // 9 players revealed every ~10-11% after field appears
+  // Order: LF → CF → RF → SS → 2B → 3B → 1B → P → C
+  const PIN_T = [0.12, 0.22, 0.33, 0.43, 0.53, 0.62, 0.71, 0.80, 0.89];
+  const CTA_T = 0.95;
 
   function update() {
-    const rect   = section.getBoundingClientRect();
-    const dwell  = section.offsetHeight - window.innerHeight;
+    const rect  = section.getBoundingClientRect();
+    const dwell = section.offsetHeight - window.innerHeight;
     if (dwell <= 0) return;
-    const prog   = Math.min(1, Math.max(0, -rect.top / dwell));
+    const prog  = Math.min(1, Math.max(0, -rect.top / dwell));
 
+    // ── Progress bar ──────────────────────────────────────────
     if (fill) fill.style.width = (prog * 100).toFixed(1) + '%';
 
+    // ── Field image: opacity 0→1 and scale 0.95→1.0 ─────────
+    if (fieldImg) {
+      const t = Math.min(1, prog / FIELD_IN);
+      fieldImg.style.opacity   = t.toFixed(3);
+      fieldImg.style.transform = `scale(${(0.95 + 0.05 * t).toFixed(4)})`;
+    }
+
+    // ── Players: one by one after field is visible ────────────
     pins.forEach((pin, i) => {
       pin.classList.toggle('fp-visible', prog >= (PIN_T[i] ?? 1));
     });
 
+    // ── CTA at end ───────────────────────────────────────────
     if (cta) cta.classList.toggle('fp-cta-visible', prog >= CTA_T);
   }
 
