@@ -1920,6 +1920,50 @@ function closePlayerModal() {
   document.body.style.overflow = '';
 }
 
+// ── INTERACTIVE FIELD SECTION ─────────────────────────────────
+function initFieldSection() {
+  const section = document.getElementById('fieldSection');
+  if (!section) return;
+
+  const pins   = Array.from(section.querySelectorAll('.fp-pin'));
+  const fill   = document.getElementById('fieldProgress');
+  const cta    = document.getElementById('fieldCta');
+
+  // Reveal thresholds (0‒1) — CF first (far), Catcher last (near)
+  const PIN_T = [0.06, 0.19, 0.32, 0.45, 0.56, 0.68, 0.82];
+  const CTA_T = 0.93;
+
+  function update() {
+    const rect   = section.getBoundingClientRect();
+    const dwell  = section.offsetHeight - window.innerHeight;
+    if (dwell <= 0) return;
+    const prog   = Math.min(1, Math.max(0, -rect.top / dwell));
+
+    if (fill) fill.style.width = (prog * 100).toFixed(1) + '%';
+
+    pins.forEach((pin, i) => {
+      pin.classList.toggle('fp-visible', prog >= (PIN_T[i] ?? 1));
+    });
+
+    if (cta) cta.classList.toggle('fp-cta-visible', prog >= CTA_T);
+  }
+
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update, { passive: true });
+  update();
+
+  // Tap → open player profile modal
+  pins.forEach(pin => {
+    pin.addEventListener('click', () => {
+      const reg = typeof PLAYER_REGISTRY !== 'undefined'
+        ? PLAYER_REGISTRY.get(pin.dataset.num) : null;
+      if (reg) openPlayerModal(reg);
+    });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', initFieldSection);
+
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('pmClose')?.addEventListener('click', closePlayerModal);
   document.getElementById('pmOverlay')?.addEventListener('click', closePlayerModal);

@@ -264,6 +264,59 @@
   </div>
 </section>
 
+<!-- ============== INTERACTIVE FIELD ============== -->
+<section class="field-section" id="fieldSection">
+  <div class="field-sticky">
+
+    <!-- animated progress bar -->
+    <div class="field-progress"><div class="field-progress-fill" id="fieldProgress"></div></div>
+
+    <!-- eyebrow label -->
+    <div class="field-eyebrow">— STARTING LINEUP · BARRACUDAS 3 · 2026 —</div>
+
+    <!-- field image + player pins -->
+    <div class="field-img-wrap">
+      <img src="assets/field.png" class="field-img" alt="Campo de béisbol" loading="lazy" />
+
+      <!-- players revealed far→near: CF, 2B, SS, 1B, 3B, P, C -->
+      <div class="fp-pin" style="--fx:50%;--fy:18%" data-num="30">
+        <div class="fp-photo"><img src="assets/players/cm30.png" alt="Moreno" /></div>
+        <div class="fp-badge"><span class="fp-pos-tag">CF</span><span class="fp-name">#30 Moreno</span></div>
+      </div>
+      <div class="fp-pin" style="--fx:60%;--fy:34%" data-num="20">
+        <div class="fp-photo"><img src="assets/players/kg20.png" alt="Garcia" /></div>
+        <div class="fp-badge"><span class="fp-pos-tag">2B</span><span class="fp-name">#20 Garcia</span></div>
+      </div>
+      <div class="fp-pin" style="--fx:38%;--fy:37%" data-num="27">
+        <div class="fp-photo"><img src="assets/players/ev27.png" alt="Del Valle" /></div>
+        <div class="fp-badge"><span class="fp-pos-tag">SS</span><span class="fp-name">#27 Del Valle</span></div>
+      </div>
+      <div class="fp-pin" style="--fx:65%;--fy:50%" data-num="77">
+        <div class="fp-photo"><img src="assets/players/ja77.png" alt="Arregoitia" /></div>
+        <div class="fp-badge"><span class="fp-pos-tag">1B</span><span class="fp-name">#77 Arreg.</span></div>
+      </div>
+      <div class="fp-pin" style="--fx:33%;--fy:50%" data-num="34">
+        <div class="fp-photo"><img src="assets/players/jhl34.png" alt="Lima" /></div>
+        <div class="fp-badge"><span class="fp-pos-tag">3B</span><span class="fp-name">#34 Lima</span></div>
+      </div>
+      <div class="fp-pin" style="--fx:50%;--fy:52%" data-num="22">
+        <div class="fp-photo"><img src="assets/players/mv22.png" alt="Vasquez" /></div>
+        <div class="fp-badge"><span class="fp-pos-tag">P</span><span class="fp-name">#22 Vasquez</span></div>
+      </div>
+      <div class="fp-pin" style="--fx:50%;--fy:78%" data-num="15">
+        <div class="fp-photo"><img src="assets/players/jm15-portrait.png" alt="Medina" /></div>
+        <div class="fp-badge"><span class="fp-pos-tag">C</span><span class="fp-name">#15 Medina</span></div>
+      </div>
+    </div>
+
+    <!-- CTA — fades in at end of scroll -->
+    <div class="field-cta" id="fieldCta">
+      <a href="roster.html" class="btn btn-primary" style="letter-spacing:0.1em;padding:14px 32px;">MEET THE SQUAD →</a>
+    </div>
+
+  </div>
+</section>
+
 <!-- ROSTER DATA — kept here to populate PLAYER_REGISTRY on home page
      (awards, player strip, and modals all depend on it)
      The visual roster grid lives at roster.html -->
