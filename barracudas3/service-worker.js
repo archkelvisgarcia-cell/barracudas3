@@ -1,4 +1,4 @@
-const CACHE = 'barracudas-v5';  // bumped — API calls now bypass SW cache entirely
+const CACHE = 'barracudas-v6';  // bumped — force purge cached CSS for standings fix
 
 // Static shell files that are safe to precache (change rarely)
 const PRECACHE = [
