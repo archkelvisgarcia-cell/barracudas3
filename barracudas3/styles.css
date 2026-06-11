@@ -977,12 +977,18 @@ a { color: inherit; text-decoration: none; }
 
 /* ── Two-column group layout ── */
 .hms-cols {
-  display: grid;
-  grid-template-columns: 1fr 1px 1fr;
+  display: flex;
+}
+.hms-col {
+  flex: 1;
+  min-width: 0;   /* CRUCIAL: allows column to shrink below content size */
+  overflow: hidden;
 }
 .hms-divider {
-  background: rgba(255,255,255,0.08);
+  width: 1px;
+  flex-shrink: 0;
   align-self: stretch;
+  background: rgba(255,255,255,0.08);
 }
 .hms-col-head {
   font-family: var(--mono);
