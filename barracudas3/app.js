@@ -1979,6 +1979,47 @@ function initFieldSection() {
 
 document.addEventListener('DOMContentLoaded', initFieldSection);
 
+// ── BENCH & PITCHERS SECTION ─────────────────────────────────────────────────
+function initBenchSection() {
+  const benchList   = document.getElementById('benchList');
+  const pitcherList = document.getElementById('pitcherList');
+  if (!benchList && !pitcherList) return;
+  if (typeof PLAYER_REGISTRY === 'undefined') return;
+
+  const FIELD_NUMS = new Set(['22','15','77','20','27','34','11','30','13']);
+
+  const bench   = [];
+  const pitchers = [];
+
+  PLAYER_REGISTRY.forEach(p => {
+    if (FIELD_NUMS.has(p.num)) return;
+    if (p.type === 'pitcher' || p.type === 'both') pitchers.push(p);
+    else bench.push(p);
+  });
+
+  function card(p) {
+    return `<div class="bp-card" data-num="${p.num}">
+      <div class="bp-photo"><img src="${p.img}" alt="${p.last}" /></div>
+      <div class="bp-num">#${p.num}</div>
+      <div class="bp-name">${p.first.split(' ')[0]}<br>${p.last}</div>
+    </div>`;
+  }
+
+  if (benchList)   benchList.innerHTML   = bench.map(card).join('');
+  if (pitcherList) pitcherList.innerHTML = pitchers.map(card).join('');
+
+  [...(benchList?.querySelectorAll('[data-num]') || []),
+   ...(pitcherList?.querySelectorAll('[data-num]') || [])].forEach(el => {
+    el.style.cursor = 'pointer';
+    el.addEventListener('click', () => {
+      const p = PLAYER_REGISTRY.get(el.dataset.num);
+      if (p) openPlayerModal(p);
+    });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', initBenchSection);
+
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('pmClose')?.addEventListener('click', closePlayerModal);
   document.getElementById('pmOverlay')?.addEventListener('click', closePlayerModal);

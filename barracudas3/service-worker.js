@@ -1,4 +1,4 @@
-const CACHE = 'barracudas-v6';  // bumped — force purge cached CSS for standings fix
+const CACHE = 'barracudas-v7';  // bumped — bench/pitchers section + field position fixes
 
 // Static shell files that are safe to precache (change rarely)
 const PRECACHE = [
