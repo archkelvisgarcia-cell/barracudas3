@@ -1020,14 +1020,17 @@ function initHeroStandings() {
   const wrap = document.getElementById('heroMiniStandings');
   if (!wrap) return;
 
-  // TOP 6 qualified teams — Gruppe phase final standings (June 9, 2026)
-  const FALLBACK = [
-    { rank:1, abbr:'FLY',  name:'Zürich Flyers',     w:10, l:0, pct:'1.000', isUs:false },
-    { rank:2, abbr:'BAR',  name:'Zürich Barracudas', w:11, l:1, pct:'.917',  isUs:false },
-    { rank:3, abbr:'EAG',  name:'Luzern Eagles',     w:9,  l:1, pct:'.900',  isUs:false },
-    { rank:4, abbr:'LIO',  name:'Lions',             w:6,  l:4, pct:'.600',  isUs:false },
-    { rank:5, abbr:'BAR3', name:'Barracudas 3',       w:7,  l:5, pct:'.583',  isUs:true  },
-    { rank:6, abbr:'CHA',  name:'Challengers',       w:5,  l:5, pct:'.500',  isUs:false },
+  // Gruppe A — NL Baseball Gruppe A final standings (June 2026)
+  const GRUPPE_A = [
+    { abbr:'BAR',  name:'Barracudas', w:11, l:1, pct:'.917',  isUs:false },
+    { abbr:'EAG',  name:'Eagles',     w:9,  l:1, pct:'.900',  isUs:false },
+    { abbr:'BAR3', name:'BAR3',       w:7,  l:5, pct:'.583',  isUs:true  },
+  ];
+  // Gruppe B
+  const GRUPPE_B = [
+    { abbr:'FLY',  name:'Flyers',      w:10, l:0, pct:'1.000', isUs:false },
+    { abbr:'LIO',  name:'Lions',       w:6,  l:4, pct:'.600',  isUs:false },
+    { abbr:'CHA',  name:'Challengers', w:5,  l:5, pct:'.500',  isUs:false },
   ];
 
   function hmsLogo(abbr) {
@@ -1036,25 +1039,33 @@ function initHeroStandings() {
     return `<div class="hms-logo hms-logo--ini">${(abbr || '?')[0]}</div>`;
   }
 
-  function render(rows) {
-    wrap.innerHTML = `<div class="hms-wrap">
-      <div class="hms-head">
-        <span class="hms-title">TOP 6 · Swiss League 2026</span>
-        <a class="hms-link" href="results.html#standings">Full Standings ↗</a>
-      </div>
-      ${rows.map(t => `
-        <div class="hms-row${t.isUs ? ' hms-us' : ''}">
-          <span class="hms-rank">${t.rank}</span>
-          ${hmsLogo(t.abbr)}
-          <span class="hms-name">${t.isUs ? 'BAR3' : t.name.split(' ').pop()}</span>
-          <span class="hms-stat">${t.w}</span>
-          <span class="hms-stat">${t.l}</span>
-          <span class="hms-pct">${t.pct}</span>
-        </div>`).join('')}
+  function renderRow(t) {
+    return `<div class="hms-row${t.isUs ? ' hms-us' : ''}">
+      ${hmsLogo(t.abbr)}
+      <span class="hms-name">${t.name}${t.isUs ? ' ★' : ''}</span>
+      <span class="hms-wl">${t.w}-${t.l}</span>
+      <span class="hms-pct">${t.pct}</span>
     </div>`;
   }
 
-  render(FALLBACK);
+  function renderCol(label, teams) {
+    return `<div class="hms-col">
+      <div class="hms-col-head">${label}</div>
+      ${teams.map(renderRow).join('')}
+    </div>`;
+  }
+
+  wrap.innerHTML = `<div class="hms-wrap">
+    <div class="hms-head">
+      <span class="hms-title">SWISS LEAGUE 2026</span>
+      <a class="hms-link" href="results.html#standings">Full Standings ↗</a>
+    </div>
+    <div class="hms-cols">
+      ${renderCol('— GRUPPE A', GRUPPE_A)}
+      <div class="hms-divider"></div>
+      ${renderCol('— GRUPPE B', GRUPPE_B)}
+    </div>
+  </div>`;
 }
 
 document.addEventListener('DOMContentLoaded', initHeroStandings);
