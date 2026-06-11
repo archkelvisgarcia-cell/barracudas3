@@ -652,6 +652,7 @@ function initPlayerStats(serverData) {
     ({ batter, pitcher, fielder } = calculateTopPerformers());
   }
 
+  // ── Desktop card ──────────────────────────────────────────────
   function card(i18nKey, fbLabel, player) {
     const label = _t(i18nKey) || fbLabel;
     if (!player) {
@@ -679,13 +680,43 @@ function initPlayerStats(serverData) {
     </div>`;
   }
 
-  container.innerHTML = [
+  // ── Mobile ticker item ─────────────────────────────────────────
+  function tickItem(labelKey, fbLabel, player) {
+    if (!player) return '';
+    const label = (_t(labelKey) || fbLabel).toUpperCase();
+    const ini = (player.shortName || '??').replace(/[^A-Za-zÀ-ÿ]/g, '').substring(0, 2).toUpperCase();
+    const photo = player.img
+      ? `<img src="${player.img}" alt="${player.shortName}" onerror="this.parentNode.textContent='${ini}'" />`
+      : ini;
+    return `<span class="ps-tick-item" data-num="${player.num}">` +
+      `<span class="ps-tick-photo">${photo}</span>` +
+      `<span class="ps-tick-label">${label}</span>` +
+      `<span class="ps-tick-name">${player.shortName}</span>` +
+      `<span class="ps-tick-sep">·</span>` +
+      `<span class="ps-tick-stat">${player.statLine}</span>` +
+      `</span><span class="ps-tick-dot" aria-hidden="true">●</span>`;
+  }
+
+  const cardsHtml = `<div class="ps-cards">${[
     card('stat_top_batter',   'Top Batter 2026',    batter),
     card('stat_top_pitcher',  'Top Pitcher 2026',   pitcher),
     card('stat_golden_glove', 'Guante de Oro 2026', fielder),
-  ].join('');
+  ].join('')}</div>`;
 
-  container.querySelectorAll('.ps-card[data-num]').forEach(el => {
+  const tickItems = [
+    tickItem('stat_top_batter',   'TOP BATTER',    batter),
+    tickItem('stat_top_pitcher',  'TOP PITCHER',   pitcher),
+    tickItem('stat_golden_glove', 'GOLDEN GLOVE',  fielder),
+  ].filter(Boolean).join('');
+
+  const tickerHtml = tickItems
+    ? `<div class="ps-ticker-wrap"><div class="ps-ticker-track">${tickItems}${tickItems}</div></div>`
+    : '';
+
+  container.innerHTML = cardsHtml + tickerHtml;
+
+  // Click → open player modal (works on both cards and ticker items)
+  container.querySelectorAll('[data-num]').forEach(el => {
     el.style.cursor = 'pointer';
     el.addEventListener('click', () => {
       const p = typeof PLAYER_REGISTRY !== 'undefined' ? PLAYER_REGISTRY.get(el.dataset.num) : null;

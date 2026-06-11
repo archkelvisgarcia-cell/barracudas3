@@ -112,10 +112,10 @@
 [data-theme="light"] .ps-stat    { color: var(--ink-mute); }
 
 /* ── Top Performers inside hero — always dark/glass regardless of theme ── */
-.hero .player-strip {
+.hero .player-strip { margin-top: 1.5rem; }
+.hero .ps-cards {
   background: transparent;
   border-top: 1px solid rgba(255,255,255,0.12);
-  margin-top: 1.5rem;
 }
 .hero .ps-card {
   background: rgba(0,0,0,0.45);
@@ -129,6 +129,91 @@
 [data-theme="light"] .hero .ps-name { color: #f8f8f6; }
 [data-theme="light"] .hero .ps-num  { color: rgba(255,255,255,0.45); }
 [data-theme="light"] .hero .ps-stat { color: rgba(255,255,255,0.6); }
+
+/* ── Mobile: swap cards for ticker inside hero ── */
+@media (max-width: 768px) {
+  .hero .ps-cards { display: none; }
+  .hero .ps-ticker-wrap {
+    display: flex;
+    overflow: hidden;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    mask-image: linear-gradient(to right, transparent 0%, #000 6%, #000 94%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 6%, #000 94%, transparent 100%);
+  }
+  .ps-ticker-track {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    flex-shrink: 0;
+    animation: ps-scroll 22s linear infinite;
+    padding: 10px 0;
+  }
+  @keyframes ps-scroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .ps-tick-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 0 4px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .ps-tick-item:active { opacity: 0.7; }
+  .ps-tick-photo {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    border: 1.5px solid var(--accent);
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    font-family: var(--display);
+    font-size: 9px;
+    color: var(--accent);
+  }
+  .ps-tick-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+  }
+  .ps-tick-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #7dba90;
+  }
+  .ps-tick-name {
+    font-family: var(--display);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .ps-tick-sep {
+    color: rgba(255,255,255,0.3);
+    font-size: 12px;
+    margin: 0 2px;
+  }
+  .ps-tick-stat {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: rgba(255,255,255,0.82);
+    letter-spacing: 0.04em;
+  }
+  .ps-tick-dot {
+    font-size: 6px;
+    color: var(--accent);
+    margin: 0 14px;
+    opacity: 0.6;
+  }
+}
 
 /* ── Light mode: mini-standings inside hero (glass stays dark) ── */
 [data-theme="light"] .hms-wrap {
@@ -598,13 +683,19 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ── PLAYER STATS STRIP ── */
-.player-strip {
+.player-strip { display: block; }
+
+/* ── Desktop: 3-column card grid ── */
+.ps-cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1px;
   background: var(--line);
   border-top: 1px solid var(--line);
 }
+
+/* ── Mobile ticker (hidden on desktop) ── */
+.ps-ticker-wrap { display: none; }
 
 /* ── Individual player card — MVP circle style ── */
 .ps-card {
@@ -681,7 +772,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 @media (max-width: 800px) {
-  .player-strip { grid-template-columns: 1fr; }
+  .ps-cards { grid-template-columns: 1fr; }
 }
 
 .hero-strip {
