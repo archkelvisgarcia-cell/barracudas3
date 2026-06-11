@@ -1,4 +1,4 @@
-const CACHE = 'barracudas-v8';  // bumped — field mobile responsive fix (aspect-ratio wrap)
+const CACHE = 'barracudas-v9';  // bumped — field mobile fix, standings rank+w/l split, ticker keyframes
 
 // Static shell files that are safe to precache (change rarely)
 const PRECACHE = [

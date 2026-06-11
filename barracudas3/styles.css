@@ -130,11 +130,17 @@
 [data-theme="light"] .hero .ps-num  { color: rgba(255,255,255,0.45); }
 [data-theme="light"] .hero .ps-stat { color: rgba(255,255,255,0.6); }
 
+/* Keyframes defined globally so they work regardless of media-query parsing order */
+@keyframes ps-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
 /* ── Mobile: swap cards for ticker inside hero ── */
 @media (max-width: 768px) {
-  .hero .ps-cards { display: none; }
+  .hero .ps-cards { display: none !important; }
   .hero .ps-ticker-wrap {
-    display: flex;
+    display: flex !important;
     overflow: hidden;
     border-top: 1px solid rgba(255,255,255,0.12);
     mask-image: linear-gradient(to right, transparent 0%, #000 6%, #000 94%, transparent 100%);
@@ -147,10 +153,6 @@
     flex-shrink: 0;
     animation: ps-scroll 22s linear infinite;
     padding: 10px 0;
-  }
-  @keyframes ps-scroll {
-    0%   { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
   }
   .ps-tick-item {
     display: inline-flex;
@@ -873,16 +875,18 @@ a { color: inherit; text-decoration: none; }
 
   /* standings compact on mobile — both columns must fit 375px+ screens */
   #heroMiniStandings { max-width: 100%; width: 100%; }
-  .hms-cols     { grid-template-columns: 1fr 1px 1fr; width: 100%; } /* enforce on mobile */
+  .hms-cols     { grid-template-columns: 1fr 1px 1fr; width: 100%; }
   .hms-head     { padding: 6px 10px 5px; }
   .hms-title    { font-size: 8px; letter-spacing: 0.12em; }
   .hms-link     { font-size: 8px; }
   .hms-col-head { font-size: 8px; padding: 4px 6px 3px; letter-spacing: 0.1em; }
-  .hms-row      { grid-template-columns: 18px 1fr auto auto; gap: 3px; padding: 4px 6px; }
-  .hms-logo     { width: 18px; height: 18px; }
-  .hms-name     { font-size: 10px; }
-  .hms-wl       { font-size: 10px; }
-  .hms-pct      { font-size: 9px; min-width: 28px; }
+  .hms-row      { grid-template-columns: 10px 14px 1fr auto auto auto; gap: 3px; padding: 4px 6px; }
+  .hms-logo     { width: 14px; height: 14px; }
+  .hms-rank     { font-size: 8px; }
+  .hms-name     { font-size: 11px; }
+  .hms-w        { font-size: 11px; min-width: 12px; }
+  .hms-l        { font-size: 11px; min-width: 12px; }
+  .hms-pct      { font-size: 9px; min-width: 26px; }
 }
 
 /* ── HERO LIVE CARD ── */
@@ -1002,12 +1006,12 @@ a { color: inherit; text-decoration: none; }
   border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 
-/* ── Row ── */
+/* ── Row — layout: rank · logo · name · W · L · PCT ── */
 .hms-row {
   display: grid;
-  grid-template-columns: 26px 1fr auto auto;
+  grid-template-columns: 14px 26px 1fr auto auto auto;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   padding: 7px 10px;
   border-bottom: 1px solid rgba(255,255,255,0.05);
   transition: background 0.15s;
@@ -1045,20 +1049,34 @@ a { color: inherit; text-decoration: none; }
   text-overflow: ellipsis;
 }
 .hms-us .hms-name { color: var(--accent); }
-.hms-wl {
+.hms-rank {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: rgba(255,255,255,0.28);
+  text-align: right;
+}
+.hms-w {
   font-family: var(--mono);
   font-size: 11px;
   color: rgba(255,255,255,0.55);
-  text-align: right;
-  white-space: nowrap;
+  text-align: center;
+  min-width: 14px;
 }
-.hms-us .hms-wl { color: rgba(240,180,41,0.9); }
+.hms-l {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: rgba(255,255,255,0.38);
+  text-align: center;
+  min-width: 14px;
+}
+.hms-us .hms-w,
+.hms-us .hms-l { color: rgba(240,180,41,0.9); }
 .hms-pct {
   font-family: var(--mono);
   font-size: 10px;
   color: rgba(255,255,255,0.3);
   text-align: right;
-  min-width: 36px;
+  min-width: 34px;
 }
 .hms-us .hms-pct { color: var(--accent); font-weight: 700; }
 
@@ -3796,20 +3814,26 @@ behold-widget { display: block; }
 
 /* mobile */
 @media (max-width: 768px) {
-  /* Key fix: give the image wrap a natural aspect ratio so the full landscape
-     field image is visible and pin % coordinates map 1:1 to the image.
-     object-fit: cover on a portrait viewport clips the sides, cutting off
-     LF (8.7%) and RF (84.1%) — this avoids that entirely. */
-  .field-img-wrap {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    width: 100%;
-    aspect-ratio: 4/3;
-    height: auto;
-    transform: translateY(-50%);
+  /* Center the image vertically inside the full-viewport sticky frame */
+  .field-sticky {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
+  /* padding-bottom trick: universally supported aspect-ratio (16:10).
+     height:0 + padding-bottom:62.5% = effective height equals 62.5% of width.
+     position:relative makes this the containing block for .fp-pin elements. */
+  .field-img-wrap {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 62.5%;
+    flex-shrink: 0;
+  }
+  /* Image fills the padded box via absolute inset */
   .field-img {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: fill;
@@ -3823,7 +3847,7 @@ behold-widget { display: block; }
 
   /* Layout */
   .field-eyebrow { font-size: 8px; letter-spacing: 0.14em; }
-  .field-cta     { bottom: 2rem; }
+  .field-cta     { bottom: 1.5rem; }
 }
 
 /* ── BENCH & PITCHERS SECTION ──────────────────────────────────────── */

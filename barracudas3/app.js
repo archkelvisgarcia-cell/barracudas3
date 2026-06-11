@@ -1039,11 +1039,13 @@ function initHeroStandings() {
     return `<div class="hms-logo hms-logo--ini">${(abbr || '?')[0]}</div>`;
   }
 
-  function renderRow(t) {
+  function renderRow(t, i) {
     return `<div class="hms-row${t.isUs ? ' hms-us' : ''}">
+      <span class="hms-rank">${i + 1}</span>
       ${hmsLogo(t.abbr)}
       <span class="hms-name">${t.name}${t.isUs ? ' ★' : ''}</span>
-      <span class="hms-wl">${t.w}-${t.l}</span>
+      <span class="hms-w">${t.w}</span>
+      <span class="hms-l">${t.l}</span>
       <span class="hms-pct">${t.pct}</span>
     </div>`;
   }
@@ -1051,7 +1053,7 @@ function initHeroStandings() {
   function renderCol(label, teams) {
     return `<div class="hms-col">
       <div class="hms-col-head">${label}</div>
-      ${teams.map(renderRow).join('')}
+      ${teams.map((t, i) => renderRow(t, i)).join('')}
     </div>`;
   }
 
