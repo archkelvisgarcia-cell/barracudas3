@@ -1,11 +1,9 @@
 name: EasyScore Playwright Scraper
 
 on:
-  # 23:00 hora Suiza (CEST = UTC+2) → 21:00 UTC
   schedule:
     - cron: '0 21 * * *'
 
-  # Trigger manual desde GitHub Actions UI
   workflow_dispatch:
     inputs:
       game_id:
@@ -40,7 +38,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm install --save-dev @playwright/test@latest
+          npm ci
           npx playwright install chromium --with-deps
 
       - name: Run Playwright scraper
