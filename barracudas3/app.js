@@ -1932,13 +1932,16 @@ function initFieldSection() {
   const fill     = document.getElementById('fieldProgress');
   const cta      = document.getElementById('fieldCta');
 
-  // Field image fades in over first 12% of scroll progress
-  const FIELD_IN = 0.12;
+  // Field image fades in over the first 8% of scroll progress
+  const FIELD_IN   = 0.08;
+  // All 9 players appear together at 20% — stagger handled by CSS transition-delay
+  const PINS_REVEAL = 0.20;
+  const CTA_T       = 0.85;
 
-  // 9 players revealed every ~10-11% after field appears
-  // Order: LF → CF → RF → SS → 2B → 3B → 1B → P → C
-  const PIN_T = [0.12, 0.22, 0.33, 0.43, 0.53, 0.62, 0.71, 0.80, 0.89];
-  const CTA_T = 0.95;
+  // Assign per-pin delay so they cascade in as one animation (80ms apart)
+  pins.forEach((pin, i) => {
+    pin.style.transitionDelay = `${i * 80}ms`;
+  });
 
   function update() {
     const rect  = section.getBoundingClientRect();
@@ -1949,19 +1952,18 @@ function initFieldSection() {
     // ── Progress bar ──────────────────────────────────────────
     if (fill) fill.style.width = (prog * 100).toFixed(1) + '%';
 
-    // ── Field image: opacity 0→1 and scale 0.95→1.0 ─────────
+    // ── Field image: fade + scale ─────────────────────────────
     if (fieldImg) {
       const t = Math.min(1, prog / FIELD_IN);
       fieldImg.style.opacity   = t.toFixed(3);
       fieldImg.style.transform = `scale(${(0.95 + 0.05 * t).toFixed(4)})`;
     }
 
-    // ── Players: one by one after field is visible ────────────
-    pins.forEach((pin, i) => {
-      pin.classList.toggle('fp-visible', prog >= (PIN_T[i] ?? 1));
-    });
+    // ── All players appear together, cascade via transition-delay ─
+    const pinsVisible = prog >= PINS_REVEAL;
+    pins.forEach(pin => pin.classList.toggle('fp-visible', pinsVisible));
 
-    // ── CTA at end ───────────────────────────────────────────
+    // ── CTA ───────────────────────────────────────────────────
     if (cta) cta.classList.toggle('fp-cta-visible', prog >= CTA_T);
   }
 

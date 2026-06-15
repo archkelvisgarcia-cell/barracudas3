@@ -1,4 +1,4 @@
-const CACHE = 'barracudas-v9';  // bumped — field mobile fix, standings rank+w/l split, ticker keyframes
+const CACHE = 'barracudas-v10'; // bumped — field image eager load, all-at-once pin reveal
 
 // Static shell files that are safe to precache (change rarely)
 const PRECACHE = [
