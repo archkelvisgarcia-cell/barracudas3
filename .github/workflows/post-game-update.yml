@@ -1,11 +1,9 @@
 name: Post-Game Auto Update
 
 on:
-  # Runs daily at 22:00 Swiss time (CEST = UTC+2 → 20:00 UTC)
   schedule:
     - cron: '0 20 * * *'
 
-  # Manual trigger from GitHub UI
   workflow_dispatch:
     inputs:
       force_from_id:
@@ -23,8 +21,8 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: write   # push commits
-      issues: write     # create batting stats issue
+      contents: write
+      issues: write
 
     steps:
       - name: Checkout repository
@@ -36,6 +34,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
 
       - name: Run post-game update script
         id: update
