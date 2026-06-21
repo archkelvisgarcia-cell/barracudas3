@@ -153,6 +153,20 @@
   <!-- DYNAMIC BACKGROUND SLIDES -->
   <div class="hero-slides" id="heroSlides"></div>
 
+  <!-- TEST: hero video background — remove before committing -->
+  <video class="hero-video-test" id="heroVideoTest" autoplay muted loop playsinline
+    style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;">
+    <source src="assets/hero-video.mp4" type="video/mp4" />
+  </video>
+
+  <!-- TEST: toggle between video and photo carousel — remove before committing -->
+  <button id="heroBgToggle" title="Switch background"
+    style="position:absolute;top:18px;right:18px;z-index:5;width:38px;height:38px;
+    border-radius:50%;border:1px solid rgba(255,255,255,0.25);
+    background:rgba(0,0,0,0.45);color:#fff;font-size:16px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    backdrop-filter:blur(6px);">🖼️</button>
+
   <!-- dark overlay -->
   <div class="hero-overlay"></div>
 
@@ -214,14 +228,6 @@
   </div>
 </section>
 
-<!-- ============== MARQUEE ============== -->
-<div class="marquee">
-  <div class="marquee-track">
-    <span>Gruppe A Champions 2024 <span class="dot">●</span> Zürich Barracudas <span class="dot">●</span> Defend the Title <span class="dot">●</span> Swiss Baseball <span class="dot">●</span> Est. 1986 <span class="dot">●</span> Bite Harder <span class="dot">●</span></span>
-    <span>Gruppe A Champions 2024 <span class="dot">●</span> Zürich Barracudas <span class="dot">●</span> Defend the Title <span class="dot">●</span> Swiss Baseball <span class="dot">●</span> Est. 1986 <span class="dot">●</span> Bite Harder <span class="dot">●</span></span>
-  </div>
-</div>
-
 <!-- ============== NEXT GAME — compact badge ============== -->
 <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;
   padding:13px var(--pad);background:var(--bg-elev);
@@ -280,41 +286,73 @@
 
       <!-- reveal order: outfield (LF→CF→RF) → infield (SS→2B→3B→1B) → P → C -->
       <div class="fp-pin" style="--fx:8.7%;--fy:35.3%" data-num="11">
-        <div class="fp-photo"><img src="assets/players/cl11.png" alt="Lombriser" /></div>
-        <div class="fp-badge"><span class="fp-pos-tag">LF</span><span class="fp-name">#11 Clemens</span></div>
+        <div class="fp-card">
+          <div class="fp-photo"><img src="assets/players/cl11.png" alt="Lombriser" /></div>
+          <div class="fp-card-info"><span class="fp-pos-tag">LF</span><span class="fp-name">#11 Clemens</span></div>
+        </div>
       </div>
       <div class="fp-pin" style="--fx:50%;--fy:28.8%" data-num="30">
-        <div class="fp-photo"><img src="assets/players/cm30.png" alt="Moreno" /></div>
-        <div class="fp-badge"><span class="fp-pos-tag">CF</span><span class="fp-name">#30 Moreno</span></div>
+        <div class="fp-card">
+          <div class="fp-photo"><img src="assets/players/cm30.png" alt="Moreno" /></div>
+          <div class="fp-card-info"><span class="fp-pos-tag">CF</span><span class="fp-name">#30 Moreno</span></div>
+        </div>
       </div>
       <div class="fp-pin" style="--fx:84.1%;--fy:34%" data-num="13">
-        <div class="fp-photo"><img src="assets/players/ae13.png" alt="Elias" /></div>
-        <div class="fp-badge"><span class="fp-pos-tag">RF</span><span class="fp-name">#13 Elias</span></div>
+        <div class="fp-card">
+          <div class="fp-photo"><img src="assets/players/ae13.png" alt="Elias" /></div>
+          <div class="fp-card-info"><span class="fp-pos-tag">RF</span><span class="fp-name">#13 Elias</span></div>
+        </div>
       </div>
       <div class="fp-pin" style="--fx:35.3%;--fy:45.4%" data-num="27">
-        <div class="fp-photo"><img src="assets/players/ev27.png" alt="Del Valle" /></div>
-        <div class="fp-badge"><span class="fp-pos-tag">SS</span><span class="fp-name">#27 Del Valle</span></div>
+        <div class="fp-card">
+          <div class="fp-photo"><img src="assets/players/ev27.png" alt="Del Valle" /></div>
+          <div class="fp-card-info"><span class="fp-pos-tag">SS</span><span class="fp-name">#27 Del Valle</span></div>
+        </div>
       </div>
       <div class="fp-pin" style="--fx:66.4%;--fy:45.8%" data-num="20">
-        <div class="fp-photo"><img src="assets/players/kg20.png" alt="Garcia" /></div>
-        <div class="fp-badge"><span class="fp-pos-tag">2B</span><span class="fp-name">#20 Garcia</span></div>
+        <div class="fp-card">
+          <div class="fp-photo"><img src="assets/players/kg20.png" alt="Garcia" /></div>
+          <div class="fp-card-info"><span class="fp-pos-tag">2B</span><span class="fp-name">#20 Garcia</span></div>
+        </div>
       </div>
       <div class="fp-pin" style="--fx:19.8%;--fy:52%" data-num="34">
-        <div class="fp-photo"><img src="assets/players/jhl34.png" alt="Lima" /></div>
-        <div class="fp-badge"><span class="fp-pos-tag">3B</span><span class="fp-name">#34 Lima</span></div>
+        <div class="fp-card">
+          <div class="fp-photo"><img src="assets/players/jhl34.png" alt="Lima" /></div>
+          <div class="fp-card-info"><span class="fp-pos-tag">3B</span><span class="fp-name">#34 Lima</span></div>
+        </div>
       </div>
       <div class="fp-pin" style="--fx:80.1%;--fy:52%" data-num="77">
-        <div class="fp-photo"><img src="assets/players/ja77.png" alt="Arregoitia" /></div>
-        <div class="fp-badge"><span class="fp-pos-tag">1B</span><span class="fp-name">#77 Arreg.</span></div>
+        <div class="fp-card">
+          <div class="fp-photo"><img src="assets/players/ja77.png" alt="Arregoitia" /></div>
+          <div class="fp-card-info"><span class="fp-pos-tag">1B</span><span class="fp-name">#77 Arreg.</span></div>
+        </div>
       </div>
       <div class="fp-pin" style="--fx:50%;--fy:52%" data-num="22">
-        <div class="fp-photo"><img src="assets/players/mv22.png" alt="Vasquez" /></div>
-        <div class="fp-badge"><span class="fp-pos-tag">P</span><span class="fp-name">#22 Vasquez</span></div>
+        <div class="fp-card">
+          <div class="fp-photo"><img src="assets/players/mv22.png" alt="Vasquez" /></div>
+          <div class="fp-card-info"><span class="fp-pos-tag">P</span><span class="fp-name">#22 Vasquez</span></div>
+        </div>
       </div>
       <div class="fp-pin" style="--fx:50%;--fy:68%" data-num="15">
-        <div class="fp-photo"><img src="assets/players/jm15-portrait.png" alt="Medina" /></div>
-        <div class="fp-badge"><span class="fp-pos-tag">C</span><span class="fp-name">#15 Medina</span></div>
+        <div class="fp-card">
+          <div class="fp-photo"><img src="assets/players/jm15-portrait.png" alt="Medina" /></div>
+          <div class="fp-card-info"><span class="fp-pos-tag">C</span><span class="fp-name">#15 Medina</span></div>
+        </div>
       </div>
+    </div>
+
+    <!-- expanded player preview — first-level interaction layer, tap again / CTA → full profile -->
+    <div class="fp-preview" id="fieldPreview" aria-hidden="true">
+      <button class="fp-preview-close" id="fieldPreviewClose" aria-label="Cerrar">×</button>
+      <div class="fp-preview-id">
+        <span class="fp-preview-pos" id="fpPreviewPos"></span>
+        <h3 class="fp-preview-name" id="fpPreviewName"></h3>
+      </div>
+      <div class="fp-preview-split">
+        <div class="fp-preview-photo" id="fpPreviewPhoto"></div>
+        <div class="fp-preview-stats" id="fpPreviewStats"></div>
+      </div>
+      <button class="fp-preview-cta" id="fpPreviewCta" data-i18n="btn_view_profile">View Profile →</button>
     </div>
 
     <!-- CTA — fades in at end of scroll -->
