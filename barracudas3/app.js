@@ -368,6 +368,40 @@ function initHeroNews() {
 
 document.addEventListener('DOMContentLoaded', initHeroNews);
 
+// ── TEST: hero background toggle (video ↔ photo carousel) — remove before committing ──
+function initHeroBgToggle() {
+  const btn    = document.getElementById('heroBgToggle');
+  const video  = document.getElementById('heroVideoTest');
+  const slides = document.getElementById('heroSlides');
+  if (!btn || !video || !slides) return;
+
+  function setMode(mode) {
+    if (mode === 'video') {
+      video.style.display  = '';
+      slides.style.display = 'none';
+      video.play().catch(() => {});
+      btn.textContent = '🖼️';
+      btn.title = 'Switch to photo carousel';
+    } else {
+      video.style.display  = 'none';
+      slides.style.display = '';
+      video.pause();
+      btn.textContent = '🎥';
+      btn.title = 'Switch to video background';
+    }
+    localStorage.setItem('heroBgMode', mode);
+  }
+
+  btn.addEventListener('click', () => {
+    const isVideoVisible = video.style.display !== 'none';
+    setMode(isVideoVisible ? 'photos' : 'video');
+  });
+
+  setMode(localStorage.getItem('heroBgMode') || 'video');
+}
+
+document.addEventListener('DOMContentLoaded', initHeroBgToggle);
+
 // ── NEWS FEATURE CAROUSEL ────────────────────────────────────
 function initNewsFeatureCarousel() {
   const wrap = document.getElementById('newsFeatureCarousel');
@@ -1927,21 +1961,118 @@ function initFieldSection() {
   const section  = document.getElementById('fieldSection');
   if (!section) return;
 
-  const pins     = Array.from(section.querySelectorAll('.fp-pin'));
-  const fieldImg = section.querySelector('.field-img');
-  const fill     = document.getElementById('fieldProgress');
-  const cta      = document.getElementById('fieldCta');
+  const pins        = Array.from(section.querySelectorAll('.fp-pin'));
+  const fieldImg    = section.querySelector('.field-img');
+  const fieldWrap   = section.querySelector('.field-img-wrap');
+  const fieldSticky = section.querySelector('.field-sticky');
+  const fill        = document.getElementById('fieldProgress');
+  const cta         = document.getElementById('fieldCta');
+
+  const preview      = document.getElementById('fieldPreview');
+  const previewClose  = document.getElementById('fieldPreviewClose');
+  const previewPhoto  = document.getElementById('fpPreviewPhoto');
+  const previewPos    = document.getElementById('fpPreviewPos');
+  const previewName   = document.getElementById('fpPreviewName');
+  const previewStats  = document.getElementById('fpPreviewStats');
+  const previewCta    = document.getElementById('fpPreviewCta');
 
   // Field image fades in over the first 8% of scroll progress
   const FIELD_IN   = 0.08;
   // All 9 players appear together at 20% — stagger handled by CSS transition-delay
   const PINS_REVEAL = 0.20;
   const CTA_T       = 0.85;
+  const ZOOM_SCALE  = 1.7;
 
-  // Assign per-pin delay so they cascade in as one animation (80ms apart)
+  // Assign per-pin delay so they cascade in as one animation (80ms apart);
+  // also stagger the idle floating loop so cards don't bob in unison
   pins.forEach((pin, i) => {
     pin.style.transitionDelay = `${i * 80}ms`;
+    pin.style.setProperty('--float-delay', `${i * 0.18}s`);
   });
+
+  let selectedPin = null;
+
+  function goToProfile(num) {
+    window.location.href = `player.html?num=${num}`;
+  }
+
+  // Places the preview panel right beside the selected card: to its right
+  // if there's room, otherwise to its left — always clamped inside the
+  // sticky viewport so it never spills off-screen.
+  function positionPreviewNear(pin) {
+    if (!preview || !fieldSticky) return;
+    const stickyRect = fieldSticky.getBoundingClientRect();
+    const pinRect    = pin.getBoundingClientRect();
+    const margin     = 14;
+    const pWidth     = preview.offsetWidth  || 280;
+    const pHeight    = preview.offsetHeight || 220;
+
+    const pinCenterX = pinRect.left + pinRect.width / 2 - stickyRect.left;
+    const pinCenterY = pinRect.top  + pinRect.height / 2 - stickyRect.top;
+    const spaceRight = stickyRect.width - (pinCenterX + pinRect.width / 2);
+    const placeRight = spaceRight >= pWidth + margin;
+
+    let left = placeRight
+      ? pinCenterX + pinRect.width / 2 + margin
+      : pinCenterX - pinRect.width / 2 - margin - pWidth;
+    left = Math.max(margin, Math.min(left, stickyRect.width - pWidth - margin));
+
+    let top = pinCenterY - pHeight / 2;
+    top = Math.max(margin, Math.min(top, stickyRect.height - pHeight - margin));
+
+    preview.style.left = `${left}px`;
+    preview.style.top  = `${top}px`;
+  }
+
+  function showPreview(pin) {
+    const reg = typeof PLAYER_REGISTRY !== 'undefined' ? PLAYER_REGISTRY.get(pin.dataset.num) : null;
+    if (!reg || !preview) return;
+    if (previewPhoto) previewPhoto.innerHTML = `<img src="${reg.img}" alt="${reg.last}" />`;
+    if (previewPos)   previewPos.textContent  = pin.querySelector('.fp-pos-tag')?.textContent || '';
+    if (previewName)  previewName.textContent = `#${reg.num} ${reg.first} ${reg.last}`;
+    if (previewStats) {
+      previewStats.innerHTML = (reg.stats || []).map(s =>
+        `<div><div class="k">${s.k}</div><div class="v">${s.v}</div></div>`
+      ).join('');
+    }
+    if (previewCta) previewCta.onclick = () => goToProfile(reg.num);
+    positionPreviewNear(pin);
+    preview.classList.add('fp-preview-open');
+    preview.setAttribute('aria-hidden', 'false');
+    // Re-measure once the panel has its real content height, in case it
+    // changed (e.g. variable number of stat rows) and now overflows.
+    requestAnimationFrame(() => positionPreviewNear(pin));
+  }
+
+  function hidePreview() {
+    if (!preview) return;
+    preview.classList.remove('fp-preview-open');
+    preview.setAttribute('aria-hidden', 'true');
+  }
+
+  function selectPin(pin) {
+    selectedPin = pin;
+    pins.forEach(p => {
+      p.classList.toggle('fp-selected', p === pin);
+      p.classList.toggle('fp-dimmed', p !== pin);
+    });
+    if (fieldWrap) {
+      const fx = pin.style.getPropertyValue('--fx');
+      const fy = pin.style.getPropertyValue('--fy');
+      fieldWrap.style.transformOrigin = `${fx} ${fy}`;
+      fieldWrap.style.transform = `scale(${ZOOM_SCALE})`;
+    }
+    section.classList.add('fp-zoomed');
+    showPreview(pin);
+  }
+
+  function deselectPin() {
+    selectedPin = null;
+    pins.forEach(p => p.classList.remove('fp-selected', 'fp-dimmed'));
+    if (fieldWrap) fieldWrap.style.transform = '';
+    section.classList.remove('fp-zoomed');
+    hidePreview();
+  }
 
   function update() {
     const rect  = section.getBoundingClientRect();
@@ -1968,16 +2099,37 @@ function initFieldSection() {
   }
 
   window.addEventListener('scroll', update, { passive: true });
-  window.addEventListener('resize', update, { passive: true });
+  window.addEventListener('resize', () => {
+    update();
+    if (selectedPin) positionPreviewNear(selectedPin);
+  }, { passive: true });
   update();
 
-  // Tap → open player profile modal
+  // Tap a card: 1st tap → zoom + expanded preview. 2nd tap on the SAME
+  // card (already selected) → go to the full profile page.
   pins.forEach(pin => {
-    pin.addEventListener('click', () => {
-      const reg = typeof PLAYER_REGISTRY !== 'undefined'
-        ? PLAYER_REGISTRY.get(pin.dataset.num) : null;
-      if (reg) openPlayerModal(reg);
+    pin.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (selectedPin === pin) {
+        goToProfile(pin.dataset.num);
+      } else {
+        selectPin(pin);
+      }
     });
+  });
+
+  // Tap the field background (outside any card) while zoomed → reset
+  if (fieldWrap) {
+    fieldWrap.addEventListener('click', (e) => {
+      if (e.target.closest('.fp-pin')) return;
+      if (selectedPin) deselectPin();
+    });
+  }
+
+  if (previewClose) previewClose.addEventListener('click', (e) => { e.stopPropagation(); deselectPin(); });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && selectedPin) deselectPin();
   });
 }
 

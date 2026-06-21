@@ -3714,6 +3714,8 @@ behold-widget { display: block; }
   position: relative;
   width: 100%;
   height: 100%;
+  /* smooth camera zoom toward a selected player's --fx/--fy origin */
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .field-img {
   width: 100%;
@@ -3730,7 +3732,7 @@ behold-widget { display: block; }
   will-change: opacity, transform;
 }
 
-/* ── player pin ── */
+/* ── player card (idle marker, replaces old bare circular pin) ── */
 .fp-pin {
   position: absolute;
   left: var(--fx);
@@ -3749,52 +3751,87 @@ behold-widget { display: block; }
   opacity: 1;
   transform: translate(-50%, -100%) scale(1);
 }
+/* selected card pops forward and stays above the dimmed siblings */
+.fp-pin.fp-visible.fp-selected {
+  transform: translate(-50%, -100%) scale(1.22);
+  z-index: 50;
+}
+/* siblings fade back while one card is selected/expanded */
+.fp-pin.fp-visible.fp-dimmed {
+  opacity: 0.3;
+  filter: grayscale(0.5);
+}
 
-/* photo circle */
-.fp-photo {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  border: 3px solid var(--accent);
-  overflow: hidden;
-  background: rgba(0,0,0,0.55);
-  display: grid;
-  place-items: center;
-  margin: 0 auto;
-  box-shadow: 0 0 20px rgba(240,180,41,0.45), 0 4px 24px rgba(0,0,0,0.65);
+/* idle floating motion — alive but subtle; paused once selected/dimmed */
+@keyframes fp-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-7px); }
+}
+.fp-pin.fp-visible:not(.fp-selected):not(.fp-dimmed) .fp-card {
+  animation: fp-float 3.4s ease-in-out infinite;
+  animation-delay: var(--float-delay, 0s);
+}
+@media (prefers-reduced-motion: reduce) {
+  .fp-pin .fp-card { animation: none !important; }
+}
+
+/* ── rectangular card panel — reuses the same glass language as
+   .bp-card / .ps-card elsewhere on the site, instead of a bare circle ── */
+.fp-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px 9px;
+  background: rgba(6, 16, 9, 0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(240,180,41,0.35);
+  border-radius: 12px;
+  box-shadow: 0 6px 22px rgba(0,0,0,0.5);
   transition: border-color 0.2s, box-shadow 0.2s;
 }
+.fp-pin:hover .fp-card,
+.fp-pin:active .fp-card,
+.fp-pin.fp-selected .fp-card {
+  border-color: var(--accent);
+  box-shadow: 0 0 24px rgba(240,180,41,0.5), 0 8px 26px rgba(0,0,0,0.55);
+}
+
+/* photo — no circular mask, just the cutout floating with a soft shadow */
+.fp-photo {
+  width: 58px;
+  height: 70px;
+  margin: 0 auto;
+  flex-shrink: 0;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.55));
+  transition: filter 0.2s;
+}
 .fp-pin:hover .fp-photo,
-.fp-pin:active .fp-photo {
-  border-color: #fff;
-  box-shadow: 0 0 26px rgba(240,180,41,0.75), 0 4px 20px rgba(0,0,0,0.6);
+.fp-pin:active .fp-photo,
+.fp-pin.fp-selected .fp-photo {
+  filter: drop-shadow(0 0 10px rgba(240,180,41,0.65)) drop-shadow(0 4px 10px rgba(0,0,0,0.55));
 }
 .fp-photo img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: top center;
+  object-fit: contain;
+  object-position: center bottom;
   pointer-events: none;
   user-select: none;
 }
 
-/* name badge */
-.fp-badge {
-  display: inline-flex;
+/* position + name — stacked inside the card, no separate pill background */
+.fp-card-info {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 5px;
-  background: rgba(0,0,0,0.82);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(240,180,41,0.35);
-  border-radius: 5px;
-  padding: 4px 10px;
-  margin-top: 6px;
+  gap: 2px;
   white-space: nowrap;
 }
 .fp-pos-tag {
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.1em;
   color: var(--accent);
@@ -3802,10 +3839,140 @@ behold-widget { display: block; }
 }
 .fp-name {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 10px;
   color: rgba(255,255,255,0.85);
   letter-spacing: 0.04em;
 }
+
+/* ── expanded player preview — first-level interaction layer ──
+   Sits OUTSIDE .field-img-wrap (sibling in .field-sticky) so the zoom
+   transform on the field never affects it. JS sets top/left inline to
+   place it right beside the selected player's card. */
+.fp-preview {
+  position: absolute;
+  /* top/left set inline by JS, anchored next to the selected card */
+  top: 0;
+  left: 0;
+  width: min(280px, 78%);
+  max-height: 46%;
+  overflow-y: auto;
+  background: rgba(6, 16, 9, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(240,180,41,0.3);
+  border-radius: 16px;
+  padding: 18px 20px 20px;
+  z-index: 60;
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+  transform: scale(0.92) translateY(8px);
+  transform-origin: top center;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+              opacity 0.25s ease,
+              left 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+              top 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.fp-preview.fp-preview-open {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+.fp-preview-close {
+  position: absolute;
+  top: 10px; right: 10px;
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.7);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background 0.2s, color 0.2s;
+}
+.fp-preview-close:hover { background: rgba(255,255,255,0.18); color: #fff; }
+
+.fp-preview-id { display: flex; flex-direction: column; gap: 2px; min-width: 0; margin-bottom: 12px; padding-right: 22px; }
+.fp-preview-pos {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.fp-preview-name {
+  font-family: var(--display);
+  font-size: 15px;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1.25;
+}
+
+/* ── two-up body: photo (no circle, just the cutout) | stats card ── */
+.fp-preview-split {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.fp-preview-photo {
+  width: 84px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.04);
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.45));
+}
+.fp-preview-photo img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+
+.fp-preview-stats {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 9px;
+  background: rgba(245,200,66,0.06);
+  border: 1px solid rgba(240,180,41,0.28);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+.fp-preview-stats > div { display: flex; flex-direction: column; gap: 1px; }
+.fp-preview-stats .k {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.45);
+  text-transform: uppercase;
+}
+.fp-preview-stats .v {
+  font-family: var(--mono);
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--accent);
+}
+.fp-preview-cta {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--accent);
+  background: transparent;
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.fp-preview-cta:hover { background: var(--accent); color: #0d1f0f; }
 
 /* CTA */
 .field-cta {
@@ -3852,14 +4019,29 @@ behold-widget { display: block; }
   }
 
   /* Pin sizes */
-  .fp-photo      { width: 52px; height: 52px; border-width: 3px; }
-  .fp-badge      { padding: 3px 8px; gap: 4px; margin-top: 5px; }
-  .fp-pos-tag    { font-size: 10px; }
-  .fp-name       { font-size: 9px; }
+  .fp-card       { padding: 6px 8px 7px; gap: 4px; border-radius: 10px; }
+  .fp-photo      { width: 38px; height: 48px; }
+  .fp-pos-tag    { font-size: 9px; }
+  .fp-name       { font-size: 8px; }
 
   /* Layout */
   .field-eyebrow { font-size: 8px; letter-spacing: 0.14em; }
   .field-cta     { bottom: 1.5rem; }
+
+  /* Expanded preview — narrower so it can sit beside the card without
+     covering the whole field on small screens */
+  .fp-preview {
+    width: min(248px, 72%);
+    max-height: 42%;
+    padding: 14px 16px 16px;
+    border-radius: 14px;
+  }
+  .fp-preview-photo  { width: 64px; }
+  .fp-preview-name   { font-size: 13px; }
+  .fp-preview-stats  { padding: 8px 10px; gap: 7px; }
+  .fp-preview-stats .v { font-size: 15px; }
+  .fp-preview-stats .k { font-size: 8px; }
+  .fp-preview-cta    { padding: 9px; font-size: 10px; }
 }
 
 /* ── BENCH & PITCHERS SECTION ──────────────────────────────────────── */
