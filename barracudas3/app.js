@@ -368,40 +368,6 @@ function initHeroNews() {
 
 document.addEventListener('DOMContentLoaded', initHeroNews);
 
-// ── TEST: hero background toggle (video ↔ photo carousel) — remove before committing ──
-function initHeroBgToggle() {
-  const btn    = document.getElementById('heroBgToggle');
-  const video  = document.getElementById('heroVideoTest');
-  const slides = document.getElementById('heroSlides');
-  if (!btn || !video || !slides) return;
-
-  function setMode(mode) {
-    if (mode === 'video') {
-      video.style.display  = '';
-      slides.style.display = 'none';
-      video.play().catch(() => {});
-      btn.textContent = '🖼️';
-      btn.title = 'Switch to photo carousel';
-    } else {
-      video.style.display  = 'none';
-      slides.style.display = '';
-      video.pause();
-      btn.textContent = '🎥';
-      btn.title = 'Switch to video background';
-    }
-    localStorage.setItem('heroBgMode', mode);
-  }
-
-  btn.addEventListener('click', () => {
-    const isVideoVisible = video.style.display !== 'none';
-    setMode(isVideoVisible ? 'photos' : 'video');
-  });
-
-  setMode(localStorage.getItem('heroBgMode') || 'video');
-}
-
-document.addEventListener('DOMContentLoaded', initHeroBgToggle);
-
 // ── NEWS FEATURE CAROUSEL ────────────────────────────────────
 function initNewsFeatureCarousel() {
   const wrap = document.getElementById('newsFeatureCarousel');

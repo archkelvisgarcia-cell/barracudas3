@@ -1,4 +1,4 @@
-const CACHE = 'barracudas-v13'; // bumped — heroMiniStandings mobile padding fix
+const CACHE = 'barracudas-v14'; // bumped — fix mobile horizontal overflow (min-width:0 chain, footer-big, leftover test code removed)
 
 // Static shell files that are safe to precache (change rarely)
 const PRECACHE = [

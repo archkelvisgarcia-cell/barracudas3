@@ -26,7 +26,7 @@
   --mono: "JetBrains Mono", "IBM Plex Mono", ui-monospace, monospace;
 
   /* SCALE */
-  --r-sm: 4px;
+  --r-sm: 4px; c 
   --r-md: 10px;
   --r-lg: 18px;
   --r-pill: 999px;
@@ -477,6 +477,8 @@ a { color: inherit; text-decoration: none; }
   background-clip: text;
   -webkit-text-fill-color: transparent;
   user-select: none;
+  max-width: 100%;
+  overflow: hidden;
 }
 .footer-meta {
   display: flex; justify-content: space-between;
@@ -867,11 +869,25 @@ a { color: inherit; text-decoration: none; }
   .hero-headline {
     display: flex;
     flex-direction: column;
+    min-width: 0;
   }
   .hero-headline #heroMiniStandings { order: 1; margin-top: 0; }
   .hero-headline #heroLiveCard      { order: 0; margin-top: 0; }
   .hero-headline #playerStrip       { order: 2; margin-top: 1rem; }
   .hero-headline .hero-btns-mobile  { order: 3; }
+
+  /* ROOT CAUSE FIX — flex/grid items default to min-width:auto (their
+     content's intrinsic size), which lets the nowrap ticker marquee
+     (~2500px of un-wrapped content) force every ancestor box wider than
+     the viewport. min-width:0 lets each of these properly shrink/clip
+     instead of inflating .hero-content/.hero-headline and everything
+     stacked under them (mini-standings, buttons, etc). */
+  .hero-content,
+  #playerStrip,
+  .player-strip,
+  .ps-ticker-wrap {
+    min-width: 0;
+  }
 
   /* standings on mobile — stack Gruppe A above Gruppe B instead of
      squeezing them side by side. Only the container layout changes here;
@@ -3686,6 +3702,14 @@ behold-widget { display: block; }
   .cal-hero h1       { letter-spacing: 0.04em; }
   .join h2           { letter-spacing: 0.03em; }
   .pink-album-title  { letter-spacing: 0.04em; }
+}
+
+/* ── Mobile: standalone CTA buttons go full-width instead of inline-sized ── */
+@media (max-width: 768px) {
+  .join .row .btn {
+    width: 100%;
+    text-align: center;
+  }
 }
 
 /* ============================================================
