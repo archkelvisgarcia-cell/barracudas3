@@ -4136,3 +4136,85 @@ behold-widget { display: block; }
   .bp-photo { width: 44px; height: 44px; }
   .bench-list { gap: 0.5rem; }
 }
+
+/* ── ROSTER CAROUSEL — GSAP seamless infinite loop ───────────────────── */
+.roster-carousel-section {
+  background: #07100a;
+  padding: 3rem 0 3.5rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  overflow: hidden;
+}
+.rc-eyebrow {
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 2.25rem;
+}
+.rc-cards {
+  position: relative;
+  height: 280px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.rc-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 170px;
+  height: 240px;
+  margin-top: -120px;
+  margin-left: -85px;
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: grab;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.55);
+  -webkit-tap-highlight-color: transparent;
+  will-change: transform, opacity;
+}
+.rc-card-img {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: top center;
+  background-color: rgba(255,255,255,0.05);
+}
+/* dark semi-transparent gradient so name/position stay legible on any photo */
+.rc-card-overlay {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: 10px 12px 12px;
+  background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.55) 65%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  pointer-events: none;
+}
+.rc-card-name {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.rc-card-pos {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+@media (max-width: 768px) {
+  .rc-cards { height: 220px; }
+  .rc-card  { width: 130px; height: 184px; margin-top: -92px; margin-left: -65px; border-radius: 12px; }
+  .rc-card-overlay { padding: 8px 9px 9px; }
+  .rc-card-name { font-size: 9px; }
+  .rc-card-pos  { font-size: 8px; }
+}

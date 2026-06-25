@@ -378,6 +378,14 @@
   </div>
 </section>
 
+<!-- ROSTER CAROUSEL — GSAP seamless infinite loop (buildSeamlessLoop +
+     ScrollTrigger + Draggable). Cards are rendered by roster-carousel.js
+     from PLAYER_REGISTRY (real roster photos/names/positions). -->
+<section class="roster-carousel-section" id="rosterCarouselSection">
+  <div class="rc-eyebrow">— SQUAD · BARRACUDAS 3 · 2026 —</div>
+  <ul class="rc-cards" id="rosterCarouselCards"></ul>
+</section>
+
 <!-- ROSTER DATA — kept here to populate PLAYER_REGISTRY on home page
      (awards, player strip, and modals all depend on it)
      The visual roster grid lives at roster.html -->
@@ -563,6 +571,11 @@
 </div>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="data-schedule.js"></script><script src="data-players.js"></script><script src="app.js"></script><script src="lang.js"></script>
+<!-- GSAP — roster carousel (seamless infinite loop + drag + scroll scrub) -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/Draggable.min.js"></script>
+<script src="roster-carousel.js"></script>
 
 <!-- ── PWA: install prompt banner ── -->
 <div id="pwaPrompt" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:999;
