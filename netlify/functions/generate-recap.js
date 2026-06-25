@@ -2,6 +2,7 @@
 // Triggered by admin panel or after detecting a newly-finished game
 
 const Anthropic = require('@anthropic-ai/sdk');
+const { requireAuth } = require('./_auth');
 
 const ES_KEY   = process.env.EASYSCORE_API_KEY;
 const TEAM_ID  = parseInt(process.env.EASYSCORE_TEAM_ID || '13054');
@@ -37,6 +38,10 @@ function topPerformers(lineup) {
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') return { statusCode: 405, body: 'Method Not Allowed' };
+
+  if (!requireAuth(event)) {
+    return { statusCode: 401, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ error: 'Unauthorized' }) };
+  }
 
   const anthropicKey = process.env.ANTHROPIC_API_KEY;
   if (!anthropicKey) return { statusCode: 503, body: JSON.stringify({ error: 'ANTHROPIC_API_KEY not configured' }) };

@@ -10,11 +10,15 @@
   var token = sessionStorage.getItem('admin_token');
   if (!token) { window.location.replace('/admin/login.html'); return; }
   try {
-    var data = JSON.parse(atob(token));
+    var data = JSON.parse(atob(token.split('.')[0]));
     if (data.exp < Date.now()) { sessionStorage.removeItem('admin_token'); window.location.replace('/admin/login.html'); return; }
     if (data.role !== 'admin') { window.location.replace('/admin/lineup.html'); }
   } catch(e) { sessionStorage.removeItem('admin_token'); window.location.replace('/admin/login.html'); }
 })();
+function authHeaders(extra) {
+  var token = sessionStorage.getItem('admin_token') || '';
+  return Object.assign({ Authorization: 'Bearer ' + token }, extra || {});
+}
 </script>
 <link rel="stylesheet" href="../styles.css" />
 <!-- OneSignal for subscriber count -->
@@ -141,7 +145,7 @@ async function init() {
   try {
     const r = await fetch('/.netlify/functions/send-notification', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: authHeaders({ 'Content-Type': 'application/json' }),
       body: JSON.stringify({ title: '__ping__', message: '__ping__' }),
     });
     const d = await r.json();
@@ -188,7 +192,7 @@ async function sendNotif() {
   try {
     const r = await fetch('/.netlify/functions/send-notification', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: authHeaders({ 'Content-Type': 'application/json' }),
       body: JSON.stringify({ title, message, url, type }),
     });
     const d = await r.json();

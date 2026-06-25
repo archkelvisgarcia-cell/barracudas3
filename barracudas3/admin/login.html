@@ -113,7 +113,7 @@ document.getElementById('pw').addEventListener('keydown', function(e) {
   var token = sessionStorage.getItem('admin_token');
   if (!token) return;
   try {
-    var data = JSON.parse(atob(token));
+    var data = JSON.parse(atob(token.split('.')[0]));
     if (data.exp > Date.now()) {
       window.location.replace(data.role === 'manager' ? '/admin/lineup.html' : '/admin/index.html');
     } else {

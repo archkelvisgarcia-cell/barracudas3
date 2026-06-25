@@ -10,11 +10,16 @@
   var token = sessionStorage.getItem('admin_token');
   if (!token) { window.location.replace('/admin/login.html'); return; }
   try {
-    var data = JSON.parse(atob(token));
+    var data = JSON.parse(atob(token.split('.')[0]));
     if (data.exp < Date.now()) { sessionStorage.removeItem('admin_token'); window.location.replace('/admin/login.html'); return; }
     if (data.role !== 'admin') { window.location.replace('/admin/lineup.html'); }
   } catch(e) { sessionStorage.removeItem('admin_token'); window.location.replace('/admin/login.html'); }
 })();
+// Attach the admin token to fetch() calls against protected functions.
+function authHeaders(extra) {
+  var token = sessionStorage.getItem('admin_token') || '';
+  return Object.assign({ Authorization: 'Bearer ' + token }, extra || {});
+}
 </script>
 <link rel="stylesheet" href="../styles.css" />
 <style>
@@ -211,7 +216,7 @@ async function runPipeline() {
   logEl.style.display = 'none';
 
   try {
-    const r = await fetch('/.netlify/functions/pipeline', { method: 'POST' });
+    const r = await fetch('/.netlify/functions/pipeline', { method: 'POST', headers: authHeaders() });
     const d = await r.json();
     if (!r.ok) throw new Error(d.error || `HTTP ${r.status}`);
 
@@ -245,7 +250,7 @@ async function initBlobs() {
   status.style.color = 'var(--ink-mute)';
   status.textContent = '↻ Writing base data to Blobs…';
   try {
-    const r = await fetch('/.netlify/functions/init-blobs', { method: 'POST' });
+    const r = await fetch('/.netlify/functions/init-blobs', { method: 'POST', headers: authHeaders() });
     const d = await r.json();
     if (!r.ok) throw new Error(d.error || `HTTP ${r.status}`);
     status.style.color = '#00c864';
@@ -299,7 +304,7 @@ async function syncNow(silent = false) {
   if (!silent) { lbl.innerHTML = '<span class="spinner"></span> Syncing…'; }
 
   try {
-    const r = await fetch('/.netlify/functions/sync-stats');
+    const r = await fetch('/.netlify/functions/sync-stats', { headers: authHeaders() });
     if (!r.ok) throw new Error(`HTTP ${r.status}`);
     const data = await r.json();
 
@@ -399,7 +404,7 @@ async function generateRecap() {
   try {
     const r = await fetch('/.netlify/functions/generate-recap', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: authHeaders({ 'Content-Type': 'application/json' }),
       body: JSON.stringify({ gameId }),
     });
     const data = await r.json();

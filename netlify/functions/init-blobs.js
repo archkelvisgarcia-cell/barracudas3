@@ -10,6 +10,7 @@
 // ══════════════════════════════════════════════════════════════
 
 const { getStore } = require('@netlify/blobs');
+const { requireAuth } = require('./_auth');
 
 const API_KEY = process.env.EASYSCORE_API_KEY;
 const TEAM_ID = parseInt(process.env.EASYSCORE_TEAM_ID || '13054');
@@ -71,6 +72,10 @@ function summarise(g) {
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
+  }
+
+  if (!requireAuth(event)) {
+    return { statusCode: 401, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ error: 'Unauthorized' }) };
   }
 
   const log = [];

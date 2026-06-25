@@ -18,6 +18,7 @@
 const { getStore }  = require('@netlify/blobs');
 const Anthropic     = require('@anthropic-ai/sdk');
 const { calculateAwards, calculateTopPerformers } = require('./_award-calc');
+const { requireAuth, isScheduledInvocation } = require('./_auth');
 const { PLAYER_EXTENDED_DATA } = require('../../barracudas3/data-players.js');
 
 const ES_KEY    = process.env.EASYSCORE_API_KEY;
@@ -196,6 +197,13 @@ exports.handler = async (event) => {
   // Reject non-POST from outside (scheduled events have no httpMethod)
   if (event.httpMethod && event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
+  }
+
+  // Allow Netlify's own hourly cron trigger through unauthenticated (it can't
+  // carry a user token); any other caller (e.g. the admin "Run Now" button)
+  // must present a valid admin token.
+  if (!isScheduledInvocation(event) && !requireAuth(event)) {
+    return { statusCode: 401, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ error: 'Unauthorized' }) };
   }
 
   if (!ES_KEY) {

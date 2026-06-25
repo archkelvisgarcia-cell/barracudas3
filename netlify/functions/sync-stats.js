@@ -7,6 +7,8 @@
 //   - Game roster (confirms active players)
 // Batting / Pitching stats are NOT available via this key — fallback to hardcoded data.
 
+const { requireAuth } = require('./_auth');
+
 const API_KEY  = process.env.EASYSCORE_API_KEY;
 const BASE_URL = 'https://api.easyscore.com/v2';
 const TEAM_ID  = parseInt(process.env.EASYSCORE_TEAM_ID || '13054');
@@ -32,7 +34,10 @@ function parseFielding(statDef) {
   return { G: parseInt(G)||0, IP: IP||'0.0', PO: po, A: a, E: e, DP: parseInt(DP)||0, FPct: fPct };
 }
 
-exports.handler = async () => {
+exports.handler = async (event) => {
+  if (!requireAuth(event)) {
+    return { statusCode: 401, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ error: 'Unauthorized' }) };
+  }
   if (!API_KEY) return { statusCode: 503, body: JSON.stringify({ error: 'EASYSCORE_API_KEY not set' }) };
 
   try {

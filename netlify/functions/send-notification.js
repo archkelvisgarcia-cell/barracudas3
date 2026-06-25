@@ -5,6 +5,8 @@
 // POST body: { title, message, url?, type? }
 // Called by: admin panel, auto-triggers (live score, new result, new article)
 
+const { requireAuth } = require('./_auth');
+
 const APP_ID  = 'd367a901-afe3-4035-9417-794e6e80fcd4';
 const SITE    = 'https://barracudas3.netlify.app';
 const API_URL = 'https://onesignal.com/api/v1/notifications';
@@ -38,6 +40,10 @@ async function sendPush({ title, message, url, type }) {
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
+  }
+
+  if (!requireAuth(event)) {
+    return { statusCode: 401, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ error: 'Unauthorized' }) };
   }
 
   let body;

@@ -1,4 +1,6 @@
 // Admin authentication — validates password against env vars, returns signed token
+const { sign } = require('./_auth');
+
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
@@ -26,9 +28,8 @@ exports.handler = async (event) => {
     };
   }
 
-  const role    = isAdmin ? 'admin' : 'manager';
-  const payload = JSON.stringify({ role, exp: Date.now() + 24 * 60 * 60 * 1000 });
-  const token   = Buffer.from(payload).toString('base64');
+  const role  = isAdmin ? 'admin' : 'manager';
+  const token = sign({ role, exp: Date.now() + 24 * 60 * 60 * 1000 });
 
   return {
     statusCode: 200,

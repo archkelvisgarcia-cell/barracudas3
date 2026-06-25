@@ -10,7 +10,7 @@
   var token = sessionStorage.getItem('admin_token');
   if (!token) { window.location.replace('/admin/login.html'); return; }
   try {
-    var data = JSON.parse(atob(token));
+    var data = JSON.parse(atob(token.split('.')[0]));
     if (data.exp < Date.now()) { sessionStorage.removeItem('admin_token'); window.location.replace('/admin/login.html'); return; }
     if (data.role !== 'admin') { window.location.replace('/admin/lineup.html'); }
   } catch(e) { sessionStorage.removeItem('admin_token'); window.location.replace('/admin/login.html'); }
