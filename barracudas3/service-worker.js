@@ -1,4 +1,4 @@
-const CACHE = 'barracudas-v12'; // bumped — force !important on hms-cols stacking for mobile
+const CACHE = 'barracudas-v13'; // bumped — heroMiniStandings mobile padding fix
 
 // Static shell files that are safe to precache (change rarely)
 const PRECACHE = [

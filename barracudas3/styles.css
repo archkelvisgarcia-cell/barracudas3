@@ -876,7 +876,12 @@ a { color: inherit; text-decoration: none; }
   /* standings on mobile — stack Gruppe A above Gruppe B instead of
      squeezing them side by side. Only the container layout changes here;
      row/text/logo styles below are unchanged from desktop. */
-  #heroMiniStandings { max-width: 100%; width: 100%; }
+  #heroMiniStandings {
+    max-width: 100%;
+    width: 100%;
+    padding: 0 16px;
+    box-sizing: border-box;
+  }
   .hms-cols {
     display: flex !important;
     flex-direction: column !important;
