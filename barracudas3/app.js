@@ -998,7 +998,7 @@ function initAwards(serverAwards) {
   window._barLang?.onLang?.(() => renderGrid());
 }
 
-document.addEventListener('DOMContentLoaded', initAwards);
+document.addEventListener('DOMContentLoaded', () => initAwards(null));
 
 // ── LEAGUE STANDINGS ──────────────────────────────────────────
 const STANDINGS_LOGOS = {

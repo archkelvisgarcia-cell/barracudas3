@@ -249,6 +249,22 @@
   <div id="recentResultsList"></div>
 </section>
 
+<!-- ============== SEASON AWARDS ============== -->
+<section class="section awards-section" style="padding-top:0;">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow reveal" style="margin-bottom:12px;" data-i18n="award_section_eyebrow">— Season Awards</div>
+      <h2 class="section-title reveal" data-delay="1">
+        <span data-i18n="award_section_h1">Award</span> <span class="y" data-i18n="award_section_h2">Candidates.</span>
+      </h2>
+    </div>
+    <p class="reveal" data-delay="2"
+       style="max-width:380px;color:var(--ink-mute);line-height:1.5;font-size:15px;"
+       data-i18n="award_section_sub">Calculated automatically from 2026 season statistics.</p>
+  </div>
+  <div class="awards-grid" id="awardsGrid"></div>
+</section>
+
 <!-- ============== CHAMPS BANNER ============== -->
 <section class="section" style="padding:0;">
   <div style="position:relative;width:100%;aspect-ratio:3/2;max-height:80vh;overflow:hidden;">
@@ -557,11 +573,46 @@
 </div>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="data-schedule.js"></script><script src="data-players.js"></script><script src="app.js"></script><script src="lang.js"></script>
-<!-- GSAP — roster carousel (seamless infinite loop + drag + scroll scrub) -->
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/Draggable.min.js"></script>
-<script src="roster-carousel.js"></script>
+<!-- GSAP — roster carousel (seamless infinite loop + drag + scroll scrub).
+     Loaded lazily only once the carousel section nears the viewport, instead
+     of blocking page load with ~100KB of JS most visitors never scroll to. -->
+<script>
+(function () {
+  const section = document.getElementById('rosterCarouselSection');
+  if (!section) return;
+
+  let loaded = false;
+  function loadCarouselScripts() {
+    if (loaded) return;
+    loaded = true;
+    const urls = [
+      'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js',
+      'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js',
+      'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/Draggable.min.js',
+      'roster-carousel.js',
+    ];
+    function loadNext(i) {
+      if (i >= urls.length) return;
+      const s = document.createElement('script');
+      s.src = urls[i];
+      s.onload = () => loadNext(i + 1);
+      document.body.appendChild(s);
+    }
+    loadNext(0);
+  }
+
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) { loadCarouselScripts(); io.disconnect(); }
+      });
+    }, { rootMargin: '600px 0px' });
+    io.observe(section);
+  } else {
+    loadCarouselScripts();
+  }
+})();
+</script>
 
 <!-- ── PWA: install prompt banner ── -->
 <div id="pwaPrompt" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:999;

@@ -1,4 +1,4 @@
-const CACHE = 'barracudas-v14'; // bumped — fix mobile horizontal overflow (min-width:0 chain, footer-big, leftover test code removed)
+const CACHE = 'barracudas-v15'; // bumped — fix dead Awards section, remove broken video embeds, lazy-load GSAP carousel + gallery images
 
 // Static shell files that are safe to precache (change rarely)
 const PRECACHE = [
