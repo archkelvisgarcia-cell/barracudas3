@@ -1,4 +1,4 @@
-const CACHE = 'barracudas-v11'; // bumped — mobile standings stacked layout, BAS rename
+const CACHE = 'barracudas-v12'; // bumped — force !important on hms-cols stacking for mobile
 
 // Static shell files that are safe to precache (change rarely)
 const PRECACHE = [
