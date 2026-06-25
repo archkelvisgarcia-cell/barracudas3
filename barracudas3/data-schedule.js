@@ -73,13 +73,15 @@ const GAMES = [
     date: '2026-06-28', time: '11:00', label: 'JUN 28 · 2026 · G1',
     opponent: 'Zürich Lions', opponentLogo: 'assets/teams/Lions.png',
     location: 'Away · Zürich Lions', league: 'TOP 6 — Swiss League',
-    result: null, score: null, innings: null, notes: '',
+    result: null, score: null, innings: null, notes: 'Suspendido por ola de calor',
+    suspended: true,
   },
   {
     date: '2026-06-28', time: '14:00', label: 'JUN 28 · 2026 · G2',
     opponent: 'Zürich Lions', opponentLogo: 'assets/teams/Lions.png',
     location: 'Away · Zürich Lions', league: 'TOP 6 — Swiss League',
-    result: null, score: null, innings: null, notes: '',
+    result: null, score: null, innings: null, notes: 'Suspendido por ola de calor',
+    suspended: true,
   },
   {
     date: '2026-07-10', time: '18:30', label: 'JUL 10 · 2026',

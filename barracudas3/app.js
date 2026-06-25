@@ -526,11 +526,19 @@ function initFirstPitch() {
   const opp      = next.opponent;
   const loc      = next.location || next.league;
 
+  const badge = next.suspended
+    ? `<span style="background:#d9534f;color:#fff;font-weight:700;font-size:10px;
+        letter-spacing:0.1em;padding:3px 10px;border-radius:999px;">⚠ ${_t('badge_suspended') || 'Suspended'}</span>`
+    : `<span style="background:var(--accent);color:#0d1f0f;font-weight:700;font-size:10px;
+        letter-spacing:0.14em;padding:3px 10px;border-radius:999px;">NEXT</span>`;
+  const reasonStr = next.suspended
+    ? `<span style="color:var(--line);">·</span><span style="color:#d9534f;">${_t('suspended_heatwave') || 'Heatwave'}</span>`
+    : '';
+
   container.innerHTML = `
     <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.1em;
       text-transform:uppercase;display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;">
-      <span style="background:var(--accent);color:#0d1f0f;font-weight:700;font-size:10px;
-        letter-spacing:0.14em;padding:3px 10px;border-radius:999px;">NEXT</span>
+      ${badge}
       <span style="color:var(--ink);">${monthDay}</span>
       <span style="color:var(--line);">·</span>
       <span style="color:var(--ink-mute);">${timeStr}</span>
@@ -538,6 +546,7 @@ function initFirstPitch() {
       <span style="color:var(--ink);">vs ${opp}</span>
       <span style="color:var(--line);">·</span>
       <span style="color:var(--ink-mute);">${loc}</span>
+      ${reasonStr}
     </span>`;
 }
 

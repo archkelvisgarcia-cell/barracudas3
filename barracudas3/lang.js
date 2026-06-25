@@ -43,6 +43,7 @@
       cd_days: 'Days', cd_hrs: 'Hrs', cd_min: 'Min', cd_sec: 'Sec',
       filter_upcoming: 'UPCOMING', filter_past: 'PAST GAMES', filter_all: 'ALL',
       filter_home: 'HOME', filter_away: 'AWAY',
+      badge_suspended: 'Suspended', suspended_heatwave: 'Heatwave',
 
       news_eyebrow: '— Dispatches from the dugout',
       news_lede: 'Game recaps, roster updates, club stories. Filed straight from Heerenschürli.',
@@ -159,6 +160,7 @@
       cd_days: 'Días', cd_hrs: 'Hrs', cd_min: 'Min', cd_sec: 'Seg',
       filter_upcoming: 'PRÓXIMOS', filter_past: 'PASADOS', filter_all: 'TODOS',
       filter_home: 'LOCAL', filter_away: 'VISITANTE',
+      badge_suspended: 'Suspendido', suspended_heatwave: 'Ola de calor',
 
       news_eyebrow: '— Desde el dugout',
       news_lede: 'Resúmenes de partidos, actualizaciones de plantilla, historias del club. Directo desde Heerenschürli.',
@@ -275,6 +277,7 @@
       cd_days: 'Tage', cd_hrs: 'Std', cd_min: 'Min', cd_sec: 'Sek',
       filter_upcoming: 'BEVORSTEHEND', filter_past: 'VERGANGENE', filter_all: 'ALLE',
       filter_home: 'HEIM', filter_away: 'AUSWÄRTS',
+      badge_suspended: 'Abgesagt', suspended_heatwave: 'Hitzewelle',
 
       news_eyebrow: '— Aus dem Dugout',
       news_lede: 'Spielberichte, Kaderupdates, Klubgeschichten. Direkt aus Heerenschürli.',
