@@ -119,7 +119,7 @@ async function scrapePlayer(browser, uniformNum) {
   await page.close();
 
   // ── 4. Extract stats ─────────────────────────────────────────────
-  let season = null, log = [], pitchingSeason = null, pitchingLog = [];
+  let season = null, seasonTop6 = null, log = [], pitchingSeason = null, pitchingLog = [];
 
   // Try network captured data first
   for (const { data } of captured) {
@@ -131,12 +131,13 @@ async function scrapePlayer(browser, uniformNum) {
   if (!season && dom.tableCount > 0) {
     const extracted = tryExtractFromDom(dom.tables);
     season       = extracted.season;
+    seasonTop6   = extracted.seasonTop6;
     log          = extracted.log;
     pitchingSeason = extracted.pitchingSeason;
     pitchingLog  = extracted.pitchingLog;
   }
 
-  return { uniformNum, player, season, log, pitchingSeason, pitchingLog, captured, dom };
+  return { uniformNum, player, season, seasonTop6, log, pitchingSeason, pitchingLog, captured, dom };
 }
 
 // ── Extract from intercepted JSON ─────────────────────────────────
@@ -193,43 +194,56 @@ function mapApiSeason(obj) {
   };
 }
 
+// Map a "Season Batting Stats" row to our stat object. `headers[0]` is the
+// table title (no <td>), so header[i] lines up with row[i-1].
+function mapBattingRow(headers, row) {
+  const g = h => {
+    const i = headers.indexOf(h);
+    return i > 0 ? (row[i - 1] || '0') : '0';
+  };
+  return {
+    G:    parseInt(g('G'))   || 0,
+    PA:   parseInt(g('PA'))  || 0,
+    AB:   parseInt(g('AB'))  || 0,
+    R:    parseInt(g('R'))   || 0,
+    H:    parseInt(g('H'))   || 0,
+    '2B': parseInt(g('2B')) || 0,
+    '3B': parseInt(g('3B')) || 0,
+    HR:   parseInt(g('HR'))  || 0,
+    RBI:  parseInt(g('RBI')) || 0,
+    BB:   parseInt(g('BB'))  || 0,
+    SO:   parseInt(g('SO'))  || 0,
+    SB:   parseInt(g('SB'))  || 0,
+    CS:   parseInt(g('CS'))  || 0,
+    HBP:  parseInt(g('HBP')) || 0,
+    SF:   parseInt(g('SF'))  || 0,
+    AVG:  g('AVG')  || '.000',
+    OBP:  g('OBP')  || '.000',
+    SLG:  g('SLG')  || '.000',
+    OPS:  g('OPS')  || '.000',
+  };
+}
+
 // ── Extract from DOM tables ────────────────────────────────────────
 function tryExtractFromDom(tables) {
-  const result = { season: null, log: [], pitchingSeason: null, pitchingLog: [] };
+  const result = { season: null, seasonTop6: null, log: [], pitchingSeason: null, pitchingLog: [] };
 
   for (const table of tables) {
     const headers = table.headers;
 
-    // Batting season totals
+    // Batting season totals — EasyScore lists one row per round (e.g.
+    // "NL Baseball Gruppe A 2026" for the first half, "NL Baseball - NLA 2026"
+    // for the TOP 6 / second-half round). Gruppe A → season, the other → seasonTop6.
     if (headers.includes('AVG') && headers.includes('AB') && headers.includes('OPS') && !result.season) {
       const gruppeRow = table.rows.find(r => r.join(' ').includes('Gruppe A')) || table.rows.at(-1);
+      const top6Row   = table.rows.find(r => r !== gruppeRow && !r.join(' ').includes('Gruppe A'));
       if (gruppeRow) {
-        const g = h => {
-          const i = headers.indexOf(h);
-          return i > 0 ? (gruppeRow[i - 1] || '0') : '0';
-        };
-        result.season = {
-          G:    parseInt(g('G'))   || 0,
-          PA:   parseInt(g('PA'))  || 0,
-          AB:   parseInt(g('AB'))  || 0,
-          R:    parseInt(g('R'))   || 0,
-          H:    parseInt(g('H'))   || 0,
-          '2B': parseInt(g('2B')) || 0,
-          '3B': parseInt(g('3B')) || 0,
-          HR:   parseInt(g('HR'))  || 0,
-          RBI:  parseInt(g('RBI')) || 0,
-          BB:   parseInt(g('BB'))  || 0,
-          SO:   parseInt(g('SO'))  || 0,
-          SB:   parseInt(g('SB'))  || 0,
-          CS:   parseInt(g('CS'))  || 0,
-          HBP:  parseInt(g('HBP')) || 0,
-          SF:   parseInt(g('SF'))  || 0,
-          AVG:  g('AVG')  || '.000',
-          OBP:  g('OBP')  || '.000',
-          SLG:  g('SLG')  || '.000',
-          OPS:  g('OPS')  || '.000',
-        };
+        result.season = mapBattingRow(headers, gruppeRow);
         console.log(`  ✅ DOM batting season extracted: AVG ${result.season.AVG}, G ${result.season.G}`);
+      }
+      if (top6Row) {
+        result.seasonTop6 = mapBattingRow(headers, top6Row);
+        console.log(`  ✅ DOM batting TOP 6 season extracted: AVG ${result.seasonTop6.AVG}, G ${result.seasonTop6.G}`);
       }
     }
 
@@ -321,10 +335,10 @@ function tryExtractFromDom(tables) {
 }
 
 // ── Update data-players.js ─────────────────────────────────────────
-function updateDataPlayersJs(uniformNum, season, _log, pitchingSeason) {
+function updateDataPlayersJs(uniformNum, season, _log, pitchingSeason, seasonTop6) {
   let src = fs.readFileSync(DATA_PLAYERS_JS, 'utf8');
 
-  // Update batting season
+  // Update batting season (Gruppe A / first half)
   if (season) {
     const s = season;
     const newSeason = `season: { G:${s.G}, PA:${s.PA}, AB:${s.AB}, R:${s.R}, H:${s.H}, '2B':${s['2B']}, '3B':${s['3B']}, HR:${s.HR}, RBI:${s.RBI}, BB:${s.BB}, SO:${s.SO}, SB:${s.SB}, CS:${s.CS}, HBP:${s.HBP}, SF:${s.SF}, AVG:'${s.AVG}', OBP:'${s.OBP}', SLG:'${s.SLG}', OPS:'${s.OPS}' }`;
@@ -334,6 +348,20 @@ function updateDataPlayersJs(uniformNum, season, _log, pitchingSeason) {
       console.log(`  ✏️  Updated batting.season for #${uniformNum}`);
     } else {
       console.log(`  ⚠  Could not find batting.season pattern for #${uniformNum}`);
+    }
+  }
+
+  // Update batting seasonTop6 (TOP 6 / NLA round — second half) — only
+  // written once a player has actually appeared in a TOP 6 round game.
+  if (seasonTop6) {
+    const t = seasonTop6;
+    const newTop6 = `seasonTop6: { G:${t.G}, PA:${t.PA}, AB:${t.AB}, R:${t.R}, H:${t.H}, '2B':${t['2B']}, '3B':${t['3B']}, HR:${t.HR}, RBI:${t.RBI}, BB:${t.BB}, SO:${t.SO}, SB:${t.SB}, CS:${t.CS}, HBP:${t.HBP}, SF:${t.SF}, AVG:'${t.AVG}', OBP:'${t.OBP}', SLG:'${t.SLG}', OPS:'${t.OPS}' }`;
+    const pat = new RegExp(`('${uniformNum}'\\s*:[\\s\\S]{0,300}?batting:\\s*\\{[\\s\\S]{0,100}?season:\\s*\\{[^}]+\\})(?:,\\s*seasonTop6:\\s*\\{[^}]+\\})?`, 'm');
+    if (pat.test(src)) {
+      src = src.replace(pat, (_m, g1) => `${g1},\n      ${newTop6}`);
+      console.log(`  ✏️  Updated batting.seasonTop6 for #${uniformNum}`);
+    } else {
+      console.log(`  ⚠  Could not find batting.season pattern for #${uniformNum} (seasonTop6)`);
     }
   }
 
@@ -431,7 +459,7 @@ async function main() {
       // Apply updates
       if (result.season || result.pitchingSeason) {
         console.log(`\n  ${DRY_RUN ? '🔍 Would update' : '✏️  Updating'} files...`);
-        updateDataPlayersJs(uniformNum, result.season, result.log, result.pitchingSeason);
+        updateDataPlayersJs(uniformNum, result.season, result.log, result.pitchingSeason, result.seasonTop6);
         updateFlipCard(uniformNum, result.season);
       }
 
