@@ -1787,7 +1787,7 @@ function pmBattingPane(ext, basicStats) {
       html += pmSummary([['AVG',s.AVG],['HR',s.HR],['RBI',s.RBI],['OBP',s.OBP],['SLG',s.SLG],['OPS',s.OPS]]);
       const sh = [t6 ? 'Round' : '','G','PA','AB','R','H','2B','3B','HR','RBI','BB','SO','SB','AVG','OBP','SLG','OPS'];
       const rows = [['Gruppe A',s.G,s.PA,s.AB,s.R,s.H,s['2B'],s['3B'],s.HR,s.RBI,s.BB,s.SO,s.SB,s.AVG,s.OBP,s.SLG,s.OPS]];
-      if (t6) rows.push(['TOP 6',t6.G,t6.PA,t6.AB,t6.R,t6.H,t6['2B'],t6['3B'],t6.HR,t6.RBI,t6.BB,t6.SO,t6.SB,t6.AVG,t6.OBP,t6.SLG,t6.OPS]);
+      if (t6) rows.push(['NLA',t6.G,t6.PA,t6.AB,t6.R,t6.H,t6['2B'],t6['3B'],t6.HR,t6.RBI,t6.BB,t6.SO,t6.SB,t6.AVG,t6.OBP,t6.SLG,t6.OPS]);
       if (!t6) rows[0][0] = '2026';
       html += pmTable(sh, rows, [13,14,15,16], 700);
     }
