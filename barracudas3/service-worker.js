@@ -1,4 +1,4 @@
-const CACHE = 'barracudas-v15'; // bumped — fix dead Awards section, remove broken video embeds, lazy-load GSAP carousel + gallery images
+const CACHE = 'barracudas-v16'; // bumped — player modal shows Gruppe A + TOP 6 rounds separately
 
 // Static shell files that are safe to precache (change rarely)
 const PRECACHE = [
