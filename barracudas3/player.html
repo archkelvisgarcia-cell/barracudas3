@@ -226,6 +226,7 @@
     const img      = PLAYER_IMGS[num] || reg?.img || '';
     const captain  = reg?.captain ?? meta.captain;
     const bat      = ext?.batting?.season;
+    const batTop6  = ext?.batting?.seasonTop6;
     const pit      = ext?.pitching?.season;
     const fld      = ext?.fielding?.season;
     const batLog   = ext?.batting?.log   || [];
@@ -278,6 +279,27 @@
         );
       }
       sections += '</div>';
+    }
+
+    // ── Batting section — TOP 6 (second-half round) ───────────
+    if (batTop6) {
+      sections += `<div class="pp-section">
+        <div class="pp-section-title">Batting — TOP 6 2026</div>
+        <div class="pp-summary">
+          ${pill('G',   batTop6.G)}
+          ${pill('AVG', batTop6.AVG, true)}
+          ${pill('OPS', batTop6.OPS, true)}
+          ${pill('HR',  batTop6.HR)}
+          ${pill('RBI', batTop6.RBI)}
+          ${pill('AB',  batTop6.AB)}
+          ${pill('H',   batTop6.H)}
+          ${pill('2B',  batTop6['2B'])}
+          ${pill('BB',  batTop6.BB)}
+          ${pill('SB',  batTop6.SB)}
+          ${pill('OBP', batTop6.OBP)}
+          ${pill('SLG', batTop6.SLG)}
+        </div>
+      </div>`;
     }
 
     // ── Pitching section ──────────────────────────────────────
