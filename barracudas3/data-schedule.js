@@ -87,13 +87,15 @@ const GAMES = [
     date: '2026-07-10', time: '18:30', label: 'JUL 10 · 2026',
     opponent: 'Zürich Barracudas', opponentLogo: 'assets/teams/BARLOGO.png',
     location: 'Away · Zürich', league: 'TOP 6 — Swiss League',
-    result: null, score: null, innings: null, notes: '',
+    result: 'L', score: { us: 0, them: 10 }, innings: 6, notes: 'Mercy Rule · Inglis (BAR) 5.0 IP 6K',
+    recapUrl: 'article.html?id=barvsbar3-g1-july10',
   },
   {
     date: '2026-07-11', time: '19:00', label: 'JUL 11 · 2026',
     opponent: 'Zürich Barracudas', opponentLogo: 'assets/teams/BARLOGO.png',
     location: 'Away · Zürich', league: 'TOP 6 — Swiss League',
-    result: null, score: null, innings: null, notes: '',
+    result: 'L', score: { us: 5, them: 14 }, innings: 7, notes: 'K.Garcia 2-4, 2 RBI',
+    recapUrl: 'article.html?id=barvsbar3-g2-july11',
   },
   {
     date: '2026-07-17', time: '18:30', label: 'JUL 17 · 2026 · G1',
@@ -148,10 +150,66 @@ const HERO_BG_IMAGES = [
   'assets/news-pink-game-02.jpg',
   'assets/news-pink-game-10.jpg',
   'assets/pink-game-22.jpg',
+  'assets/news/juegos-barvsbar3/barvsbar3-01-pitcher.jpg',
+  'assets/news/juegos-barvsbar3/barvsbar3-02-handshake.jpg',
+  'assets/news/juegos-barvsbar3/barvsbar3-06-atbat.jpg',
+  'assets/news/juegos-barvsbar3/barvsbar3-08-tagplay.jpg',
 ];
 
 // ── NEWS ARTICLES — single source of truth ──────────────────
 const NEWS_ARTICLES = [
+  {
+    id: 'barvsbar3-g2-july11',
+    date: 'July 11, 2026', tag: 'Game Recap', tagColor: '#F0B429',
+    headline: 'Zürich Barracudas Take Game 2, 14–5, Complete Sweep of BAR3',
+    summary: 'Kelvis Garcia and Juan Malchans each drove in runs during a five-run third, but five BAR3 errors opened the door for the NLA squad to pull away in the TOP 6 — Swiss League clash at Heerenschürli.',
+    image: 'assets/news/juegos-barvsbar3/barvsbar3-06-atbat.jpg', imagePosition: 'center 20%',
+    carouselImages: ['assets/news/juegos-barvsbar3/barvsbar3-06-atbat.jpg', 'assets/news/juegos-barvsbar3/barvsbar3-08-tagplay.jpg', 'assets/news/juegos-barvsbar3/barvsbar3-01-pitcher.jpg', 'assets/news/juegos-barvsbar3/barvsbar3-02-handshake.jpg', 'assets/news/juegos-barvsbar3/barvsbar3-05-outfield.jpg'],
+    href: 'article.html?id=barvsbar3-g2-july11',
+    score: { us: 5, them: 14 }, opponent: 'Zürich Barracudas', location: 'Away · Heerenschürli, Zürich',
+    notes: 'TOP 6 · 7 innings · K.Garcia 2-4, 2 RBI',
+    body: '<p>The Zürich Barracudas — the club\'s NLA squad — completed a doubleheader sweep of BAR3 with a 14–5 win in Game 2 of the TOP 6 — Swiss League showdown at Heerenschürli. BAR3 got on the board with a five-run third inning, the offense\'s best frame of the day, but the NLA lineup answered in waves, scoring in five of the seven innings on the way to the final margin.</p><figure class="art-figure"><img src="assets/news/juegos-barvsbar3/barvsbar3-06-atbat.jpg" alt="BAR3 batter at the plate against the NLA squad" loading="lazy" /><figcaption class="art-caption">A BAR3 hitter digs in at Heerenschürli during Game 2 of the doubleheader against the club\'s NLA squad.</figcaption></figure><p>Kelvis Garcia went 2-for-4 with 2 RBI and a run scored, and Juan Malchans added a 2-for-3 day with an RBI, but the BAR3 defense couldn\'t hold up its end — five errors behind starter Michael Vasquez opened extra chances for the NLA lineup. Vasquez gave way to Hansel Rodriguez and then Angel Elias in relief as the Barracudas NLA pulled away late, capped by a seven-run sixth inning. Nicholas Michael Miceli (3-for-3, 3 RBI, 2 R), Tiago Lutz (2-for-4, 2 RBI) and Simon Brändli (2-for-3, 2 RBI, 2 R, stolen base) led the NLA attack.</p><figure class="art-figure"><img src="assets/news/juegos-barvsbar3/barvsbar3-08-tagplay.jpg" alt="Close tag play at second base" loading="lazy" /><figcaption class="art-caption">A BAR3 runner is tagged out at second — one of several tight defensive exchanges in a game the NLA squad pulled away with late.</figcaption></figure><p>Despite the sweep, facing the club\'s top team remains a valuable measuring stick for BAR3 heading into the second half of the TOP 6 slate. The Barracudas 3 return to Gruppe A action July 17–18 at home against Zürich Challengers.</p>',
+    i18n: {
+      es: {
+        tag: 'Resumen de Partido',
+        headline: 'Los Zürich Barracudas ganan el Juego 2, 14-5, y completan la barrida sobre BAR3',
+        summary: 'Kelvis Garcia y Juan Malchans impulsaron carreras en un tercer inning de cinco carreras, pero cinco errores de BAR3 abrieron la puerta para que el equipo NLA se escapara en el duelo de TOP 6 — Liga Suiza en el Heerenschürli.',
+        body: '<p>Los Zürich Barracudas — el primer equipo del club — completaron la barrida del doble juego ante BAR3 con una victoria 14-5 en el Juego 2 del duelo de TOP 6 — Liga Suiza en el Heerenschürli. BAR3 se puso en el marcador con un quinto inning de cinco carreras en el tercero, su mejor entrada ofensiva del día, pero la alineación del NLA respondió anotando en cinco de las siete entradas.</p><p>Kelvis Garcia fue 2-de-4 con 2 impulsadas y una anotada, y Juan Malchans agregó una jornada de 2-de-3 con una impulsada, pero la defensa de BAR3 no pudo sostener el ritmo — cinco errores detrás del abridor Michael Vasquez abrieron oportunidades extra para el NLA. Vasquez cedió el montículo a Hansel Rodriguez y luego a Angel Elias mientras los Barracudas NLA se escapaban, coronado por un sexto inning de siete carreras. Nicholas Michael Miceli (3-de-3, 3 impulsadas, 2 anotadas), Tiago Lutz (2-de-4, 2 impulsadas) y Simon Brändli (2-de-3, 2 impulsadas, 2 anotadas, base robada) lideraron el ataque del NLA.</p><p>A pesar de la barrida, enfrentar al primer equipo del club sigue siendo una valiosa vara de medir para BAR3 de cara a la segunda mitad de la temporada TOP 6. Los Barracudas 3 regresan a la acción de Gruppe A el 17-18 de julio en casa ante los Zürich Challengers.</p>',
+      },
+      de: {
+        tag: 'Spielbericht',
+        headline: 'Zürich Barracudas gewinnen Spiel 2 mit 14:5 und komplettieren Sweep gegen BAR3',
+        summary: 'Kelvis Garcia und Juan Malchans erzielten RBIs in einem Fünf-Run-Inning im dritten Durchgang, doch fünf BAR3-Fehler öffneten dem NLA-Team im TOP-6-Duell im Heerenschürli Tür und Tor.',
+        body: '<p>Die Zürich Barracudas — die Erstmannschaft des Clubs — komplettierten den Doubleheader-Sweep gegen BAR3 mit einem 14:5-Sieg in Spiel 2 des TOP-6-Duells im Heerenschürli. BAR3 kam mit einem Fünf-Run-Inning im dritten Durchgang auf die Anzeigetafel, dem besten Offensiv-Inning des Tages, doch die NLA-Aufstellung antwortete und erzielte in fünf der sieben Innings Runs.</p><p>Kelvis Garcia ging 2-für-4 mit 2 RBI und einem Run, Juan Malchans steuerte 2-für-3 mit einem RBI bei, doch die BAR3-Defensive konnte nicht mithalten — fünf Fehler hinter Starter Michael Vasquez öffneten dem NLA-Team zusätzliche Chancen. Vasquez machte Platz für Hansel Rodriguez und später Angel Elias, während sich die Barracudas NLA absetzten, gekrönt von einem Sieben-Run-Sechsten. Nicholas Michael Miceli (3-für-3, 3 RBI, 2 Runs), Tiago Lutz (2-für-4, 2 RBI) und Simon Brändli (2-für-3, 2 RBI, 2 Runs, gestohlene Base) führten den NLA-Angriff an.</p><p>Trotz des Sweeps bleibt das Duell mit der Erstmannschaft des Clubs ein wertvoller Maßstab für BAR3 vor der zweiten Hälfte der TOP-6-Saison. Die Barracudas 3 kehren am 17./18. Juli daheim gegen die Zürich Challengers zur Gruppe-A-Action zurück.</p>',
+      },
+    },
+  },
+  {
+    id: 'barvsbar3-g1-july10',
+    date: 'July 10, 2026', tag: 'Game Recap', tagColor: '#F0B429',
+    headline: 'NLA Squad Blanks BAR3 10–0 in Mercy-Rule Opener',
+    summary: 'John Andrew Inglis silenced BAR3\'s bats over 5.0 innings with 6 strikeouts as the Zürich Barracudas NLA squad opened the TOP 6 — Swiss League doubleheader with a 10–0 mercy-rule win at Heerenschürli.',
+    image: 'assets/news/juegos-barvsbar3/barvsbar3-01-pitcher.jpg', imagePosition: 'center 20%',
+    carouselImages: ['assets/news/juegos-barvsbar3/barvsbar3-01-pitcher.jpg', 'assets/news/juegos-barvsbar3/barvsbar3-05-outfield.jpg', 'assets/news/juegos-barvsbar3/barvsbar3-02-handshake.jpg', 'assets/news/juegos-barvsbar3/barvsbar3-06-atbat.jpg'],
+    href: 'article.html?id=barvsbar3-g1-july10',
+    score: { us: 0, them: 10 }, opponent: 'Zürich Barracudas', location: 'Away · Heerenschürli, Zürich',
+    notes: 'TOP 6 · 6 innings · Mercy Rule',
+    body: '<p>The Zürich Barracudas NLA squad opened the TOP 6 — Swiss League doubleheader in dominant fashion, blanking BAR3 10–0 in six innings via the mercy rule at Heerenschürli. John Andrew Inglis was in control on the mound, working 5.0 innings and allowing just two hits with six strikeouts to keep BAR3\'s lineup off balance all afternoon.</p><figure class="art-figure"><img src="assets/news/juegos-barvsbar3/barvsbar3-01-pitcher.jpg" alt="BAR3 pitcher delivers from the mound" loading="lazy" /><figcaption class="art-caption">A BAR3 pitcher works from the stretch at Heerenschürli in Game 1 of the doubleheader against the club\'s NLA squad.</figcaption></figure><p>Andrea Girasole took the loss for BAR3, unable to slow down an NLA lineup that scored in three of its first five at-bats — three in the first, two in the second, and a five-run fifth that triggered the mercy rule. Nicholas Fischer (2-for-3, 2 RBI), Fynn Himmelsbach (2-for-3, RBI), Jakub Stefan (1-for-2, 2 RBI) and Nils Brüderli (2-for-3, RBI, 2 SB) all factored in for the NLA offense. BAR3 managed just three hits and committed three errors on the day, unable to generate any offense against Inglis and the NLA\'s disciplined defense.</p><figure class="art-figure"><img src="assets/news/juegos-barvsbar3/barvsbar3-05-outfield.jpg" alt="BAR3 outfielders between innings" loading="lazy" /><figcaption class="art-caption">BAR3 outfielders confer between innings — the defense held its own, but the bats stayed silent against Inglis.</figcaption></figure><p>The result serves as a reminder of the gap between the club\'s top NLA squad and its development side, but it also sharpens the competitive edge for BAR3 heading into the back half of the TOP 6 schedule. BAR3 and the NLA squad returned to the field the next day for Game 2.</p>',
+    i18n: {
+      es: {
+        tag: 'Resumen de Partido',
+        headline: 'El equipo NLA blanquea a BAR3 10-0 en el juego inaugural por regla de misericordia',
+        summary: 'John Andrew Inglis silenció los bates de BAR3 en 5.0 entradas con 6 ponches mientras el equipo NLA de los Zürich Barracudas abrió el doble juego de TOP 6 — Liga Suiza con una victoria 10-0 por regla de misericordia en el Heerenschürli.',
+        body: '<p>El equipo NLA de los Zürich Barracudas abrió el doble juego de TOP 6 — Liga Suiza de manera dominante, blanqueando a BAR3 10-0 en seis entradas por la regla de misericordia en el Heerenschürli. John Andrew Inglis tuvo el control total en el montículo, lanzando 5.0 entradas y permitiendo solo dos hits con seis ponches.</p><p>Andrea Girasole cargó con la derrota por BAR3, sin poder frenar a una alineación del NLA que anotó en tres de sus primeros cinco turnos — tres en el primero, dos en el segundo, y un quinto inning de cinco carreras que activó la regla de misericordia. Nicholas Fischer (2-de-3, 2 impulsadas), Fynn Himmelsbach (2-de-3, una impulsada), Jakub Stefan (1-de-2, 2 impulsadas) y Nils Brüderli (2-de-3, una impulsada, 2 bases robadas) aportaron a la ofensiva del NLA. BAR3 solo produjo tres hits y cometió tres errores en la jornada.</p><p>El resultado recuerda la diferencia entre el primer equipo del club y su equipo de desarrollo, pero también afila el filo competitivo de BAR3 de cara a la segunda mitad del calendario de TOP 6. BAR3 y el equipo NLA volvieron a verse las caras al día siguiente en el Juego 2.</p>',
+      },
+      de: {
+        tag: 'Spielbericht',
+        headline: 'NLA-Team lässt BAR3 im Mercy-Rule-Auftaktspiel mit 10:0 abblitzen',
+        summary: 'John Andrew Inglis brachte BAR3s Schlagmänner über 5.0 Innings mit 6 Strikeouts zum Schweigen, während die NLA-Mannschaft der Zürich Barracudas den TOP-6-Doubleheader mit einem 10:0-Mercy-Rule-Sieg im Heerenschürli eröffnete.',
+        body: '<p>Die NLA-Mannschaft der Zürich Barracudas eröffnete den TOP-6-Doubleheader dominant und ließ BAR3 im Heerenschürli über sechs Innings mit 10:0 nach der Mercy Rule abblitzen. John Andrew Inglis hatte das Spiel auf dem Mound im Griff — 5.0 Innings, nur zwei Hits, sechs Strikeouts.</p><p>Andrea Girasole kassierte die Niederlage für BAR3 und konnte eine NLA-Aufstellung nicht bremsen, die in drei ihrer ersten fünf At-Bat-Runden punktete — drei im ersten, zwei im zweiten und ein Fünf-Run-Fünftes, das die Mercy Rule auslöste. Nicholas Fischer (2-für-3, 2 RBI), Fynn Himmelsbach (2-für-3, 1 RBI), Jakub Stefan (1-für-2, 2 RBI) und Nils Brüderli (2-für-3, 1 RBI, 2 gestohlene Bases) trugen zur NLA-Offensive bei. BAR3 kam nur auf drei Hits und beging drei Fehler.</p><p>Das Ergebnis zeigt den Unterschied zwischen der Erstmannschaft des Clubs und seinem Entwicklungsteam, schärft aber auch die Wettkampfschärfe von BAR3 für die zweite Hälfte des TOP-6-Spielplans. BAR3 und das NLA-Team trafen sich am nächsten Tag zum Spiel 2 wieder.</p>',
+      },
+    },
+  },
   {
     id: 'challengers-g2-june7',
     date: 'June 7, 2026', tag: 'Game Recap', tagColor: '#F0B429',
