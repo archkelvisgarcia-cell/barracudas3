@@ -1,4 +1,4 @@
-const CACHE = 'barracudas-v16'; // bumped — player modal shows Gruppe A + TOP 6 rounds separately
+const CACHE = 'barracudas-v17'; // bumped — renamed TOP 6 round label to NLA
 
 // Static shell files that are safe to precache (change rarely)
 const PRECACHE = [
