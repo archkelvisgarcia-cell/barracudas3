@@ -65,9 +65,10 @@ function authHeaders(extra) {
 
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;flex-wrap:wrap;gap:12px;">
     <h1 style="font-family:var(--display);font-size:clamp(24px,5vw,40px);text-transform:uppercase;">🏟 Barracudas Admin</h1>
-    <div style="display:flex;gap:8px;">
-      <a href="score.html"  class="btn btn-ghost" style="font-size:12px;">🔴 Live Score</a>
-      <a href="notify.html" class="btn btn-ghost" style="font-size:12px;">🔔 Notify</a>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <a href="score.html"     class="btn btn-ghost" style="font-size:12px;">🔴 Live Score</a>
+      <a href="standings.html" class="btn btn-ghost" style="font-size:12px;">🏆 Standings</a>
+      <a href="notify.html"    class="btn btn-ghost" style="font-size:12px;">🔔 Notify</a>
     </div>
   </div>
 
@@ -129,6 +130,18 @@ function authHeaders(extra) {
       <span id="sbQuickStatus" style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.3);">HIDDEN</span>
       <a href="score.html" class="btn btn-primary" style="font-size:12px;">Manage →</a>
     </div>
+  </div>
+
+  <!-- Standings card -->
+  <div class="adm-card" style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+    <div style="flex:1;min-width:200px;">
+      <div class="adm-title" style="margin-bottom:6px;">🏆 League Standings</div>
+      <p style="font-family:var(--mono);font-size:11px;color:var(--ink-mute);line-height:1.5;margin:0;">
+        Edit both halves of the season table (Gruppe A round 1, TOP 6 round 2) — team, logo, G/W/L, PCT, GB and order.
+        Each half saves independently and updates the live site immediately.
+      </p>
+    </div>
+    <a href="standings.html" class="btn btn-primary" style="font-size:12px;flex-shrink:0;">Manage →</a>
   </div>
 
   <!-- Tabs -->

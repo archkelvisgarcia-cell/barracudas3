@@ -1082,67 +1082,78 @@ function initHeroStandings() {
 
 document.addEventListener('DOMContentLoaded', initHeroStandings);
 
+// ── Shared standings table renderer ─────────────────────────────
+// Used by: initStandings() (live EasyScore fallback for round 1),
+// and initDynamicData() (admin-edited Blobs data for both halves —
+// takes priority over everything else once it arrives).
+function renderStandingsTable(wrap, data, opts = {}) {
+  if (!wrap) return;
+  const rows = data.teams || data.standings || [];
+  if (!rows.length) return;
+  const compact = !!opts.compact;
+  const gpL  = compact ? 'G' : (_t('standings_gp')   || 'GP');
+  const wL   = _t('standings_w')    || 'W';
+  const lL   = _t('standings_l')    || 'L';
+  const pctL = _t('standings_pct')  || 'PCT';
+  const teamL= _t('standings_team') || 'Team';
+  const updL = _t('standings_updated') || 'Updated';
+  const updated = data.updatedAt
+    ? new Date(data.updatedAt).toLocaleDateString('en-US', { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' })
+    : '';
+
+  const teamCell = t => compact
+    ? `<div class="standings-team-cell">${standingLogo(t)}<div class="standings-abbr">${t.abbr}</div></div>`
+    : `<div class="standings-team-cell">${standingLogo(t)}<div><div class="standings-team-name">${t.name}</div><div class="standings-abbr">${t.abbr}</div></div></div>`;
+
+  wrap.innerHTML = `
+    <div class="standings-table-wrap reveal in">
+      <table class="standings-table${compact ? ' standings-table--compact' : ''}" aria-label="${data.league || ''}">
+        <thead><tr>
+          <th>#</th>
+          <th>${teamL}</th>
+          <th>${gpL}</th>
+          <th>${wL}</th>
+          <th>${lL}</th>
+          <th>${pctL}</th>
+          <th>GB</th>
+        </tr></thead>
+        <tbody>
+          ${rows.map(t => `
+            <tr class="${t.isUs ? 'standings-us' : ''}">
+              <td>${t.rank}</td>
+              <td>${teamCell(t)}</td>
+              <td>${t.gp}</td>
+              <td class="standings-w">${t.w}</td>
+              <td>${t.l}</td>
+              <td class="standings-pct">${t.pct}</td>
+              <td class="standings-gb">${t.gb ?? '—'}</td>
+            </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+    ${updated ? `<div class="standings-meta">${updL}: ${updated}</div>` : ''}`;
+}
+
+// True once admin-edited (Blobs) data has rendered the round-1 table —
+// prevents the live-EasyScore fallback below from clobbering it.
+let _standingsFirstHalfLive = false;
+
 function initStandings() {
   const wrap = document.getElementById('standingsTable');
   if (!wrap) return;
 
-  // Try fetching live data from the API; silently update table if successful
+  // Fallback only: live EasyScore compute for round 1. Skipped once the
+  // admin-edited Blobs table (via games-api, see initDynamicData) has
+  // already rendered — that data always wins.
   async function tryFetchLive() {
     try {
       const res = await fetch('/.netlify/functions/standings');
       if (!res.ok) return;
       const data = await res.json();
-      if (data.standings?.length) render(data);
-    } catch { /* silent — fallback already showing */ }
-  }
-
-  function render(data) {
-    const rows = data.standings || [];
-    const gpL  = _t('standings_gp')   || 'GP';
-    const wL   = _t('standings_w')    || 'W';
-    const lL   = _t('standings_l')    || 'L';
-    const pctL = _t('standings_pct')  || 'PCT';
-    const teamL= _t('standings_team') || 'Team';
-    const updL = _t('standings_updated') || 'Updated';
-    const updated = data.updatedAt
-      ? new Date(data.updatedAt).toLocaleDateString('en-US', { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' })
-      : '';
-
-    wrap.innerHTML = `
-      <div class="standings-table-wrap reveal in">
-        <table class="standings-table" aria-label="${data.league}">
-          <thead><tr>
-            <th>#</th>
-            <th>${teamL}</th>
-            <th>${gpL}</th>
-            <th>${wL}</th>
-            <th>${lL}</th>
-            <th>${pctL}</th>
-            <th>GB</th>
-          </tr></thead>
-          <tbody>
-            ${rows.map(t => `
-              <tr class="${t.isUs ? 'standings-us' : ''}">
-                <td>${t.rank}</td>
-                <td>
-                  <div class="standings-team-cell">
-                    ${standingLogo(t)}
-                    <div>
-                      <div class="standings-team-name">${t.name}</div>
-                      <div class="standings-abbr">${t.abbr}</div>
-                    </div>
-                  </div>
-                </td>
-                <td>${t.gp}</td>
-                <td class="standings-w">${t.w}</td>
-                <td>${t.l}</td>
-                <td class="standings-pct">${t.pct}</td>
-                <td class="standings-gb">${t.gb ?? '—'}</td>
-              </tr>`).join('')}
-          </tbody>
-        </table>
-      </div>
-      ${updated ? `<div class="standings-meta">${updL}: ${updated}</div>` : ''}`;
+      if (!_standingsFirstHalfLive && data.standings?.length) {
+        renderStandingsTable(wrap, { league: data.league, updatedAt: data.updatedAt, teams: data.standings });
+      }
+    } catch { /* silent — static fallback already showing */ }
   }
 
   // Static HTML table already in results.html — just upgrade with live data
@@ -1743,6 +1754,16 @@ document.addEventListener('DOMContentLoaded', initLiveScore);
       // ── If games-api reports a live game, wake up the scoreboard ─
       if (data.live && typeof window._refreshScoreboard === 'function') {
         window._refreshScoreboard();
+      }
+
+      // ── Admin-edited standings tables (Blobs) — always win over the
+      // static HTML fallback and over the live-EasyScore compute ────
+      if (data.standingsFirstHalf?.teams?.length) {
+        renderStandingsTable(document.getElementById('standingsTable'), data.standingsFirstHalf);
+        _standingsFirstHalfLive = true;
+      }
+      if (data.standingsSecondHalf?.teams?.length) {
+        renderStandingsTable(document.getElementById('standingsTableTop6'), data.standingsSecondHalf, { compact: true });
       }
 
       // ── Re-render Top Performers + Awards with server-computed data ─

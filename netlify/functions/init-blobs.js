@@ -31,6 +31,36 @@ const STANDINGS_FALLBACK = [
   { rank:7, abbr:'FLY2', name:'Zürich Flyers 2',       gp:10, w:0,  l:10, pct:'.000', gb:'10', isUs:false },
 ];
 
+// Two-half standings — same shape consumed by standings-editor.js / the
+// admin standings editor. Seeded here so a fresh Blobs store (after a
+// cache clear) still has both tables until an admin edits them.
+const STANDINGS_FIRST_HALF = {
+  league: 'NL Baseball Gruppe A 2026',
+  updatedAt: '2026-06-15T00:00:00.000Z',
+  teams: [
+    { rank:1, abbr:'BAR',  name:'Zürich Barracudas',    logo:'assets/teams/BARLOGO.png',     gp:12, w:11, l:1,  pct:'.917', gb:'—',  isUs:false },
+    { rank:2, abbr:'EAG',  name:'Luzern Eagles',         logo:'assets/teams/eagles.png',      gp:10, w:9,  l:1,  pct:'.900', gb:'1',  isUs:false },
+    { rank:3, abbr:'BAR3', name:'Zürich Barracudas 3',   logo:'assets/logo.png',              gp:10, w:5,  l:5,  pct:'.500', gb:'5',  isUs:true  },
+    { rank:4, abbr:'IND',  name:'Lausanne Indians',      logo:'assets/teams/indians.png',     gp:10, w:5,  l:5,  pct:'.500', gb:'5',  isUs:false },
+    { rank:5, abbr:'CHA2', name:'Challengers 2',         logo:'assets/teams/challengers.png', gp:10, w:4,  l:6,  pct:'.400', gb:'6',  isUs:false },
+    { rank:6, abbr:'FRO',  name:'Sissach Frogs',         logo:'assets/teams/frogs.png',       gp:6,  w:0,  l:6,  pct:'.000', gb:'8',  isUs:false },
+    { rank:7, abbr:'FLY2', name:'Zürich Flyers 2',       logo:'assets/teams/flyers.png',      gp:10, w:0,  l:10, pct:'.000', gb:'10', isUs:false },
+  ],
+};
+
+const STANDINGS_SECOND_HALF = {
+  league: 'NL Baseball - NLA 2026',
+  updatedAt: '2026-08-15T00:00:00.000Z',
+  teams: [
+    { rank:1, abbr:'FLY',  name:'Therwil Flyers 1',     logo:'assets/teams/flyers.png',      gp:8,  w:7, l:1, pct:'.875', gb:'0',   isUs:false },
+    { rank:2, abbr:'EAG',  name:'Luzern Eagles',        logo:'assets/teams/eagles.png',      gp:10, w:7, l:3, pct:'.700', gb:'1',   isUs:false },
+    { rank:3, abbr:'BAR',  name:'Zürich Barracudas',    logo:'assets/teams/BARLOGO.png',     gp:10, w:7, l:3, pct:'.700', gb:'1',   isUs:false },
+    { rank:4, abbr:'CHA',  name:'Zürich Challengers',   logo:'assets/teams/challengers.png', gp:7,  w:2, l:5, pct:'.286', gb:'4.5', isUs:false },
+    { rank:5, abbr:'BAR3', name:'Zürich Barracudas 3',  logo:'assets/logo.png',              gp:7,  w:1, l:6, pct:'.143', gb:'5.5', isUs:true  },
+    { rank:6, abbr:'LIO',  name:'Zürich Lions',         logo:'assets/teams/Lions.png',       gp:8,  w:1, l:7, pct:'.125', gb:'6',   isUs:false },
+  ],
+};
+
 async function fetchGame(id) {
   try {
     const r = await fetch(`${BASE}/games?id=${id}`, { headers: HEADERS });
@@ -83,6 +113,18 @@ exports.handler = async (event) => {
   try {
     const store = getStore({ name: 'bar3-pipeline', siteID: process.env.NETLIFY_SITE_ID, token: process.env.NETLIFY_AUTH_TOKEN });
 
+    // Preserve any admin-edited standings tables already saved via
+    // standings-editor.js — re-init must never wipe out manual edits.
+    let existingFirstHalf = null, existingSecondHalf = null;
+    try {
+      const existingRaw = await store.get('state');
+      if (existingRaw) {
+        const existing = JSON.parse(existingRaw);
+        existingFirstHalf  = existing.standingsFirstHalf  || null;
+        existingSecondHalf = existing.standingsSecondHalf || null;
+      }
+    } catch { /* no existing state — fall through to fallback seed */ }
+
     log.push('Fetching known game IDs from EasyScore…');
     const raw   = await Promise.all(KNOWN_IDS.map(fetchGame));
     const games = raw
@@ -110,7 +152,9 @@ exports.handler = async (event) => {
       games,
       articles:     [],             // pipeline will generate articles going forward
       record,
-      standings:    STANDINGS_FALLBACK,
+      standings:           STANDINGS_FALLBACK,
+      standingsFirstHalf:  existingFirstHalf  || STANDINGS_FIRST_HALF,
+      standingsSecondHalf: existingSecondHalf || STANDINGS_SECOND_HALF,
       lastRun:      new Date().toISOString(),
       initializedAt: new Date().toISOString(),
     };

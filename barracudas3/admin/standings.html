@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Standings Editor — Barracudas Admin</title>
+<meta name="robots" content="noindex, nofollow" />
+<script>
+(function(){
+  var token = sessionStorage.getItem('admin_token');
+  if (!token) { window.location.replace('/admin/login.html'); return; }
+  try {
+    var data = JSON.parse(atob(token.split('.')[0]));
+    if (data.exp < Date.now()) { sessionStorage.removeItem('admin_token'); window.location.replace('/admin/login.html'); return; }
+    if (data.role !== 'admin') { window.location.replace('/admin/lineup.html'); }
+  } catch(e) { sessionStorage.removeItem('admin_token'); window.location.replace('/admin/login.html'); }
+})();
+function authHeaders(extra) {
+  var token = sessionStorage.getItem('admin_token') || '';
+  return Object.assign({ Authorization: 'Bearer ' + token }, extra || {});
+}
+</script>
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  body { max-width: 1080px; margin: 0 auto; padding: 40px var(--pad) 80px; }
+  .adm-card { background:var(--bg-elev); border:1px solid var(--line); border-radius:var(--r-lg); padding:24px; margin-bottom:24px; }
+  .adm-title { font-family:var(--display); font-size:clamp(18px,3vw,26px); text-transform:uppercase; margin-bottom:6px; }
+  .adm-status { font-family:var(--mono); font-size:11px; letter-spacing:0.08em; }
+  .adm-status--ok   { color:#00c864; }
+  .adm-status--warn { color:var(--accent); }
+  .adm-status--err  { color:#ff5555; }
+
+  .se-meta { font-family:var(--mono); font-size:10px; color:var(--ink-faint); margin-bottom:16px; }
+  .se-table-wrap { overflow-x:auto; }
+  .se-table { width:100%; border-collapse:collapse; min-width:920px; }
+  .se-table th {
+    font-family:var(--mono); font-size:9px; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--ink-faint); text-align:left; padding:6px 6px; white-space:nowrap;
+  }
+  .se-table td { padding:5px 6px; vertical-align:middle; }
+  .se-row-move { display:flex; flex-direction:column; gap:2px; }
+  .se-icon-btn {
+    background:none; border:1px solid var(--line); color:var(--ink-mute);
+    border-radius:4px; width:22px; height:20px; cursor:pointer; font-size:11px; line-height:1;
+  }
+  .se-icon-btn:hover { border-color:var(--accent); color:var(--accent); }
+  .se-icon-btn.danger:hover { border-color:#ff5555; color:#ff5555; }
+  .se-input {
+    background:var(--bg-deep); border:1px solid var(--line); border-radius:5px; color:var(--ink);
+    font-family:var(--mono); font-size:12px; padding:6px 7px;
+  }
+  .se-input:focus { outline:2px solid var(--accent); border-color:var(--accent); }
+  .se-w-abbr  { width:64px; }
+  .se-w-name  { width:170px; }
+  .se-w-logo  { width:170px; }
+  .se-w-num   { width:52px; text-align:center; }
+  .se-w-pct   { width:64px; }
+  .se-w-gb    { width:56px; }
+  .se-logo-preview {
+    width:24px; height:24px; border-radius:50%; background-size:contain; background-position:center;
+    background-repeat:no-repeat; background-color:var(--bg-deep); border:1px solid var(--line); flex-shrink:0;
+  }
+  .se-logo-cell { display:flex; align-items:center; gap:6px; }
+  .se-us-check { width:16px; height:16px; }
+  .se-toolbar { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:14px; }
+</style>
+</head>
+<body>
+<button onclick="sessionStorage.removeItem('admin_token');window.location.replace('/admin/login.html');"
+  style="position:fixed;top:12px;right:16px;font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.45);padding:5px 12px;border-radius:var(--r-sm);cursor:pointer;z-index:999;">
+  Logout
+</button>
+
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
+  <h1 style="font-family:var(--display);font-size:clamp(22px,4.5vw,36px);text-transform:uppercase;">🏆 Standings Editor</h1>
+  <a href="index.html" class="btn btn-ghost" style="font-size:12px;">← Back to Admin</a>
+</div>
+
+<div class="adm-card" id="statusCard">
+  <div class="adm-status" id="loadStatus">Loading current standings…</div>
+</div>
+
+<!-- Templated by JS below — one block per half -->
+<div id="halvesContainer"></div>
+
+<script>
+const HALVES = [
+  { key: 'first',  dataKey: 'firstHalf',  title: '① Primera mitad de temporada', subtitle: 'NL Baseball Gruppe A 2026', badge: '#standingsTable en results.html' },
+  { key: 'second', dataKey: 'secondHalf', title: '② Segunda mitad de temporada / Tabla actual', subtitle: 'NL Baseball - NLA 2026 (TOP 6)', badge: '#standingsTableTop6 en results.html' },
+];
+
+// In-memory editable state per half — each row: {abbr,name,logo,gp,w,l,pct,gb,isUs}
+const state = { first: [], second: [] };
+const league = { first: 'NL Baseball Gruppe A 2026', second: 'NL Baseball - NLA 2026' };
+
+function emptyRow() {
+  return { abbr: '', name: '', logo: '', gp: 0, w: 0, l: 0, pct: '.000', gb: '0', isUs: false };
+}
+
+function renderHalves() {
+  const container = document.getElementById('halvesContainer');
+  container.innerHTML = HALVES.map(h => `
+    <div class="adm-card">
+      <div class="adm-title">${h.title}</div>
+      <div class="se-meta">${h.subtitle} · guarda de forma independiente · afecta solo ${h.badge}</div>
+      <div class="se-table-wrap">
+        <table class="se-table">
+          <thead><tr>
+            <th></th><th>#</th><th>Abrev.</th><th>Nombre</th><th>Logo (ruta)</th>
+            <th>G</th><th>W</th><th>L</th><th>PCT</th><th>GB</th><th>BAR3</th><th></th>
+          </tr></thead>
+          <tbody id="rows-${h.key}"></tbody>
+        </table>
+      </div>
+      <div class="se-toolbar">
+        <button class="btn btn-ghost" style="font-size:11px;" onclick="addRow('${h.key}')">+ Agregar equipo</button>
+        <button class="btn btn-ghost" style="font-size:11px;" onclick="autoCalc('${h.key}')">↻ Auto-calcular PCT / GB</button>
+        <button class="btn btn-primary" style="font-size:11px;margin-left:auto;" onclick="saveHalf('${h.key}')">
+          <span id="saveLabel-${h.key}">💾 Guardar ${h.key === 'first' ? 'primera mitad' : 'segunda mitad'}</span>
+        </button>
+      </div>
+      <div class="adm-status" id="saveStatus-${h.key}" style="margin-top:8px;"></div>
+    </div>
+  `).join('');
+  HALVES.forEach(h => renderRows(h.key));
+}
+
+function renderRows(halfKey) {
+  const tbody = document.getElementById('rows-' + halfKey);
+  const rows = state[halfKey];
+  tbody.innerHTML = rows.map((t, i) => `
+    <tr data-i="${i}">
+      <td>
+        <div class="se-row-move">
+          <button class="se-icon-btn" title="Subir" onclick="moveRow('${halfKey}',${i},-1)" ${i===0?'disabled':''}>▲</button>
+          <button class="se-icon-btn" title="Bajar" onclick="moveRow('${halfKey}',${i},1)" ${i===rows.length-1?'disabled':''}>▼</button>
+        </div>
+      </td>
+      <td style="font-family:var(--mono);font-size:11px;color:var(--ink-faint);text-align:center;">${i+1}</td>
+      <td><input class="se-input se-w-abbr" value="${esc(t.abbr)}" oninput="updateField('${halfKey}',${i},'abbr',this.value)" placeholder="BAR3" /></td>
+      <td><input class="se-input se-w-name" value="${esc(t.name)}" oninput="updateField('${halfKey}',${i},'name',this.value)" placeholder="Zürich Barracudas 3" /></td>
+      <td>
+        <div class="se-logo-cell">
+          <div class="se-logo-preview" style="background-image:url('${esc(previewSrc(t.logo))}')"></div>
+          <input class="se-input se-w-logo" value="${esc(t.logo)}" oninput="updateField('${halfKey}',${i},'logo',this.value); this.previousElementSibling.style.backgroundImage=\`url('\${previewSrc(this.value)}')\`;" placeholder="assets/teams/eagles.png" />
+        </div>
+      </td>
+      <td><input class="se-input se-w-num" type="number" min="0" value="${t.gp}" oninput="updateField('${halfKey}',${i},'gp',this.value)" /></td>
+      <td><input class="se-input se-w-num" type="number" min="0" value="${t.w}" oninput="updateField('${halfKey}',${i},'w',this.value)" /></td>
+      <td><input class="se-input se-w-num" type="number" min="0" value="${t.l}" oninput="updateField('${halfKey}',${i},'l',this.value)" /></td>
+      <td><input class="se-input se-w-pct" value="${esc(t.pct)}" oninput="updateField('${halfKey}',${i},'pct',this.value)" placeholder=".500" /></td>
+      <td><input class="se-input se-w-gb" value="${esc(t.gb)}" oninput="updateField('${halfKey}',${i},'gb',this.value)" placeholder="—" /></td>
+      <td style="text-align:center;"><input class="se-us-check" type="checkbox" ${t.isUs?'checked':''} onchange="updateField('${halfKey}',${i},'isUs',this.checked)" title="Resaltar como BAR3" /></td>
+      <td><button class="se-icon-btn danger" title="Eliminar" onclick="removeRow('${halfKey}',${i})">✕</button></td>
+    </tr>
+  `).join('');
+}
+
+function esc(v) {
+  return String(v ?? '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+}
+
+// Logo paths are stored root-relative (e.g. "assets/teams/eagles.png") to
+// match how results.html/app.js consume them — but this admin page lives
+// under /admin/, so the *preview* thumbnail needs a "../" prefix. Only
+// affects the on-screen preview, never the stored/submitted value.
+function previewSrc(logo) {
+  if (!logo) return '';
+  if (/^(https?:)?\/\//.test(logo) || logo.startsWith('/') || logo.startsWith('data:')) return logo;
+  return '../' + logo;
+}
+
+function updateField(halfKey, i, field, value) {
+  const row = state[halfKey][i];
+  if (!row) return;
+  if (['gp','w','l'].includes(field)) row[field] = Math.max(0, parseInt(value, 10) || 0);
+  else if (field === 'isUs') row[field] = !!value;
+  else row[field] = value;
+}
+
+function moveRow(halfKey, i, dir) {
+  const rows = state[halfKey];
+  const j = i + dir;
+  if (j < 0 || j >= rows.length) return;
+  [rows[i], rows[j]] = [rows[j], rows[i]];
+  renderRows(halfKey);
+}
+
+function addRow(halfKey) {
+  state[halfKey].push(emptyRow());
+  renderRows(halfKey);
+}
+
+function removeRow(halfKey, i) {
+  if (!confirm('¿Eliminar este equipo de la tabla?')) return;
+  state[halfKey].splice(i, 1);
+  renderRows(halfKey);
+}
+
+function autoCalc(halfKey) {
+  const rows = state[halfKey];
+  rows.forEach(t => {
+    const gp = t.gp || (t.w + t.l);
+    t.gp = gp;
+    t.pct = gp ? (t.w / gp).toFixed(3).replace(/^0/, '') : '.000';
+  });
+  const leader = rows[0];
+  if (leader) {
+    rows.forEach((t, i) => {
+      if (i === 0) { t.gb = '—'; return; }
+      const gbRaw = ((leader.w - t.w) + (t.l - leader.l)) / 2;
+      t.gb = gbRaw % 1 === 0 ? String(gbRaw) : gbRaw.toFixed(1);
+    });
+  }
+  renderRows(halfKey);
+}
+
+async function loadStandings() {
+  const el = document.getElementById('loadStatus');
+  try {
+    const r = await fetch('/.netlify/functions/standings-editor');
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const data = await r.json();
+    HALVES.forEach(h => {
+      const half = data[h.dataKey];
+      state[h.key] = (half?.teams || []).map(t => ({ ...t }));
+      if (half?.league) league[h.key] = half.league;
+    });
+    el.className = 'adm-status adm-status--ok';
+    el.textContent = '✓ Datos cargados' + (data.firstHalf?.updatedAt ? ' · 1ª mitad actualizada ' + new Date(data.firstHalf.updatedAt).toLocaleString() : '') + (data.secondHalf?.updatedAt ? ' · 2ª mitad actualizada ' + new Date(data.secondHalf.updatedAt).toLocaleString() : '');
+    renderHalves();
+  } catch (e) {
+    el.className = 'adm-status adm-status--err';
+    el.textContent = '✗ No se pudo cargar (' + e.message + '). Puedes seguir editando y guardar de todas formas.';
+    HALVES.forEach(h => { state[h.key] = []; });
+    renderHalves();
+  }
+}
+
+async function saveHalf(halfKey) {
+  const btnLabel = document.getElementById('saveLabel-' + halfKey);
+  const statusEl = document.getElementById('saveStatus-' + halfKey);
+  const rows = state[halfKey];
+
+  // Basic client-side validation before hitting the server
+  for (const [i, t] of rows.entries()) {
+    if (!t.abbr?.trim() || !t.name?.trim()) {
+      statusEl.className = 'adm-status adm-status--err';
+      statusEl.textContent = `✗ Fila ${i + 1}: abreviatura y nombre son obligatorios.`;
+      return;
+    }
+  }
+
+  const original = btnLabel.textContent;
+  btnLabel.textContent = 'Guardando…';
+  statusEl.className = 'adm-status';
+  statusEl.textContent = '';
+
+  try {
+    const r = await fetch('/.netlify/functions/standings-editor', {
+      method: 'POST',
+      headers: authHeaders({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify({ half: halfKey, league: league[halfKey], teams: rows }),
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || ('HTTP ' + r.status));
+
+    // Reflect server-sanitized values (rank, normalized abbr, etc.)
+    state[halfKey] = (d.saved?.teams || rows).map(t => ({ ...t }));
+    renderRows(halfKey);
+
+    statusEl.className = 'adm-status adm-status--ok';
+    statusEl.textContent = '✓ Guardado — ya está en vivo en el sitio (' + new Date().toLocaleTimeString() + ')';
+  } catch (e) {
+    statusEl.className = 'adm-status adm-status--err';
+    statusEl.textContent = '✗ ' + e.message;
+  } finally {
+    btnLabel.textContent = original;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', loadStandings);
+</script>
+</body>
+</html>
