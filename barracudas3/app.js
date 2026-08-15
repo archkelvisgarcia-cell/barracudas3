@@ -1026,58 +1026,55 @@ function standingLogo(t) {
 }
 
 // ── HERO MINI-STANDINGS ───────────────────────────────────────
-function initHeroStandings() {
+// Fallback — mirrors state.standingsSecondHalf (TOP 6 round) so the hero
+// widget shows the current table even before the games-api overlay lands.
+const HERO_STANDINGS_FALLBACK = [
+  { abbr:'FLY',  name:'Therwil Flyers 1',    w:7, l:1, pct:'.875', isUs:false },
+  { abbr:'EAG',  name:'Luzern Eagles',       w:7, l:3, pct:'.700', isUs:false },
+  { abbr:'BAR',  name:'Zürich Barracudas',   w:7, l:3, pct:'.700', isUs:false },
+  { abbr:'CHA',  name:'Zürich Challengers',  w:2, l:5, pct:'.286', isUs:false },
+  { abbr:'BAR3', name:'Zürich Barracudas 3', w:1, l:6, pct:'.143', isUs:true  },
+  { abbr:'LIO',  name:'Zürich Lions',        w:1, l:7, pct:'.125', isUs:false },
+];
+
+function hmsLogo(abbr) {
+  const src = STANDINGS_LOGOS[abbr] || '';
+  if (src) return `<div class="hms-logo" style="background-image:url('${src}')" title="${abbr}"></div>`;
+  return `<div class="hms-logo hms-logo--ini">${(abbr || '?')[0]}</div>`;
+}
+
+function renderHeroStandingsRow(t, i) {
+  return `<div class="hms-row${t.isUs ? ' hms-us' : ''}">
+    <span class="hms-rank">${i + 1}</span>
+    ${hmsLogo(t.abbr)}
+    <span class="hms-name">${t.name}${t.isUs ? ' ★' : ''}</span>
+    <span class="hms-w">${t.w}</span>
+    <span class="hms-l">${t.l}</span>
+    <span class="hms-pct">${t.pct}</span>
+  </div>`;
+}
+
+// Renders the hero mini-standings widget with whatever team list is
+// passed in — called once on load with the static fallback, and again
+// from initDynamicData() with the admin-edited live table (which wins).
+function renderHeroStandings(teams) {
   const wrap = document.getElementById('heroMiniStandings');
-  if (!wrap) return;
-
-  // Gruppe A — NL Baseball Gruppe A final standings (June 2026)
-  const GRUPPE_A = [
-    { abbr:'BAR',  name:'Barracudas', w:11, l:1, pct:'.917',  isUs:false },
-    { abbr:'EAG',  name:'Eagles',     w:9,  l:1, pct:'.900',  isUs:false },
-    { abbr:'BAS',  name:'Barracudas Senior', w:5, l:5, pct:'.500', isUs:true },
-  ];
-  // Gruppe B
-  const GRUPPE_B = [
-    { abbr:'FLY',  name:'Flyers',      w:10, l:0, pct:'1.000', isUs:false },
-    { abbr:'LIO',  name:'Lions',       w:6,  l:4, pct:'.600',  isUs:false },
-    { abbr:'CHA',  name:'Challengers', w:5,  l:5, pct:'.500',  isUs:false },
-  ];
-
-  function hmsLogo(abbr) {
-    const src = STANDINGS_LOGOS[abbr] || '';
-    if (src) return `<div class="hms-logo" style="background-image:url('${src}')" title="${abbr}"></div>`;
-    return `<div class="hms-logo hms-logo--ini">${(abbr || '?')[0]}</div>`;
-  }
-
-  function renderRow(t, i) {
-    return `<div class="hms-row${t.isUs ? ' hms-us' : ''}">
-      <span class="hms-rank">${i + 1}</span>
-      ${hmsLogo(t.abbr)}
-      <span class="hms-name">${t.name}${t.isUs ? ' ★' : ''}</span>
-      <span class="hms-w">${t.w}</span>
-      <span class="hms-l">${t.l}</span>
-      <span class="hms-pct">${t.pct}</span>
-    </div>`;
-  }
-
-  function renderCol(label, teams) {
-    return `<div class="hms-col">
-      <div class="hms-col-head">${label}</div>
-      ${teams.map((t, i) => renderRow(t, i)).join('')}
-    </div>`;
-  }
-
+  if (!wrap || !teams?.length) return;
   wrap.innerHTML = `<div class="hms-wrap">
     <div class="hms-head">
-      <span class="hms-title">SWISS LEAGUE 2026</span>
-      <a class="hms-link" href="results.html#standings">Full Standings ↗</a>
+      <span class="hms-title">CURRENT STANDINGS</span>
+      <a class="hms-link" href="results.html#top6-standings">Full Standings ↗</a>
     </div>
     <div class="hms-cols">
-      ${renderCol('— GRUPPE A', GRUPPE_A)}
-      <div class="hms-divider"></div>
-      ${renderCol('— GRUPPE B', GRUPPE_B)}
+      <div class="hms-col">
+        ${teams.map((t, i) => renderHeroStandingsRow(t, i)).join('')}
+      </div>
     </div>
   </div>`;
+}
+
+function initHeroStandings() {
+  renderHeroStandings(HERO_STANDINGS_FALLBACK);
 }
 
 document.addEventListener('DOMContentLoaded', initHeroStandings);
@@ -1764,6 +1761,7 @@ document.addEventListener('DOMContentLoaded', initLiveScore);
       }
       if (data.standingsSecondHalf?.teams?.length) {
         renderStandingsTable(document.getElementById('standingsTableTop6'), data.standingsSecondHalf, { compact: true });
+        renderHeroStandings(data.standingsSecondHalf.teams);
       }
 
       // ── Re-render Top Performers + Awards with server-computed data ─
