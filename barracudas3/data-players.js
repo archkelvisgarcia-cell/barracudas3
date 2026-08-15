@@ -13,7 +13,7 @@ const PLAYER_EXTENDED_DATA = {
     age: 38, bats: 'R', throws: 'R',
     batting: {
       season: { G:0, PA:40, AB:34, R:16, H:14, '2B':2, '3B':0, HR:2, RBI:13, BB:4, SO:4, SB:2, CS:0, HBP:1, SF:1, AVG:'.412', OBP:'.475', SLG:'.647', OPS:'1.122' },
-      seasonTop6: { G:0, PA:7, AB:7, R:1, H:3, '2B':2, '3B':0, HR:0, RBI:2, BB:0, SO:2, SB:0, CS:1, HBP:0, SF:0, AVG:'.429', OBP:'.429', SLG:'.714', OPS:'1.143' },
+      seasonTop6: { G:0, PA:19, AB:19, R:3, H:7, '2B':3, '3B':0, HR:1, RBI:4, BB:0, SO:9, SB:0, CS:1, HBP:0, SF:0, AVG:'.368', OBP:'.368', SLG:'.684', OPS:'1.053' },
       log: [
         { date:'06/07', opp:'Challengers 2 G2', spot:10, pos:'P/2B',  AB:0, R:0, H:0, '2B':0, HR:0, RBI:0, BB:0, SO:0, SB:0, HBP:1, AVG:'.412' },
         { date:'06/07', opp:'Challengers 2 G1', spot:6,  pos:'RF',    AB:5, R:3, H:3, '2B':0, HR:0, RBI:2, BB:1, SO:0, SB:1, SF:1, AVG:'.412' },
@@ -68,7 +68,7 @@ const PLAYER_EXTENDED_DATA = {
       ],
     },
     pitching: {
-      season: { G:0, GS:0, IP:'0.2', H:0, R:0, ER:0, BB:0, SO:0, HR:0, HBP:0, WP:0, BF:0, WL:'0-0', SV:0, OppAVG:'.000', WHIP:'7.50', ERA:'10.50' },
+      season: { G:0, GS:0, IP:'1.2', H:0, R:0, ER:0, BB:0, SO:0, HR:0, HBP:0, WP:0, BF:0, WL:'0-0', SV:0, OppAVG:'.000', WHIP:'6.00', ERA:'21.00' },
       log: [
         { date:'04/26', opp:'Lausanne Indians', IP:'0.2', H:2, R:8, ER:1, BB:3, SO:0, HBP:1, WP:2, BF:11, ERA:'10.50' },
       ],
@@ -92,7 +92,7 @@ const PLAYER_EXTENDED_DATA = {
     fullName: 'Malchans Caridad Juan Leonel', bats: 'R', throws: 'R',
     batting: {
       season: { G:0, PA:53, AB:44, R:21, H:14, '2B':5, '3B':0, HR:0, RBI:18, BB:6, SO:5, SB:4, CS:0, HBP:3, SF:0, AVG:'.318', OBP:'.434', SLG:'.432', OPS:'.866' },
-      seasonTop6: { G:0, PA:6, AB:5, R:1, H:3, '2B':1, '3B':0, HR:0, RBI:1, BB:1, SO:0, SB:0, CS:0, HBP:0, SF:0, AVG:'.600', OBP:'.667', SLG:'.800', OPS:'1.467' },
+      seasonTop6: { G:0, PA:18, AB:17, R:3, H:6, '2B':2, '3B':0, HR:1, RBI:4, BB:1, SO:2, SB:0, CS:0, HBP:0, SF:0, AVG:'.353', OBP:'.389', SLG:'.647', OPS:'1.036' },
       log: [
         { date:'06/07', opp:'Challengers 2 G2', spot:6, pos:'2B', AB:3, R:1, H:1, '2B':0, HR:0, RBI:1, BB:0, SO:0, SB:0, AVG:'.295' },
         { date:'06/02', opp:'Barracudas NLA', spot:2, pos:'2B', AB:4, R:0, H:0, '2B':0, HR:0, RBI:0, BB:0, SO:1, SB:0, AVG:'.293' },
@@ -107,7 +107,7 @@ const PLAYER_EXTENDED_DATA = {
       ],
     },
     pitching: {
-      season: { G:0, GS:0, IP:'5.2', H:0, R:0, ER:0, BB:0, SO:5, HR:0, HBP:0, WP:0, BF:0, WL:'1-0', SV:0, OppAVG:'.000', WHIP:'1.76', ERA:'2.47' },
+      season: { G:0, GS:0, IP:'7.0', H:0, R:0, ER:0, BB:0, SO:6, HR:0, HBP:0, WP:0, BF:0, WL:'1-0', SV:0, OppAVG:'.000', WHIP:'2.29', ERA:'3.00' },
       log: [
         { date:'06/07', opp:'Challengers 2 G1', IP:'1.0', H:2, R:3, ER:3, BB:1, SO:0, HBP:0, WP:0, BF:6,  ERA:'6.35' },
         { date:'05/05', opp:'Barracudas NLA',   IP:'0.2', H:0, R:0, ER:0, BB:0, SO:0, HBP:0, WP:0, BF:2,  ERA:'1.50' },
@@ -163,7 +163,7 @@ const PLAYER_EXTENDED_DATA = {
     },
     pitching: null,
     fielding: {
-      season: { G:0, GS:0, IP:'0.1', H:0, R:0, ER:0, BB:0, SO:0, HR:0, HBP:0, WP:0, BF:0, WL:'0-0', SV:0, OppAVG:'.000', WHIP:'3.00', ERA:'0.00' },
+      season: { G:0, GS:0, IP:'1.2', H:0, R:0, ER:0, BB:0, SO:3, HR:0, HBP:0, WP:0, BF:0, WL:'0-0', SV:0, OppAVG:'.000', WHIP:'1.20', ERA:'4.20' },
       log: [
         { date:'05/05', opp:'Barracudas NLA',   pos:'RF', IP:'7.0', PO:1, A:0, E:0, FPct:'1.000' },
         { date:'05/02', opp:'Luzern Eagles',    pos:'RF', IP:'6.0', PO:0, A:0, E:0, FPct:'1.000' },
@@ -179,7 +179,7 @@ const PLAYER_EXTENDED_DATA = {
     fullName: 'Medina Reyes Jose Antonio', age: 38, bats: 'S', throws: 'R', captain: true,
     batting: {
       season: { G:0, PA:58, AB:35, R:20, H:16, '2B':4, '3B':3, HR:0, RBI:19, BB:14, SO:3, SB:4, CS:0, HBP:8, SF:1, AVG:'.457', OBP:'.655', SLG:'.743', OPS:'1.398' },
-      seasonTop6: { G:0, PA:7, AB:6, R:1, H:3, '2B':0, '3B':0, HR:0, RBI:0, BB:0, SO:2, SB:0, CS:0, HBP:1, SF:0, AVG:'.500', OBP:'.571', SLG:'.500', OPS:'1.071' },
+      seasonTop6: { G:0, PA:15, AB:13, R:2, H:4, '2B':1, '3B':0, HR:0, RBI:0, BB:0, SO:3, SB:0, CS:0, HBP:2, SF:0, AVG:'.308', OBP:'.400', SLG:'.385', OPS:'.785' },
       log: [
         { date:'06/07', opp:'Challengers 2 G2', spot:3, pos:'C', AB:4, R:4, H:1, '2B':0, '3B':1, HR:0, RBI:1, BB:0, HBP:1, SO:0, SB:0, AVG:'.457' },
         { date:'06/07', opp:'Challengers 2 G1', spot:3, pos:'C', AB:3, R:5, H:1, '2B':0, '3B':0, HR:0, RBI:3, BB:4, SO:0, SB:0, AVG:'.457' },
@@ -215,8 +215,8 @@ const PLAYER_EXTENDED_DATA = {
   '16': { // Yohandris Pedroso Munoz
     fullName: 'Pedroso Munoz Yohandris', bats: 'R', throws: 'R',
     batting: {
-      season: { G:0, PA:34, AB:28, R:12, H:11, '2B':4, '3B':0, HR:0, RBI:10, BB:5, SO:2, SB:4, CS:0, HBP:0, SF:1, AVG:'.393', OBP:'.471', SLG:'.536', OPS:'1.006' },
-      seasonTop6: { G:0, PA:3, AB:2, R:0, H:0, '2B':0, '3B':0, HR:0, RBI:0, BB:1, SO:1, SB:0, CS:0, HBP:0, SF:0, AVG:'.000', OBP:'.333', SLG:'.000', OPS:'.333' },
+      season: { G:0, PA:34, AB:28, R:12, H:11, '2B':4, '3B':0, HR:0, RBI:10, BB:5, SO:2, SB:4, CS:0, HBP:0, SF:1, AVG:'.393', OBP:'.471', SLG:'.536', OPS:'1.000' },
+      seasonTop6: { G:0, PA:9, AB:8, R:1, H:2, '2B':1, '3B':0, HR:0, RBI:2, BB:1, SO:4, SB:0, CS:0, HBP:0, SF:0, AVG:'.250', OBP:'.333', SLG:'.375', OPS:'.000' },
       log: [
         { date:'06/07', opp:'Challengers 2 G2', spot:5, pos:'DH/P', AB:2, R:1, H:1, '2B':0, HR:0, RBI:1, BB:1, SO:0, SB:0, AVG:'.455' },
         { date:'06/07', opp:'Challengers 2 G1', spot:5, pos:'DH',   AB:4, R:2, H:2, '2B':1, HR:0, RBI:2, BB:1, SO:0, SB:0, AVG:'.455' },
@@ -226,7 +226,7 @@ const PLAYER_EXTENDED_DATA = {
       ],
     },
     pitching: {
-      season: { G:0, GS:0, IP:'3.0', H:0, R:0, ER:0, BB:0, SO:0, HR:0, HBP:0, WP:0, BF:0, WL:'0-0', SV:0, OppAVG:'.000', WHIP:'3.33', ERA:'14.00' },
+      season: { G:0, GS:0, IP:'5.0', H:0, R:0, ER:0, BB:0, SO:3, HR:0, HBP:0, WP:0, BF:0, WL:'0-0', SV:0, OppAVG:'.000', WHIP:'3.60', ERA:'15.40' },
       log: [
         { date:'06/07', opp:'Challengers 2 G2', IP:'2.0', H:2, R:1, ER:1, BB:0, SO:0, HBP:0, WP:0, BF:8, ERA:'4.50' },
       ],
@@ -238,6 +238,7 @@ const PLAYER_EXTENDED_DATA = {
     fullName: 'Litscher Sascha', age: 33, bats: 'R', throws: 'R',
     batting: {
       season: { G:0, PA:2, AB:2, R:1, H:1, '2B':0, '3B':0, HR:0, RBI:0, BB:0, SO:1, SB:1, CS:0, HBP:0, SF:0, AVG:'.500', OBP:'.500', SLG:'.500', OPS:'1.000' },
+      seasonTop6: { G:0, PA:9, AB:9, R:0, H:1, '2B':1, '3B':0, HR:0, RBI:1, BB:0, SO:4, SB:1, CS:0, HBP:0, SF:0, AVG:'.111', OBP:'.111', SLG:'.222', OPS:'.333' },
       log: [
         { date:'05/02', opp:'Luzern Eagles', spot:3, pos:'1B', AB:2, R:1, H:1, '2B':0, HR:0, RBI:0, BB:0, SO:1, SB:1, AVG:'.500' },
       ],
@@ -256,7 +257,7 @@ const PLAYER_EXTENDED_DATA = {
     fullName: 'Rosa Lima Jhomar Bienvenido', age: 32, bats: 'R', throws: 'R',
     batting: {
       season: { G:0, PA:59, AB:39, R:16, H:23, '2B':2, '3B':0, HR:3, RBI:28, BB:15, SO:2, SB:1, CS:0, HBP:3, SF:2, AVG:'.590', OBP:'.695', SLG:'.872', OPS:'1.567' },
-      seasonTop6: { G:0, PA:4, AB:2, R:0, H:0, '2B':0, '3B':0, HR:0, RBI:0, BB:2, SO:2, SB:0, CS:0, HBP:0, SF:0, AVG:'.000', OBP:'.500', SLG:'.000', OPS:'.500' },
+      seasonTop6: { G:0, PA:14, AB:10, R:1, H:1, '2B':0, '3B':0, HR:0, RBI:1, BB:4, SO:4, SB:0, CS:0, HBP:0, SF:0, AVG:'.100', OBP:'.357', SLG:'.100', OPS:'.457' },
       log: [
         { date:'06/07', opp:'Challengers 2 G2', spot:4, pos:'3B', AB:3, R:2, H:2, '2B':0, HR:0, RBI:3, BB:1, SO:0, SB:0, AVG:'.619' },
         { date:'06/07', opp:'Challengers 2 G1', spot:4, pos:'3B', AB:4, R:3, H:3, '2B':0, HR:1, RBI:5, BB:1, SO:0, SB:0, AVG:'.619' },
@@ -291,7 +292,7 @@ const PLAYER_EXTENDED_DATA = {
     fullName: 'Arregoitia Villarreal Jhon Manuel', age: 32, bats: 'R', throws: 'R',
     batting: {
       season: { G:0, PA:57, AB:46, R:13, H:7, '2B':1, '3B':0, HR:0, RBI:11, BB:9, SO:9, SB:3, CS:0, HBP:2, SF:0, AVG:'.152', OBP:'.316', SLG:'.174', OPS:'.490' },
-      seasonTop6: { G:0, PA:3, AB:2, R:0, H:0, '2B':0, '3B':0, HR:0, RBI:0, BB:0, SO:2, SB:0, CS:0, HBP:1, SF:0, AVG:'.000', OBP:'.333', SLG:'.000', OPS:'.333' },
+      seasonTop6: { G:0, PA:7, AB:5, R:1, H:0, '2B':0, '3B':0, HR:0, RBI:0, BB:1, SO:4, SB:0, CS:0, HBP:1, SF:0, AVG:'.000', OBP:'.286', SLG:'.000', OPS:'.286' },
       log: [
         { date:'06/07', opp:'Challengers 2 G2', spot:8, pos:'1B', AB:3, R:1, H:1, '2B':0, HR:0, RBI:2, BB:0, SO:1, SB:0, AVG:'.178' },
         { date:'06/07', opp:'Challengers 2 G1', spot:8, pos:'1B', AB:4, R:2, H:2, '2B':0, HR:0, RBI:3, BB:0, SO:1, SB:0, AVG:'.178' },
@@ -326,7 +327,7 @@ const PLAYER_EXTENDED_DATA = {
     fullName: 'Moreno Carlos', age: 31, bats: 'R', throws: 'R',
     batting: {
       season: { G:0, PA:56, AB:44, R:18, H:15, '2B':3, '3B':0, HR:0, RBI:14, BB:8, SO:7, SB:10, CS:0, HBP:4, SF:0, AVG:'.341', OBP:'.482', SLG:'.409', OPS:'.891' },
-      seasonTop6: { G:0, PA:6, AB:3, R:0, H:1, '2B':0, '3B':0, HR:0, RBI:0, BB:3, SO:1, SB:1, CS:1, HBP:0, SF:0, AVG:'.333', OBP:'.667', SLG:'.333', OPS:'1.000' },
+      seasonTop6: { G:0, PA:21, AB:16, R:4, H:3, '2B':0, '3B':0, HR:0, RBI:2, BB:5, SO:5, SB:5, CS:2, HBP:0, SF:0, AVG:'.188', OBP:'.381', SLG:'.188', OPS:'.568' },
       log: [
         { date:'06/07', opp:'Challengers 2 G2', spot:7, pos:'CF', AB:3, R:2, H:1, '2B':0, HR:0, RBI:1, BB:1, SO:0, SB:0, AVG:'.333' },
         { date:'06/07', opp:'Challengers 2 G1', spot:7, pos:'CF', AB:4, R:2, H:2, '2B':0, HR:0, RBI:2, BB:1, SO:0, SB:1, AVG:'.333' },
@@ -361,6 +362,7 @@ const PLAYER_EXTENDED_DATA = {
     fullName: 'Lombriser Clemens', age: 46, bats: 'R', throws: 'R',
     batting: {
       season: { G:0, PA:31, AB:24, R:7, H:3, '2B':0, '3B':0, HR:0, RBI:6, BB:5, SO:2, SB:0, CS:0, HBP:1, SF:0, AVG:'.125', OBP:'.300', SLG:'.125', OPS:'.425' },
+      seasonTop6: { G:0, PA:10, AB:8, R:2, H:3, '2B':0, '3B':0, HR:0, RBI:1, BB:1, SO:4, SB:0, CS:0, HBP:0, SF:1, AVG:'.375', OBP:'.400', SLG:'.375', OPS:'.775' },
       log: [
         { date:'06/07', opp:'Challengers 2 G1', spot:9, pos:'LF', AB:4, R:3, H:2, '2B':0, HR:0, RBI:2, BB:1, SO:0, SB:0, AVG:'.174' },
         { date:'05/05', opp:'Barracudas NLA',   spot:8, pos:'LF', AB:4, R:0, H:0, '2B':0, HR:0, RBI:0, BB:0, SO:0, SB:0, AVG:'.105' },
@@ -388,7 +390,7 @@ const PLAYER_EXTENDED_DATA = {
     fullName: 'Rodriguez Martin Hansel Martin', bats: 'R', throws: 'R',
     batting: {
       season: { G:0, PA:9, AB:8, R:3, H:4, '2B':1, '3B':0, HR:1, RBI:1, BB:0, SO:1, SB:1, CS:0, HBP:1, SF:0, AVG:'.500', OBP:'.556', SLG:'1.000', OPS:'1.556' },
-      seasonTop6: { G:0, PA:1, AB:1, R:0, H:0, '2B':0, '3B':0, HR:0, RBI:0, BB:0, SO:0, SB:0, CS:0, HBP:0, SF:0, AVG:'.000', OBP:'.000', SLG:'.000', OPS:'.000' }, // no AB in G1 (pitched only)
+      seasonTop6: { G:0, PA:7, AB:6, R:2, H:0, '2B':0, '3B':0, HR:0, RBI:0, BB:0, SO:1, SB:0, CS:0, HBP:1, SF:0, AVG:'.000', OBP:'.143', SLG:'.000', OPS:'.143' }, // no AB in G1 (pitched only)
       log: [
         { date:'05/05', opp:'Barracudas NLA',   spot:4,  pos:'PH/CF', AB:1, R:0, H:0, '2B':0, HR:0, RBI:0, BB:0, SO:0, SB:0, AVG:'.500' },
         { date:'05/02', opp:'Luzern Eagles',    spot:9,  pos:'RF/P',  AB:4, R:1, H:3, '2B':1, HR:0, RBI:0, BB:0, SO:1, SB:1, AVG:'.571' },
@@ -397,7 +399,7 @@ const PLAYER_EXTENDED_DATA = {
       ],
     },
     pitching: {
-      season: { G:0, GS:0, IP:'13.1', H:0, R:0, ER:0, BB:0, SO:15, HR:0, HBP:0, WP:0, BF:0, WL:'1-1', SV:0, OppAVG:'.000', WHIP:'3.23', ERA:'13.12' },
+      season: { G:0, GS:0, IP:'23.0', H:0, R:0, ER:0, BB:0, SO:23, HR:0, HBP:0, WP:0, BF:0, WL:'1-2', SV:0, OppAVG:'.000', WHIP:'2.48', ERA:'9.74' },
       log: [
         { date:'06/07', opp:'Challengers 2 G1', IP:'2.0', H:3, R:3,  ER:3, BB:1, SO:1, HBP:0, WP:0, BF:12, ERA:'12.10' },
         { date:'05/02', opp:'Luzern Eagles',    IP:'1.0', H:2, R:3,  ER:3, BB:3, SO:0, HBP:0, WP:0, BF:8,  ERA:'9.13' },
@@ -423,13 +425,13 @@ const PLAYER_EXTENDED_DATA = {
     fullName: 'Peguero Wilkin', age: 27, bats: 'R', throws: 'R',
     batting: {
       season: { G:0, PA:16, AB:15, R:4, H:7, '2B':0, '3B':0, HR:0, RBI:5, BB:1, SO:3, SB:3, CS:0, HBP:0, SF:0, AVG:'.467', OBP:'.500', SLG:'.467', OPS:'.967' },
-      seasonTop6: { G:0, PA:6, AB:6, R:1, H:1, '2B':0, '3B':0, HR:0, RBI:1, BB:0, SO:3, SB:1, CS:0, HBP:0, SF:0, AVG:'.167', OBP:'.167', SLG:'.167', OPS:'.333' },
+      seasonTop6: { G:0, PA:18, AB:17, R:2, H:2, '2B':1, '3B':0, HR:0, RBI:1, BB:1, SO:7, SB:1, CS:0, HBP:0, SF:0, AVG:'.118', OBP:'.167', SLG:'.176', OPS:'.343' },
       log: [
         { date:'06/07', opp:'Challengers 2 G2', spot:9, pos:'LF', AB:3, R:2, H:1, '2B':0, HR:0, RBI:2, BB:0, SO:0, SB:0, AVG:'.333' },
       ],
     },
     pitching: {
-      season: { G:0, GS:0, IP:'9.0', H:0, R:0, ER:0, BB:0, SO:10, HR:0, HBP:0, WP:0, BF:0, WL:'1-2', SV:0, OppAVG:'.000', WHIP:'2.56', ERA:'8.56' },
+      season: { G:0, GS:0, IP:'11.0', H:0, R:0, ER:0, BB:0, SO:12, HR:0, HBP:0, WP:0, BF:0, WL:'1-2', SV:0, OppAVG:'.000', WHIP:'2.82', ERA:'10.18' },
       log: [
         { date:'06/07', opp:'Challengers 2 G1', IP:'1.0', H:1, R:1, ER:1, BB:0, SO:0, HBP:0, WP:0, BF:6,  ERA:'12.00' },
         { date:'05/05', opp:'Barracudas NLA',   IP:'0.2', H:1,  R:3, ER:3, BB:5, SO:0, HBP:0, WP:2, BF:8,  ERA:'9.62' },
@@ -476,13 +478,13 @@ const PLAYER_EXTENDED_DATA = {
     fullName: 'Elias Angel Marcial', bats: 'R', throws: 'R',
     batting: {
       season: { G:0, PA:4, AB:4, R:4, H:2, '2B':0, '3B':0, HR:0, RBI:6, BB:0, SO:0, SB:0, CS:0, HBP:0, SF:0, AVG:'.500', OBP:'.500', SLG:'.500', OPS:'1.000' },
-      seasonTop6: { G:0, PA:6, AB:5, R:0, H:0, '2B':0, '3B':0, HR:0, RBI:0, BB:1, SO:3, SB:0, CS:0, HBP:0, SF:0, AVG:'.000', OBP:'.167', SLG:'.000', OPS:'.167' },
+      seasonTop6: { G:0, PA:14, AB:13, R:1, H:2, '2B':0, '3B':0, HR:0, RBI:1, BB:1, SO:4, SB:2, CS:0, HBP:0, SF:0, AVG:'.154', OBP:'.214', SLG:'.154', OPS:'.368' },
       log: [
         { date:'05/30', opp:'Sissach Frogs G1', spot:9, pos:'RF', AB:4, R:4, H:2, '2B':0, HR:0, RBI:6, BB:0, SO:0, SB:0, AVG:'.500' },
       ],
     },
     pitching: {
-      season: { G:0, GS:0, IP:'11.2', H:0, R:0, ER:0, BB:0, SO:14, HR:0, HBP:0, WP:0, BF:0, WL:'3-1', SV:0, OppAVG:'.000', WHIP:'1.89', ERA:'6.60' },
+      season: { G:0, GS:0, IP:'16.2', H:0, R:0, ER:0, BB:0, SO:17, HR:0, HBP:0, WP:0, BF:0, WL:'3-2', SV:0, OppAVG:'.000', WHIP:'1.68', ERA:'5.88' },
       log: [
         { date:'05/30', opp:'Sissach Frogs G2', IP:'3.0', H:1, R:1, ER:1, BB:2, SO:2, HBP:0, WP:0, BF:10, ERA:'5.09', note:'W · Mercy Rule' },
         { date:'05/05', opp:'Barracudas NLA',   IP:'1.1', H:2, R:4, ER:2, BB:2, SO:1,  HBP:0, WP:0, BF:8,  ERA:'6.13' },
@@ -506,7 +508,7 @@ const PLAYER_EXTENDED_DATA = {
     fullName: 'Vasquez Nuñez Michael', age: 31, bats: 'R', throws: 'R',
     batting: null,
     pitching: {
-      season: { G:0, GS:0, IP:'23.2', H:0, R:0, ER:0, BB:0, SO:9, HR:0, HBP:0, WP:0, BF:0, WL:'2-2', SV:0, OppAVG:'.000', WHIP:'1.90', ERA:'5.03' },
+      season: { G:0, GS:0, IP:'31.1', H:0, R:0, ER:0, BB:0, SO:15, HR:0, HBP:0, WP:0, BF:0, WL:'3-3', SV:0, OppAVG:'.000', WHIP:'2.43', ERA:'7.60' },
       log: [
         { date:'06/07', opp:'Challengers 2 G2', IP:'4.1', H:9, R:6, ER:6, BB:3, SO:2, HBP:0, WP:0, BF:26, ERA:'6.20' },
         { date:'05/30', opp:'Sissach Frogs G1', IP:'4.0', H:4, R:0, ER:0, BB:3, SO:4, HBP:0, WP:0, BF:19, ERA:'3.50', note:'Shutout W · Mercy Rule' },
