@@ -98,39 +98,52 @@ const GAMES = [
     recapUrl: 'article.html?id=barvsbar3-g2-july11',
   },
   {
-    date: '2026-07-17', time: '18:30', label: 'JUL 17 · 2026 · G1',
+    date: '2026-07-17', time: '18:30', label: 'JUL 17 · 2026',
     opponent: 'Zürich Challengers', opponentLogo: 'assets/teams/challengers.png',
     location: 'Home · Heerenschürli', league: 'TOP 6 — Swiss League',
-    result: null, score: null, innings: null, notes: '',
-  },
-  {
-    date: '2026-07-18', time: '19:00', label: 'JUL 18 · 2026 · G2',
-    opponent: 'Zürich Challengers', opponentLogo: 'assets/teams/challengers.png',
-    location: 'Home · Heerenschürli', league: 'TOP 6 — Swiss League',
-    result: null, score: null, innings: null, notes: '',
+    result: 'L', score: { us: 5, them: 13 }, innings: 7, notes: '',
   },
   {
     date: '2026-07-25', time: '11:00', label: 'JUL 25 · 2026 · G1',
     opponent: 'Therwil Flyers', opponentLogo: 'assets/teams/flyers.png',
     location: 'Home · Heerenschürli', league: 'TOP 6 — Swiss League',
-    result: null, score: null, innings: null, notes: '',
+    result: 'L', score: { us: 3, them: 20 }, innings: 7, notes: '',
   },
   {
     date: '2026-07-25', time: '14:00', label: 'JUL 25 · 2026 · G2',
     opponent: 'Therwil Flyers', opponentLogo: 'assets/teams/flyers.png',
     location: 'Home · Heerenschürli', league: 'TOP 6 — Swiss League',
-    result: null, score: null, innings: null, notes: '',
+    result: 'L', score: { us: 1, them: 11 }, innings: 7, notes: '',
   },
   {
     date: '2026-08-08', time: '11:00', label: 'AGO 8 · 2026 · G1',
     opponent: 'Luzern Eagles', opponentLogo: 'assets/teams/eagles.png',
     location: 'Away · Luzern', league: 'TOP 6 — Swiss League',
-    result: null, score: null, innings: null, notes: '',
+    result: 'W', score: { us: 14, them: 9 }, innings: 7, notes: 'Upset win vs #2 Eagles',
+    recapUrl: 'article.html?id=eagles-g1-aug8',
   },
   {
     date: '2026-08-08', time: '14:00', label: 'AGO 8 · 2026 · G2',
     opponent: 'Luzern Eagles', opponentLogo: 'assets/teams/eagles.png',
     location: 'Away · Luzern', league: 'TOP 6 — Swiss League',
+    result: 'L', score: { us: 0, them: 15 }, innings: 7, notes: '',
+  },
+  {
+    date: '2026-08-16', time: '11:00', label: 'AGO 16 · 2026 · G1',
+    opponent: 'Zürich Lions', opponentLogo: 'assets/teams/Lions.png',
+    location: 'Away · Zürich', league: 'TOP 6 — Swiss League',
+    result: null, score: null, innings: null, notes: '',
+  },
+  {
+    date: '2026-08-16', time: '14:00', label: 'AGO 16 · 2026 · G2',
+    opponent: 'Zürich Lions', opponentLogo: 'assets/teams/Lions.png',
+    location: 'Away · Zürich', league: 'TOP 6 — Swiss League',
+    result: null, score: null, innings: null, notes: '',
+  },
+  {
+    date: '2026-08-19', time: '18:30', label: 'AGO 19 · 2026',
+    opponent: 'Zürich Challengers', opponentLogo: 'assets/teams/challengers.png',
+    location: 'Home · Heerenschürli', league: 'TOP 6 — Swiss League',
     result: null, score: null, innings: null, notes: '',
   },
 ];
@@ -158,6 +171,32 @@ const HERO_BG_IMAGES = [
 
 // ── NEWS ARTICLES — single source of truth ──────────────────
 const NEWS_ARTICLES = [
+  {
+    id: 'eagles-g1-aug8',
+    date: 'August 8, 2026', tag: 'Game Recap', tagColor: '#F0B429',
+    headline: 'BAR3 Stun Luzern Eagles 14–9 for Biggest Win of the TOP 6 Round',
+    summary: 'Barracudas 3 snapped a five-game skid in the TOP 6 — Swiss League with a 14–9 road win over Luzern Eagles, the round\'s second-place team, in Game 1 of Saturday\'s doubleheader in Luzern.',
+    image: 'assets/nightgame-7.jpg', imagePosition: 'center 20%',
+    carouselImages: ['assets/nightgame-7.jpg', 'assets/nightgame-14.jpg', 'assets/nightgame-20.jpg'],
+    href: 'article.html?id=eagles-g1-aug8',
+    score: { us: 14, them: 9 }, opponent: 'Luzern Eagles', location: 'Away · Hinterruopigen, Luzern',
+    notes: 'TOP 6 · G1 · Road win over #2 Eagles',
+    body: '<p>Zürich Barracudas 3 snapped a rough patch in the TOP 6 — Swiss League with their most important result of the round: a 14–9 road win over Luzern Eagles in Game 1 of Saturday\'s doubleheader at Hinterruopigen. Coming in near the bottom of the six-team bracket, BAR3 had dropped their previous games against Zürich Challengers and Therwil Flyers, but found the offense it needed against a Eagles side that entered the day sitting in second place behind Therwil.</p><p>The win moved BAR3 to 1–6 in the TOP 6 round and snapped a five-game slide dating back to mid-July — a much-needed result against one of the bracket\'s strongest sides. The Barracudas couldn\'t carry the momentum into Game 2, falling 0–15, but Game 1 stands as a genuine statement result heading into the closing stretch of the round against Zürich Lions (Aug 16) and Zürich Challengers (Aug 19).</p><p><em>Individual batting and pitching lines for this game are pending — check back as the boxscore is finalized.</em></p>',
+    i18n: {
+      es: {
+        tag: 'Resumen de Partido',
+        headline: 'BAR3 sorprende a Luzern Eagles 14-9 en la mejor victoria de la ronda TOP 6',
+        summary: 'Barracudas 3 cortó una racha de cinco derrotas en la TOP 6 — Liga Suiza con una victoria de visitante 14-9 sobre Luzern Eagles, segundo lugar de la ronda, en el Juego 1 del doble juego del sábado en Luzern.',
+        body: '<p>Los Zürich Barracudas 3 cortaron una racha difícil en la TOP 6 — Liga Suiza con su resultado más importante de la ronda: una victoria de visitante 14-9 sobre Luzern Eagles en el Juego 1 del doble juego del sábado en Hinterruopigen. Llegando casi al fondo de la tabla de seis equipos, BAR3 había perdido sus partidos anteriores ante Zürich Challengers y Therwil Flyers, pero encontró la ofensiva que necesitaba ante un equipo Eagles que llegaba al día en segundo lugar, solo detrás de Therwil.</p><p>La victoria eleva el récord de BAR3 en la ronda TOP 6 a 1-6 y corta una racha de cinco derrotas que se remontaba a mediados de julio — un resultado muy necesario ante uno de los equipos más fuertes del grupo. Los Barracudas no pudieron mantener el impulso en el Juego 2, cayendo 0-15, pero el Juego 1 queda como un resultado de peso de cara al tramo final de la ronda ante Zürich Lions (16 de agosto) y Zürich Challengers (19 de agosto).</p><p><em>Las líneas individuales de bateo y pitcheo de este partido están pendientes.</em></p>',
+      },
+      de: {
+        tag: 'Spielbericht',
+        headline: 'BAR3 überrascht Luzern Eagles mit 14:9 — bester Sieg der TOP-6-Runde',
+        summary: 'Die Zürich Barracudas 3 beendeten eine Fünf-Spiele-Talsohle in der TOP-6-Runde mit einem 14:9-Auswärtssieg gegen Luzern Eagles, den Zweitplatzierten der Runde, in Spiel 1 des Samstags-Doubleheaders in Luzern.',
+        body: '<p>Die Zürich Barracudas 3 beendeten eine schwierige Phase in der TOP-6 — Swiss League mit ihrem wichtigsten Ergebnis der Runde: einem 14:9-Auswärtssieg gegen Luzern Eagles in Spiel 1 des Samstags-Doubleheaders in Hinterruopigen. Nahe dem Tabellenende der Sechser-Gruppe gelegen, hatten die BAR3 zuvor gegen Zürich Challengers und Therwil Flyers verloren, fanden aber gegen ein Eagles-Team, das den Tag auf dem zweiten Platz hinter Therwil begann, die nötige Offensive.</p><p>Der Sieg verbessert BAR3s Bilanz in der TOP-6-Runde auf 1:6 und beendet eine seit Mitte Juli andauernde Fünf-Spiele-Serie ohne Sieg — ein dringend benötigtes Resultat gegen eines der stärksten Teams der Gruppe. Den Schwung konnten die Barracudas nicht ins zweite Spiel mitnehmen und verloren 0:15, doch Spiel 1 bleibt ein echtes Ausrufezeichen vor dem Schlussspurt der Runde gegen die Zürich Lions (16. August) und die Zürich Challengers (19. August).</p><p><em>Die individuellen Schlag- und Pitching-Statistiken für dieses Spiel folgen in Kürze.</em></p>',
+      },
+    },
+  },
   {
     id: 'barvsbar3-g2-july11',
     date: 'July 11, 2026', tag: 'Game Recap', tagColor: '#F0B429',

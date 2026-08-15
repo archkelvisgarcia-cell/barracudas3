@@ -1034,7 +1034,7 @@ function initHeroStandings() {
   const GRUPPE_A = [
     { abbr:'BAR',  name:'Barracudas', w:11, l:1, pct:'.917',  isUs:false },
     { abbr:'EAG',  name:'Eagles',     w:9,  l:1, pct:'.900',  isUs:false },
-    { abbr:'BAS',  name:'Barracudas Senior', w:7, l:5, pct:'.583', isUs:true },
+    { abbr:'BAS',  name:'Barracudas Senior', w:5, l:5, pct:'.500', isUs:true },
   ];
   // Gruppe B
   const GRUPPE_B = [
