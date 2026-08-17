@@ -1,4 +1,4 @@
-const CACHE = 'barracudas-v17'; // bumped — renamed TOP 6 round label to NLA
+const CACHE = 'barracudas-v18'; // bumped — Lions sweep recap and standings
 
 // Static shell files that are safe to precache (change rarely)
 const PRECACHE = [

@@ -132,13 +132,15 @@ const GAMES = [
     date: '2026-08-16', time: '11:00', label: 'AGO 16 · 2026 · G1',
     opponent: 'Zürich Lions', opponentLogo: 'assets/teams/Lions.png',
     location: 'Away · Zürich', league: 'TOP 6 — Swiss League',
-    result: null, score: null, innings: null, notes: '',
+    result: 'W', score: { us: 11, them: 10 }, innings: 9,
+    notes: 'M.Vasquez W · J.Malchans 3-6, 2 RBI', recapUrl: 'article.html?id=lions-sweep-aug16',
   },
   {
     date: '2026-08-16', time: '14:00', label: 'AGO 16 · 2026 · G2',
     opponent: 'Zürich Lions', opponentLogo: 'assets/teams/Lions.png',
     location: 'Away · Zürich', league: 'TOP 6 — Swiss League',
-    result: null, score: null, innings: null, notes: '',
+    result: 'W', score: { us: 19, them: 9 }, innings: 6,
+    notes: 'Mercy Rule · S.Litscher & W.Peguero 3 RBI', recapUrl: 'article.html?id=lions-sweep-aug16',
   },
   {
     date: '2026-08-19', time: '18:30', label: 'AGO 19 · 2026',
@@ -171,6 +173,31 @@ const HERO_BG_IMAGES = [
 
 // ── NEWS ARTICLES — single source of truth ──────────────────
 const NEWS_ARTICLES = [
+  {
+    id: 'lions-sweep-aug16',
+    date: 'August 16, 2026', tag: 'Game Recap', tagColor: '#F0B429',
+    headline: 'BAR3 Sweep Zürich Lions with 11–10 Thriller and 19–9 Rout',
+    summary: 'Barracudas 3 won both ends of Sunday’s doubleheader at Heerenschürli, surviving a ninth-inning rally in Game 1 before unleashing 19 runs in a six-inning Game 2 victory.',
+    image: 'assets/photo-team.jpg', imagePosition: 'center 35%',
+    href: 'article.html?id=lions-sweep-aug16',
+    score: { us: 30, them: 19 }, opponent: 'Zürich Lions', location: 'Away · Heerenschürli, Zürich',
+    notes: 'TOP 6 · Doubleheader sweep · BAR3 improves to 3–6',
+    body: '<p>Zürich Barracudas 3 completed a dramatic doubleheader sweep of Zürich Lions at Heerenschürli on Sunday, winning Game 1 by a single run, 11–10, before taking Game 2 by a commanding 19–9 score in six innings. The two victories lifted BAR3 to 3–6 in the TOP 6 round and into fourth place.</p><p>Game 1 turned after the Lions scored in each of the first two innings. BAR3 answered with four runs in the third and four more in the fourth, building an 8–4 lead. Juan Malchans went 3-for-6 with two RBI, Jose Medina reached base four times and scored three runs, and Kelvis Garcia drove in three with a double and a sacrifice fly. Michael Vasquez earned the win after 5.2 innings with five strikeouts, while Angel Elias navigated the final innings. The Lions scored twice in the ninth and brought the winning run to the plate, but Elias finished the 11–10 victory with a strikeout.</p><p>The nightcap was an offensive showcase. After falling behind 3–1 in the first, the Cudas erupted for seven runs in the second. The Lions pulled even at 8–8, but BAR3 responded with four in the fourth and six in the fifth before adding the final run in the sixth. Sascha Litscher went 3-for-5 with three RBI and three runs, Wilkin Peguero finished 3-for-4 with three RBI, a walk and a stolen base, and Juan Malchans added two more hits and two RBI. BAR3 went 8-for-19 with runners in scoring position.</p><p>Hansel Rodriguez changed the game in relief, limiting the Lions to two hits and one earned run over three innings to earn the win. Elvis Del Valle then worked a scoreless sixth, helped by Litscher’s outfield assist that completed a game-ending double play. The sweep gave BAR3 consecutive wins for the first time in the TOP 6 round and set up the final scheduled game against Zürich Challengers on August 19.</p>',
+    i18n: {
+      es: {
+        tag: 'Resumen de Partido',
+        headline: 'BAR3 barre a Zürich Lions con un thriller 11-10 y una paliza 19-9',
+        summary: 'Barracudas 3 ganó los dos partidos del doble juego del domingo en el Heerenschürli: sobrevivió a una remontada en el noveno inning del Juego 1 y luego desató 19 carreras en una victoria de seis entradas.',
+        body: '<p>Zürich Barracudas 3 completó una dramática barrida del doble juego ante Zürich Lions el domingo en el Heerenschürli, ganando el Juego 1 por la mínima, 11-10, antes de imponerse 19-9 en seis entradas en el Juego 2. Las dos victorias elevaron a BAR3 a 3-6 en la ronda TOP 6 y al cuarto lugar de la tabla.</p><p>El Juego 1 cambió después de que Lions anotara en cada una de las dos primeras entradas. BAR3 respondió con cuatro carreras en el tercero y otras cuatro en el cuarto para tomar ventaja de 8-4. Juan Malchans bateó de 6-3 con dos impulsadas, Jose Medina llegó a base cuatro veces y anotó tres carreras, y Kelvis Garcia produjo tres con un doble y un elevado de sacrificio. Michael Vasquez obtuvo la victoria tras 5.2 entradas y cinco ponches, mientras Angel Elias trabajó los innings finales. Lions anotó dos en el noveno y llevó la carrera de la victoria al plato, pero Elias cerró el triunfo 11-10 con un ponche.</p><p>El segundo partido fue una exhibición ofensiva. Después de quedar abajo 3-1 en el primero, los Cudas explotaron con siete carreras en el segundo. Lions empató 8-8, pero BAR3 respondió con cuatro en el cuarto y seis en el quinto antes de agregar la última en el sexto. Sascha Litscher terminó de 5-3 con tres impulsadas y tres anotadas; Wilkin Peguero se fue de 4-3 con tres impulsadas, un boleto y una base robada; y Juan Malchans sumó otros dos hits y dos impulsadas. BAR3 bateó de 19-8 con corredores en posición anotadora.</p><p>Hansel Rodriguez cambió el partido como relevista, limitando a Lions a dos hits y una carrera limpia en tres entradas para llevarse la victoria. Elvis Del Valle lanzó un sexto inning en blanco, ayudado por la asistencia de Litscher desde los jardines que completó un doble play para terminar el encuentro. La barrida dio a BAR3 sus primeras victorias consecutivas de la ronda TOP 6 y dejó al equipo listo para el último partido programado ante Zürich Challengers el 19 de agosto.</p>',
+      },
+      de: {
+        tag: 'Spielbericht',
+        headline: 'BAR3 fegt Zürich Lions mit 11:10-Krimi und 19:9-Kantersieg vom Platz',
+        summary: 'Barracudas 3 gewann beide Spiele des Sonntags-Doubleheaders im Heerenschürli: zuerst ein 11:10 nach einer Rally im neunten Inning, danach ein 19:9 über sechs Innings.',
+        body: '<p>Zürich Barracudas 3 komplettierte am Sonntag im Heerenschürli einen dramatischen Doubleheader-Sweep gegen die Zürich Lions. BAR3 gewann Spiel 1 knapp mit 11:10 und setzte sich danach in Spiel 2 über sechs Innings klar mit 19:9 durch. Die beiden Siege verbesserten BAR3 in der TOP-6-Runde auf 3:6 und auf Tabellenplatz vier.</p><p>In Spiel 1 punkteten die Lions in den ersten beiden Innings, doch BAR3 antwortete mit je vier Runs im dritten und vierten Durchgang und ging 8:4 in Führung. Juan Malchans ging 3-für-6 mit zwei RBI, Jose Medina erreichte viermal die Base und erzielte drei Runs, und Kelvis Garcia brachte mit einem Double und einem Sacrifice Fly drei Runs nach Hause. Michael Vasquez holte nach 5.2 Innings und fünf Strikeouts den Sieg, Angel Elias übernahm die Schlussinnings. Die Lions erzielten im neunten Inning noch zwei Runs und brachten den möglichen Winning Run an die Platte, doch Elias sicherte das 11:10 mit einem Strikeout.</p><p>Das zweite Spiel wurde zu einer Offensivshow. Nach einem 1:3-Rückstand erzielten die Cudas sieben Runs im zweiten Inning. Die Lions glichen zum 8:8 aus, doch BAR3 antwortete mit vier Runs im vierten und sechs im fünften Inning, bevor im sechsten der letzte Run folgte. Sascha Litscher ging 3-für-5 mit drei RBI und drei Runs, Wilkin Peguero 3-für-4 mit drei RBI, einem Walk und einer gestohlenen Base, und Juan Malchans steuerte zwei weitere Hits und zwei RBI bei. Mit Läufern in Scoring Position schlug BAR3 8-für-19.</p><p>Hansel Rodriguez drehte das Spiel als Reliever und erlaubte über drei Innings nur zwei Hits und einen Earned Run. Elvis Del Valle warf ein scoreloses sechstes Inning, unterstützt von Litschers Outfield Assist zum spielbeendenden Double Play. Der Sweep brachte BAR3 die ersten aufeinanderfolgenden Siege der TOP-6-Runde vor dem letzten angesetzten Spiel gegen Zürich Challengers am 19. August.</p>',
+      },
+    },
+  },
   {
     id: 'eagles-g1-aug8',
     date: 'August 8, 2026', tag: 'Game Recap', tagColor: '#F0B429',

@@ -1029,12 +1029,12 @@ function standingLogo(t) {
 // Fallback — mirrors state.standingsSecondHalf (TOP 6 round) so the hero
 // widget shows the current table even before the games-api overlay lands.
 const HERO_STANDINGS_FALLBACK = [
-  { abbr:'FLY',  name:'Therwil Flyers 1',    w:7, l:1, pct:'.875', isUs:false },
+  { abbr:'FLY',  name:'Therwil Flyers 1',    w:9, l:1, pct:'.900', isUs:false },
   { abbr:'EAG',  name:'Luzern Eagles',       w:7, l:3, pct:'.700', isUs:false },
   { abbr:'BAR',  name:'Zürich Barracudas',   w:7, l:3, pct:'.700', isUs:false },
-  { abbr:'CHA',  name:'Zürich Challengers',  w:2, l:5, pct:'.286', isUs:false },
-  { abbr:'BAR3', name:'Zürich Barracudas 3', w:1, l:6, pct:'.143', isUs:true  },
-  { abbr:'LIO',  name:'Zürich Lions',        w:1, l:7, pct:'.125', isUs:false },
+  { abbr:'BAR3', name:'Zürich Barracudas 3', w:3, l:6, pct:'.333', isUs:true  },
+  { abbr:'CHA',  name:'Zürich Challengers',  w:2, l:7, pct:'.222', isUs:false },
+  { abbr:'LIO',  name:'Zürich Lions',        w:1, l:9, pct:'.100', isUs:false },
 ];
 
 function hmsLogo(abbr) {
