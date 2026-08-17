@@ -66,6 +66,22 @@ function _t(key) {
   return window._barLang ? window._barLang.t(key) : key;
 }
 
+// Full 2026 record: official first-phase finish (5–5) plus completed TOP 6 games.
+// Keeping this derived from GAMES prevents stale first-phase API totals from
+// overwriting the current season record in the homepage hero strip.
+function updateSeasonRecord2026() {
+  if (typeof GAMES === 'undefined') return;
+  const top6 = GAMES.filter(g => g.league?.includes('TOP 6') && (g.result === 'W' || g.result === 'L'));
+  const wins = 5 + top6.filter(g => g.result === 'W').length;
+  const losses = 5 + top6.filter(g => g.result === 'L').length;
+  document.querySelectorAll('[data-i18n="strip_record"]').forEach(el => {
+    const value = el.nextElementSibling;
+    if (value) value.textContent = `${wins}-${losses}`;
+  });
+}
+
+document.addEventListener('DOMContentLoaded', updateSeasonRecord2026);
+
 // ROSTER — render flip cards directly from JSON stats
 (function () {
   const data = document.getElementById('roster-data');
@@ -1374,13 +1390,7 @@ document.addEventListener('DOMContentLoaded', initCalendarButtons);
 
     if (!data) return;
 
-    // Update W-L record display
-    if (data.record) {
-      document.querySelectorAll('[data-i18n="strip_record"]').forEach(el => {
-        const sibling = el.nextElementSibling;
-        if (sibling) sibling.textContent = data.record.label;
-      });
-    }
+    updateSeasonRecord2026();
 
     // Merge API fielding stats into PLAYER_EXTENDED_DATA
     if (data.players && typeof PLAYER_EXTENDED_DATA !== 'undefined') {
@@ -1740,13 +1750,9 @@ document.addEventListener('DOMContentLoaded', initLiveScore);
         }
       }
 
-      // ── Update W-L record display ─────────────────────────────
-      if (data.record?.label) {
-        document.querySelectorAll('[data-i18n="strip_record"]').forEach(el => {
-          const v = el.nextElementSibling;
-          if (v) v.textContent = data.record.label;
-        });
-      }
+      // Keep the full-season record derived from the official first phase
+      // and the locally confirmed TOP 6 results.
+      updateSeasonRecord2026();
 
       // ── If games-api reports a live game, wake up the scoreboard ─
       if (data.live && typeof window._refreshScoreboard === 'function') {
