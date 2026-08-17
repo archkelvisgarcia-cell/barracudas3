@@ -1,4 +1,4 @@
-const CACHE = 'barracudas-v21'; // bumped — Anton and Manrope typography system
+const CACHE = 'barracudas-v24'; // bumped — Archivo Black, Manrope and Barlow Condensed typography
 
 // Static shell files that are safe to precache (change rarely)
 const PRECACHE = [

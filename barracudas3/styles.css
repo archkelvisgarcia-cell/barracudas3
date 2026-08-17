@@ -21,9 +21,10 @@
   --loss: oklch(0.55 0.05 30);
 
   /* TYPE */
-  --display: "Anton", "Bebas Neue", "Oswald", "Helvetica Neue", sans-serif;
+  --display: "Archivo Black", "Arial Black", "Helvetica Neue", sans-serif;
   --sans: "Manrope", "Helvetica Neue", system-ui, sans-serif;
   --mono: "Manrope", "Helvetica Neue", system-ui, sans-serif;
+  --label: "Barlow Condensed", "Arial Narrow", sans-serif;
 
   /* SCALE */
   --r-sm: 4px; c 
@@ -255,11 +256,48 @@ a { color: inherit; text-decoration: none; }
 }
 .mono { font-family: var(--mono); letter-spacing: 0; font-feature-settings: "tnum"; }
 .eyebrow {
-  font-family: var(--mono);
+  font-family: var(--label);
+  font-style: italic;
+  font-weight: 600;
   font-size: 11px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--ink-mute);
+}
+
+/* Editorial microcopy: compact, slanted and energetic across every section. */
+.tag,
+.stamp,
+.label,
+.share-label,
+.news-card .meta,
+.news-card-meta,
+.standings-meta,
+.cal-phase-divider,
+.cal-suspended-tag,
+.field-eyebrow,
+.fp-pos-tag,
+.rc-eyebrow,
+.pp-tag,
+.hms-title,
+.hms-link,
+.hms-next-kicker,
+.hms-next-cta {
+  font-family: var(--label);
+  font-style: italic;
+  font-weight: 600;
+}
+
+/* Main editorial headlines carry the freestyle forward lean; data stays upright. */
+.hero-headline h1,
+.section-title,
+.cal-hero h1,
+.news-hero h1,
+.res-hero h1,
+.article-hero h1,
+.next-match .left h2 {
+  font-style: italic;
+  font-synthesis: style;
 }
 
 /* ============================================================
@@ -510,6 +548,7 @@ a { color: inherit; text-decoration: none; }
   line-height: 0.85;
   letter-spacing: 0.02em;
   text-transform: uppercase;
+  font-style: italic;
 }
 .section-title .out { color: transparent; -webkit-text-stroke: 1.5px var(--ink); }
 .section-title .y { color: var(--accent); }
@@ -537,7 +576,9 @@ a { color: inherit; text-decoration: none; }
   gap: 6px;
   padding: 4px 10px;
   border-radius: var(--r-pill);
-  font-family: var(--mono);
+  font-family: var(--label);
+  font-style: italic;
+  font-weight: 600;
   font-size: 10px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -640,7 +681,9 @@ a { color: inherit; text-decoration: none; }
   display: flex; gap: 12px; flex-wrap: wrap;
 }
 .hero-stamp {
-  font-family: var(--mono);
+  font-family: var(--label);
+  font-style: italic;
+  font-weight: 600;
   font-size: 11px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -660,10 +703,9 @@ a { color: inherit; text-decoration: none; }
   line-height: 0.82;
   letter-spacing: 0.02em;
   text-transform: uppercase;
+  font-style: italic;
 }
-/* Anton's "#" glyph carries a wide right side-bearing that reads as a
-   stray gap at this size — pull the following letters back in so the
-   word reads as one tight unit like the rest of the display type. */
+/* Keep the hero hashtag visually locked together at oversized scale. */
 .hero-hash-tight { display: inline-block; margin-left: -0.07em; }
 .hero-headline h1 .y { color: var(--accent); }
 .hero-headline h1 .out { color: transparent; -webkit-text-stroke: 2px var(--ink); }
@@ -1524,19 +1566,23 @@ a { color: inherit; text-decoration: none; }
 .cal-hero {
   padding: 48px var(--pad) 32px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 48px;
   align-items: end;
   border-bottom: 1px solid var(--line);
 }
-@media (max-width: 900px) { .cal-hero { grid-template-columns: 1fr; } }
+@media (max-width: 900px) {
+  .cal-hero { grid-template-columns: minmax(0, 1fr); }
+  .cal-hero h1 { font-size: clamp(50px, 13.5vw, 110px); }
+}
 .cal-hero h1 {
   font-family: var(--display);
-  font-size: clamp(64px, 13vw, 200px);
+  font-size: clamp(58px, 9.8vw, 150px);
   line-height: 0.85;
-  letter-spacing: 0.02em;
+  letter-spacing: -0.045em;
   text-transform: uppercase;
 }
+.cal-hero > * { min-width: 0; }
 .cal-hero h1 .y { color: var(--accent); }
 .cal-hero .next {
   background: var(--bg-elev);
@@ -1546,6 +1592,7 @@ a { color: inherit; text-decoration: none; }
   display: flex;
   flex-direction: column;
   gap: 16px;
+  overflow: hidden;
 }
 .cal-hero .next .head {
   display: flex; justify-content: space-between; align-items: center;
@@ -2397,7 +2444,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 .hero-news-cta-headline {
-  font-family: 'Anton', sans-serif;
+  font-family: var(--display);
   font-size: clamp(0.9rem, 2vw, 1.15rem);
   letter-spacing: 0.02em;
   text-transform: uppercase;
@@ -2599,14 +2646,14 @@ a { color: inherit; text-decoration: none; }
 }
 
 .result-team-name {
-  font-family: 'Anton', sans-serif;
+  font-family: var(--display);
   font-size: 1rem;
   letter-spacing: 0.03em;
   flex: 1;
 }
 
 .result-score {
-  font-family: 'Anton', sans-serif;
+  font-family: var(--display);
   font-size: 1.6rem;
   color: rgba(255,255,255,0.35);
 }
@@ -4319,4 +4366,27 @@ behold-widget { display: block; }
   .rc-card-overlay { padding: 8px 9px 9px; }
   .rc-card-name { font-size: 9px; }
   .rc-card-pos  { font-size: 8px; }
+}
+
+/* Final cascade lock for section-specific rules declared above. */
+.tag,
+.stamp,
+.label,
+.share-label,
+.news-card .meta,
+.news-card-meta,
+.standings-meta,
+.cal-phase-divider,
+.cal-suspended-tag,
+.field-eyebrow,
+.fp-pos-tag,
+.rc-eyebrow,
+.pp-tag,
+.hms-title,
+.hms-link,
+.hms-next-kicker,
+.hms-next-cta {
+  font-family: var(--label);
+  font-style: italic;
+  font-weight: 600;
 }
