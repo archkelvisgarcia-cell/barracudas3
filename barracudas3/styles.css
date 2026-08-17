@@ -1787,6 +1787,28 @@ a { color: inherit; text-decoration: none; }
   overflow: hidden;
 }
 
+/* Vertical editorial artwork inside articles: proportional on every viewport. */
+.news-feature .img.art-poster-media {
+  align-self: start;
+  width: 100%;
+  min-height: 0;
+  aspect-ratio: 1122 / 1402;
+  position: sticky;
+  top: 88px;
+}
+
+@media (max-width: 900px) {
+  .news-feature .img.art-poster-media {
+    width: min(100%, 720px);
+    height: auto;
+    max-height: none;
+    margin-inline: auto;
+    aspect-ratio: 1122 / 1402;
+    position: relative;
+    top: auto;
+  }
+}
+
 /* ── News feature carousel ── */
 .news-carousel-slide {
   position: absolute;
