@@ -1,4 +1,4 @@
-const CACHE = 'barracudas-v19'; // bumped — current hero record and next game
+const CACHE = 'barracudas-v20'; // bumped — desktop hero next-game matchup panel
 
 // Static shell files that are safe to precache (change rarely)
 const PRECACHE = [

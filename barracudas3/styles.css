@@ -912,10 +912,9 @@ a { color: inherit; text-decoration: none; }
     min-width: 0;
   }
   .hms-divider {
-    width: 100%;
-    height: 1px;
-    margin: 2px 0;
+    display: none;
   }
+  .hms-next { display: none; }
   .hms-head     { padding: 6px 10px 5px; }
   .hms-title    { font-size: 8px; letter-spacing: 0.12em; }
   .hms-link     { font-size: 8px; }
@@ -1035,6 +1034,34 @@ a { color: inherit; text-decoration: none; }
 .hms-divider {
   width: 1px;
   background: rgba(255,255,255,0.08);
+}
+.hms-next {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 14px 28px 16px;
+  color: #fff;
+  text-decoration: none;
+  background: radial-gradient(circle at 50% 40%, rgba(240,180,41,0.12), transparent 55%), rgba(255,255,255,0.015);
+  transition: background 0.2s ease;
+}
+.hms-next:hover { background: radial-gradient(circle at 50% 40%, rgba(240,180,41,0.2), transparent 58%), rgba(255,255,255,0.035); }
+.hms-next-kicker,
+.hms-next-cta { font-family: var(--mono); font-size: 9px; letter-spacing: 0.18em; color: var(--accent); }
+.hms-next-matchup { display: flex; align-items: center; justify-content: center; gap: 18px; margin: 2px 0 1px; }
+.hms-next-team { display: flex; flex-direction: column; align-items: center; gap: 3px; font-family: var(--display); font-size: 14px; letter-spacing: 0.05em; }
+.hms-next-logo { width: 54px; height: 54px; border-radius: 50%; background-repeat: no-repeat; background-position: center; background-size: contain; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.35)); }
+.hms-next-vs { font-family: var(--mono); font-size: 10px; color: rgba(255,255,255,0.35); }
+.hms-next-date { font-family: var(--display); font-size: 20px; letter-spacing: 0.04em; color: #fff; }
+.hms-next-opponent { font-family: var(--sans); font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.78); }
+.hms-next-location { font-family: var(--mono); font-size: 9px; color: rgba(255,255,255,0.4); }
+.hms-next-cta { margin-top: 3px; }
+@media (max-width: 768px) {
+  .hms-next,
+  .hms-divider { display: none; }
 }
 .hms-col-head {
   font-family: var(--mono);

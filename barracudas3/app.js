@@ -1076,6 +1076,27 @@ function renderHeroStandingsRow(t, i) {
 function renderHeroStandings(teams) {
   const wrap = document.getElementById('heroMiniStandings');
   if (!wrap || !teams?.length) return;
+  const nextGame = typeof GAMES !== 'undefined'
+    ? GAMES.find(g => g.result === null && !g.suspended && new Date(`${g.date}T${g.time || '23:59'}:00`) > new Date())
+    : null;
+  const nextPanel = nextGame ? (() => {
+    const dt = new Date(`${nextGame.date}T${nextGame.time}:00`);
+    const date = dt.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }).toUpperCase();
+    const time = `${String(dt.getHours()).padStart(2, '0')}:${String(dt.getMinutes()).padStart(2, '0')}`;
+    const opponentAbbr = nextGame.opponent.toLowerCase().includes('challengers') ? 'CHA' : nextGame.opponent.split(' ').pop().slice(0, 3).toUpperCase();
+    return `<a class="hms-next" href="schedule.html">
+      <span class="hms-next-kicker">NEXT GAME</span>
+      <div class="hms-next-matchup">
+        <div class="hms-next-team"><div class="hms-next-logo" style="background-image:url('${STANDINGS_LOGOS.BAR3}')"></div><span>BAR3</span></div>
+        <span class="hms-next-vs">VS</span>
+        <div class="hms-next-team"><div class="hms-next-logo" style="background-image:url('${nextGame.opponentLogo || STANDINGS_LOGOS[opponentAbbr] || ''}')"></div><span>${opponentAbbr}</span></div>
+      </div>
+      <strong class="hms-next-date">${date} · ${time}</strong>
+      <span class="hms-next-opponent">${nextGame.opponent}</span>
+      <span class="hms-next-location">${nextGame.location}</span>
+      <span class="hms-next-cta">GAME DETAILS →</span>
+    </a>`;
+  })() : '';
   wrap.innerHTML = `<div class="hms-wrap">
     <div class="hms-head">
       <span class="hms-title">CURRENT STANDINGS</span>
@@ -1085,6 +1106,7 @@ function renderHeroStandings(teams) {
       <div class="hms-col">
         ${teams.map((t, i) => renderHeroStandingsRow(t, i)).join('')}
       </div>
+      ${nextPanel ? `<div class="hms-divider"></div>${nextPanel}` : ''}
     </div>
   </div>`;
 }
