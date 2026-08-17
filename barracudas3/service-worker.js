@@ -1,4 +1,4 @@
-const CACHE = 'barracudas-v20'; // bumped — desktop hero next-game matchup panel
+const CACHE = 'barracudas-v21'; // bumped — Anton and Manrope typography system
 
 // Static shell files that are safe to precache (change rarely)
 const PRECACHE = [
