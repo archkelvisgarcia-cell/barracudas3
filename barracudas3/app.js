@@ -412,7 +412,7 @@ function initNewsFeature() {
   const images = a.carouselImages || (a.image ? [a.image] : ['assets/nightgame-7.jpg']);
   const venue = (a.location || 'Heerenschürli').split('·').pop().trim();
   const slidesHtml = images.map((img, i) =>
-    `<div class="news-carousel-slide${i === 0 ? ' active' : ''}" style="background-image:url('${img}')"></div>`
+    `<div class="news-carousel-slide${i === 0 ? ' active' : ''}" style="background-image:url('${img}');background-size:${a.imageFit || 'cover'};background-position:${a.imagePosition || 'center'};background-repeat:no-repeat;background-color:${a.imageBackground || 'var(--bg-deep)'};"></div>`
   ).join('');
   const dotsHtml = images.length > 1
     ? `<div class="news-carousel-dots">${images.map((_, i) => `<button class="ncd${i === 0 ? ' active' : ''}"></button>`).join('')}</div>`
@@ -455,10 +455,12 @@ function initLatestNews() {
     const meta = [tag, date].filter(Boolean).join(' · ');
     const img  = a.image || 'assets/og-image.jpg';
     const pos  = a.imagePosition || 'center 25%';
+    const fit  = a.imageFit || 'cover';
+    const bg   = a.imageBackground || 'var(--bg-deep)';
     return `
       <a class="hn-card reveal" data-delay="${i}" href="${a.href || 'news.html'}">
-        <div class="hn-card-img">
-          <img src="${img}" alt="${a.headline}" loading="lazy" style="object-position:${pos}" />
+        <div class="hn-card-img" style="background:${bg};">
+          <img src="${img}" alt="${a.headline}" loading="lazy" style="object-position:${pos};object-fit:${fit};" />
         </div>
         <div class="hn-card-body">
           <div class="hn-card-tag">${meta}</div>
