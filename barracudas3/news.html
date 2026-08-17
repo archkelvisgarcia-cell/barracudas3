@@ -385,8 +385,8 @@ function searchNews(q) {
       el.dataset.articleHref = a.href || '#';
       el.style.cursor = 'pointer';
       el.innerHTML = `
-        <div class="news-card-img">
-          <img src="${a.image || 'assets/nightgame-7.jpg'}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy" />
+        <div class="news-card-img" style="background:${a.imageBackground || 'var(--bg-deep)'};">
+          <img src="${a.image || 'assets/nightgame-7.jpg'}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:${a.imageFit || 'cover'};object-position:${a.imagePosition || 'center'};" loading="lazy" />
         </div>
         <span class="cat" style="background:${a.tagColor||'var(--accent)'};">${a.tag || 'Game Recap'}</span>
         <h3>${a.headline || ''}</h3>

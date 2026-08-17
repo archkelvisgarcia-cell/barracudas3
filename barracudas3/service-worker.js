@@ -1,4 +1,4 @@
-const CACHE = 'barracudas-v24'; // bumped — Archivo Black, Manrope and Barlow Condensed typography
+const CACHE = 'barracudas-v25'; // bumped — Lions sweep poster artwork
 
 // Static shell files that are safe to precache (change rarely)
 const PRECACHE = [
