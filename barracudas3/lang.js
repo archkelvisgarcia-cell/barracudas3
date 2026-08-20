@@ -104,6 +104,7 @@
       modal_easyscore: 'View full stats on EasyScore ↗',
       modal_streak_chip: 'game hit streak',
       ig_h1: 'Follow', ig_h2: 'The Journey.',
+      yt_h1: 'Watch', yt_h2: 'The Cudas.', yt_channel_btn: 'Open YouTube Channel ↗',
 
       standings_eyebrow: '— Gruppe A 2026',
       standings_h1: 'League', standings_h2: 'Standings.',
@@ -221,6 +222,7 @@
       modal_easyscore: 'Ver stats completos en EasyScore ↗',
       modal_streak_chip: 'juegos con hit',
       ig_h1: 'Síguenos', ig_h2: 'En Instagram.',
+      yt_h1: 'Mira', yt_h2: 'A los Cudas.', yt_channel_btn: 'Abrir canal de YouTube ↗',
 
       standings_eyebrow: '— Gruppe A 2026',
       standings_h1: 'Posiciones', standings_h2: 'Liga.',
@@ -338,6 +340,7 @@
       modal_easyscore: 'Vollständige Stats auf EasyScore ↗',
       modal_streak_chip: 'Spiele mit Treffer in Folge',
       ig_h1: 'Folge', ig_h2: 'Uns.',
+      yt_h1: 'Sieh', yt_h2: 'Die Cudas.', yt_channel_btn: 'YouTube-Kanal öffnen ↗',
 
       standings_eyebrow: '— Gruppe A 2026',
       standings_h1: 'Liga', standings_h2: 'Tabelle.',

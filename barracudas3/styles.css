@@ -3560,6 +3560,39 @@ a { color: inherit; text-decoration: none; }
 .ig-behold-wrap { margin-top: 32px; }
 behold-widget { display: block; }
 
+/* ── YouTube channel ── */
+.youtube-section {
+  padding: clamp(64px, 10vw, 120px) var(--pad);
+  background: #070908;
+  border-top: 1px solid var(--line);
+}
+.youtube-head { align-items: flex-end; }
+.btn-youtube {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #ff0033;
+  border: 1px solid #ff0033;
+  color: #fff;
+}
+.btn-youtube:hover { background: #d9002b; border-color: #d9002b; }
+.youtube-player {
+  position: relative;
+  width: min(100%, 1180px);
+  aspect-ratio: 16 / 9;
+  margin: 34px auto 0;
+  overflow: hidden;
+  background: #000;
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 26px 70px rgba(0,0,0,0.4);
+}
+.youtube-player iframe { width: 100%; height: 100%; border: 0; }
+@media (max-width: 700px) {
+  .youtube-head { align-items: flex-start; gap: 24px; }
+  .youtube-player { margin-top: 24px; }
+  .btn-youtube { width: 100%; }
+}
+
 /* ── Clickable player blocks ── */
 .award-clickable {
   cursor: pointer;
