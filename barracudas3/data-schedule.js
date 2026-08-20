@@ -156,6 +156,13 @@ const GAMES = [
     result: null, score: null, innings: null,
     notes: 'Semifinal · Game 1',
   },
+  {
+    date: '2026-08-23', time: '11:00', label: 'AGO 23 · 2026 · SF G2',
+    opponent: 'Therwil Flyers', opponentLogo: 'assets/teams/flyers.png',
+    location: 'Home · Hünenberg', league: 'NLA Playoffs — Semifinal',
+    result: null, score: null, innings: null,
+    notes: 'Semifinal · Game 2',
+  },
 ];
 
 // ── HERO BACKGROUND CAROUSEL — Pink Game photos ─────────────
