@@ -148,6 +148,14 @@ const GAMES = [
     location: 'Home · Heerenschürli', league: 'TOP 6 — Swiss League',
     result: null, score: null, innings: null, notes: '',
   },
+  // ── NLA PLAYOFFS ─────────────────────────────────────────────
+  {
+    date: '2026-08-22', time: '11:00', label: 'AGO 22 · 2026 · SF G1',
+    opponent: 'Therwil Flyers', opponentLogo: 'assets/teams/flyers.png',
+    location: 'Away · Therwil Ballpark K1', league: 'NLA Playoffs — Semifinal',
+    result: null, score: null, innings: null,
+    notes: 'Semifinal · Game 1',
+  },
 ];
 
 // ── HERO BACKGROUND CAROUSEL — Pink Game photos ─────────────
