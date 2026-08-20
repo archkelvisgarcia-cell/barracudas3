@@ -8,6 +8,11 @@ const DEFAULT_IMG = BASE + 'assets/og-image.jpg';
 // Mirrors the OG-relevant fields from NEWS_ARTICLES in data-schedule.js.
 // Update this map whenever a new article is added.
 const ARTICLE_META = {
+  'challengers-aug19': {
+    title:   'BAR3 Edge Zürich Challengers 8–7 in TOP 6 Finale',
+    desc:    'Barracudas 3 closed the TOP 6 round with a one-run city-derby win at Heerenschürli and a three-game winning streak heading into the playoffs.',
+    img:     BASE + 'assets/news/recap-june7-ondeck.jpg',
+  },
   'challengers-g2-june7': {
     title:   'Vasquez Dominates, BAR3 Complete Sweep with 15–7 Win in Game 2',
     desc:    'Michael Vasquez threw four dominant shutout innings and BAR3\'s offense erupted in the third and sixth to clinch the Sunday sweep over Challengers 2 at Heerenschürli.',

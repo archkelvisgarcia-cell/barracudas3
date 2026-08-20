@@ -146,7 +146,8 @@ const GAMES = [
     date: '2026-08-19', time: '18:30', label: 'AGO 19 · 2026',
     opponent: 'Zürich Challengers', opponentLogo: 'assets/teams/challengers.png',
     location: 'Home · Heerenschürli', league: 'TOP 6 — Swiss League',
-    result: null, score: null, innings: null, notes: '',
+    result: 'W', score: { us: 8, them: 7 }, innings: 7,
+    notes: 'One-run win · TOP 6 finale', recapUrl: 'article.html?id=challengers-aug19',
   },
   // ── NLA PLAYOFFS ─────────────────────────────────────────────
   {
@@ -188,6 +189,31 @@ const HERO_BG_IMAGES = [
 
 // ── NEWS ARTICLES — single source of truth ──────────────────
 const NEWS_ARTICLES = [
+  {
+    id: 'challengers-aug19',
+    date: 'August 19, 2026', tag: 'Game Recap', tagColor: '#F0B429',
+    headline: 'BAR3 Edge Zürich Challengers 8–7 in TOP 6 Finale',
+    summary: 'Barracudas 3 closed the TOP 6 round with a one-run win at Heerenschürli, carrying a three-game winning streak into the NLA playoff semifinal against Therwil Flyers.',
+    image: 'assets/news/recap-june7-ondeck.jpg', imagePosition: 'center 20%',
+    href: 'article.html?id=challengers-aug19',
+    score: { us: 8, them: 7 }, opponent: 'Zürich Challengers', location: 'Home · Heerenschürli, Zürich',
+    notes: 'TOP 6 · 7 innings · Third consecutive win · Final record 4–6',
+    body: '<p>Zürich Barracudas 3 finished the TOP 6 round on a high Wednesday night at Heerenschürli, defeating Zürich Challengers 8–7 in a tense one-run city derby. The result completed a sharp late-season turnaround for BAR3, coming just three days after the doubleheader sweep of Zürich Lions.</p><p>The victory was BAR3’s third in a row and lifted the team to a 4–6 record in the TOP 6 round. With only one run separating the sides after seven innings, the Cudas delivered the kind of close-game composure they will need in the postseason and carried valuable momentum out of the final round game.</p><p>BAR3 now turns its attention to the NLA playoff semifinal against Therwil Flyers. Game 1 is scheduled for Saturday, August 22 at 11:00 at Therwil Ballpark K1, followed by Game 2 on Sunday at 11:00 in Hünenberg. The official match page confirms the 8–7 final score; a detailed scoresheet and individual statistics have not yet been published.</p>',
+    i18n: {
+      es: {
+        tag: 'Resumen de Partido',
+        headline: 'BAR3 supera 8-7 a Zürich Challengers en el cierre del TOP 6',
+        summary: 'Barracudas 3 cerró la ronda TOP 6 con una victoria por una carrera en el Heerenschürli y llega a la semifinal de los playoffs ante Therwil Flyers con tres triunfos consecutivos.',
+        body: '<p>Zürich Barracudas 3 cerró la ronda TOP 6 de la mejor manera el miércoles por la noche en el Heerenschürli, venciendo 8-7 a Zürich Challengers en un intenso derbi de la ciudad decidido por una sola carrera. El resultado completó una notable reacción de BAR3 en el tramo final, apenas tres días después de barrer el doble juego contra Zürich Lions.</p><p>La victoria fue la tercera consecutiva de BAR3 y dejó al equipo con récord de 4-6 en la ronda TOP 6. Con solo una carrera separando a ambos equipos después de siete entradas, los Cudas mostraron la serenidad necesaria para sacar adelante un partido cerrado y llegan a la postemporada con un impulso importante.</p><p>BAR3 enfoca ahora toda su atención en la semifinal de los playoffs de la NLA contra Therwil Flyers. El Juego 1 será el sábado 22 de agosto a las 11:00 en Therwil Ballpark K1 y el Juego 2 el domingo a las 11:00 en Hünenberg. La ficha oficial confirma el marcador final de 8-7; el scoresheet detallado y las estadísticas individuales todavía no han sido publicados.</p>',
+      },
+      de: {
+        tag: 'Spielbericht',
+        headline: 'BAR3 bezwingt Zürich Challengers 8:7 zum Abschluss der TOP 6',
+        summary: 'Barracudas 3 beendete die TOP-6-Runde mit einem knappen Heimsieg im Heerenschürli und nimmt drei Siege in Folge mit ins NLA-Playoff-Halbfinale gegen Therwil Flyers.',
+        body: '<p>Zürich Barracudas 3 beendete die TOP-6-Runde am Mittwochabend im Heerenschürli mit einem 8:7-Sieg gegen Zürich Challengers. Das umkämpfte Stadtderby wurde mit nur einem Run Unterschied entschieden und setzte BAR3s starken Schlussspurt fort — nur drei Tage nach dem Doubleheader-Sweep gegen die Zürich Lions.</p><p>Es war der dritte Sieg in Folge für BAR3 und brachte das Team in der TOP-6-Runde auf eine Bilanz von 4:6. Nach sieben Innings trennte die beiden Teams nur ein Run. Die Cudas bewiesen damit genau jene Ruhe in engen Spielen, die sie in den Playoffs benötigen werden, und nehmen wertvollen Schwung aus dem letzten Rundenspiel mit.</p><p>Nun richtet BAR3 den Fokus auf das NLA-Playoff-Halbfinale gegen Therwil Flyers. Spiel 1 findet am Samstag, 22. August, um 11:00 Uhr im Therwil Ballpark K1 statt; Spiel 2 folgt am Sonntag um 11:00 Uhr in Hünenberg. Die offizielle Spielseite bestätigt das 8:7-Endresultat; ein detaillierter Scoresheet und individuelle Statistiken wurden noch nicht veröffentlicht.</p>',
+      },
+    },
+  },
   {
     id: 'lions-sweep-aug16',
     date: 'August 16, 2026', tag: 'Game Recap', tagColor: '#F0B429',
