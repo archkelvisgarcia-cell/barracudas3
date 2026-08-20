@@ -20,6 +20,7 @@ const Anthropic     = require('@anthropic-ai/sdk');
 const { calculateAwards, calculateTopPerformers } = require('./_award-calc');
 const { requireAuth, isScheduledInvocation } = require('./_auth');
 const { PLAYER_EXTENDED_DATA } = require('../../barracudas3/data-players.js');
+const { GAMES: SCHEDULED_GAMES } = require('../../barracudas3/data-schedule.js');
 
 const ES_KEY    = process.env.EASYSCORE_API_KEY;
 const TEAM_ID   = parseInt(process.env.EASYSCORE_TEAM_ID || '13054');
@@ -31,21 +32,11 @@ const ES_HDR    = { 'x-api-key': ES_KEY };
 const SEED_ID    = 19272;
 const PROBE_STEP = 15;
 
-// Confirmed BAR3 game IDs. Re-probed every run to catch late EasyScore entries
-// (EasyScore sometimes assigns an ID before the score is entered, causing the
-// forward probe to pass over it and miss the result when it appears later).
+// Confirmed legacy IDs that predate the persisted pipeline state.
 const CATCHUP_IDS = [19279, 19280];
 
-// Known BAR3 game dates (YYYY-MM-DD). Keep in sync with GAMES[] in app.js.
-// The pipeline only runs on game days or the day after.
-// Add new dates here when the schedule is updated.
-const GAME_DATES = new Set([
-  '2026-04-19', '2026-04-26',
-  '2026-05-02', '2026-05-05',
-  '2026-05-30', '2026-06-02',
-  '2026-06-07',
-  // Add future game dates below as the season progresses:
-]);
+// Derive game days from the PWA's calendar—the single source of truth.
+const GAME_DATES = new Set((SCHEDULED_GAMES || []).map(game => game.date).filter(Boolean));
 
 function isGameDay() {
   // Swiss time = UTC+2 (CEST). Convert 'now' to Swiss local date.
@@ -182,6 +173,27 @@ Return ONLY valid JSON (no markdown):
   return JSON.parse(clean);
 }
 
+function generateFallbackArticle(game) {
+  const opponent = game.oppName || game.oppAbbr || 'the opponent';
+  const resultEn = game.won ? 'defeated' : 'fell to';
+  const resultEs = game.won ? 'derrotó a' : 'cayó ante';
+  const resultDe = game.won ? 'besiegte' : 'unterlag';
+  const score = `${game.bar3Score}–${game.oppScore}`;
+
+  return {
+    title_en: `BAR3 ${resultEn} ${opponent}, ${score}`,
+    title_es: `BAR3 ${resultEs} ${opponent}, ${score}`,
+    title_de: `BAR3 ${resultDe} ${opponent} mit ${score}`,
+    subtitle_en: `The final score from ${game.field} was ${score}.`,
+    subtitle_es: `El marcador final en ${game.field} fue ${score}.`,
+    subtitle_de: `Das Endresultat in ${game.field} lautete ${score}.`,
+    body_en: `<p>Zürich Barracudas 3 ${resultEn} ${opponent} ${score} on ${game.date}. The game was played over ${game.innings} innings at ${game.field}.</p><p>This automatic report will be expanded when the complete box score and player statistics become available.</p>`,
+    body_es: `<p>Zürich Barracudas 3 ${resultEs} ${opponent} por ${score} el ${game.date}. El partido se disputó a ${game.innings} entradas en ${game.field}.</p><p>Este reporte automático se ampliará cuando estén disponibles el boxscore y las estadísticas completas.</p>`,
+    body_de: `<p>Zürich Barracudas 3 ${resultDe} ${opponent} am ${game.date} mit ${score}. Das Spiel wurde über ${game.innings} Innings in ${game.field} ausgetragen.</p><p>Dieser automatische Bericht wird ergänzt, sobald der vollständige Boxscore und die Spielerstatistiken verfügbar sind.</p>`,
+    tag_en: 'Game Recap', tag_es: 'Resumen de Partido', tag_de: 'Spielbericht',
+  };
+}
+
 // ── Compute team W-L from all finished games ───────────────────
 function computeRecord(allGames) {
   let W = 0, L = 0;
@@ -243,13 +255,14 @@ exports.handler = async (event) => {
     const allGames     = state.games    ?? [];
     const articles     = state.articles ?? [];
 
-    // ── Probe next PROBE_STEP IDs + catch-up IDs ──────────────────
+    // ── Probe next IDs + every previously discovered unfinished game ──
     const probeIds = Array.from({ length: PROBE_STEP }, (_, i) => lastProbedId + i + 1);
     log.push(`Probing IDs ${probeIds[0]}–${probeIds[probeIds.length - 1]}`);
 
     // Also re-probe known IDs that EasyScore may have entered after the forward
     // probe already passed them (late data entry is common in amateur leagues).
-    const allProbeIds = [...new Set([...CATCHUP_IDS, ...probeIds])];
+    const unfinishedIds = allGames.filter(game => !game.finished && game.id).map(game => game.id);
+    const allProbeIds = [...new Set([...CATCHUP_IDS, ...unfinishedIds, ...probeIds])];
     const raw = await Promise.all(allProbeIds.map(fetchGame));
     const found = raw.filter(g => g && isBAR3(g)).map(summarise);
     log.push(`Found ${found.length} BAR3 games in probe window`);
@@ -272,10 +285,11 @@ exports.handler = async (event) => {
         seenIds.add(game.id);
         newFinishedCount++;
 
-        if (anthropicKey) {
-          try {
+        try {
             log.push(`Generating article for game ${game.id}…`);
-            const article = await generateArticle(game, anthropicKey);
+            const article = anthropicKey
+              ? await generateArticle(game, anthropicKey)
+              : generateFallbackArticle(game);
             articles.unshift({
               id:          `game-${game.id}`,
               gameId:      game.id,
@@ -286,12 +300,10 @@ exports.handler = async (event) => {
             });
             newArticleCount++;
             log.push(`Article generated for game ${game.id}`);
+            if (!anthropicKey) log.push(`Used deterministic recap for game ${game.id} — ANTHROPIC_API_KEY not set`);
           } catch (e) {
             log.push(`Article generation FAILED for game ${game.id}: ${e.message}`);
           }
-        } else {
-          log.push(`Skipped article for game ${game.id} — ANTHROPIC_API_KEY not set`);
-        }
       }
     }
 

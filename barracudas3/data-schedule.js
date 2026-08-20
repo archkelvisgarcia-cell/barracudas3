@@ -578,3 +578,10 @@ const NEWS_ARTICLES = [
   },
   // ← New articles go here, newest first
 ];
+
+// Node.js compatibility for the scheduled Netlify pipeline. Keeping the
+// calendar export here lets the automation derive game days from the same
+// source the PWA renders instead of maintaining a second, stale date list.
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { GAMES, HERO_BG_IMAGES, NEWS_ARTICLES };
+}
