@@ -322,7 +322,7 @@
   <div class="footer-meta"><span data-i18n="footer_copy">© 2026 Zürich Barracudas Baseball Club</span><span data-i18n="footer_tagline">Bite Harder · Est. 1986</span></div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="data-schedule.js?v=31"></script><script src="data-players.js"></script><script src="app.js?v=22"></script><script src="lang.js"></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="data-schedule.js?v=31"></script><script src="data-players.js"></script><script src="app.js?v=23"></script><script src="lang.js"></script>
 <style>
 .news-filter-btn {
   font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
@@ -392,8 +392,12 @@ function searchNews(q) {
         <h3>${a.headline || ''}</h3>
         <p style="color:var(--ink-mute);font-size:14px;line-height:1.55;margin:8px 0 4px;">${a.summary || ''}</p>
         <div class="meta"><span>${a.date || ''}</span><span>3 min read</span></div>
+        ${buildNewsShareBar(a)}
       `;
-      el.addEventListener('click', () => { window.location.href = a.href || '#'; });
+      el.addEventListener('click', event => {
+        if (event.target.closest('.share-bar')) return;
+        window.location.href = a.href || '#';
+      });
       grid.appendChild(el);
       existing.add(a.id);
       added = true;
