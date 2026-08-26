@@ -12,8 +12,8 @@ const PLAYER_EXTENDED_DATA = {
     fullName: 'Garcia Rondon Kelvis Carmelo',
     age: 38, bats: 'R', throws: 'R',
     batting: {
-      season: { G:10, PA:40, AB:34, R:16, H:14, '2B':2, '3B':0, HR:2, RBI:13, BB:4, SO:4, SB:2, CS:0, HBP:1, SF:1, AVG:'.412', OBP:'.475', SLG:'.647', OPS:'1.122' },
-      seasonTop6: { G:6, PA:19, AB:19, R:3, H:7, '2B':3, '3B':0, HR:1, RBI:4, BB:0, SO:9, SB:0, CS:1, HBP:0, SF:0, AVG:'.368', OBP:'.368', SLG:'.684', OPS:'1.053' },
+      season: { G:0, PA:40, AB:34, R:16, H:14, '2B':2, '3B':0, HR:2, RBI:13, BB:4, SO:4, SB:2, CS:0, HBP:1, SF:1, AVG:'.412', OBP:'.475', SLG:'.647', OPS:'1.122' },
+      seasonTop6: { G:0, PA:33, AB:29, R:7, H:10, '2B':4, '3B':0, HR:1, RBI:9, BB:3, SO:11, SB:1, CS:1, HBP:0, SF:1, AVG:'.345', OBP:'.394', SLG:'.586', OPS:'.980' },
       log: [
         { date:'08/08', opp:'Luzern Eagles G2', spot:4, pos:'2B', AB:2, R:0, H:1, '2B':1, HR:0, RBI:0, BB:0, SO:1, SB:0, AVG:'.357' },
         { date:'08/08', opp:'Luzern Eagles G1', spot:4, pos:'2B', AB:5, R:2, H:2, '2B':0, HR:1, RBI:2, BB:0, SO:2, SB:0, AVG:'.368' },
@@ -59,8 +59,8 @@ const PLAYER_EXTENDED_DATA = {
   '27': { // Elvis Del Valle Diaz
     fullName: 'Del Valle Diaz Elvis', age: 31, bats: 'R', throws: 'R',
     batting: {
-      season: { G:12, PA:63, AB:49, R:27, H:17, '2B':1, '3B':2, HR:1, RBI:12, BB:12, SO:9, SB:6, CS:0, HBP:2, SF:0, AVG:'.347', OBP:'.492', SLG:'.510', OPS:'1.002' },
-      seasonTop6: { G:5, PA:8, AB:7, R:4, H:4, '2B':2, '3B':0, HR:0, RBI:4, BB:1, SO:1, SB:0, CS:0, HBP:0, SF:0, AVG:'.571', OBP:'.625', SLG:'.857', OPS:'1.482' },
+      season: { G:0, PA:63, AB:49, R:27, H:17, '2B':1, '3B':2, HR:1, RBI:12, BB:12, SO:9, SB:6, CS:0, HBP:2, SF:0, AVG:'.347', OBP:'.492', SLG:'.510', OPS:'1.002' },
+      seasonTop6: { G:0, PA:8, AB:7, R:4, H:4, '2B':2, '3B':0, HR:0, RBI:4, BB:1, SO:1, SB:0, CS:0, HBP:0, SF:0, AVG:'.571', OBP:'.625', SLG:'.857', OPS:'1.482' },
       log: [
         { date:'08/08', opp:'Luzern Eagles G2', spot:1, pos:'SS', AB:2, R:0, H:0, '2B':0, HR:0, RBI:0, BB:0, SO:1, SB:0, AVG:'.214' },
         { date:'08/08', opp:'Luzern Eagles G1', spot:1, pos:'SS', AB:6, R:2, H:0, '2B':0, HR:0, RBI:0, BB:0, SO:0, SB:1, AVG:'.150' },
@@ -106,8 +106,8 @@ const PLAYER_EXTENDED_DATA = {
   '1': { // Juan Malchans
     fullName: 'Malchans Caridad Juan Leonel', bats: 'R', throws: 'R',
     batting: {
-      season: { G:11, PA:53, AB:44, R:21, H:14, '2B':5, '3B':0, HR:0, RBI:18, BB:6, SO:5, SB:4, CS:0, HBP:3, SF:0, AVG:'.318', OBP:'.434', SLG:'.432', OPS:'.866' },
-      seasonTop6: { G:6, PA:18, AB:17, R:3, H:6, '2B':2, '3B':0, HR:1, RBI:4, BB:1, SO:2, SB:0, CS:0, HBP:0, SF:0, AVG:'.353', OBP:'.389', SLG:'.647', OPS:'1.036' },
+      season: { G:0, PA:53, AB:44, R:21, H:14, '2B':5, '3B':0, HR:0, RBI:18, BB:6, SO:5, SB:4, CS:0, HBP:3, SF:0, AVG:'.318', OBP:'.434', SLG:'.432', OPS:'.866' },
+      seasonTop6: { G:0, PA:33, AB:32, R:6, H:12, '2B':2, '3B':0, HR:1, RBI:9, BB:1, SO:2, SB:1, CS:0, HBP:0, SF:0, AVG:'.375', OBP:'.394', SLG:'.531', OPS:'.925' },
       log: [
         { date:'08/08', opp:'Luzern Eagles G2', spot:2, pos:'1B', AB:2, R:0, H:0, '2B':0, HR:0, RBI:0, BB:0, SO:0, SB:0, AVG:'.364' },
         { date:'08/08', opp:'Luzern Eagles G1', spot:2, pos:'1B', AB:6, R:1, H:2, '2B':0, HR:1, RBI:3, BB:0, SO:1, SB:0, AVG:'.353' },
@@ -175,8 +175,8 @@ const PLAYER_EXTENDED_DATA = {
   '28': { // Francisco Robles Noa
     fullName: 'Francisco Robles Noa', age: 26, bats: 'R', throws: 'R', excludeFromAwards: true,
     batting: {
-      season: { G:7, PA:19, AB:15, R:4, H:1, '2B':0, '3B':0, HR:0, RBI:0, BB:3, SO:8, SB:1, CS:0, HBP:1, SF:0, AVG:'.067', OBP:'.263', SLG:'.067', OPS:'.330' },
-      seasonTop6: { G:1, PA:3, AB:3, R:0, H:0, '2B':0, '3B':0, HR:0, RBI:0, BB:0, SO:1, SB:0, CS:0, HBP:0, SF:0, AVG:'.000', OBP:'.000', SLG:'.000', OPS:'.000' },
+      season: { G:0, PA:19, AB:15, R:4, H:1, '2B':0, '3B':0, HR:0, RBI:0, BB:3, SO:8, SB:1, CS:0, HBP:1, SF:0, AVG:'.067', OBP:'.263', SLG:'.067', OPS:'.330' },
+      seasonTop6: { G:0, PA:3, AB:3, R:0, H:0, '2B':0, '3B':0, HR:0, RBI:0, BB:0, SO:1, SB:0, CS:0, HBP:0, SF:0, AVG:'.000', OBP:'.000', SLG:'.000', OPS:'.000' },
       log: [
         { date:'07/11', opp:'Zürich Barracudas', spot:9, pos:'RF', AB:3, R:0, H:0, '2B':0, HR:0, RBI:0, BB:0, SO:1, SB:0, AVG:'.000' },
         { date:'06/07', opp:'Zürich Challengers 2', spot:7, pos:'PH/RF', AB:1, R:0, H:0, '2B':0, HR:0, RBI:0, BB:0, SO:0, SB:0, AVG:'.067' },
@@ -205,8 +205,8 @@ const PLAYER_EXTENDED_DATA = {
   '15': { // Jose Medina
     fullName: 'Medina Reyes Jose Antonio', age: 38, bats: 'S', throws: 'R', captain: true,
     batting: {
-      season: { G:12, PA:58, AB:35, R:20, H:16, '2B':4, '3B':3, HR:0, RBI:19, BB:14, SO:3, SB:4, CS:0, HBP:8, SF:1, AVG:'.457', OBP:'.655', SLG:'.743', OPS:'1.398' },
-      seasonTop6: { G:4, PA:15, AB:13, R:2, H:4, '2B':1, '3B':0, HR:0, RBI:0, BB:0, SO:3, SB:0, CS:0, HBP:2, SF:0, AVG:'.308', OBP:'.400', SLG:'.385', OPS:'.785' },
+      season: { G:0, PA:58, AB:35, R:20, H:16, '2B':4, '3B':3, HR:0, RBI:19, BB:14, SO:3, SB:4, CS:0, HBP:8, SF:1, AVG:'.457', OBP:'.655', SLG:'.743', OPS:'1.398' },
+      seasonTop6: { G:0, PA:29, AB:22, R:9, H:9, '2B':2, '3B':1, HR:0, RBI:0, BB:4, SO:3, SB:0, CS:0, HBP:3, SF:0, AVG:'.409', OBP:'.552', SLG:'.591', OPS:'1.143' },
       log: [
         { date:'08/08', opp:'Luzern Eagles G2', spot:3, pos:'C', AB:2, R:0, H:0, '2B':0, HR:0, RBI:0, BB:0, SO:0, SB:0, AVG:'.375' },
         { date:'08/08', opp:'Luzern Eagles G1', spot:3, pos:'C', AB:5, R:1, H:1, '2B':1, HR:0, RBI:0, BB:0, SO:1, SB:0, HBP:1, AVG:'.308' },
@@ -247,8 +247,8 @@ const PLAYER_EXTENDED_DATA = {
   '16': { // Yohandris Pedroso Munoz
     fullName: 'Pedroso Munoz Yohandris', bats: 'R', throws: 'R',
     batting: {
-      season: { G:7, PA:34, AB:28, R:12, H:11, '2B':4, '3B':0, HR:0, RBI:10, BB:5, SO:2, SB:4, CS:0, HBP:0, SF:1, AVG:'.393', OBP:'.471', SLG:'.536', OPS:'1.000' },
-      seasonTop6: { G:3, PA:9, AB:8, R:1, H:2, '2B':1, '3B':0, HR:0, RBI:2, BB:1, SO:4, SB:0, CS:0, HBP:0, SF:0, AVG:'.250', OBP:'.333', SLG:'.375', OPS:'.000' },
+      season: { G:0, PA:34, AB:28, R:12, H:11, '2B':4, '3B':0, HR:0, RBI:10, BB:5, SO:2, SB:4, CS:0, HBP:0, SF:1, AVG:'.393', OBP:'.471', SLG:'.536', OPS:'1.006' },
+      seasonTop6: { G:0, PA:23, AB:18, R:4, H:4, '2B':1, '3B':0, HR:0, RBI:6, BB:4, SO:6, SB:1, CS:0, HBP:0, SF:1, AVG:'.222', OBP:'.348', SLG:'.278', OPS:'.626' },
       log: [
         { date:'07/25', opp:'Therwil Flyers 1 G2', spot:3, pos:'DH/2B/P', AB:3, R:0, H:0, '2B':0, HR:0, RBI:0, BB:0, SO:2, SB:0, AVG:'.250' },
         { date:'07/25', opp:'Therwil Flyers 1 G1', spot:3, pos:'2B/SS/2B/SS', AB:3, R:1, H:2, '2B':1, HR:0, RBI:2, BB:0, SO:1, SB:0, AVG:'.400' },
@@ -263,7 +263,7 @@ const PLAYER_EXTENDED_DATA = {
       ],
     },
     pitching: {
-      season: { G:2, GS:0, IP:'5.0', H:0, R:0, ER:0, BB:0, SO:3, HR:0, HBP:0, WP:0, BF:0, WL:'0-0', SV:0, OppAVG:'.000', WHIP:'3.60', ERA:'15.40' },
+      season: { G:0, GS:0, IP:'7.0', H:0, R:0, ER:0, BB:0, SO:6, HR:0, HBP:0, WP:0, BF:0, WL:'0-0', SV:0, OppAVG:'.000', WHIP:'3.71', ERA:'16.00' },
       log: [
         { date:'07/25', opp:'Therwil Flyers 1', IP:'2.0', H:5, R:6, ER:5, BB:3, SO:3, HBP:0, WP:0, BF:16, ERA:'17.50' },
         { date:'06/07', opp:'Zürich Challengers 2', IP:'2.0', H:4, R:1, ER:1, BB:0, SO:0, HBP:0, WP:0, BF:10, ERA:'14.00' },
@@ -276,8 +276,8 @@ const PLAYER_EXTENDED_DATA = {
   '23': { // Sascha Litscher
     fullName: 'Litscher Sascha', age: 33, bats: 'R', throws: 'R',
     batting: {
-      season: { G:1, PA:2, AB:2, R:1, H:1, '2B':0, '3B':0, HR:0, RBI:0, BB:0, SO:1, SB:1, CS:0, HBP:0, SF:0, AVG:'.500', OBP:'.500', SLG:'.500', OPS:'1.000' },
-      seasonTop6: { G:3, PA:9, AB:9, R:0, H:1, '2B':1, '3B':0, HR:0, RBI:1, BB:0, SO:4, SB:1, CS:0, HBP:0, SF:0, AVG:'.111', OBP:'.111', SLG:'.222', OPS:'.333' },
+      season: { G:0, PA:2, AB:2, R:1, H:1, '2B':0, '3B':0, HR:0, RBI:0, BB:0, SO:1, SB:1, CS:0, HBP:0, SF:0, AVG:'.500', OBP:'.500', SLG:'.500', OPS:'1.000' },
+      seasonTop6: { G:0, PA:20, AB:19, R:5, H:5, '2B':3, '3B':0, HR:0, RBI:4, BB:1, SO:4, SB:1, CS:0, HBP:0, SF:0, AVG:'.263', OBP:'.300', SLG:'.421', OPS:'.721' },
       log: [
         { date:'07/25', opp:'Therwil Flyers 1 G2', spot:6, pos:'1B', AB:3, R:0, H:0, '2B':0, HR:0, RBI:0, BB:0, SO:0, SB:1, AVG:'.111' },
         { date:'07/25', opp:'Therwil Flyers 1 G1', spot:5, pos:'1B', AB:2, R:0, H:0, '2B':0, HR:0, RBI:1, BB:0, SO:1, SB:0, AVG:'.167' },
@@ -298,8 +298,8 @@ const PLAYER_EXTENDED_DATA = {
   '34': { // Jhomar Lima
     fullName: 'Rosa Lima Jhomar Bienvenido', age: 32, bats: 'R', throws: 'R',
     batting: {
-      season: { G:12, PA:59, AB:39, R:16, H:23, '2B':2, '3B':0, HR:3, RBI:28, BB:15, SO:2, SB:1, CS:0, HBP:3, SF:2, AVG:'.590', OBP:'.695', SLG:'.872', OPS:'1.567' },
-      seasonTop6: { G:4, PA:14, AB:10, R:1, H:1, '2B':0, '3B':0, HR:0, RBI:1, BB:4, SO:4, SB:0, CS:0, HBP:0, SF:0, AVG:'.100', OBP:'.357', SLG:'.100', OPS:'.457' },
+      season: { G:0, PA:59, AB:39, R:16, H:23, '2B':2, '3B':0, HR:3, RBI:28, BB:15, SO:2, SB:1, CS:0, HBP:3, SF:2, AVG:'.590', OBP:'.695', SLG:'.872', OPS:'1.567' },
+      seasonTop6: { G:0, PA:26, AB:18, R:4, H:4, '2B':0, '3B':0, HR:0, RBI:2, BB:6, SO:5, SB:0, CS:0, HBP:1, SF:1, AVG:'.222', OBP:'.423', SLG:'.222', OPS:'.645' },
       log: [
         { date:'07/25', opp:'Therwil Flyers 1 G2', spot:4, pos:'3B', AB:3, R:0, H:1, '2B':0, HR:0, RBI:1, BB:0, SO:1, SB:0, AVG:'.100' },
         { date:'07/25', opp:'Therwil Flyers 1 G1', spot:4, pos:'C/3B', AB:3, R:0, H:0, '2B':0, HR:0, RBI:0, BB:0, SO:0, SB:0, AVG:'.000' },
@@ -338,8 +338,8 @@ const PLAYER_EXTENDED_DATA = {
   '77': { // Jhon Arregoitia
     fullName: 'Arregoitia Villarreal Jhon Manuel', age: 32, bats: 'R', throws: 'R',
     batting: {
-      season: { G:12, PA:57, AB:46, R:13, H:7, '2B':1, '3B':0, HR:0, RBI:11, BB:9, SO:9, SB:3, CS:0, HBP:2, SF:0, AVG:'.152', OBP:'.316', SLG:'.174', OPS:'.490' },
-      seasonTop6: { G:2, PA:7, AB:5, R:1, H:0, '2B':0, '3B':0, HR:0, RBI:0, BB:1, SO:4, SB:0, CS:0, HBP:1, SF:0, AVG:'.000', OBP:'.286', SLG:'.000', OPS:'.286' },
+      season: { G:0, PA:57, AB:46, R:13, H:7, '2B':1, '3B':0, HR:0, RBI:11, BB:9, SO:9, SB:3, CS:0, HBP:2, SF:0, AVG:'.152', OBP:'.316', SLG:'.174', OPS:'.490' },
+      seasonTop6: { G:0, PA:9, AB:7, R:1, H:0, '2B':0, '3B':0, HR:0, RBI:0, BB:1, SO:5, SB:0, CS:0, HBP:1, SF:0, AVG:'.000', OBP:'.222', SLG:'.000', OPS:'.222' },
       log: [
         { date:'07/17', opp:'Zürich Challengers', spot:7, pos:'DH', AB:3, R:1, H:0, '2B':0, HR:0, RBI:0, BB:1, SO:2, SB:0, AVG:'.000' },
         { date:'07/10', opp:'Zürich Barracudas', spot:8, pos:'DH', AB:2, R:0, H:0, '2B':0, HR:0, RBI:0, BB:0, SO:2, SB:0, HBP:1, AVG:'.000' },
@@ -376,8 +376,8 @@ const PLAYER_EXTENDED_DATA = {
   '30': { // Carlos Moreno
     fullName: 'Moreno Carlos', age: 31, bats: 'R', throws: 'R',
     batting: {
-      season: { G:12, PA:56, AB:44, R:18, H:15, '2B':3, '3B':0, HR:0, RBI:14, BB:8, SO:7, SB:10, CS:0, HBP:4, SF:0, AVG:'.341', OBP:'.482', SLG:'.409', OPS:'.891' },
-      seasonTop6: { G:7, PA:21, AB:16, R:4, H:3, '2B':0, '3B':0, HR:0, RBI:2, BB:5, SO:5, SB:5, CS:2, HBP:0, SF:0, AVG:'.188', OBP:'.381', SLG:'.188', OPS:'.568' },
+      season: { G:0, PA:56, AB:44, R:18, H:15, '2B':3, '3B':0, HR:0, RBI:14, BB:8, SO:7, SB:10, CS:0, HBP:4, SF:0, AVG:'.341', OBP:'.482', SLG:'.409', OPS:'.891' },
+      seasonTop6: { G:0, PA:34, AB:28, R:8, H:7, '2B':0, '3B':0, HR:0, RBI:4, BB:6, SO:5, SB:8, CS:2, HBP:0, SF:0, AVG:'.250', OBP:'.382', SLG:'.250', OPS:'.632' },
       log: [
         { date:'08/08', opp:'Luzern Eagles G2', spot:7, pos:'CF', AB:1, R:0, H:0, '2B':0, HR:0, RBI:0, BB:0, SO:0, SB:0, AVG:'.083' },
         { date:'08/08', opp:'Luzern Eagles G1', spot:7, pos:'CF', AB:4, R:3, H:2, '2B':0, HR:0, RBI:2, BB:1, SO:1, SB:1, AVG:'.188' },
@@ -419,8 +419,8 @@ const PLAYER_EXTENDED_DATA = {
   '11': { // Clemens Lombriser
     fullName: 'Lombriser Clemens', age: 46, bats: 'R', throws: 'R',
     batting: {
-      season: { G:7, PA:31, AB:24, R:7, H:3, '2B':0, '3B':0, HR:0, RBI:6, BB:5, SO:2, SB:0, CS:0, HBP:1, SF:0, AVG:'.125', OBP:'.300', SLG:'.125', OPS:'.425' },
-      seasonTop6: { G:3, PA:10, AB:8, R:2, H:3, '2B':0, '3B':0, HR:0, RBI:1, BB:1, SO:4, SB:0, CS:0, HBP:0, SF:1, AVG:'.375', OBP:'.400', SLG:'.375', OPS:'.775' },
+      season: { G:0, PA:31, AB:24, R:7, H:3, '2B':0, '3B':0, HR:0, RBI:6, BB:5, SO:2, SB:0, CS:0, HBP:1, SF:0, AVG:'.125', OBP:'.300', SLG:'.125', OPS:'.425' },
+      seasonTop6: { G:0, PA:13, AB:10, R:2, H:4, '2B':0, '3B':0, HR:0, RBI:1, BB:1, SO:4, SB:0, CS:0, HBP:0, SF:1, AVG:'.400', OBP:'.417', SLG:'.400', OPS:'.817' },
       log: [
         { date:'08/08', opp:'Luzern Eagles G2', spot:8, pos:'LF', AB:1, R:0, H:1, '2B':0, HR:0, RBI:0, BB:0, SO:0, SB:0, AVG:'.250' },
         { date:'08/08', opp:'Luzern Eagles G1', spot:8, pos:'LF', AB:4, R:1, H:2, '2B':0, HR:0, RBI:1, BB:0, SO:1, SB:0, SF:1, AVG:'.375' },
@@ -451,8 +451,8 @@ const PLAYER_EXTENDED_DATA = {
   '8': { // Rodriguez Martin Hansel
     fullName: 'Rodriguez Martin Hansel Martin', bats: 'R', throws: 'R',
     batting: {
-      season: { G:4, PA:9, AB:8, R:3, H:4, '2B':1, '3B':0, HR:1, RBI:1, BB:0, SO:1, SB:1, CS:0, HBP:1, SF:0, AVG:'.500', OBP:'.556', SLG:'1.000', OPS:'1.556' },
-      seasonTop6: { G:3, PA:7, AB:6, R:2, H:0, '2B':0, '3B':0, HR:0, RBI:0, BB:0, SO:1, SB:0, CS:0, HBP:1, SF:0, AVG:'.000', OBP:'.143', SLG:'.000', OPS:'.143' }, // no AB in G1 (pitched only)
+      season: { G:0, PA:9, AB:8, R:3, H:4, '2B':1, '3B':0, HR:1, RBI:1, BB:0, SO:1, SB:1, CS:0, HBP:1, SF:0, AVG:'.500', OBP:'.556', SLG:'1.000', OPS:'1.556' },
+      seasonTop6: { G:0, PA:7, AB:6, R:2, H:0, '2B':0, '3B':0, HR:0, RBI:0, BB:0, SO:1, SB:0, CS:0, HBP:1, SF:0, AVG:'.000', OBP:'.143', SLG:'.000', OPS:'.143' }, // no AB in G1 (pitched only)
       log: [
         { date:'08/08', opp:'Luzern Eagles G2', spot:6, pos:'RF', AB:1, R:0, H:0, '2B':0, HR:0, RBI:0, BB:0, SO:0, SB:0, AVG:'.000' },
         { date:'08/08', opp:'Luzern Eagles G1', spot:6, pos:'RF/P', AB:4, R:2, H:0, '2B':0, HR:0, RBI:0, BB:0, SO:1, SB:0, HBP:1, AVG:'.000' },
@@ -464,7 +464,7 @@ const PLAYER_EXTENDED_DATA = {
       ],
     },
     pitching: {
-      season: { G:6, GS:0, IP:'23.0', H:0, R:0, ER:0, BB:0, SO:23, HR:0, HBP:0, WP:0, BF:0, WL:'1-2', SV:0, OppAVG:'.000', WHIP:'2.48', ERA:'9.74' },
+      season: { G:0, GS:0, IP:'27.0', H:0, R:0, ER:0, BB:0, SO:25, HR:0, HBP:0, WP:0, BF:0, WL:'2-2', SV:0, OppAVG:'.000', WHIP:'2.41', ERA:'9.33' },
       log: [
         { date:'08/08', opp:'Luzern Eagles', IP:'4.0', H:3, R:1, ER:1, BB:1, SO:3, HBP:0, WP:0, BF:15, ERA:'6.42' },
         { date:'07/17', opp:'Zürich Challengers', IP:'5.2', H:7, R:7, ER:6, BB:3, SO:5, HBP:0, WP:0, BF:28, ERA:'8.75' },
@@ -493,8 +493,8 @@ const PLAYER_EXTENDED_DATA = {
   '36': { // Wilkin Peguero
     fullName: 'Peguero Wilkin', age: 27, bats: 'R', throws: 'R',
     batting: {
-      season: { G:4, PA:16, AB:15, R:4, H:7, '2B':0, '3B':0, HR:0, RBI:5, BB:1, SO:3, SB:3, CS:0, HBP:0, SF:0, AVG:'.467', OBP:'.500', SLG:'.467', OPS:'.967' },
-      seasonTop6: { G:6, PA:18, AB:17, R:2, H:2, '2B':1, '3B':0, HR:0, RBI:1, BB:1, SO:7, SB:1, CS:0, HBP:0, SF:0, AVG:'.118', OBP:'.167', SLG:'.176', OPS:'.343' },
+      season: { G:0, PA:16, AB:15, R:4, H:7, '2B':0, '3B':0, HR:0, RBI:5, BB:1, SO:3, SB:3, CS:0, HBP:0, SF:0, AVG:'.467', OBP:'.500', SLG:'.467', OPS:'.967' },
+      seasonTop6: { G:0, PA:31, AB:29, R:7, H:8, '2B':2, '3B':0, HR:0, RBI:4, BB:2, SO:10, SB:3, CS:0, HBP:0, SF:0, AVG:'.276', OBP:'.323', SLG:'.345', OPS:'.667' },
       log: [
         { date:'08/08', opp:'Luzern Eagles G2', spot:5, pos:'3B', AB:2, R:0, H:0, '2B':0, HR:0, RBI:0, BB:0, SO:1, SB:0, AVG:'.083' },
         { date:'08/08', opp:'Luzern Eagles G1', spot:5, pos:'3B', AB:5, R:1, H:1, '2B':1, HR:0, RBI:0, BB:0, SO:1, SB:0, AVG:'.118' },
@@ -509,7 +509,7 @@ const PLAYER_EXTENDED_DATA = {
       ],
     },
     pitching: {
-      season: { G:4, GS:0, IP:'11.0', H:0, R:0, ER:0, BB:0, SO:12, HR:0, HBP:0, WP:0, BF:0, WL:'1-2', SV:0, OppAVG:'.000', WHIP:'2.82', ERA:'10.18' },
+      season: { G:0, GS:0, IP:'15.2', H:0, R:0, ER:0, BB:0, SO:17, HR:0, HBP:0, WP:0, BF:0, WL:'1-2', SV:0, OppAVG:'.000', WHIP:'3.51', ERA:'12.96' },
       log: [
         { date:'07/17', opp:'Zürich Challengers', IP:'2.0', H:5, R:5, ER:5, BB:3, SO:2, HBP:0, WP:1, BF:13, ERA:'17.50' },
         { date:'06/07', opp:'Zürich Challengers 2', IP:'1.0', H:2, R:1, ER:0, BB:0, SO:0, HBP:0, WP:0, BF:4, ERA:'8.56' },
@@ -556,8 +556,8 @@ const PLAYER_EXTENDED_DATA = {
   '13': { // Angel Elias
     fullName: 'Elias Angel Marcial', bats: 'R', throws: 'R',
     batting: {
-      season: { G:1, PA:4, AB:4, R:4, H:2, '2B':0, '3B':0, HR:0, RBI:6, BB:0, SO:0, SB:0, CS:0, HBP:0, SF:0, AVG:'.500', OBP:'.500', SLG:'.500', OPS:'1.000' },
-      seasonTop6: { G:5, PA:14, AB:13, R:1, H:2, '2B':0, '3B':0, HR:0, RBI:1, BB:1, SO:4, SB:2, CS:0, HBP:0, SF:0, AVG:'.154', OBP:'.214', SLG:'.154', OPS:'.368' },
+      season: { G:0, PA:4, AB:4, R:4, H:2, '2B':0, '3B':0, HR:0, RBI:6, BB:0, SO:0, SB:0, CS:0, HBP:0, SF:0, AVG:'.500', OBP:'.500', SLG:'.500', OPS:'1.000' },
+      seasonTop6: { G:0, PA:14, AB:13, R:1, H:2, '2B':0, '3B':0, HR:0, RBI:1, BB:1, SO:4, SB:2, CS:0, HBP:0, SF:0, AVG:'.154', OBP:'.214', SLG:'.154', OPS:'.368' },
       log: [
         { date:'07/25', opp:'Therwil Flyers 1 G2', spot:10, pos:'P/P/2B', AB:2, R:1, H:1, '2B':0, HR:0, RBI:0, BB:0, SO:0, SB:1, AVG:'.154' },
         { date:'07/25', opp:'Therwil Flyers 1 G1', spot:9, pos:'3B/2B', AB:2, R:0, H:1, '2B':0, HR:0, RBI:0, BB:0, SO:0, SB:1, AVG:'.091' },
@@ -568,7 +568,7 @@ const PLAYER_EXTENDED_DATA = {
       ],
     },
     pitching: {
-      season: { G:5, GS:0, IP:'16.2', H:0, R:0, ER:0, BB:0, SO:17, HR:0, HBP:0, WP:0, BF:0, WL:'3-2', SV:0, OppAVG:'.000', WHIP:'1.68', ERA:'5.88' },
+      season: { G:0, GS:0, IP:'31.2', H:0, R:0, ER:0, BB:0, SO:31, HR:0, HBP:0, WP:0, BF:0, WL:'4-3', SV:0, OppAVG:'.000', WHIP:'1.71', ERA:'5.08' },
       log: [
         { date:'07/25', opp:'Therwil Flyers 1', IP:'5.0', H:5, R:5, ER:3, BB:1, SO:3, HBP:3, WP:4, BF:26, ERA:'3.94' },
         { date:'07/11', opp:'Zürich Barracudas', IP:'0.1', H:0, R:0, ER:0, BB:0, SO:0, HBP:0, WP:0, BF:1, ERA:'0.00' },
@@ -595,7 +595,7 @@ const PLAYER_EXTENDED_DATA = {
     fullName: 'Vasquez Nuñez Michael', age: 31, bats: 'R', throws: 'R',
     batting: null,
     pitching: {
-      season: { G:5, GS:0, IP:'31.1', H:0, R:0, ER:0, BB:0, SO:15, HR:0, HBP:0, WP:0, BF:0, WL:'3-3', SV:0, OppAVG:'.000', WHIP:'2.43', ERA:'7.60' },
+      season: { G:0, GS:0, IP:'37.1', H:0, R:0, ER:0, BB:0, SO:20, HR:0, HBP:0, WP:0, BF:0, WL:'4-3', SV:0, OppAVG:'.000', WHIP:'2.41', ERA:'7.69' },
       log: [
         { date:'08/08', opp:'Luzern Eagles', IP:'5.0', H:9, R:8, ER:4, BB:4, SO:4, HBP:2, WP:2, BF:33, ERA:'14.00' },
         { date:'07/25', opp:'Therwil Flyers 1', IP:'2.2', H:15, R:15, ER:13, BB:3, SO:2, HBP:0, WP:0, BF:27, ERA:'21.00' },
