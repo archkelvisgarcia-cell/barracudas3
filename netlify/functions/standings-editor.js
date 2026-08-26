@@ -40,14 +40,14 @@ const FALLBACK_FIRST_HALF = {
 
 const FALLBACK_SECOND_HALF = {
   league: 'NL Baseball - NLA 2026',
-  updatedAt: '2026-08-17T00:00:00.000Z',
+  updatedAt: '2026-08-19T00:00:00.000Z',
   teams: [
-    { rank: 1, abbr: 'FLY',  name: 'Therwil Flyers 1',    logo: 'assets/teams/flyers.png',      gp: 10, w: 9, l: 1, pct: '.900', gb: '0',   isUs: false },
-    { rank: 2, abbr: 'EAG',  name: 'Luzern Eagles',       logo: 'assets/teams/eagles.png',       gp: 10, w: 7, l: 3, pct: '.700', gb: '2',   isUs: false },
-    { rank: 3, abbr: 'BAR',  name: 'Zürich Barracudas',   logo: 'assets/teams/BARLOGO.png',      gp: 10, w: 7, l: 3, pct: '.700', gb: '2',   isUs: false },
-    { rank: 4, abbr: 'BAR3', name: 'Zürich Barracudas 3', logo: 'assets/logo.png',               gp: 9,  w: 3, l: 6, pct: '.333', gb: '5.5', isUs: true  },
-    { rank: 5, abbr: 'CHA',  name: 'Zürich Challengers',  logo: 'assets/teams/challengers.png',  gp: 9,  w: 2, l: 7, pct: '.222', gb: '6.5', isUs: false },
-    { rank: 6, abbr: 'LIO',  name: 'Zürich Lions',        logo: 'assets/teams/Lions.png',        gp: 10, w: 1, l: 9, pct: '.100', gb: '8',   isUs: false },
+    { rank: 1, abbr: 'FLY',  name: 'Therwil Flyers 1',    logo: 'assets/teams/flyers.png',      gp: 10, w: 9, l: 1, pct: '.900', gb: '0', isUs: false },
+    { rank: 2, abbr: 'EAG',  name: 'Luzern Eagles',       logo: 'assets/teams/eagles.png',       gp: 10, w: 7, l: 3, pct: '.700', gb: '2', isUs: false },
+    { rank: 3, abbr: 'BAR',  name: 'Zürich Barracudas',   logo: 'assets/teams/BARLOGO.png',      gp: 10, w: 7, l: 3, pct: '.700', gb: '2', isUs: false },
+    { rank: 4, abbr: 'BAR3', name: 'Zürich Barracudas 3', logo: 'assets/logo.png',               gp: 10, w: 4, l: 6, pct: '.400', gb: '5', isUs: true  },
+    { rank: 5, abbr: 'CHA',  name: 'Zürich Challengers',  logo: 'assets/teams/challengers.png',  gp: 10, w: 2, l: 8, pct: '.200', gb: '7', isUs: false },
+    { rank: 6, abbr: 'LIO',  name: 'Zürich Lions',        logo: 'assets/teams/Lions.png',        gp: 10, w: 1, l: 9, pct: '.100', gb: '8', isUs: false },
   ],
 };
 

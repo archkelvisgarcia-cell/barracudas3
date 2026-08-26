@@ -1058,8 +1058,8 @@ const HERO_STANDINGS_FALLBACK = [
   { abbr:'FLY',  name:'Therwil Flyers 1',    w:9, l:1, pct:'.900', isUs:false },
   { abbr:'EAG',  name:'Luzern Eagles',       w:7, l:3, pct:'.700', isUs:false },
   { abbr:'BAR',  name:'Zürich Barracudas',   w:7, l:3, pct:'.700', isUs:false },
-  { abbr:'BAR3', name:'Zürich Barracudas 3', w:3, l:6, pct:'.333', isUs:true  },
-  { abbr:'CHA',  name:'Zürich Challengers',  w:2, l:7, pct:'.222', isUs:false },
+  { abbr:'BAR3', name:'Zürich Barracudas 3', w:4, l:6, pct:'.400', isUs:true  },
+  { abbr:'CHA',  name:'Zürich Challengers',  w:2, l:8, pct:'.200', isUs:false },
   { abbr:'LIO',  name:'Zürich Lions',        w:1, l:9, pct:'.100', isUs:false },
 ];
 

@@ -154,15 +154,36 @@ const GAMES = [
     date: '2026-08-22', time: '11:00', label: 'AGO 22 · 2026 · SF G1',
     opponent: 'Therwil Flyers', opponentLogo: 'assets/teams/flyers.png',
     location: 'Away · Therwil Ballpark K1', league: 'NLA Playoffs — Semifinal',
-    result: null, score: null, innings: null,
-    notes: 'Semifinal · Game 1',
+    result: 'L', score: { us: 0, them: 30 }, innings: 7,
+    notes: 'Semifinal · Game 1', recapUrl: 'article.html?id=flyers-sf-aug22',
   },
   {
     date: '2026-08-23', time: '11:00', label: 'AGO 23 · 2026 · SF G2',
     opponent: 'Therwil Flyers', opponentLogo: 'assets/teams/flyers.png',
     location: 'Home · Hünenberg', league: 'NLA Playoffs — Semifinal',
+    result: 'L', score: { us: 1, them: 14 }, innings: 7,
+    notes: 'Semifinal · Game 2', recapUrl: 'article.html?id=flyers-sf-aug22',
+  },
+  {
+    date: '2026-08-29', time: '13:00', label: 'AGO 29 · 2026 · SF G3',
+    opponent: 'Therwil Flyers', opponentLogo: 'assets/teams/flyers.png',
+    location: 'Away · Therwil Ballpark K1', league: 'NLA Playoffs — Semifinal',
     result: null, score: null, innings: null,
-    notes: 'Semifinal · Game 2',
+    notes: 'Semifinal · Game 3',
+  },
+  {
+    date: '2026-08-30', time: '14:30', label: 'AGO 30 · 2026 · SF G4',
+    opponent: 'Therwil Flyers', opponentLogo: 'assets/teams/flyers.png',
+    location: 'Home · Heerenschürli', league: 'NLA Playoffs — Semifinal',
+    result: null, score: null, innings: null,
+    notes: 'Semifinal · Game 4',
+  },
+  {
+    date: '2026-09-05', time: '13:00', label: 'SEP 5 · 2026 · SF G5',
+    opponent: 'Therwil Flyers', opponentLogo: 'assets/teams/flyers.png',
+    location: 'Away · Therwil Ballpark K1', league: 'NLA Playoffs — Semifinal',
+    result: null, score: null, innings: null,
+    notes: 'Semifinal · Game 5',
   },
 ];
 
@@ -189,6 +210,32 @@ const HERO_BG_IMAGES = [
 
 // ── NEWS ARTICLES — single source of truth ──────────────────
 const NEWS_ARTICLES = [
+  {
+    id: 'flyers-sf-aug22',
+    date: 'August 23, 2026', tag: 'Playoffs', tagColor: '#F0B429',
+    headline: 'BAR3 Drop Games 1 & 2 of NLA Semifinal to Therwil Flyers',
+    summary: 'The playoff run opened rough for Barracudas 3, who ran into the round\'s #1 seed and dropped Game 1 0–30 at Känelmatt and Game 2 1–14 in Hünenberg — three games remain in the best-of-five semifinal.',
+    image: 'assets/nightgame-7.jpg', imagePosition: 'center 20%',
+    carouselImages: ['assets/nightgame-7.jpg', 'assets/nightgame-14.jpg'],
+    href: 'article.html?id=flyers-sf-aug22',
+    score: { us: 1, them: 14 }, opponent: 'Therwil Flyers 1', location: 'Away · Therwil / Hünenberg',
+    notes: 'NLA Playoffs · Semifinal · G1 & G2',
+    body: '<p>Barracudas 3\'s three-game winning streak to close the TOP 6 round earned them a trip to the NLA playoff semifinal — and a date with Therwil Flyers 1, the round\'s runaway #1 seed at 9–1. The matchup proved every bit as lopsided as the seeding suggested. Game 1 at Therwil\'s Känelmatt 1 field on Saturday, August 22 got away from BAR3 early and never came back, ending 0–30. Game 2 the next day in Hünenberg was closer for stretches but still got away, finishing 14–1 in the Flyers\' favor.</p><p>Individual batting and pitching lines for both games are pending — check back as the boxscores are finalized. Facing the league\'s best team on the road in back-to-back games was always going to be the toughest test of BAR3\'s season, and the club now needs to win three straight to advance: Game 3 is Saturday, August 29 at 13:00 back at Känelmatt 1, Game 4 returns to Heerenschürli on Sunday, August 30 at 14:30, and if necessary Game 5 goes back to Therwil on Saturday, September 5.</p><p>Just reaching the semifinal is itself a marker of how far the club climbed after a rough start to the TOP 6 round — BAR3 sat near the bottom of the six-team bracket in July before closing on a three-game surge to force their way into the playoff picture. The series is far from decided; the Cudas need a response at home in front of the Heerenschürli crowd.</p>',
+    i18n: {
+      es: {
+        tag: 'Playoffs',
+        headline: 'BAR3 cae en los Juegos 1 y 2 de la semifinal NLA ante Therwil Flyers',
+        summary: 'El arranque de playoffs fue duro para Barracudas 3, que se topó con el mejor sembrado de la ronda y cayó 0-30 en el Juego 1 en Känelmatt y 1-14 en el Juego 2 en Hünenberg — quedan tres juegos en la semifinal a cinco.',
+        body: '<p>La racha de tres victorias seguidas de Barracudas 3 para cerrar la ronda TOP 6 les valió un lugar en la semifinal de playoffs de la NLA — con Therwil Flyers 1, el dominante primer sembrado de la ronda con marca de 9-1, como rival. El duelo resultó tan desigual como sugería la siembra. El Juego 1 en el campo Känelmatt 1 de Therwil el sábado 22 de agosto se le escapó temprano a BAR3 y nunca hubo reacción, terminando 0-30. El Juego 2 al día siguiente en Hünenberg estuvo más parejo en tramos, pero también se les fue, cerrando 14-1 a favor de los Flyers.</p><p>Las líneas individuales de bateo y pitcheo de ambos juegos están pendientes. Enfrentar al mejor equipo de la liga de visitante en dos juegos seguidos siempre iba a ser la prueba más dura de la temporada de BAR3, y el club ahora necesita ganar tres seguidos para avanzar: el Juego 3 es el sábado 29 de agosto a las 13:00 de vuelta en Känelmatt 1, el Juego 4 regresa al Heerenschürli el domingo 30 de agosto a las 14:30, y de ser necesario el Juego 5 vuelve a Therwil el sábado 5 de septiembre.</p><p>Llegar a la semifinal ya es en sí mismo una muestra de cuánto escaló el club tras un inicio difícil en la ronda TOP 6 — BAR3 estuvo cerca del fondo de la tabla de seis equipos en julio antes de cerrar con una racha de tres triunfos que los metió en la pelea por los playoffs. La serie está lejos de decidirse; los Cudas necesitan una respuesta en casa frente a la afición del Heerenschürli.</p>',
+      },
+      de: {
+        tag: 'Playoffs',
+        headline: 'BAR3 verliert Spiel 1 und 2 des NLA-Halbfinals gegen Therwil Flyers',
+        summary: 'Der Playoff-Start verlief hart für die Barracudas 3, die auf den Top-Seed der Runde trafen und Spiel 1 in Känelmatt 0:30 sowie Spiel 2 in Hünenberg 1:14 verloren — drei Spiele bleiben im Best-of-Five-Halbfinale.',
+        body: '<p>Die Serie von drei Siegen in Folge zum Abschluss der TOP-6-Runde brachte den Barracudas 3 den Einzug ins NLA-Playoff-Halbfinale ein — und ein Duell mit Therwil Flyers 1, dem mit 9:1 überlegenen Top-Seed der Runde. Das Duell verlief so einseitig wie die Setzliste vermuten ließ. Spiel 1 auf dem Känelmatt-1-Platz in Therwil am Samstag, 22. August, geriet früh außer Kontrolle und endete 0:30. Spiel 2 am nächsten Tag in Hünenberg war streckenweise ausgeglichener, ging aber ebenfalls verloren — Endstand 14:1 für die Flyers.</p><p>Die individuellen Schlag- und Pitching-Statistiken für beide Spiele folgen in Kürze. Das beste Team der Liga auswärts in zwei aufeinanderfolgenden Spielen zu treffen, war immer die härteste Prüfung der BAR3-Saison, und der Club muss nun drei Spiele in Folge gewinnen, um weiterzukommen: Spiel 3 findet am Samstag, 29. August, um 13:00 Uhr wieder in Känelmatt 1 statt, Spiel 4 kehrt am Sonntag, 30. August, um 14:30 Uhr ins Heerenschürli zurück, und falls nötig geht Spiel 5 am Samstag, 5. September, zurück nach Therwil.</p><p>Der Einzug ins Halbfinale ist an sich schon ein Zeichen dafür, wie weit sich der Club nach einem schwierigen Start in die TOP-6-Runde gesteigert hat — im Juli stand BAR3 nahe dem Tabellenende der Sechsergruppe, bevor eine Drei-Spiele-Serie den Sprung in die Playoffs sicherte. Die Serie ist noch längst nicht entschieden; die Cudas brauchen jetzt eine Antwort zu Hause vor der Heerenschürli-Kulisse.</p>',
+      },
+    },
+  },
   {
     id: 'challengers-aug19',
     date: 'August 19, 2026', tag: 'Game Recap', tagColor: '#F0B429',
